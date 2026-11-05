@@ -2,7 +2,7 @@
 
 ## Onde seus dados ficam
 
-O Job grava seus dados na pasta privada `.job/` dentro do projeto, no seu
+O Carreira Guiada grava seus dados na pasta privada `.job/` dentro do projeto, no seu
 computador, com permissões restritas ao seu usuário. Lá ficam o perfil, cópias
 dos currículos importados, as versões geradas, o objetivo, as candidaturas e
 as referências de mensagens. Arquivos recebidos são preservados também no
@@ -14,7 +14,7 @@ no chat e os arquivos que ele lê. Os dados necessários também são enviados a
 portais quando você autoriza uma candidatura. A pasta privada protege a
 separação dos arquivos locais; ela não torna o uso da IA inteiramente local
 nem criptografa o banco. Consulte as opções de privacidade do aplicativo antes
-de compartilhar documentos. Se for compartilhar a pasta do Job depois de
+de compartilhar documentos. Se for compartilhar a pasta do Carreira Guiada depois de
 usá-la, peça à IA para conferir e deixar seus dados e anexos pessoais fora
 da cópia. Não envie toda a instalação sem essa conferência.
 

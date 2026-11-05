@@ -1,4 +1,4 @@
-"""Operação do Job: objetivo, oportunidades, autorizações, resultados, parada e e-mails.
+"""Operação do Carreira Guiada: objetivo, oportunidades, autorizações, resultados, parada e e-mails.
 
 Tudo fica em ``.job/control.sqlite3`` (o banco do ``Store`` herdado). ``state()``
 nunca cria ``.job``. Mutações usam uma transação; o ``Store`` aninha a dele em
@@ -538,7 +538,7 @@ class Workflow:
                 monitor.db.close()
         result["profile"] = self._profile_status()
         result["next_steps"] = self._next_steps(result)
-        result["message"] = "\n".join(["Situação do Job:"] + [f"- {step}" for step in result["next_steps"]])
+        result["message"] = "\n".join(["Situação do Carreira Guiada:"] + [f"- {step}" for step in result["next_steps"]])
         return result
 
     @staticmethod

@@ -2,14 +2,15 @@
 
 ## Preciso saber programar?
 
-Não para conversar com o Job. Abra a pasta no aplicativo de IA e escreva
+Não para conversar com o Carreira Guiada. Abra a pasta no aplicativo de IA e escreva
 `iniciar`. A IA conduz os comandos e explica quando precisa de uma ação sua.
 Se faltar uma ferramenta, ela pede autorização e ajuda a instalar.
 
 ## Isso é um aplicativo com tela própria?
 
-O Job funciona dentro do chat do aplicativo de IA. As imagens ilustram a
-conversa; não representam uma interface instalada pelo Job.
+O Carreira Guiada funciona na conversa da ferramenta de IA escolhida. Os GIFs
+mostram simulações em terminal do Claude Code e do Codex CLI. O projeto não
+instala uma interface gráfica própria.
 
 ## Onde estão os sites de vagas?
 
@@ -51,7 +52,7 @@ específica. A IA não deve inventar experiência nem esconder ajuda proibida.
 
 ## Os dados ficam só no computador?
 
-Os registros do Job ficam localmente. O aplicativo de IA processa o que recebe,
+Os registros do Carreira Guiada ficam localmente. O aplicativo de IA processa o que recebe,
 e os dados autorizados são enviados aos destinos das candidaturas. O banco não
 é criptografado. Leia [Privacidade](PRIVACIDADE.md).
 

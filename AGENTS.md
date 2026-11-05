@@ -1,4 +1,4 @@
-# Job: guia de candidaturas conduzido no chat
+# Carreira Guiada: guia de candidaturas conduzido no chat
 
 Este projeto ajuda uma pessoa leiga a procurar vagas e enviar candidaturas com
 a ajuda de uma IA, dentro do chat. A pessoa abre a pasta no Codex ou no Claude

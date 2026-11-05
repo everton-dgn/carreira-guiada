@@ -1,6 +1,6 @@
 ## Problema e resultado
 
-Descreva o comportamento anterior e o que muda para quem usa o Job.
+Descreva o comportamento anterior e o que muda para quem usa o Carreira Guiada.
 
 ## Como foi verificado
 

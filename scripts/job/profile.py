@@ -140,7 +140,7 @@ def validate(section, data, complete=False):
                 raise ValueError('Allow exige consentimento confirmado para ' + action + '.')
     elif section == 'limits':
         if data != {'mode': 'chat'}:
-            raise ValueError('O Job funciona neste chat. Use mode=chat, sem executor externo.')
+            raise ValueError('O Carreira Guiada funciona neste chat. Use mode=chat, sem executor externo.')
     else:
         obj(data, ('accounts',), ('accounts',) if complete else ())
         accounts = data.get('accounts', [])

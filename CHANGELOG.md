@@ -1,5 +1,18 @@
 # Histórico de versões
 
+## Unreleased
+
+## 0.2.0 - 2026-11-05
+
+- Nome Carreira Guiada e apresentação voltada a reduzir a busca manual de
+  vagas e o preenchimento repetitivo de formulários.
+- Capa renovada e exemplos ilustrativos do Claude Code e do Codex CLI no
+  terminal, com animações e alternativas estáticas em 2240 × 1400 pixels.
+- Guia para abrir a primeira conversa no terminal, com passos de instalação
+  e login das ferramentas escolhidas.
+- Preparação de versões por Conventional Commits, changelog revisável e
+  publicação de releases após a CI da main, preservando tags existentes.
+
 ## 0.1.0
 
 Primeira versão pública, experimental.

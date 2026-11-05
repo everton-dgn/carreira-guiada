@@ -1,6 +1,6 @@
 ---
 name: revisao
-description: Revisar regras, skills, agentes, documentação e registros do projeto Job em modo somente leitura, relatando defeitos com arquivo, linha, cenário e correção mínima. Usar em pedidos de "revise", "confira", "está certo?". Não edita, não envia, não altera perfil.
+description: Revisar regras, skills, agentes, documentação e registros do projeto Carreira Guiada em modo somente leitura, relatando defeitos com arquivo, linha, cenário e correção mínima. Usar em pedidos de "revise", "confira", "está certo?". Não edita, não envia, não altera perfil.
 ---
 
 # Revisão somente leitura

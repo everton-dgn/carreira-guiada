@@ -62,7 +62,7 @@ def doctor(root: Path, *, which=shutil.which, run=subprocess.run) -> dict:
     tools_ok = all(check["ready"] for check in checks if not check["optional"])
     effects = tools_ok and bool(profile.get("approved")) and resumes["approved_verified"] > 0 and any(s["usable"] for s in sessions) and not state["control"]["stopped"]
     ready = {"chat": tools_ok, "effects": effects}
-    lines = ["Diagnóstico do Job:"]
+    lines = ["Diagnóstico do Carreira Guiada:"]
     for check in checks:
         level = "pronto" if check["ready"] else "observado" if check["observed"] else "instalado" if check["installed"] else "ausente"
         lines.append(f"- {check['label']}: {level}{' (opcional)' if check['optional'] else ''}")

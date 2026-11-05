@@ -1,6 +1,6 @@
 # Arquitetura e contratos locais
 
-O Job é um guia executado pela IA dentro do chat. O controle local guarda
+O Carreira Guiada é um guia executado pela IA dentro do chat. O controle local guarda
 perfil, currículos, regras e progresso; o navegador e o e-mail são operados
 pelas ferramentas autenticadas do ambiente. O projeto não contém servidor
 web nem cliente próprio de e-mail. Instruções de chat não são um sandbox.
@@ -11,7 +11,7 @@ A pessoa diz `iniciar`. O agente lê [AGENTS.md](../AGENTS.md) e usa `./job`.
 [OPERACAO.md](OPERACAO.md) descreve os comandos. JSON de entrada vai por stdin;
 `--json` produz saída estruturada. `--root` permite testes com outra pasta.
 
-As informações registradas pelo Job ficam em `.job/`, criada na primeira escrita.
+As informações registradas pelo Carreira Guiada ficam em `.job/`, criada na primeira escrita.
 O banco único é `.job/control.sqlite3`; originais ficam em `.job/sources/` e
 versões em `.job/resumes/`. Diretórios privados usam 0700, arquivos 0600.
 Consultas não criam um perfil. Arquivos recebidos permanecem também no local

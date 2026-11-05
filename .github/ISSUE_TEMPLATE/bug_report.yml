@@ -23,7 +23,7 @@ body:
     id: environment
     attributes:
       label: Qual ambiente você usou?
-      description: Informe sistema, aplicativo de IA e versão do Job, se souber.
+      description: Informe sistema, aplicativo de IA e versão do Carreira Guiada, se souber.
   - type: checkboxes
     id: privacy
     attributes:

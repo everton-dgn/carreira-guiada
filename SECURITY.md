@@ -2,7 +2,7 @@
 
 ## Relatar uma vulnerabilidade
 
-Use o [relato privado no GitHub](https://github.com/everton-dgn/job/security/advisories/new).
+Use o [relato privado no GitHub](https://github.com/everton-dgn/carreira-guiada/security/advisories/new).
 Não publique a falha com dados pessoais em uma issue.
 
 Inclua a versão ou commit, o comportamento esperado, os passos mínimos para
@@ -20,7 +20,7 @@ manter versões anteriores. Consulte [CHANGELOG.md](CHANGELOG.md) antes de atual
 
 ## Limites de segurança
 
-O Job é um guia operado por uma IA com controle local. Ele não isola as
+O Carreira Guiada é um guia operado por uma IA com controle local. Ele não isola as
 ferramentas do aplicativo e não impede tecnicamente o agente de agir fora do
 procedimento. Use as permissões e confirmações oferecidas pelo aplicativo.
 
