@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.0 - 2026-11-05
+
 - Nome Carreira Guiada e apresentação voltada a reduzir a busca manual de
   vagas e o preenchimento repetitivo de formulários.
 - Capa renovada e exemplos ilustrativos do Claude Code e do Codex CLI no

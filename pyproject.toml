@@ -1,6 +1,6 @@
 [project]
 name = "carreira-guiada"
-version = "0.1.0"
+version = "0.2.0"
 description = "Busca de vagas e preenchimento de candidaturas guiados por IA, com menos trabalho manual"
 license = "MIT"
 license-files = ["LICENSE"]
