@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "instructions": "Modelo neutro, não salvar este envelope como seção. Envie cada objeto de sections a Profile.save(nome, objeto). Preencha identity e as listas roles, modalities e currencies antes de aprovar. Campos vazios não herdam preferências. Consulte schema para campos opcionais e policy.py para payload de vaga.",
+  "sections": {
+    "identity": {},
+    "preferences": {
+      "roles": [],
+      "modalities": [],
+      "currencies": [],
+      "levels": [],
+      "contracts": [],
+      "locations": [],
+      "technologies": [],
+      "blocked_companies": [],
+      "blocked_sectors": [],
+      "blocked_platforms": [],
+      "missing": "ask",
+      "languages": [],
+      "salary": {
+        "missing": "ask",
+        "estimated": "ask",
+        "range": "ask",
+        "floors": [],
+        "public_expectation": null
+      }
+    },
+    "permissions": {
+      "research": "ask",
+      "register": "ask",
+      "fill": "ask",
+      "apply": "ask",
+      "email_read": "ask",
+      "email_reply": "ask",
+      "email_trash": "ask",
+      "schedule": "ask",
+      "assessment": "ask",
+      "confirmed": []
+    },
+    "limits": {
+      "mode": "chat"
+    },
+    "connections": {
+      "accounts": []
+    },
+    "sources": {
+      "urls": []
+    }
+  },
+  "schema": {
+    "identity": "name e email: textos obrigatórios; phone/location: textos opcionais; timezone: IANA opcional; links: lista opcional HTTP/HTTPS sem credenciais",
+    "preferences": "Todas as chaves do modelo obrigatórias para aprovação; listas de textos únicos, igualdade normalizada de caixa e acentos, sem busca por trechos; domínios preservam acentos. roles/modalities/currencies não vazias. missing: ask|reject|accept. languages: [{name: texto, level: inteiro 1..6, required: booleano}]. required no perfil exige uso do idioma na vaga; na vaga exige proficiência do candidato.",
+    "salary": "missing e estimated: ask|reject|accept; range: ask|minimum|maximum; maximum exige confirmação como ask quando apenas o teto atinge o piso; minimum descarta mínimo declarado abaixo do piso. floors: [{contract: texto, currency: texto, period: hour|month|year, amount: número positivo}]. public_expectation: null ou {currency, period, amount}. Piso é privado; não publicar automaticamente.",
+    "permissions": "Cada ação: allow|ask|deny. Omitida continua pendente no onboarding. O modelo preenchido com ask só deve ser salvo após escolha explícita de perguntar antes para todas. Cada allow exige nome da ação em confirmed, após confirmação pessoal explícita.",
+    "limits": "{mode: chat}, definido automaticamente. Não perguntar sobre executor ou ciclos.",
+    "connections": "{accounts: [{provider: texto, alias: texto único, address: texto privado}]}; lista vazia permitida; nenhum segredo de autenticação.",
+    "sources": "{urls: []}: endereços HTTPS públicos escolhidos pela pessoa. Lista vazia permite preparar o currículo; pesquisa exige lista não vazia aprovada e source_url no domínio, porta e caminho autorizados."
+  }
+}

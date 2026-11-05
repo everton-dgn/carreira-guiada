@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Relatar vulnerabilidade em privado
+    url: https://github.com/everton-dgn/job/security/advisories/new
+    about: Não publique falhas de segurança com dados pessoais em issues.
+  - name: Dúvidas sobre o uso
+    url: https://github.com/everton-dgn/job/discussions
+    about: Converse com a comunidade usando exemplos fictícios.

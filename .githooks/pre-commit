@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+if ! command -v uv >/dev/null 2>&1; then
+  printf '%s\n' 'Instale o uv para conferir a publicação. Consulte CONTRIBUTING.md.' >&2
+  exit 1
+fi
+exec uv run --locked python scripts/check_publication.py --staged
