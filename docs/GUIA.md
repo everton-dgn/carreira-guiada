@@ -1,6 +1,6 @@
-# Seu primeiro uso do Job
+# Seu primeiro uso do Carreira Guiada
 
-Você não precisa saber programar. O Job é uma pasta que sua IA lê para
+Você não precisa saber programar. O Carreira Guiada é uma pasta que sua IA lê para
 conduzir a busca de emprego, uma etapa por vez. Este guia mostra o começo;
 durante o uso, a própria IA explica o próximo passo.
 
@@ -8,7 +8,7 @@ durante o uso, a própria IA explica o próximo passo.
 
 1. Na página do projeto no GitHub, use **Code** e **Download ZIP** para baixar
    os arquivos. Abra o arquivo baixado para extrair a pasta. Ela pode se chamar
-   `job-main`; esse nome também funciona.
+   `carreira-guiada-main`; esse nome também funciona.
 2. Abra essa pasta no aplicativo de IA que você usa, como Codex ou Claude Code.
    A pasta aberta deve conter `README.md`, `AGENTS.md` e o arquivo `job`.
    Só colar o link do GitHub em um chat comum não dá acesso aos arquivos locais.
@@ -17,13 +17,49 @@ durante o uso, a própria IA explica o próximo passo.
    ferramenta, ela explica a instalação e pede a autorização necessária.
 
 Se não encontrar como abrir a pasta, diga ao assistente qual aplicativo está
-usando e que quer abrir a pasta do Job. Ele deve orientar com base nas opções
+usando e que quer abrir a pasta do Carreira Guiada. Ele deve orientar com base nas opções
 que conseguir observar, sem inventar nomes de botões.
 
 O controle local usa macOS ou Linux. Windows nativo não é suportado; WSL ainda
 não foi validado. A IA precisa conseguir ler arquivos e executar ferramentas.
 
-![O início passa por currículo, objetivo, links, escolhas e aprovação.](assets/inicio-guiado.png)
+## Usando pelo terminal
+
+O terminal é a janela em que você digita comandos. Instale e faça login em
+uma das ferramentas seguindo o guia oficial: [Claude Code](https://code.claude.com/docs/en/quickstart)
+ou [Codex CLI](https://learn.chatgpt.com/docs/codex/cli).
+As contas e permissões pertencem à ferramenta escolhida.
+
+Abra o terminal na pasta extraída do projeto. Se ele já estiver na pasta que
+contém `carreira-guiada`, entre nela com:
+
+```sh
+cd carreira-guiada
+```
+
+Use o nome que a pasta realmente tem, como `carreira-guiada-main` se baixou o
+ZIP. Caso não saiba localizar a pasta, peça ajuda ao assistente que já usa
+e informe o sistema operacional, sem compartilhar senhas.
+
+Escolha **um** dos comandos, conforme a ferramenta instalada:
+
+```sh
+claude
+```
+
+```sh
+codex
+```
+
+Depois que a sessão abrir, escreva `iniciar` na conversa. Siga as orientações
+de login e confiança da própria ferramenta. Não é necessário desativar as
+proteções para usar este projeto.
+
+As demonstrações abaixo representam conversas fictícias no terminal.
+O Carreira Guiada não instala uma tela própria. Navegação e e-mail dependem
+das integrações disponíveis na sessão; iniciar a CLI não conecta contas.
+
+![Exemplo ilustrativo de início no terminal do Claude Code.](assets/inicio-guiado.png)
 
 ## A primeira conversa
 
@@ -59,7 +95,7 @@ Detalhes das perguntas: [Onboarding](ONBOARDING.md).
    as suas escolhas. A candidatura só é contada após confirmação do destino.
 5. Você recebe o que foi confirmado, o que ficou em dúvida e a próxima ação.
 
-![A candidatura tem revisão, resultado confirmado, pausa e retomada.](assets/candidatura-guiada.png)
+![Exemplo ilustrativo de busca e preenchimento no terminal do Codex CLI.](assets/candidatura-guiada.png)
 
 Uma vaga bloqueada por login não impede cuidar de outra. Um envio com resultado
 incerto exige conferência antes de tentar novamente.

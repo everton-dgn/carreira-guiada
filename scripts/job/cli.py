@@ -28,7 +28,7 @@ def parser():
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument("--root", type=Path, default=argparse.SUPPRESS, help="Pasta do projeto; a área privada fica dentro dela")
     common.add_argument("--json", action="store_true", default=argparse.SUPPRESS, help="Resposta estruturada para o agente")
-    main = argparse.ArgumentParser(description="Job: guia de candidaturas no chat", parents=[common])
+    main = argparse.ArgumentParser(description="Carreira Guiada: guia de candidaturas no chat", parents=[common])
     commands = main.add_subparsers(dest="command", required=True)
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
@@ -142,7 +142,7 @@ def onboarding(root):
 def dispatch(args):
     root = getattr(args, "root", ROOT).resolve()
     if not root.is_dir():
-        raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Job no seu aplicativo de IA.")
+        raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
     if args.command == "start":
         return onboarding(root)
     if args.command in {"jobs", "steps", "step", "transition"}:

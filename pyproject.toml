@@ -1,7 +1,7 @@
 [project]
-name = "job-chat-workspace"
+name = "carreira-guiada"
 version = "0.1.0"
-description = "Guia local de candidaturas conduzido pelo chat de uma IA"
+description = "Busca de vagas e preenchimento de candidaturas guiados por IA, com menos trabalho manual"
 license = "MIT"
 license-files = ["LICENSE"]
 readme = "README.md"
@@ -14,6 +14,9 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[tool.carreira-release]
+prerelease = true
 
 [dependency-groups]
 docs = ["pillow>=11"]

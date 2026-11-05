@@ -20,7 +20,7 @@ EMAIL = re.compile(r"[A-Za-z0-9_.+%-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})")
 AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed original. Retains its generated C2PA provenance.
-REVIEWED_COVER_SHA256 = "1f60a10ef85aea1ebb5bd644e48fbc0a672148b74c77aa02a43986ccc689e3c4"
+REVIEWED_COVER_SHA256 = "f3ca5d6166c7b2cbd5047a498af8109aadac7342c782d24bf31aef9b897c7692"
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),
     "chave privada": re.compile(r"-----BEGIN (?:(?:RSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY|PGP PRIVATE KEY BLOCK)-----"),
@@ -51,7 +51,7 @@ def path_problem(name):
 def image_problem(name, data):
     if not name.startswith("docs/assets/"):
         return "imagem fora da pasta de documentação"
-    if name == "docs/assets/job-cover.png" and hashlib.sha256(data).hexdigest() == REVIEWED_COVER_SHA256:
+    if name == "docs/assets/carreira-guiada-cover.png" and hashlib.sha256(data).hexdigest() == REVIEWED_COVER_SHA256:
         return None
     if name.endswith(".png"):
         if not data.startswith(b"\x89PNG\r\n\x1a\n"):

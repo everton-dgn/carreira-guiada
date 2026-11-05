@@ -2,7 +2,7 @@
 set -eu
 JOB_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 if ! command -v uv >/dev/null 2>&1; then
-  printf '%s\n' 'Falta o uv para executar o controle local.' 'Peça à IA deste chat: "Ajude-me a instalar o uv e continuar o início do Job".' 'Guia oficial: https://docs.astral.sh/uv/getting-started/installation/' >&2
+  printf '%s\n' 'Falta o uv para executar o controle local.' 'Peça à IA deste chat: "Ajude-me a instalar o uv e continuar o início do Carreira Guiada".' 'Guia oficial: https://docs.astral.sh/uv/getting-started/installation/' >&2
   exit 1
 fi
 cd "$JOB_ROOT"

@@ -1,6 +1,6 @@
 ---
 name: inicio
-description: Conduzir o início e a retomada do Job quando a pessoa disser iniciar, começar, continuar ou perguntar o que falta. Descobrir o estado sem enviar nada, escolher a próxima etapa e seguir a skill correspondente. Não inferir consentimentos nem iniciar candidaturas por uma pergunta de status.
+description: Conduzir o início e a retomada do Carreira Guiada quando a pessoa disser iniciar, começar, continuar ou perguntar o que falta. Descobrir o estado sem enviar nada, escolher a próxima etapa e seguir a skill correspondente. Não inferir consentimentos nem iniciar candidaturas por uma pergunta de status.
 ---
 
 # Início guiado

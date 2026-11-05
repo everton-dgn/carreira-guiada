@@ -1,32 +1,44 @@
-![Job: sua próxima oportunidade começa com uma conversa.](docs/assets/job-cover.png)
+![Carreira Guiada: menos busca manual, menos formulários repetidos.](docs/assets/carreira-guiada-cover.png)
 
-# Job
+# Carreira Guiada
 
-Um guia de candidaturas que funciona no chat da sua IA. Você conversa; ela
-ajuda a organizar seu perfil, preparar o currículo e acompanhar as vagas.
+Seu objetivo é conseguir um emprego. Você não precisa passar horas procurando
+vagas manualmente e repetindo seus dados em formulários intermináveis.
+
+Você conta o que procura e confirma seus dados. A IA ajuda a encontrar vagas
+compatíveis, melhorar o currículo, preencher candidaturas e acompanhar os
+retornos, conforme suas permissões e as ferramentas conectadas. Assim, você
+dedica mais tempo às oportunidades que fazem sentido e à preparação para as
+próximas etapas.
+
+O projeto funciona dentro do **Claude Code ou Codex CLI, no terminal**, e
+também em aplicativos de IA compatíveis. A conversa acontece na ferramenta
+que você escolheu. O Carreira Guiada não tem uma interface gráfica própria.
 
 [Começar](docs/GUIA.md) · [Privacidade](docs/PRIVACIDADE.md) ·
 [Dúvidas comuns](docs/FAQ.md) · [Contribuir](CONTRIBUTING.md) · [Licença MIT](LICENSE)
 
 **Versão experimental.** As ações dependem das ferramentas do aplicativo,
-das permissões que você deu e das regras de cada serviço. O Job não garante
+das permissões que você deu e das regras de cada serviço. O Carreira Guiada não garante
 contratação nem execução contínua quando a sessão da IA termina.
 
 ## Comece com "iniciar"
 
-1. Baixe o projeto e abra a pasta `job` no seu aplicativo de IA, como Codex
+1. Baixe o projeto e abra a pasta `carreira-guiada` no seu aplicativo de IA, como Codex
    ou Claude Code. Ele precisa conseguir ler a pasta e executar ferramentas
    locais. [Veja o passo a passo](docs/GUIA.md#primeira-vez).
 2. Escreva **iniciar** no chat.
 3. A IA pergunta uma coisa por vez. Anexe seu currículo ou diga que quer
    criar um. Se não souber responder, diga "não sei".
 
-A pessoa que procura emprego não precisa aprender comandos. Se faltar uma
-ferramenta, a IA explica o que precisa e conduz a instalação autorizada.
+Depois de abrir a ferramenta, você conversa em linguagem comum. A IA conduz
+os comandos locais. O guia explica como abrir uma sessão no terminal; se
+faltar uma ferramenta, o assistente orienta a instalação autorizada.
 
-![Exemplo ilustrativo do início: currículo, objetivo, links, escolhas e aprovação.](docs/assets/inicio-guiado.gif)
+![Simulação em terminal do Claude Code: iniciar, criar currículo, escolher fontes e aprovar o perfil.](docs/assets/inicio-guiado.gif)
 
-*Demonstração com dados fictícios. A aparência do chat varia por aplicativo.*
+*Exemplo ilustrativo no Claude Code, com dados fictícios. O visual real varia
+conforme a versão e o tema do terminal.*
 [Ver imagem sem animação](docs/assets/inicio-guiado.png) ·
 [Ler o percurso em texto](docs/ONBOARDING.md)
 
@@ -51,9 +63,10 @@ A IA explica como copiar um endereço e não escolhe um portal por você.
 | Candidatura | Conferência da empresa, formulário, currículo e resultado do envio. |
 | Retornos | Mensagens relacionadas às vagas, próximas etapas e prazos. |
 
-![Exemplo ilustrativo: conferir uma vaga, aprovar o envio, registrar o resultado, pausar e retomar.](docs/assets/candidatura-guiada.gif)
+![Simulação em terminal do Codex CLI: buscar vagas e preencher formulários com os dados já confirmados.](docs/assets/candidatura-guiada.gif)
 
-*Nenhuma candidatura é enviada pelas demonstrações.*
+*Exemplo ilustrativo no Codex CLI. Pressupõe perfil aprovado e ferramentas
+conectadas; nenhuma candidatura é enviada pela demonstração.*
 [Ver imagem sem animação](docs/assets/candidatura-guiada.png) ·
 [Entender uma rodada de vagas](docs/GUIA.md#uma-rodada-de-vagas)
 
@@ -77,7 +90,7 @@ também processa o conteúdo que recebe; o banco local não é criptografado.
 
 | Item | Como funciona |
 |---|---|
-| Aplicativo de IA | Conta e sessão próprias, com acesso à pasta e a ferramentas locais. O Job não inclui assinatura de IA. |
+| Aplicativo de IA | Conta e sessão próprias, com acesso à pasta e a ferramentas locais. O Carreira Guiada não inclui assinatura de IA. |
 | Sistema | macOS ou Linux. Windows nativo não é suportado; uso via WSL ainda precisa de validação. |
 | Controle local | Python 3.11 ou superior e `uv`. A IA ajuda a preparar o ambiente. |
 | Sites e e-mail | Ferramentas disponíveis e sessões autenticadas no aplicativo. Sem conexão, essas etapas ficam pendentes. |

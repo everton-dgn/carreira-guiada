@@ -1,6 +1,6 @@
 # Validação
 
-O Job usa testes com dados fictícios e pastas temporárias. A suíte não envia
+O Carreira Guiada usa testes com dados fictícios e pastas temporárias. A suíte não envia
 candidaturas, cria contas, responde mensagens nem opera seleções reais.
 
 ## Como executar
@@ -30,16 +30,21 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
   endereços, mudança de perfil e bloqueio de pesquisas fora do escopo aprovado.
 - Publicação: leitura do conteúdo preparado no Git, bloqueio de arquivos
   privados, links simbólicos, credenciais e metadados inesperados nas imagens.
+- Versionamento: cálculo por commits, preservação das notas revisadas,
+  preparação limitada aos arquivos de versão e publicação com API simulada,
+  incluindo falhas de CI, conflito de tag e retomada de publicação parcial.
 
 `tests/test_job_journey.py` exercita conversas de preparação pela CLI real.
 `tests/test_job_process_journey.py` exercita busca, candidatura e retorno com
 portal e caixa postal simulados. Os processos desses percursos bloqueiam
 conexões de rede e abertura de subprocessos para impedir efeitos externos.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
+As imagens do Claude Code e do Codex CLI também são ilustrações. Não comprovam
+uma integração executada nesses aplicativos ou um envio para um portal real.
 
 A automação do GitHub executa a suíte em Linux com Python 3.11 e 3.13 e
 em macOS com Python 3.13. O resultado de cada execução fica na aba
-[Actions do projeto](https://github.com/everton-dgn/job/actions).
+[Actions do projeto](https://github.com/everton-dgn/carreira-guiada/actions).
 
 Antes de um commit, confira os arquivos preparados para publicação:
 

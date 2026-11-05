@@ -32,7 +32,7 @@ class PublicationTests(unittest.TestCase):
                 self.assertIsNotNone(path_problem(name))
 
     def test_neutral_fixture_and_documentation_are_allowed(self):
-        self.stage("README.md", "# Job\nA fictional contact: person@example.invalid\n")
+        self.stage("README.md", "# Carreira Guiada\nA fictional contact: person@example.invalid\n")
         self.stage("tests/test_example.py", "VALUE = 'https://jobs.example/vagas'\n")
         count, findings = check(self.root)
         self.assertEqual(count, 2)
@@ -80,13 +80,13 @@ class PublicationTests(unittest.TestCase):
 
     def test_unknown_png_metadata_is_blocked_and_reviewed_cover_is_preserved(self):
         assets = Path(__file__).resolve().parents[1] / "docs/assets"
-        original = (assets / "job-cover.png").read_bytes()
-        self.assertEqual(content_problems("docs/assets/job-cover.png", original), [])
+        original = (assets / "carreira-guiada-cover.png").read_bytes()
+        self.assertEqual(content_problems("docs/assets/carreira-guiada-cover.png", original), [])
         self.assertTrue(content_problems("docs/assets/other.png", original))
         kind, value = b"ruSt", b"synthetic extra data"
         chunk = struct.pack(">I", len(value)) + kind + value + struct.pack(">I", zlib.crc32(kind + value))
         changed = original[:-12] + chunk + original[-12:]
-        self.assertTrue(content_problems("docs/assets/job-cover.png", changed))
+        self.assertTrue(content_problems("docs/assets/carreira-guiada-cover.png", changed))
 
     def test_gif_loop_extension_cannot_carry_extra_metadata(self):
         assets = Path(__file__).resolve().parents[1] / "docs/assets"

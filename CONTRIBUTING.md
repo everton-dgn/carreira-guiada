@@ -10,8 +10,8 @@ Use macOS ou Linux, Git, Python 3.11 ou superior e
 [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ```sh
-git clone https://github.com/everton-dgn/job.git
-cd job
+git clone https://github.com/everton-dgn/carreira-guiada.git
+cd carreira-guiada
 uv sync --locked
 git config --local core.hooksPath .githooks
 git switch -c fix/descricao-curta
@@ -66,8 +66,9 @@ texto alternativo e uma versão estática para animações importantes.
 uv run --locked --group docs python scripts/maintainers/render_docs.py
 ```
 
-O gerador usa DejaVu Sans ou Arial disponível no sistema. Confira acentos e
-legibilidade antes de publicar. Não copie fontes de terceiros para o projeto.
+O gerador usa uma fonte de texto (DejaVu Sans ou Arial) e uma monoespaçada
+(DejaVu Sans Mono, Menlo ou Consolas) disponíveis no sistema. Confira acentos
+e legibilidade antes de publicar. Não copie fontes de terceiros para o projeto.
 [Créditos e origem das imagens](docs/VISUAIS.md).
 
 ## Licença das contribuições
@@ -76,3 +77,9 @@ Envie somente material que você tem direito de distribuir sob a
 [licença MIT](LICENSE). Preserve avisos obrigatórios de terceiros. As
 dependências mantêm suas próprias licenças; não copie o código delas sem
 verificar as condições. O projeto não exige cessão exclusiva de direitos.
+
+## Preparar uma versão
+
+O [guia de releases](docs/RELEASES.md) explica o cálculo da versão, a preparação
+dos arquivos e a publicação após a CI. A automação usa Python, Git e a CLI do
+GitHub; o uso do projeto por candidatos não depende dessas ferramentas de release.
