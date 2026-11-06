@@ -30,6 +30,8 @@
 - Perguntas sobre fontes adaptadas ao currículo pronto e à ajuda para descobrir
   sites; nenhuma sugestão entra automaticamente no perfil.
 - Revisões antigas não reabilitam fontes com verificação mais recente adversa.
+- Instruções para retirar fontes comprometidas por redirecionamentos e limites
+  numéricos da calculadora alinhados ao comportamento implementado.
 - Demonstração de currículo ajustada à conferência dos arquivos antes do envio.
 
 ### Validação

@@ -108,8 +108,10 @@ O objeto de entrada exige `label`, `regime` (`CLT`, `PJ`, `MEI`, `cooperado`,
 Os componentes materiais podem ser `null` para desconhecido; meses conhecidos
 são inteiros de 1 a 12. `hours_week`, `weeks_year`, `notes`, `assumptions` e `estimated_fields` são
 opcionais. `estimated_fields` lista os nomes dos campos numéricos informados
-que são estimativas; a marcação aparece no cálculo. Valores numéricos conhecidos são não negativos, finitos, com até 12
-casas decimais; horas e semanas, quando fornecidas, são positivas. A saída usa
+que são estimativas; a marcação aparece no cálculo. Valores numéricos conhecidos
+são não negativos, finitos, com até 19 dígitos inteiros e 12 casas decimais.
+Horas e semanas, quando fornecidas, são maiores que zero, com no máximo 168 horas
+por semana e 53 semanas por ano; valores fracionários são aceitos. A saída usa
 strings decimais e `null` para cálculos indisponíveis. Registre em `assumptions`
 quais dados são estimativas e sua origem.
 
