@@ -17,13 +17,21 @@ usa a mudança de maior impacto desde essa tag:
 | Commit | Resultado a partir de 1.2.3 |
 |---|---|
 | `feat: add feature` | 1.3.0 |
+| `docs: improve onboarding` | 1.3.0, pois o guia faz parte do produto |
 | `fix: repair behavior`, `perf:` ou `revert:` | 1.2.4 |
 | `chore(deps): update parser` ou `build(deps-dev): update tools` | 1.2.4 |
 | `feat!: change contract` ou rodapé `BREAKING CHANGE:` | 2.0.0 |
-| `docs:`, `test:` e manutenção sem os casos acima | Sem nova versão |
+| `refactor:`, `style:`, `test:`, `ci:`, `build:` e `chore:` | 1.2.4 |
+| `chore(release): prepare v1.2.4` | Sem novo incremento |
 
 Um exemplo de `BREAKING CHANGE:` dentro de um bloco de código não altera a
 versão. Essa mesma regra de incremento vale antes de 1.0.0.
+
+Prefira `feat:` para melhorias nos guias e nas instruções do agente, e `fix:`
+para correções. O suporte a `docs:` mantém essas mudanças no cálculo quando
+esse tipo já tiver sido usado. Toda alteração com um dos tipos aceitos gera
+versão, exceto o preparo da própria release. Merge commits também ficam fora
+do cálculo para não contar novamente os commits integrados.
 
 ## Preparar a alteração
 
@@ -77,9 +85,13 @@ revisadas. Não altera a main, não cria aprovações ou checks e não integra P
 Ela usa Python da biblioteca padrão, Git e a CLI `gh` do runner. O token do
 GitHub tem leitura de Actions e escrita de conteúdo somente no job de publicação.
 
-O campo `[tool.carreira-release] prerelease = true` mantém as versões marcadas
-como experimentais no GitHub. Altere esse campo por PR quando houver uma
-decisão de estabilidade. O valor não é deduzido do número da versão.
+O campo `[tool.carreira-release] prerelease = false` publica releases normais,
+elegíveis para aparecer como a versão mais recente na página do repositório.
+O projeto continua em desenvolvimento na série 0.x, conforme o README.
+Uma release normal não é uma promessa de estabilidade ou de contratação.
+Use `prerelease = true` somente quando quiser publicar explicitamente um
+pré-lançamento, que fica fora da seleção de release principal do GitHub.
+O valor não é deduzido do número da versão.
 
 ## Se uma publicação falhar
 

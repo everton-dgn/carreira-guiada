@@ -9,6 +9,11 @@ Leia [AGENTS.md](../../../AGENTS.md) por completo e
 [docs/OPERACAO.md](../../../docs/OPERACAO.md). Esta skill organiza a execução;
 as regras estão no procedimento.
 
+Siga [ACOMPANHAMENTO.md](../../../docs/ACOMPANHAMENTO.md): avise o que está
+acontecendo durante a execução, salve checkpoint e use o limite compartilhado
+de duas abas por padrão. Reserve antes de abrir. Formulários pendentes não
+são fechados para liberar espaço, e o fim de um lote não apaga o progresso.
+
 ## Pré-requisitos
 
 - Perfil `approved` (via `./job profile status`). Sem isso, volte a

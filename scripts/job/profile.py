@@ -7,7 +7,7 @@ permissions: {research|register|fill|apply|email_read|email_reply|email_trash|
 schedule|assessment: 'allow'|'ask'|'deny', confirmed?: [nomes das ações]}.
 Cada allow exige ação em confirmed, declaração explícita do usuário, nunca
 inferida pelo chamador. Ações omitidas continuam pendentes no onboarding.
-limits: {mode: 'chat'}, definido automaticamente sem pergunta técnica.
+limits: {mode: 'chat', browser_tabs?: int de 1 a 5}, padrão de duas abas próprias.
 connections: {accounts: [{provider: str, alias: str, address: str}]}.
 Não armazenar senhas/tokens/cookies. Accounts pode ser vazio no modo chat.
 Seções parciais podem ser salvas; approve exige todas completas. Status retorna
@@ -139,8 +139,11 @@ def validate(section, data, complete=False):
             if mode == 'allow' and action not in confirmed:
                 raise ValueError('Allow exige consentimento confirmado para ' + action + '.')
     elif section == 'limits':
-        if data != {'mode': 'chat'}:
+        obj(data, ('mode', 'browser_tabs'), ('mode',))
+        if data['mode'] != 'chat':
             raise ValueError('O Carreira Guiada funciona neste chat. Use mode=chat, sem executor externo.')
+        if type(data.get('browser_tabs', 2)) is not int or not 1 <= data.get('browser_tabs', 2) <= 5:
+            raise ValueError('Use de uma a cinco abas de trabalho; o padrão é duas.')
     else:
         obj(data, ('accounts',), ('accounts',) if complete else ())
         accounts = data.get('accounts', [])

@@ -18,6 +18,11 @@ a pessoa a informá-los, sem escolher portais por ela. Sem perfil aprovado, volt
 
 ## Executar
 
+Leia `tabs status` antes de usar o navegador e siga
+[ACOMPANHAMENTO.md](../../../docs/ACOMPANHAMENTO.md). Reutilize abas seguras,
+reserve antes de abrir outra e respeite o limite global, inclusive se houver
+outros agentes. Mostre progresso observado durante buscas demoradas.
+
 Antes da consulta, peça ao registrador `action authorize` para `research`, com
 o canal, `source_url` dentro das fontes aprovadas e `scope_key` identificando
 portal e consulta. Depois, devolva a evidência

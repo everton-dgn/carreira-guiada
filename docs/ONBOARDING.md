@@ -4,6 +4,14 @@ A IA faz as perguntas uma por vez e salva cada resposta. Você pode parar quando
 quiser e voltar com `iniciar`. Este arquivo mostra o que esperar; não precisa
 preencher nada aqui.
 
+Se já houver progresso salvo, `iniciar` oferece continuar ou revisar a
+preparação. Revisar preserva o histórico e reaproveita as respostas que você
+não quiser mudar. [Como parar e retomar em outro dia](ACOMPANHAMENTO.md).
+
+O currículo passa por [revisão para ATS](ATS.md). Depois você pode escolher
+a [revisão opcional do LinkedIn e GitHub](PRESENCA-PROFISSIONAL.md), deixar
+para depois ou pular. A IA não publica mudanças no perfil sem sua autorização.
+
 ## Regras simples
 
 - "Não sei" é uma resposta válida na maioria das perguntas. A IA explica o

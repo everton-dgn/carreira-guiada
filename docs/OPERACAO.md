@@ -36,10 +36,13 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 
 | Comando | Uso no fluxo |
 |---|---|
-| `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `profile_approval`, `resume_approval`, `execution_readiness`), `approved_resumes`. Nunca inicia envios. |
-| `status` | Estado seguro: objetivo, contagens, pendências, próximos passos. Sem perfil completo. |
+| `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `profile_approval`, `resume_approval`, `professional_presence`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
+| `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
 | `doctor` | Diagnóstico do ambiente. |
+| `checkpoint show` e `save` | Último progresso comprovado e próxima ação, persistidos entre sessões. Payload: `phase`, `summary`, `next_action`, `needs_user`; veja [acompanhamento](ACOMPANHAMENTO.md). |
+| `tabs status`, `reserve`, `update`, `release` | Reserva compartilhada antes da abertura, proteção de formulários e encerramento com evidência. Padrão de duas abas; veja [acompanhamento](ACOMPANHAMENTO.md). |
+| `presence status`, `show`, `choose`, `source`, `draft`, `finish` | Revisão opcional de LinkedIn/GitHub, com escolha, link salvo, rascunho privado versionado e conferência da pessoa. Não autoriza publicação; veja a [skill](../.agents/skills/presenca/SKILL.md). |
 | `profile show` | Perfil atual com versão e `approved_version`. |
 | `profile status` | `next_section`, `missing`, `approved`, `version`, `questions` com exemplos. Guia o onboarding. |
 | `profile answer <seção>` | Recebe `field`, `value` e, para autorização explícita, `confirmed: true`. Mescla uma resposta sem apagar as anteriores. Aceita `salary.floors` e outros campos salariais. |
@@ -57,6 +60,7 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `resume approve <id>` | Versão `approved` após conferência de arquivos e hash. |
 | `resume list` | Versões com id, rótulo, status, sha256 e caminhos. |
 | `resume show <id>` | Confere os hashes de todos os formatos antes de usar uma versão. |
+| `resume check <id>` | Compara o texto extraído dos arquivos gerados, verifica seções e tabelas. Não calcula pontuação de ATS. |
 | `goal` | Objetivo persistido com versão e critérios; não sobrescreve objetivo ativo incompatível. |
 | `opportunity` | Registro de oportunidade com chave e aliases; distinto de candidatura. |
 | `decision` | `opportunity_id`, `reasons` atuais e `user_confirmation`; aceita ausência permitida só nessa vaga, sem alterar os filtros gerais. |

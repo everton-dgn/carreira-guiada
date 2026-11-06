@@ -17,11 +17,40 @@ requisitos. A conversa acontece no aplicativo escolhido; o Carreira Guiada
 não tem uma interface gráfica própria.
 
 [Começar](docs/GUIA.md) · [Privacidade](docs/PRIVACIDADE.md) ·
-[Dúvidas comuns](docs/FAQ.md) · [Contribuir](CONTRIBUTING.md) · [Licença MIT](LICENSE)
+[Dúvidas comuns](docs/FAQ.md) · [Última versão](https://github.com/everton-dgn/carreira-guiada/releases/latest) ·
+[Contribuir](CONTRIBUTING.md) · [Licença MIT](LICENSE)
 
 **Versão experimental.** As ações dependem das ferramentas do aplicativo,
 das permissões que você deu e das regras de cada serviço. O Carreira Guiada não garante
 contratação nem execução contínua quando a sessão da IA termina.
+
+## Da configuração ao acompanhamento
+
+![Fluxo ilustrado: onboarding, perfil e regras, currículo aprovado, busca, seleção, preenchimento e envio, retornos por e-mail, próximas etapas e registro do resultado. Uma nova rodada volta à busca; o ciclo termina no objetivo combinado ou quando a pessoa pede para parar.](docs/assets/fluxo-guiado.png)
+
+A IA intercala novas buscas com os retornos dos processos em andamento.
+Ela executa as ações permitidas pelo perfil aprovado; login, decisões pessoais
+e testes que não permitem auxílio ficam com você. O fim de uma rodada dá início
+à próxima. O ciclo encerra quando o objetivo combinado é atingido ou você pede
+para parar, respeitando a duração da sessão e os limites que definiu.
+Na preparação, você também pode escolher a revisão do LinkedIn e do GitHub.
+
+<details>
+<summary>Ler o fluxo em texto</summary>
+
+1. A IA conduz o onboarding, uma pergunta por vez.
+2. Vocês definem dados, filtros, salário, fontes e permissões.
+3. A IA organiza o currículo; você confere e aprova a versão.
+4. A busca usa os links escolhidos por você.
+5. As vagas passam por conferência de compatibilidade, confiança e duplicidade.
+6. A IA preenche formulários, anexa o currículo e envia quando autorizado.
+7. Os retornos por e-mail são associados às candidaturas e aos prazos.
+8. Complementos e testes com auxílio permitido avançam dentro das autorizações;
+   entrevistas e respostas pessoais dependem de você.
+9. O resultado fica registrado. A busca continua ou o ciclo termina conforme
+   o objetivo e sua decisão.
+
+</details>
 
 ## Comece com "iniciar"
 
@@ -85,6 +114,14 @@ não representa uma tela do Carreira Guiada.*
 [Ver imagem sem animação](docs/assets/curriculo-guiado.png) ·
 [Ler o percurso em texto](docs/CURRICULOS.md#exemplo-do-percurso)
 
+## Prepare também sua apresentação profissional
+
+Você pode pedir uma [revisão da sua apresentação profissional](docs/PRESENCA-PROFISSIONAL.md):
+título, resumo e experiências do LinkedIn; para tecnologia, README do GitHub,
+projetos em destaque e apresentação dos repositórios. A IA prepara os textos
+e você decide o que publicar. O currículo também passa por
+[revisão para ATS](docs/ATS.md), com conferência de leitura dos arquivos.
+
 ## Você escolhe onde procurar
 
 O projeto começa **sem lista de sites de vagas**. No onboarding, a IA pede
@@ -128,6 +165,10 @@ de IA usada; o projeto não instala essas telas.*
 
 ## Você continua no controle
 
+- A IA informa o andamento da busca, do preenchimento e dos retornos, e diz
+  quando precisa de uma ação sua. O padrão é de duas abas de trabalho.
+- O progresso fica salvo. Ao voltar com `iniciar`, escolha continuar ou revisar
+  a preparação, sem refazer tudo. [Feedback, abas e retomada](docs/ACOMPANHAMENTO.md).
 - Diga **parar** para interromper novas ações. Diga **continuar** para retomar
   o progresso salvo durante uma sessão ativa.
 - Login, senha, códigos, entrevistas e respostas pessoais ficam com você.

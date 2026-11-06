@@ -29,6 +29,10 @@ anterior. Se parar no meio, volta à próxima pergunta que ainda falta.
 
 ## Revisar e aprovar
 
+A revisão também prepara o documento para leitura por sistemas de seleção,
+com estrutura simples, fatos relevantes e conferência do texto extraído do
+PDF e do Word. [Como funciona a revisão para ATS](ATS.md).
+
 A IA mostra o rascunho em texto corrido. Você pede mudanças quantas vezes
 quiser. Quando disser "está bom, pode aprovar", a versão fica aprovada e
 pronta para envio, em PDF, Word e texto. Só versões aprovadas são enviadas.

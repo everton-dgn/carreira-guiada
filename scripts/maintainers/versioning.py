@@ -37,10 +37,12 @@ def classify(message):
     kind, scope, breaking, summary = match.groups()
     if breaking or breaking_footer(body):
         return 3, 'Mudanças incompatíveis', summary
-    if kind == 'feat':
+    if kind in {'feat', 'docs'}:
         return 2, 'Novidades', summary
     if kind in {'fix', 'perf', 'revert'} or (kind in {'chore', 'build'} and scope in {'deps', 'deps-dev'}):
         return 1, 'Correções', summary
+    if kind in {'refactor', 'style', 'test', 'ci', 'build', 'chore'} and not (kind == 'chore' and scope == 'release'):
+        return 1, 'Manutenção', summary
     return None
 
 
@@ -60,7 +62,7 @@ def plan_version(current, commits):
     parts[index] += 1
     parts[index + 1:] = [0] * (2 - index)
     notes = []
-    for section in ('Novidades', 'Mudanças incompatíveis', 'Correções'):
+    for section in ('Novidades', 'Mudanças incompatíveis', 'Correções', 'Manutenção'):
         entries = [f"- {escaped_summary(item[2])} ({sha[:7]})" for sha, item in changes if item[1] == section]
         if entries:
             notes.append('### ' + section + '\n\n' + '\n'.join(entries))

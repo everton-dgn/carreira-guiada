@@ -79,6 +79,12 @@ class CliTests(unittest.TestCase):
         fact = self.call("resume", "fact", data={"text": "Atendimento ao público.", "source": "candidate:resposta-experiencia", "confirmed": True})
         draft = self.call("resume", "draft", data={"label": "Atendimento", "markdown": "# Pessoa fictícia\n\n## Experiência\n\nAtendimento ao público.", "fact_ids": [fact["id"]]})
         self.call("resume", "approve", draft["id"])
+        self.assertEqual(self.call('start')['next_step'], 'professional_presence')
+        self.call('presence', 'choose', data={'decision': 'now', 'topics': ['linkedin'], 'confirmation': 'Quero revisar meu LinkedIn.'})
+        self.call('presence', 'draft', data={'topic': 'linkedin', 'content': 'Atendimento ao público e organização de documentos, conforme fatos confirmados.', 'source': 'candidate_text'})
+        self.assertEqual(self.call('presence', 'status')['next_topic'], 'linkedin')
+        self.call('presence', 'finish', data={'topic': 'linkedin', 'version': 1, 'confirmation': 'Conferi as sugestões; vou aplicar depois.'})
+        self.assertFalse(self.call('presence', 'status')['publication_authorized'])
         deferred = self.call("start")
         self.assertEqual(deferred["next_step"], "sources")
         self.assertEqual(deferred["question"]["field"], "urls")
@@ -93,6 +99,18 @@ class CliTests(unittest.TestCase):
         self.call("profile", "save", "identity", data={**sections["identity"], "phone": "contato a confirmar"})
         self.assertFalse(self.call("profile", "status")["approved"])
         self.assertEqual(self.call("start")["next_step"], "profile_approval")
+
+    def test_saved_checkpoint_and_tabs_are_visible_after_restart(self):
+        self.assertIsNone(self.call('checkpoint', 'show'))
+        self.assertEqual(self.call('tabs', 'status')['available'], 2)
+        self.assertFalse((self.root / '.job').exists())
+        self.call('checkpoint', 'save', data={'phase': 'waiting', 'summary': 'Formulário preservado na vaga fictícia.',
+                                             'next_action': 'A pessoa precisa fazer login na aba aberta.', 'needs_user': True})
+        state = self.call('status')
+        self.assertTrue(state['checkpoint']['needs_user'])
+        self.assertIn('Último ponto salvo', state['message'])
+        self.assertEqual(state['browser']['limit'], 2)
+        self.assertEqual(self.call('checkpoint', 'show')['phase'], 'waiting')
 
     def test_launcher_resolves_project_when_called_from_elsewhere(self):
         result = subprocess.run([str(PROJECT / "job"), "--root", str(self.root), "start", "--json"],

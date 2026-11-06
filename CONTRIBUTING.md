@@ -53,6 +53,13 @@ como `fix/descricao-curta`, `feat/descricao-curta` ou `docs/descricao-curta`.
 Commits seguem Conventional Commits, por exemplo
 `fix: preserve pending application state`.
 
+Os guias e as instruções de conversa fazem parte do produto. Use `feat:` ao
+adicionar uma orientação, um percurso ou uma capacidade; use `fix:` ao corrigir
+um comportamento ou uma instrução incorreta. O versionador também aceita
+commits `docs:` como novidade para que uma mudança no guia não fique sem versão.
+Outros tipos de manutenção geram patch; `chore(release):` apenas prepara os
+metadados da versão e não inicia outro incremento.
+
 A CI verifica privacidade, testes e links locais da documentação. Integrações
 usam merge commit, preservando o histórico. Não há merge automático de bots.
 

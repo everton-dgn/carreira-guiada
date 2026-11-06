@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.3.0 - 2026-11-05
+## 0.3.0 - 2026-11-06
 
 ### Novidades
 
@@ -13,6 +13,15 @@
 - Demonstrações animadas de currículo e preenchimento de candidatura em
   2240 × 1400 pixels, com digitação, versões estáticas e percursos em texto.
 - Início dedicado à pesquisa de vagas, sem exigir um currículo pronto.
+- Diagrama ilustrado do onboarding ao resultado, com retorno para novas vagas
+  e alternativa em texto no README.
+- Releases normais no GitHub e incremento de versão também para melhorias
+  nos guias e manutenção, preservando o changelog e as tags publicadas.
+- Revisão opcional de LinkedIn e GitHub, com sugestões privadas versionadas,
+  e conferência local da leitura do currículo em PDF e Word para apoiar o preparo para ATS.
+- Retomada com opção de continuar ou revisar, checkpoint persistente e feedback
+  durante a execução. Reservas compartilhadas limitam o trabalho a duas abas
+  por padrão, preservando formulários pendentes e abas da pessoa.
 
 ### Correções
 
@@ -24,6 +33,9 @@
   por entrada privada e arquivos criados com permissões restritas.
 - Orientações para currículo colado no chat, sessões de navegador, retomada de
   formulários e importação de históricos, além dos filtros de idioma ausente.
+- Revisões de perfil preservadas na retomada, com origem e confirmação privadas.
+  A conferência do currículo aceita quebras de linha em links longos e explica
+  no terminal os pontos que precisam de correção.
 
 ## 0.2.1 - 2026-11-05
 

@@ -5,7 +5,7 @@ from pathlib import Path
 from docx import Document
 from pypdf import PdfReader
 
-from scripts.job.resumes import ResumeManager
+from scripts.job.resumes import ResumeManager, _extraction_preserved
 
 
 CV = """# Pessoa de exemplo
@@ -86,6 +86,32 @@ class ResumeTests(unittest.TestCase):
         fact = self.manager.add_fact("Trabalho na empresa fictícia A.", imported["id"], False)
         with self.assertRaisesRegex(ValueError, "não confirmado"):
             self.manager.draft("Em revisão", CV, [fact["id"]])
+
+    def test_local_ats_check_preserves_extraction_and_flags_tables(self):
+        draft = self.draft()
+        result = self.manager.check(draft['id'])
+        self.assertTrue(result['passed'])
+        self.assertIsNone(result['ats_score'])
+        self.assertEqual(self.manager.get(draft['id'])['status'], 'draft')
+        fact = self.manager.add_fact('Formação confirmada.', 'candidate:1', True)
+        table = self.manager.draft('Tabela', '# Currículo\n\n## Formação\n\n| Curso | Ano |\n| Exemplo | 2024 |', [fact['id']])
+        result = self.manager.check(table['id'])
+        self.assertIn('no_markdown_tables', result['issues'])
+        from scripts.job.cli import render
+        self.assertIn('pontos para corrigir', render(result))
+        self.assertIn('Troque as tabelas do rascunho', render(result))
+        self.assertNotIn('aprovada', render(result))
+
+    def test_ats_check_accepts_long_url_wrapping_without_hiding_text_loss(self):
+        fact = self.manager.add_fact('Portfólio de exemplo confirmado.', 'candidate:1', True)
+        url = 'https://example.invalid/' + 'organizacao' * 30
+        draft = self.manager.draft('Link longo', CV + '\n' + url, [fact['id']])
+        self.assertTrue(self.manager.check(draft['id'])['passed'])
+        self.assertTrue(_extraction_preserved('organização final', 'organi\nzação final', True))
+        for changed in ('organi zação final', 'organização', 'final organização', 'organização extra final'):
+            with self.subTest(text=changed):
+                self.assertFalse(_extraction_preserved('organização final', changed, True))
+        self.assertFalse(_extraction_preserved('organização final', 'organi\nzação final'))
 
     def test_pdf_and_docx_import_are_readable(self):
         draft = self.draft()
