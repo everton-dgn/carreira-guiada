@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.2.1 - 2026-11-05
+
+- Animações de terminal com digitação, respostas progressivas e cursor piscando,
+  mantendo a resolução de 2240 × 1400 e as alternativas sem movimento.
+
 ## 0.2.0 - 2026-11-05
 
 - Nome Carreira Guiada e apresentação voltada a reduzir a busca manual de

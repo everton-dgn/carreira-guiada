@@ -49,7 +49,7 @@ def wrap(draw, value, width=942, size=21):
     return lines
 
 
-def frame(tool, command, title, number, conversation, note):
+def frame(tool, command, title, number, conversation, note, cursor=False):
     image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
     text(draw, (42, 27), "Carreira Guiada", 32, INK)
@@ -69,6 +69,9 @@ def frame(tool, command, title, number, conversation, note):
                 raise ValueError("O texto não cabe no terminal; reduza esta cena.")
             text(draw, (67, y), line, 21, color, True)
             y += 29
+    if cursor:
+        cursor_x = 67 + draw.textlength(line, font=font(21, True)) / SCALE + 3
+        draw.rectangle(coords((cursor_x, y - 25, cursor_x + 2, y - 3)), fill=GREEN)
     text(draw, (44, 606), note, 19, INK)
     text(draw, (44, 646), "Sem contas reais, sem envios. A IA usa as ferramentas disponíveis na sua sessão.", 17, MUTED)
     draw.rounded_rectangle(coords((44, 680, 1076, 686)), radius=3 * SCALE, fill="#d9dfd2")
@@ -77,10 +80,40 @@ def frame(tool, command, title, number, conversation, note):
 
 
 def render(name, tool, command, title, scenes, poster=0):
-    frames = [frame(tool, command, title, index + 1, *scene) for index, scene in enumerate(scenes)]
-    frames[poster].save(OUT / (name + ".png"))
+    frame(tool, command, title, poster + 1, *scenes[poster]).save(OUT / (name + ".png"))
+    palette = frame(tool, command, title, 1, *scenes[0]).quantize(colors=128)
+    frames, durations = [], []
+
+    def append(number, conversation, note, duration, cursor=False):
+        current = frame(tool, command, title, number, conversation, note, cursor)
+        frames.append(current.quantize(palette=palette, dither=Image.Dither.NONE))
+        durations.append(duration)
+
+    for number, (conversation, note) in enumerate(scenes, 1):
+        visible = []
+        for value, color in conversation:
+            if not value:
+                visible.append((value, color))
+                continue
+            user_input = value.startswith("> ")
+            prefix = 2 if user_input else 0
+            step, delay = (2, 90) if user_input else (6, 60)
+            partial = visible + [(value[:prefix], color)]
+            append(number, partial, note, 240, cursor=True)
+            for length in range(prefix + step, len(value), step):
+                partial = visible + [(value[:length], color)]
+                append(number, partial, note, delay, cursor=True)
+            visible.append((value, color))
+            append(number, visible, note, 180, cursor=True)
+        # Keep the completed scene readable while the cursor shows that it is animated.
+        for _ in range(3):
+            append(number, visible, note, 450)
+            append(number, visible, note, 450, cursor=True)
+        append(number, visible, note, 600)
+
     frames[0].save(OUT / (name + ".gif"), save_all=True, append_images=frames[1:],
-                   duration=5200, loop=0, optimize=True, disposal=2)
+                   duration=durations, loop=0, optimize=True, disposal=1)
+    print(f"{name}: {len(frames)} quadros, {sum(durations) / 1000:.1f} segundos")
 
 
 def main():
