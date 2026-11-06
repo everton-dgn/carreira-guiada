@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.8.0 - 2026-11-06
+
 - Início do README mais direto, com exemplos para pesquisar vagas, criar um
   currículo, treinar entrevistas e retomar o progresso em linguagem comum.
 - Guias de acompanhamento, perfis profissionais e entrevistas voltados ao
