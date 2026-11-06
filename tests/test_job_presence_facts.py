@@ -150,6 +150,41 @@ class PublicationFactTests(unittest.TestCase):
         self.assertEqual(result['open_authorizations'], [])
         self.assertEqual(self.wf.check(action['action_id'], {'owner': 'chat:sessao', 'generation': 1})['status'], 'authorized')
 
+    def test_archived_publications_reported_without_unrelated_versions(self):
+        import hashlib
+        for dependencies in ('explicit', 'legacy'):
+            for operation in ('replace', 'revoke'):
+                with self.subTest(dependencies=dependencies, operation=operation):
+                    self.setUp()
+                    payload = self.publication()
+                    manager = ResumeManager(self.root)
+                    fact = manager.add_fact('Fato usado antes.', 'candidate:test', True)['id']
+                    other = manager.add_fact('Outro fato atual.', 'candidate:test', True)['id']
+                    actions = []
+                    for version, ids in ((2, [fact] if dependencies == 'explicit' else None),
+                                         (3, [other]), (4, [])):
+                        content = f'Texto fictício da versão {version}.'
+                        self.presence.draft('github', content, payload['publication']['destination'], ids)
+                        self.presence.finish('github', version, 'Conferido.')
+                        payload['publication'].update(version=version, content_sha256=hashlib.sha256(content.encode()).hexdigest())
+                        if version < 4:
+                            payload['publication']['section'] = 'bio' if version == 2 else 'profile_readme'
+                            actions.append(self.wf.authorize(payload)['action_id'])
+                    if operation == 'revoke':
+                        self.done(actions[0], 'uncertain', evidence_source='agent_report')
+                    before = self.presence.get()
+                    def correct():
+                        if operation == 'replace':
+                            return manager.replace_fact(fact, 'Fato corrigido.', 'candidate:test', True)
+                        return manager.revoke_fact(fact, 'candidate:test', True)
+                    result = correct()
+                    self.assertEqual([a['id'] for a in result['open_authorizations']], [actions[0]])
+                    self.assertEqual(result['open_authorizations'][0]['publication']['version'], 2)
+                    self.assertEqual(self.presence.get()['reviews'], before['reviews'])
+                    self.assertEqual(self.presence.get()['history'], before['history'])
+                    self.assertEqual(correct()['open_authorizations'], result['open_authorizations'])
+                    self.assertEqual(self.wf.show_action(actions[1])['status'], 'authorized')
+
     def test_revocation_between_validation_and_transaction_inserts_no_action(self):
         from scripts.job.presence import Presence
         payload = self.publication()

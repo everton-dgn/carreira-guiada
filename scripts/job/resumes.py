@@ -350,11 +350,21 @@ class ResumeManager:
         from .presence import Presence, _archive
         state = Presence._read(db)
         changed = False
+        versions = {topic: list(items) for topic, items in state.get('history', {}).items()}
+        for topic, review in state['reviews'].items():
+            versions.setdefault(topic, []).append(review)
+        for topic, items in versions.items():
+            for review in items:
+                dependencies = review.get('fact_ids')
+                if review.get('content') and (dependencies is None or fact_id in dependencies):
+                    affected = state.setdefault('fact_invalidations', {}).setdefault(fact_id, [])
+                    marker = {'topic': topic, 'version': review['version']}
+                    if marker not in affected:
+                        affected.append(marker)
+                        changed = True
         for topic, review in list(state['reviews'].items()):
             dependencies = review.get('fact_ids')
             if review.get('content') and (dependencies is None or fact_id in dependencies):
-                state.setdefault('fact_invalidations', {}).setdefault(fact_id, []).append(
-                    {'topic': topic, 'version': review['version']})
                 _archive(state, topic, review)
                 state['reviews'][topic] = {
                     'source': review['source'], 'link': review.get('link'),

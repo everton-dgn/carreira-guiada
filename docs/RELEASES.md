@@ -71,7 +71,9 @@ abra um pull request. O commit de preparação pode seguir o formato
 O pull request passa pela CI completa. A integração usa merge commit.
 Antes de integrar, confira o nome público e o e-mail de privacidade escolhidos
 para o autor e o responsável pelo commit. Um merge feito no site do GitHub
-usa a identidade da conta; o `git config` do computador não a substitui.
+usa a identidade de autor da conta; o responsável pelo commit pode ser o
+próprio GitHub, com um endereço institucional. O `git config` do computador
+não altera esses campos. Confira ambos nos metadados do merge preparado.
 Se precisar preservar outra identidade pública, prepare o merge normal no
 checkout local com essa identidade e confira a árvore, os dois pais e os
 metadados antes do push autorizado. Preserve as proteções da main e os checks;

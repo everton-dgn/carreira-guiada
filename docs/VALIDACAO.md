@@ -76,6 +76,13 @@ uv run --locked --group browser playwright install chromium
 uv run --locked --group browser python -m unittest discover -s tests/browser -p 'test_*.py' -v
 ```
 
+No Linux, as bibliotecas de sistema exigidas pelo Chromium precisam estar
+instaladas. Para instalá-las junto com o navegador, use
+`uv run --locked --group browser playwright install --with-deps chromium`
+no lugar do segundo comando. Esse passo pode exigir privilégios de
+administrador; confirme a autorização antes de instalar pacotes do sistema.
+No macOS, mantenha a instalação de navegador mostrada acima.
+
 O teste usa um contexto de navegador vazio, sem a sessão do usuário. Somente
 os destinos fictícios mapeados para o servidor local são aceitos. Uma tentativa
 de sair deles deve falhar; recibos e contadores do servidor verificam que a
