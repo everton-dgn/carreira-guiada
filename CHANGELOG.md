@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.9.0 - 2026-11-06
+
 - Dossiês privados de empresas com evidências por tema, contexto de relatos,
   contradições e perguntas para entrevistas. A identidade fica visível desde
   o início, e os temas podem ser ampliados em revisões posteriores.
