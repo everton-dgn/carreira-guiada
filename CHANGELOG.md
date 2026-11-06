@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Removido do README o bloco de versões estáticas e descrições das
+  demonstrações, incluindo a tabela e a repetição textual do fluxo.
+
 ## 0.5.0 - 2026-11-06
 
 - Nova identidade visual em azul na capa, na jornada e nas cinco demonstrações.
