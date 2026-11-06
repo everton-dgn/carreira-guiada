@@ -24,7 +24,9 @@ plataforma de destino efetivamente verificada. Não use o nome do navegador.
    depois por antiguidade. Prazo ambíguo: `prazo_a_confirmar`, sem converter.
 2. Reserve a etapa para um único executor. Contas distintas não autorizam
    executar o mesmo pedido duas vezes.
-3. Antes da ação externa: `./job action authorize`. Execute uma vez. Depois:
+3. Antes da ação externa: `./job action authorize`, seguido de
+   `./job action check <id>` com `owner` e `generation` imediatamente antes do
+   efeito. Erro impede executar. Execute uma vez. Depois:
    `./job action complete` com `confirmed`, `uncertain` ou `not_received` e
    evidência conferida no destino. `uncertain` bloqueia repetição.
 4. Complemento cadastral: fatos confirmados do perfil e do currículo aprovado,

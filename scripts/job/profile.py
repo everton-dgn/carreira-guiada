@@ -28,7 +28,7 @@ from .policy import obj, string, strings, validate_preferences
 from .sources import normalize_sources
 
 SECTIONS = ('identity', 'preferences', 'sources', 'permissions', 'limits', 'connections')
-ACTIONS = ('research', 'register', 'fill', 'apply', 'email_read', 'email_reply', 'email_trash', 'schedule', 'assessment')
+ACTIONS = ('research', 'register', 'fill', 'apply', 'email_read', 'email_reply', 'email_trash', 'schedule', 'assessment', 'profile_publish')
 QUESTIONS = {
     'identity': [('name', 'Qual nome você quer colocar no currículo?', 'Pode escrever seu nome como gostaria que a empresa o visse'), ('email', 'Qual e-mail você quer usar para receber contatos das empresas?', 'Digite apenas o endereço, sem senha')],
     'preferences': [('roles', 'Que tipo de trabalho você procura?', 'Pode dizer o cargo ou descrever o que gostaria de fazer; eu ajudo a encontrar os nomes'), ('modalities', 'Você quer trabalhar de casa, no local da empresa, parte em cada lugar ou não tem preferência?', 'Pode escolher uma dessas opções; eu explico as diferenças se precisar')],
@@ -43,6 +43,7 @@ ACTION_LABELS = {
     'email_read': 'Ler e-mails sobre vagas', 'email_reply': 'Responder recrutadores',
     'email_trash': 'Mover e-mails de vagas sem utilidade para a lixeira',
     'schedule': 'Confirmar entrevistas', 'assessment': 'Ajudar em testes de seleção',
+    'profile_publish': 'Aplicar melhorias no LinkedIn e GitHub',
 }
 PERMISSION_QUESTIONS = {
     'research': 'Posso procurar vagas para você?',
@@ -54,6 +55,7 @@ PERMISSION_QUESTIONS = {
     'email_trash': 'Você quer que eu ajude a tirar da caixa de entrada e-mails de vagas sem utilidade?',
     'schedule': 'Você quer ajuda para marcar entrevistas?',
     'assessment': 'Você quer ajuda em testes quando as regras da seleção permitirem?',
+    'profile_publish': 'Você quer ajuda para aplicar as melhorias no LinkedIn ou GitHub?',
 }
 for action in ACTIONS:
     example = 'Pode fazer, pergunte antes ou nunca'
@@ -62,6 +64,7 @@ for action in ACTIONS:
     if action == 'email_trash': example = 'Vamos combinar quais mensagens podem ir para a lixeira; nada será apagado de vez. Pode aceitar a ajuda ou recusar'
     if action == 'schedule': example = 'Você sempre confirma o horário antes. Pode aceitar a ajuda ou recusar'
     if action == 'assessment': example = 'Entrevistas e respostas pessoais ficam com você. Pode aceitar a ajuda ou recusar'
+    if action == 'profile_publish': example = 'Você sempre confere o texto, a conta e o destino antes de cada publicação. Pode aceitar a ajuda ou recusar'
     QUESTIONS['permissions'].append((action, PERMISSION_QUESTIONS[action], example))
 
 QUESTIONS['preferences'] += [
@@ -129,7 +132,8 @@ def validate(section, data, complete=False):
                 if parsed.scheme not in ('http', 'https') or not parsed.netloc or parsed.username or parsed.password:
                     raise ValueError('Link deve ser HTTP/HTTPS, sem credenciais.')
     elif section == 'permissions':
-        obj(data, ACTIONS + ('confirmed',), ACTIONS if complete else ())
+        # Existing profiles keep their approval; the new action defaults to ask.
+        obj(data, ACTIONS + ('confirmed',), tuple(a for a in ACTIONS if a != 'profile_publish') if complete else ())
         confirmed = data.get('confirmed', [])
         strings(confirmed)
         if set(confirmed) - set(ACTIONS): raise ValueError('Confirmação de ação desconhecida.')

@@ -33,10 +33,14 @@ pausa ou retomada. Evite humilhação, hostilidade e perguntas íntimas. Não
 recomende fingir personalidade, mentir sobre saída ou inventar resultados.
 Ajude a assumir erros, explicar contribuições e preservar confidencialidade.
 
-Salve checkpoint `practice` ao parar, com pergunta, versão e próxima ação.
+Pergunta e respostas já ficam salvas no treino. Ao pausar só o treino, preserve
+o checkpoint da campanha que continua. Use fase `practice` somente quando esse
+for o ponto geral de retomada.
 `end-questions` encerra antecipadamente, não pausa. `choose later` permite
 continuar a busca sem perder o treino; `choose now` retoma a prioridade.
-Use `resume-work` somente com retomada expressa. Ao finalizar, informe também
+`stop` interrompe toda a campanha; use apenas se a pessoa pedir essa parada.
+Use `resume-work` somente para retomar essa parada global expressamente.
+Para retomar somente o treino, basta `choose now`. Ao finalizar, informe também
 o que foi pulado. Combine um plano curto com lacuna, exercício, recurso
 verificado quando necessário e critério de aprendizado, respeitando o tempo
 disponível. Abra nova sessão focada para ensaiar após o relatório.

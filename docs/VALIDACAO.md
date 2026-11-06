@@ -82,6 +82,21 @@ rede e subprocessos externos permanecem bloqueados nesses processos de teste.
 
 ## Alcance e limites
 
+`tests/test_job_release_journey.py` reúne uma pessoa fictícia do primeiro início
+até a comparação de propostas: currículo, LinkedIn/GitHub, autorização e
+confirmação simulada de publicação, treino técnico, pausa só do treino, parada
+global, retomada no dia seguinte, candidatura e retorno por e-mail. Cada chamada
+usa a CLI real em outro processo, com bloqueio de rede e de subprocessos externos.
+O relógio avança artificialmente; nenhuma publicação ou mensagem é enviada.
+O relatório opcional usa `JOB_PREPARATION_REPORT`, fora do repositório.
+
+As regressões em `test_job_publication_flow.py` e `test_job_resume_corrections.py`
+cobrem texto alterado após autorização, destino incorreto, incerteza, perfis
+antigos, explicações técnicas, bloqueio de credenciais, importação recusada sem
+perda de progresso e correção/revogação de fatos com versões dependentes.
+A aprovação mantém o bloqueio de escrita enquanto confere os fatos; uma
+segunda conexão não consegue alterar os dados durante essa conferência.
+
 Os testes verificam o controle local e as orientações previstas nos roteiros.
 Não comprovam autenticação em portais, funcionamento de cada interface externa,
 instalação em todos os sistemas operacionais ou uma campanha por vários dias.

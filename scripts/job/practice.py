@@ -1,10 +1,56 @@
 """Private interview practice with versioned answers and external feedback."""
 import json
+import re
 from uuid import uuid4
 
 from .profile import Profile
 from .resumes import _text
 from .practice_questions import CATALOG, EXERCISES, HINTS, LABELS
+
+
+# Heuristic filter for interview answers only. Technical answers may explain
+# concepts ("token: JWT de curta duração"); real-looking values are refused.
+# It can miss credentials or refuse harmless text: it is not a detector.
+_ANSWER_ASSIGNMENT = re.compile(r"(?i)\b(?:password|passwd|senha|token|cookie|secret|segredo|api[_ -]?key|chave(?: de api)?|access[_ -]?key|client[_ -]?secret)\s*([:=])((?:[^\n;!?.]|\.(?=\S))*)")
+# Prose markers: a conceptual description reads as a phrase, not as a value.
+_CONNECTORS = frozenset('a de do da dos das com sem para por e ou em no na nos nas que of with for and or the in to'.split())
+_CONCEPTS = frozenset(('jwt', 'opaco', 'opaque', 'httponly', 'samesite', 'csrf', 'assinado', 'signed', 'criptografado', 'criptografada', 'encrypted', 'hash', 'bcrypt', 'argon2', 'guardada', 'armazenada', 'rotacionada', 'rotacionado'))
+_TECHNICAL_IDENTIFIER = re.compile(r'(?i)(?:sha-?(?:1|224|256|384|512)|[hre]s(?:256|384|512)|argon2(?:id|i|d)?|oauth2)\Z')
+_ANSWER_CREDENTIAL = re.compile(
+    r"\beyJ[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_-]*"
+    r"|\bBearer\s+[A-Za-z0-9._~+/=-]{16,}"
+    r"|\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_\w{20,}|sk-[A-Za-z0-9_-]{16,}|AKIA[0-9A-Z]{16}|xox[abprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{30,})"
+    r"|-----BEGIN [A-Z ]*PRIVATE KEY-----"
+    r"|\bhttps?://[^\s/:@]+:[^\s/@]+@")
+_ANSWER_DOCUMENT = re.compile(r"(?i)\b(?:cpf|rg|cnh|passaporte|passport)\b\s*(?:n[º°o.]*\s*)?[:=]?\s*\d|\b\d{3}\.?\d{3}\.?\d{3}-\d{2}\b")
+_ANSWER_BLOCKED = ('A resposta não foi salva porque parece conter senha, código de acesso ou número de documento. '
+                   'Troque o valor real por uma descrição, como "token: JWT de curta duração". '
+                   'Esta conferência é automática e pode errar; não cole credenciais nem documentos no treino.')
+
+
+def _looks_secret(value):
+    value = value.strip('.,;:!?)]}')
+    if value[:1] in ('"', "'", '`'):
+        return True
+    letters, digits = re.search(r'[A-Za-z]', value), re.search(r'\d', value)
+    return bool(letters and digits and len(value) >= 6 and not _TECHNICAL_IDENTIFIER.fullmatch(value)) or len(value) >= 20
+
+
+def _conceptual(separator, clause):
+    """Narrow exception: 'token: JWT de curta duração'. Any '=' or bare value is refused."""
+    words = clause.split()
+    return (separator == ':' and len(words) >= 3 and words[0].casefold().rstrip(',') in _CONCEPTS
+            and not any(_looks_secret(word) for word in words)
+            and any(word.casefold().strip(',()') in _CONNECTORS for word in words[1:]))
+
+
+def _answer_text(value, name, limit):
+    if not isinstance(value, str) or not value.strip() or len(value) > limit:
+        raise ValueError(f"Informe {name} como texto, com até {limit} caracteres.")
+    if (_ANSWER_CREDENTIAL.search(value) or _ANSWER_DOCUMENT.search(value)
+            or any(not _conceptual(match.group(1), match.group(2)) for match in _ANSWER_ASSIGNMENT.finditer(value))):
+        raise ValueError(_ANSWER_BLOCKED)
+    return value.strip()
 
 
 def _optional(value, name, limit):
@@ -138,7 +184,7 @@ class Practice:
                 'example': HINTS[session['track']]}
 
     def answer(self, session_id, question_id, text):
-        text = _text(text, 'a resposta', 20000)
+        text = _answer_text(text, 'a resposta', 20000)
         if text.casefold().strip(' .!?') in ('não sei', 'nao sei'):
             return self.hint(session_id, question_id)
         def change(state):

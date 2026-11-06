@@ -34,13 +34,13 @@ from string import ascii_lowercase
 from scripts.candidaturas.monitor import Monitor
 from scripts.candidaturas.store import Store, TERMINAL_STATES, _EMAIL, _SECRET, _instant, _public_url, _stamp, _text
 
-ACTIONS = ("research", "register", "fill", "apply", "email_read", "email_reply", "email_trash", "schedule", "assessment")
-BROWSER_ACTIONS = {"research", "register", "fill", "apply", "schedule", "assessment"}
+ACTIONS = ("research", "register", "fill", "apply", "email_read", "email_reply", "email_trash", "schedule", "assessment", "profile_publish")
+BROWSER_ACTIONS = {"research", "register", "fill", "apply", "schedule", "assessment", "profile_publish"}
 OPPORTUNITY_ACTIONS = {"register", "fill", "apply"}
 PROCESS_STEP_ACTIONS = {"schedule", "assessment"}
 MESSAGE_ACTIONS = {"email_reply", "email_trash"}
 REPEATABLE = {"research", "email_read"}
-PER_ITEM_ACTIONS = {"email_reply", "schedule", "assessment"}
+PER_ITEM_ACTIONS = {"email_reply", "schedule", "assessment", "profile_publish"}
 OUTCOMES = ("confirmed", "uncertain", "not_received")
 DESTINATION_SOURCES = {"destination_page", "destination_email", "destination_listing"}
 EVIDENCE_SOURCES = DESTINATION_SOURCES | {"agent_report"}
@@ -675,7 +675,7 @@ class Workflow:
         Retorna ``{action_id, action, status: authorized, owner, generation, expires_at,
         dedupe_key, opportunity_id, profile_version, permission, resume}``.
         """
-        p = _fields(payload, {"action", "owner", "generation", "channel", "opportunity_id", "step_key", "message", "scope_key", "resume_id", "resume_sha256", "user_confirmation", "profile_version", "lease_seconds", "assistance_rules", "reply", "schedule", "source_url", "destination_platform"}, ("action", "owner", "generation"))
+        p = _fields(payload, {"action", "owner", "generation", "channel", "opportunity_id", "step_key", "message", "scope_key", "resume_id", "resume_sha256", "user_confirmation", "profile_version", "lease_seconds", "assistance_rules", "reply", "schedule", "source_url", "destination_platform", "publication"}, ("action", "owner", "generation"))
         action = p["action"]
         if action not in ACTIONS:
             raise ValueError("action: use " + ", ".join(ACTIONS))
@@ -728,6 +728,11 @@ class Workflow:
                        "summary": _text(reply["summary"], "reply.summary", limit=500)}
         elif p.get("reply") is not None:
             raise ValueError("reply: só se aplica a email_reply")
+        if action == 'profile_publish':
+            from .presence import Presence
+            details = Presence(self.root).publication(p.get('publication'))
+        elif p.get('publication') is not None:
+            raise ValueError('publication: somente para aplicar mudanças no perfil público.')
         destination = _text(p.get('destination_platform'), 'destination_platform', optional=True, limit=100)
         if destination is not None:
             if action not in OPPORTUNITY_ACTIONS | PROCESS_STEP_ACTIONS:
@@ -765,7 +770,10 @@ class Workflow:
             if action == "research" and not p.get("scope_key"):
                 raise ValueError("scope_key: identifique o portal e a consulta desta pesquisa")
             scope = _match(_SCOPE, p.get("scope_key", "default"), "scope_key", "texto curto em minúsculas, dígitos e : . _ -")
-            if process_action:
+            if action == 'profile_publish':
+                target = json.dumps([details['topic'], details['destination'], details['section']], ensure_ascii=False)
+                key = 'profile_publish:' + hashlib.sha256(target.encode()).hexdigest()
+            elif process_action:
                 step_key = _text(p.get("step_key"), "step_key", limit=500)
                 key = f"{action}:job:{job['id']}:step:{step_key}"
             elif action in OPPORTUNITY_ACTIONS:
@@ -781,13 +789,14 @@ class Workflow:
                 key = f"email_read:{channel['provider']}:{channel['account']}:{scope}"
             else:
                 key = f"research:{channel['provider']}:{channel['account']}:{scope}"
-            previous = store.conn.execute("SELECT status FROM wf_actions WHERE dedupe_key=? AND status IN ('authorized','uncertain','confirmed')", (key,)).fetchall()
+            previous = store.conn.execute("SELECT status,item_details FROM wf_actions WHERE dedupe_key=? AND status IN ('authorized','uncertain','confirmed') ORDER BY rowid", (key,)).fetchall()
             statuses = {row["status"] for row in previous}
             if "uncertain" in statuses:
                 raise ValueError("duplicata: há resultado incerto para esta ação; confira o destino e registre confirmed ou not_received")
             if "authorized" in statuses:
                 raise ValueError("duplicata: já existe autorização aberta para esta ação")
-            if "confirmed" in statuses and action not in REPEATABLE and not (action == 'fill' and not process_action):
+            new_publication = action == 'profile_publish' and previous and json.loads(previous[-1]['item_details']) != details
+            if "confirmed" in statuses and action not in REPEATABLE and not (action == 'fill' and not process_action) and not new_publication:
                 raise ValueError("duplicata: esta ação já foi confirmada no destino")
             if action == "apply":
                 progress = self._progress(store.conn, goal, now)
@@ -828,6 +837,59 @@ class Workflow:
         return {"action_id": action_id, "action": action, "status": "authorized", "owner": owner, "generation": generation, "expires_at": _stamp(expires),
                 "dedupe_key": key, "opportunity_id": job["id"] if job else None, "profile_version": profile["version"], "permission": permission,
                 "resume": {"id": resume["id"], "sha256": resume["sha256"]} if resume else None}
+
+    def show_action(self, action_id):
+        """Read historical intent for reconciliation; never grants execution."""
+        if not isinstance(action_id, str) or not action_id.startswith('act_'):
+            raise ValueError('action_id: informe o ID devolvido por authorize')
+        with self._read() as store:
+            row = store.conn.execute('SELECT * FROM wf_actions WHERE id=?', (action_id,)).fetchone() if store and 'wf_actions' in _tables(store.conn) else None
+            if row is None:
+                raise ValueError('Autorização não encontrada.')
+            result = self._action_view(row)
+            capability = store.conn.execute('SELECT provider,account FROM wf_capabilities WHERE id=?', (row['capability_id'],)).fetchone()
+            result['channel'] = dict(capability) if capability else None
+            result['item_details'] = json.loads(row['item_details']) if row['item_details'] else None
+            result['execution_allowed'] = False
+            result['authorization_expired'] = _instant(row['expires_at']) <= self._now()
+            if row['action'] == 'profile_publish':
+                result['publication'] = result['item_details']
+            return result
+
+    def check(self, action_id, payload):
+        """Revalidate a saved authorization immediately before an external effect."""
+        if not isinstance(action_id, str) or not action_id.startswith('act_'):
+            raise ValueError('action_id: informe o ID devolvido por authorize')
+        p = _fields(payload, {'owner', 'generation'}, ('owner', 'generation'))
+        owner = _owner(p['owner'])
+        generation = _int(p['generation'], 'generation', 1, 10**9)
+        now = self._now()
+        with self._read() as store:
+            row = store.conn.execute('SELECT * FROM wf_actions WHERE id=?', (action_id,)).fetchone() if store and 'wf_actions' in _tables(store.conn) else None
+            if row is None:
+                raise ValueError('Autorização não encontrada. Confira o estado antes de agir.')
+            control = self._control(store.conn)
+            if control['stopped'] or generation != control['generation'] or row['generation'] != generation:
+                raise ValueError('Parada ou geração antiga: retome e confira o destino antes de agir.')
+            if row['status'] != 'authorized' or row['owner'] != owner or _instant(row['expires_at']) <= now:
+                raise ValueError('Autorização encerrada, incerta, expirada ou de outro responsável. Confira o destino.')
+            profile = self._approved_profile()
+            if profile['version'] != row['profile_version']:
+                raise ValueError('O perfil mudou desde a autorização. Confira o destino e revise a ação.')
+            goal = self._goal(store.conn)
+            if not goal or goal['version'] != row['goal_version']:
+                raise ValueError('O objetivo mudou desde a autorização. Revise a ação.')
+            capability = store.conn.execute('SELECT * FROM wf_capabilities WHERE id=?', (row['capability_id'],)).fetchone()
+            if not capability or not _capability_usable(store.conn, capability['kind'], capability['provider'], capability['account'], now):
+                raise ValueError('A sessão precisa ser conferida novamente antes de agir.')
+            if row['resume_id']:
+                self._approved_resume(row['resume_id'], row['resume_sha256'])
+            result = self._action_view(row)
+            result['channel'] = {'provider': capability['provider'], 'account': capability['account']}
+            if row['action'] == 'profile_publish':
+                from .presence import Presence
+                result['publication'] = Presence(self.root).publication(json.loads(row['item_details']))
+            return result
 
     def _approved_resume(self, resume_id, sha):
         if not isinstance(resume_id, str) or not resume_id:
@@ -949,7 +1011,7 @@ class Workflow:
         """
         if not isinstance(action_id, str) or not action_id.startswith("act_"):
             raise ValueError("action_id: informe o ID devolvido por authorize")
-        p = _fields(payload, {"owner", "generation", "outcome", "evidence", "evidence_source", "checked_at", "submitted_at", "evidence_url", "destination", "resume_sha256"}, ("owner", "generation", "outcome", "evidence"))
+        p = _fields(payload, {"owner", "generation", "outcome", "evidence", "evidence_source", "checked_at", "submitted_at", "evidence_url", "destination", "resume_sha256", "publication_sha256"}, ("owner", "generation", "outcome", "evidence"))
         owner, generation = _owner(p["owner"]), _int(p["generation"], "generation", 1, 10**9)
         outcome = p["outcome"]
         if outcome not in OUTCOMES:
@@ -973,6 +1035,14 @@ class Workflow:
             row = store.conn.execute("SELECT * FROM wf_actions WHERE id=?", (action_id,)).fetchone()
             if row is None:
                 raise ValueError("action_id: ação não encontrada")
+            if row['action'] == 'profile_publish' and outcome != 'uncertain':
+                publication = json.loads(row['item_details'])
+                if url != publication['destination'] or source != 'destination_page':
+                    raise ValueError('publication: confira a página de destino autorizada.')
+                if outcome == 'confirmed' and p.get('publication_sha256') != publication['content_sha256']:
+                    raise ValueError('publication: confirme o texto exato e a página de destino autorizados.')
+            if p.get('publication_sha256') is not None and (row['action'] != 'profile_publish' or outcome != 'confirmed'):
+                raise ValueError('publication_sha256: somente para publicação de perfil confirmada.')
             submitted = None
             if p.get('submitted_at') is not None:
                 if row['action'] != 'apply' or outcome != 'confirmed':

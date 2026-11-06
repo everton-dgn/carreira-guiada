@@ -23,6 +23,13 @@ from zipfile import ZipFile
 
 MAX_BYTES = 15 * 1024 * 1024
 _SECRET = re.compile(r"(?i)\b(?:password|senha|token|cookie|secret|api[_ -]?key|cpf|rg)\s*[:=]\s*\S+")
+_IMPORT_DOCUMENT = re.compile(r"(?i)\b(?:cpf|rg|cnh|passaporte|passport)\b\s*(?:n[º°o.]*\s*)?[:=]?\s*\d|\b\d{3}\.?\d{3}\.?\d{3}-\d{2}\b")
+_IMPORT_BLOCKED = (
+    "O arquivo não foi importado porque parece conter documento de identidade, senha ou código de acesso. "
+    "Nada dele foi copiado e suas respostas anteriores continuam salvas. O arquivo original fica onde está. "
+    "Faça uma cópia, apague dela CPF, RG e outros documentos, senhas e códigos, e anexe a cópia limpa aqui no chat "
+    "ou cole o texto sem esses dados."
+)
 
 
 def _now():
@@ -173,7 +180,7 @@ class ResumeManager:
             if not write:
                 yield db
                 return
-            db.executescript("""
+            schema = """
           CREATE TABLE IF NOT EXISTS resume_sources (
             id TEXT PRIMARY KEY, label TEXT NOT NULL, original_path TEXT NOT NULL,
             sha256 TEXT NOT NULL, text_path TEXT NOT NULL, created_at TEXT NOT NULL
@@ -187,7 +194,17 @@ class ResumeManager:
             sha256 TEXT NOT NULL, hashes TEXT NOT NULL, fact_ids TEXT NOT NULL,
             status TEXT NOT NULL, created_at TEXT NOT NULL, approved_at TEXT
           );
-            """)
+          CREATE TABLE IF NOT EXISTS resume_fact_revocations (
+            fact_id TEXT PRIMARY KEY, kind TEXT NOT NULL, replaced_by TEXT,
+            source TEXT NOT NULL, reason TEXT, retired_versions TEXT NOT NULL,
+            created_at TEXT NOT NULL
+          );
+            """
+            # executescript would commit Profile's BEGIN IMMEDIATE before the
+            # fact checks. Keep that lock through validation and mutation.
+            for statement in schema.split(';'):
+                if statement.strip():
+                    db.execute(statement)
             with db:
                 yield db
 
@@ -243,6 +260,9 @@ class ResumeManager:
             raise
         except Exception as exc:
             raise ValueError("Não consegui ler esse arquivo. Envie outra cópia ou cole o texto no chat.") from exc
+        if isinstance(extracted, str) and (_SECRET.search(extracted) or _IMPORT_DOCUMENT.search(extracted)):
+            # Checked before any write: the blocked file is never copied to .job.
+            raise ValueError(_IMPORT_BLOCKED)
         extracted = _text(extracted, "o texto extraído do currículo")
         identifier = uuid4().hex
         with self._db(write=True) as db:
@@ -255,21 +275,156 @@ class ResumeManager:
         text, source = _text(text, "o fato", 5000), _text(source, "a origem", 300)
         if type(confirmed) is not bool:
             raise ValueError("A confirmação precisa ser sim ou não, sem valor presumido.")
-        identifier = uuid4().hex
         with self._db(write=True) as db:
-            if not source.startswith("candidate:") and not db.execute("SELECT 1 FROM resume_sources WHERE id=?", (source,)).fetchone():
-                raise ValueError("Vincule o fato a um currículo importado ou a uma resposta do candidato (candidate:referência).")
-            db.execute("INSERT INTO resume_facts VALUES(?,?,?,?,?)", (identifier, text, source, int(confirmed), _now()))
+            return self._insert_fact(db, text, source, confirmed)
+
+    @staticmethod
+    def _insert_fact(db, text, source, confirmed):
+        if not source.startswith("candidate:") and not db.execute("SELECT 1 FROM resume_sources WHERE id=?", (source,)).fetchone():
+            raise ValueError("Vincule o fato a um currículo importado ou a uma resposta do candidato (candidate:referência).")
+        identifier = uuid4().hex
+        db.execute("INSERT INTO resume_facts VALUES(?,?,?,?,?)", (identifier, text, source, int(confirmed), _now()))
         return {"id": identifier, "text": text, "source": source, "confirmed": confirmed}
 
     def facts(self):
+        """All facts, including history. status: active, revoked or replaced (replaced_by)."""
         self._check_private()
         if not self.db_path.exists():
             return []
         with self._db() as db:
             if not db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_facts'").fetchone():
                 return []
-            return [dict(row) for row in db.execute("SELECT * FROM resume_facts ORDER BY created_at,id")]
+            rows = [dict(row) for row in db.execute("SELECT * FROM resume_facts ORDER BY created_at,id")]
+            changes = {}
+            if db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_fact_revocations'").fetchone():
+                changes = {row["fact_id"]: row for row in db.execute("SELECT * FROM resume_fact_revocations")}
+        for row in rows:
+            change = changes.get(row["id"])
+            row["status"] = change["kind"] if change else "active"
+            row["replaced_by"] = change["replaced_by"] if change else None
+        return rows
+
+    @staticmethod
+    def _revocation(db, fact_id):
+        if not db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_fact_revocations'").fetchone():
+            return None
+        return db.execute("SELECT * FROM resume_fact_revocations WHERE fact_id=?", (fact_id,)).fetchone()
+
+    def _change_inputs(self, fact_id, source, reason, confirmed):
+        if not isinstance(fact_id, str) or not re.fullmatch(r"[0-9a-f]{32}", fact_id):
+            raise ValueError("Informe o identificador do fato a corrigir, como aparece na lista de fatos.")
+        source = _text(source, "a origem", 300)
+        if type(confirmed) is not bool or confirmed is not True:
+            raise ValueError("Corrigir ou retirar um fato exige a confirmação explícita da pessoa (confirmed: true).")
+        reason = None if reason is None else _text(reason, "o motivo", 1000)
+        return source, reason
+
+    def _invalidate(self, db, fact_id, kind, replaced_by, source, reason):
+        """Retire every dependent version, of any label, and keep intake consistent.
+
+        Runs inside the caller's write transaction. Resume files are not rewritten and
+        workflow authorizations are only reported: an open one may already have an effect.
+        """
+        retired = []
+        for resume_id, fact_ids, status in db.execute("SELECT id, fact_ids, status FROM resume_versions").fetchall():
+            if fact_id in json.loads(fact_ids) and status != "retired":
+                retired.append(resume_id)
+                db.execute("UPDATE resume_versions SET status='retired' WHERE id=?", (resume_id,))
+        db.execute("INSERT INTO resume_fact_revocations VALUES(?,?,?,?,?,?,?)",
+                   (fact_id, kind, replaced_by, source, reason, json.dumps(retired), _now()))
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='job_intake'").fetchone():
+            row = db.execute("SELECT value FROM job_intake WHERE id=1").fetchone()
+            state = json.loads(row[0]) if row else None
+            if state:
+                answers = state.get("answers", {})
+                linked = [field for field, answer in answers.items() if answer and answer.get("fact_id") == fact_id]
+                for field in linked:
+                    if replaced_by:
+                        text = db.execute("SELECT text FROM resume_facts WHERE id=?", (replaced_by,)).fetchone()[0]
+                        answers[field] = {"text": text, "fact_id": replaced_by}
+                    else:
+                        del answers[field]
+                if linked:
+                    db.execute("UPDATE job_intake SET value=? WHERE id=1", (json.dumps(state, ensure_ascii=False),))
+        return retired
+
+    def _open_authorizations(self, db, fact_id):
+        if not db.execute("SELECT 1 FROM sqlite_master WHERE name='wf_actions'").fetchone():
+            return []
+        versions = [resume_id for resume_id, fact_ids in db.execute("SELECT id, fact_ids FROM resume_versions") if fact_id in json.loads(fact_ids)]
+        if not versions:
+            return []
+        marks = ",".join("?" * len(versions))
+        rows = db.execute(f"SELECT id, action, status, resume_id FROM wf_actions WHERE status IN ('authorized','uncertain') AND resume_id IN ({marks}) ORDER BY id", versions)
+        return [dict(row) for row in rows]
+
+    def _fact_state(self, db, fact_id):
+        fact = dict(db.execute("SELECT * FROM resume_facts WHERE id=?", (fact_id,)).fetchone())
+        change = self._revocation(db, fact_id)
+        fact.update(status=change["kind"] if change else "active", replaced_by=change["replaced_by"] if change else None)
+        return fact
+
+    def _current_fact(self, db, fact_id):
+        """Follow replacements to the fact in force; None when the chain ends revoked."""
+        while True:
+            change = self._revocation(db, fact_id)
+            if not change:
+                return fact_id
+            if not change["replaced_by"]:
+                return None
+            fact_id = change["replaced_by"]
+
+    def _change_result(self, db, fact_id, duplicate):
+        change = self._revocation(db, fact_id)
+        replacement = self._fact_state(db, change["replaced_by"]) if change["replaced_by"] else None
+        return {"fact": self._fact_state(db, fact_id), "replacement": replacement, "current_fact_id": self._current_fact(db, fact_id),
+                "kind": change["kind"], "source": change["source"],
+                "reason": change["reason"], "retired_versions": json.loads(change["retired_versions"]),
+                "open_authorizations": self._open_authorizations(db, fact_id), "duplicate": duplicate}
+
+    def _superseded(self, db, fact_id):
+        current = self._current_fact(db, fact_id)
+        if current is None:
+            return "Este fato já foi substituído e a versão mais recente foi retirada. Registre um fato novo se a pessoa quiser incluí-lo."
+        return "Este fato já foi substituído. Corrija ou retire o fato atual: " + current + "."
+
+    def revoke_fact(self, fact_id, source, confirmed, reason=None):
+        """Withdraw a fact. Kept as history; dependent versions become retired."""
+        source, reason = self._change_inputs(fact_id, source, reason, confirmed)
+        if not source.startswith("candidate:"):
+            raise ValueError("A retirada de um fato precisa vir de uma resposta da pessoa (candidate:referência).")
+        with self._db(write=True) as db:
+            if not db.execute("SELECT 1 FROM resume_facts WHERE id=?", (fact_id,)).fetchone():
+                raise ValueError("Fato não encontrado.")
+            change = self._revocation(db, fact_id)
+            if change and change["kind"] == "revoked":
+                return self._change_result(db, fact_id, True)
+            if change:
+                raise ValueError(self._superseded(db, fact_id))
+            self._invalidate(db, fact_id, "revoked", None, source, reason)
+            return self._change_result(db, fact_id, False)
+
+    def replace_fact(self, fact_id, text, source, confirmed, reason=None):
+        """Correct a fact with a new confirmed one, keeping the old one as history."""
+        source, reason = self._change_inputs(fact_id, source, reason, confirmed)
+        text = _text(text, "o fato corrigido", 5000)
+        with self._db(write=True) as db:
+            row = db.execute("SELECT text FROM resume_facts WHERE id=?", (fact_id,)).fetchone()
+            if not row:
+                raise ValueError("Fato não encontrado.")
+            change = self._revocation(db, fact_id)
+            if change and change["kind"] == "replaced":
+                current = db.execute("SELECT text, source FROM resume_facts WHERE id=?", (change["replaced_by"],)).fetchone()
+                if (current["text"], current["source"]) == (text, source):
+                    return self._change_result(db, fact_id, True)
+                raise ValueError(self._superseded(db, fact_id))
+            if change:
+                raise ValueError("Este fato foi retirado. Registre um fato novo se a pessoa quiser incluí-lo de novo.")
+            if row["text"] == text:
+                raise ValueError("O texto corrigido é igual ao atual. Informe a correção confirmada pela pessoa.")
+            replacement = self._insert_fact(db, text, source, True)
+            self._invalidate(db, fact_id, "replaced", replacement["id"], source, reason)
+            return self._change_result(db, fact_id, False)
 
     def sources(self):
         self._check_private()
@@ -290,6 +445,8 @@ class ResumeManager:
                 row = db.execute("SELECT confirmed FROM resume_facts WHERE id=?", (fact,)).fetchone()
                 if not row or not row[0]:
                     raise ValueError("A versão usa um fato ausente ou ainda não confirmado pelo candidato.")
+                if self._revocation(db, fact):
+                    raise ValueError("A versão usa um fato retirado ou substituído. Use o fato atual da lista de fatos.")
             pdf, docx = _render(markdown)
             contents = {"md": (markdown + "\n").encode(), "pdf": pdf, "docx": docx}
             paths = {fmt: self._write(f".job/resumes/{identifier}/curriculo.{fmt}", content) for fmt, content in contents.items()}
@@ -331,9 +488,12 @@ class ResumeManager:
 
     def approve(self, resume_id):
         version = self.get(resume_id)
-        if version["status"] == "retired":
-            raise ValueError("Esta versão foi substituída. Crie uma nova revisão para reativá-la.")
         with self._db(write=True) as db:
+            row = db.execute("SELECT status, fact_ids FROM resume_versions WHERE id=?", (resume_id,)).fetchone()
+            if any(self._revocation(db, fact) for fact in json.loads(row["fact_ids"])):
+                raise ValueError("Esta versão usa um fato retirado ou substituído. Gere uma nova versão com os fatos atuais.")
+            if row["status"] == "retired":
+                raise ValueError("Esta versão foi substituída. Crie uma nova revisão para reativá-la.")
             db.execute("UPDATE resume_versions SET status='retired' WHERE label=? AND status='approved' AND id<>?", (version["label"], resume_id))
             db.execute("UPDATE resume_versions SET status='approved', approved_at=? WHERE id=?", (_now(), resume_id))
         return self.get(resume_id)

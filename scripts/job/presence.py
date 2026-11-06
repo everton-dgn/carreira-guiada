@@ -1,5 +1,6 @@
 """Optional professional-profile reviews, kept private across chat sessions."""
 
+import hashlib
 import json
 from urllib.parse import urlsplit
 
@@ -7,6 +8,10 @@ from .profile import Profile
 from .resumes import _text
 
 TOPICS = ('linkedin', 'github')
+PUBLICATION_SECTIONS = {
+    'linkedin': ('headline', 'about', 'experience', 'education', 'skills', 'featured'),
+    'github': ('bio', 'profile_readme', 'pinned_repositories', 'repository_readme'),
+}
 
 
 def _source(topic, source):
@@ -137,3 +142,26 @@ class Presence:
                 'reviews': {topic: {'version': review['version'], 'reviewed': review['reviewed']}
                             for topic, review in state['reviews'].items()},
                 'publication_authorized': False}
+
+    def publication(self, payload):
+        """Validate the exact reviewed text; consent is recorded by Workflow."""
+        fields = {'topic', 'version', 'section', 'destination', 'visibility', 'content_sha256'}
+        if not isinstance(payload, dict) or set(payload) != fields:
+            raise ValueError('publication: informe perfil, versão, seção, destino, visibilidade e hash do texto.')
+        topic = payload['topic']
+        if not isinstance(topic, str) or topic not in TOPICS or type(payload['version']) is not int:
+            raise ValueError('publication: informe o perfil e a versão revisada.')
+        if payload['section'] not in PUBLICATION_SECTIONS[topic] or payload['visibility'] not in ('public', 'connections', 'private'):
+            raise ValueError('publication: confira a seção e a visibilidade escolhidas pela pessoa.')
+        destination = _source(topic, payload['destination'])
+        state = self.get()
+        review = state['reviews'].get(topic, {})
+        if (state['decision'] != 'now' or topic not in state['topics'] or not review.get('reviewed')
+                or not review.get('content') or review.get('version') != payload['version']):
+            raise ValueError('publication: as sugestões mudaram; confira e aprove a versão atual antes de publicar.')
+        if destination == 'candidate_text' or destination != _link(review):
+            raise ValueError('publication: o destino precisa ser o link conferido nesta revisão.')
+        digest = hashlib.sha256(review['content'].encode()).hexdigest()
+        if payload['content_sha256'] != digest:
+            raise ValueError('publication: o texto difere da versão revisada; confira o conteúdo exato.')
+        return {**payload, 'destination': destination}

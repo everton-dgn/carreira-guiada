@@ -73,7 +73,7 @@ def parser():
     command("evaluate", "Conferir uma vaga contra os filtros do perfil, JSON via stdin")
     resume = command("resume", "Importar, preparar e aprovar currículos")
     subs = resume.add_subparsers(dest="action", required=True)
-    for name in ("list", "sources", "facts", "fact", "draft"):
+    for name in ("list", "sources", "facts", "fact", "draft", "fact-revoke", "fact-replace"):
         subs.add_parser(name, parents=[common])
     imp = subs.add_parser("import", parents=[common])
     imp.add_argument("--file", type=Path, help="Compatibilidade: prefira file e label por JSON via stdin")
@@ -98,6 +98,10 @@ def parser():
     subs.add_parser("authorize", parents=[common])
     complete = subs.add_parser("complete", parents=[common])
     complete.add_argument("id")
+    check = subs.add_parser("check", parents=[common])
+    check.add_argument("id")
+    show = subs.add_parser("show", parents=[common])
+    show.add_argument("id")
     return main
 
 
@@ -344,6 +348,14 @@ def dispatch(args):
         if args.action == "draft":
             data = payload()
             return resumes.draft(data.get("label"), data.get("markdown"), data.get("fact_ids"))
+        if args.action in {"fact-revoke", "fact-replace"}:
+            data = payload()
+            allowed = {"fact_id", "source", "confirmed", "reason"} | ({"text"} if args.action == "fact-replace" else set())
+            if not set(data) <= allowed:
+                raise ValueError("Correção de fato: use somente " + ", ".join(sorted(allowed)) + ".")
+            if args.action == "fact-revoke":
+                return resumes.revoke_fact(data.get("fact_id"), data.get("source"), data.get("confirmed"), data.get("reason"))
+            return resumes.replace_fact(data.get("fact_id"), data.get("text"), data.get("source"), data.get("confirmed"), data.get("reason"))
         if args.action == "show":
             return resumes.get(args.id)
         return resumes.approve(args.id)
@@ -382,7 +394,11 @@ def dispatch_workflow(workflow, root, args):
     if args.command == "resume-work":
         return workflow.resume()
     if args.command == "action":
-        return workflow.authorize(payload()) if args.action == "authorize" else workflow.complete(args.id, payload())
+        if args.action == 'authorize':
+            return workflow.authorize(payload())
+        if args.action == 'show':
+            return workflow.show_action(args.id)
+        return getattr(workflow, args.action)(args.id, payload())
     raise ValueError("Comando desconhecido. Peça ajuda à IA para continuar.")
 
 

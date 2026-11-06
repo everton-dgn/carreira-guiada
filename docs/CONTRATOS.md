@@ -68,6 +68,18 @@ combina esse progresso com o perfil, sem repetir as perguntas respondidas.
   Markdown ou TXT. Retorna ID, referência e hash; não confirma fatos.
 - `add_fact(text, source, confirmed)` vincula a um ID importado ou a uma
   referência `candidate:` de resposta explícita da pessoa.
+- `replace_fact(fact_id, text, source, confirmed, reason=None)` guarda um novo
+  fato confirmado e marca o anterior como substituído. `revoke_fact(fact_id,
+  source, confirmed, reason=None)` retira um fato por pedido da pessoa. Ambos
+  exigem `confirmed: true` e preservam o histórico e os arquivos. A alteração
+  dos fatos, das referências do questionário e das versões dependentes ocorre
+  na mesma transação. A tabela de revogações é aditiva, compatível com bancos
+  anteriores. `facts()` informa `status` e `replaced_by`.
+- As correções retornam `retired_versions` e `open_authorizations`. Versões
+  dependentes, inclusive rascunhos e rótulos diferentes, ficam `retired` e
+  precisam ser refeitas e aprovadas. Autorizações abertas continuam registradas:
+  confira possíveis efeitos no destino antes de resolver `confirmed` ou
+  `not_received`. Não tente reenviar apenas porque o currículo mudou.
 - `draft(label, markdown, fact_ids)` exige fatos existentes e confirmados,
   produz PDF, DOCX e Markdown e registra os hashes dos três arquivos.
 - `approve(id)` aprova a versão conferida pela pessoa e substitui a aprovação
@@ -111,6 +123,20 @@ links; `get` retorna o material privado. Nenhuma dessas chamadas autoriza public
 Ele fica em `materials`, separado das sugestões. Alterar o material retira a
 confirmação das sugestões anteriores e preserva `history` e `material_history`.
 O material salvo não vira fato profissional confirmado automaticamente.
+`publication(payload)` confere o vínculo do texto atual, versão, seção, destino
+e visibilidade, sem autorizar nem publicar. A ação externa `profile_publish`
+passa por `Workflow.authorize`, `check` e `complete`; o contrato está em
+[presença profissional](PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
+
+`Workflow.check(action_id, {owner, generation})` é a conferência imediatamente
+anterior ao efeito externo. Recusa autorização expirada, incerta, de outro
+responsável ou geração, parada, perfil/objetivo alterados, sessão revogada,
+currículo sem aprovação vigente e publicação com revisão antiga. Não executa
+o efeito nem substitui a leitura da página no navegador. O resultado observado
+continua sendo registrado por `complete`, inclusive quando incerto.
+`Workflow.show_action(action_id)` recupera canal e detalhes históricos para
+reconciliação, sem exigir uma autorização ainda executável. A CLI correspondente
+é `action show <id>`; a resposta sempre traz `execution_allowed: false`.
 
 `Tabs(root)` em `scripts/job/tabs.py` reserva capacidade em transação antes de
 abrir abas. `reserve(owner, purpose, owned)`, `update(reservation, external_id,

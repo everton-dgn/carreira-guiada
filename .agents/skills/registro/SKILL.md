@@ -25,10 +25,15 @@ e exclusiva; nunca dois escritores. Sem designação, devolva uma proposta.
 - Decisão local: `./job decision` registra uma ausência aceita pela pessoa
   somente naquela oportunidade e versão do perfil. Preserve os filtros gerais.
 - Autorização: `./job action authorize` antes de pesquisa, leitura de e-mail,
-  cadastro, preenchimento, envio, resposta, agendamento ou lixeira. Cada ação
+  cadastro, preenchimento, envio, resposta, agendamento, lixeira ou publicação
+  de presença profissional (`profile_publish`). Cada ação
   tem ID próprio. Exige perfil aprovado, permissão,
   vaga elegível e, para envio, versão de currículo aprovada. Deve falhar após
   parada, em duplicata e com resultado incerto pendente.
+- Antes do efeito: `./job action check <id>` com `owner` e `generation`.
+  Se a versão, o perfil ou a sessão mudou, suspenda essa ação e confira o destino.
+- Para recuperar a intenção histórica, use `./job action show <id>`.
+  Essa leitura inclui canal e detalhes, mesmo após parada, e não autoriza reenvio.
 - Resultado: `./job action complete` com `confirmed`, `uncertain` ou
   `not_received` e evidência breve. Relato sem evidência não é confirmação.
 - Capacidade: `./job capability` com provedor, apelido, horário, estado e

@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## 0.6.0 - 2026-11-06
+
+- Publicação opcional de textos aprovados no LinkedIn e GitHub com consentimento
+  por seção, conferência antes da ação e recuperação de tentativas incertas.
+- Correção e retirada de fatos do currículo preservam o histórico e retiram a
+  aprovação das versões dependentes, inclusive durante operações concorrentes.
+- Pausar o treino de entrevistas mantém a busca ativa e preserva seu ponto de
+  retomada. Parar toda a campanha continua sendo uma decisão separada.
+- Respostas técnicas sobre tokens e cookies aceitam explicações conceituais;
+  valores com aparência de credenciais e documentos continuam bloqueados.
+- Importação recusada explica como usar uma cópia limpa sem perder respostas
+  anteriores, incluindo documentos escritos sem dois-pontos.
+- Guias de execução e skills sincronizados com os comandos, as permissões e os
+  estados atuais. A conferência final foi incluída nas etapas operacionais.
+- Nova jornada fictícia pela CLI, da preparação ao retorno por e-mail e à
+  comparação de propostas, com parada, retomada e rede bloqueada.
+
 ## 0.5.1 - 2026-11-06
 
 - Removido do README o bloco de versões estáticas e descrições das

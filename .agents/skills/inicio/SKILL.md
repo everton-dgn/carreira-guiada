@@ -50,6 +50,9 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
   `profile answer` apenas para as correções. Preserve histórico e arquivos.
   Depois confira a nova versão do perfil, dos currículos e das sugestões de
   LinkedIn/GitHub afetadas. Refaça apenas o conteúdo que depende da correção.
+  Fato de currículo importado usa `resume fact-replace` ou `resume fact-revoke`
+  conforme a [skill de currículo](../curriculo/SKILL.md); acrescentar outra
+  frase sem retirar o fato antigo não registra a correção.
 - Pedido apenas de andamento: responda com o estado observado e pare aí.
 - Parada registrada: "continuar" ou "retomar" já autoriza `resume-work`.
   Se a pessoa disse apenas "iniciar", pergunte se quer retomar o objetivo

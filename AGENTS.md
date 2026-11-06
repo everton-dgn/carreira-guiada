@@ -154,7 +154,7 @@ Reaproveite fatos já confirmados no currículo, sem repetir a pergunta.
   de sugerir e aguarde a escolha. Mudança de fontes exige nova aprovação.
 - `permissions`: uma permissão por ação, com `allow`, `ask` ou `deny`:
   `research`, `register`, `fill`, `apply`, `email_read`, `email_reply`,
-  `email_trash`, `schedule`, `assessment`. O padrão é `ask`. Só a resposta
+  `email_trash`, `schedule`, `assessment`, `profile_publish`. O padrão é `ask`. Só a resposta
   explícita da pessoa muda para `allow`. Explique cada ação em uma frase antes
   de perguntar. Consentimento nunca é inferido de outra resposta.
 - `limits`: detalhe interno definido automaticamente como `chat`. Não faça
@@ -356,8 +356,9 @@ hash conferido, permissão `fill` para preencher e `apply` para enviar.
    vaga. Em `ask`, pergunte uma vez por vaga com resumo curto. Pedido apenas de
    preencher termina antes do envio.
 7. Antes de clicar em enviar, chame `action authorize` com a vaga, o perfil
-   aprovado, a versão do currículo e a permissão. Só com o ID retornado clique
-   uma única vez. Sem ID, não clique.
+   aprovado, a versão do currículo e a permissão. Confira `action check <id>`
+   com `owner` e `generation` imediatamente antes de clicar uma única vez.
+   Sem ID ou com erro na conferência, não clique.
 8. Confira o resultado no portal. Confirmação inequívoca permite
    `action complete` com `confirmed` e evidência breve. Relato do agente sem
    evidência não confirma. Clique, formulário salvo ou tela de currículo não
@@ -411,7 +412,8 @@ conta ou sessão disponível, registre cobertura pendente e siga.
   nunca impersone a pessoa em entrevista e nunca invente autorrelato.
 - Responder e-mail exige `email_reply` e uma autorização por mensagem que cubra
   o conteúdo e o destinatário. Prepare o rascunho, mostre, espere o "pode
-  enviar" e só então `action authorize`, envio único e `action complete`.
+  enviar" e só então `action authorize`, `action check <id>` com `owner` e
+  `generation`, envio único e `action complete`. Erro na conferência impede enviar.
 - Agendar entrevista exige `schedule`, disponibilidade confirmada pela pessoa e
   autorização para a data completa, hora e fuso. A autorização recebe
   `schedule.starts_at` em ISO com fuso. A confirmação deixa a participação
@@ -438,8 +440,14 @@ explícita e exclusiva; nunca dois escritores. A skill
 - Toda oportunidade entra por `opportunity`, com aliases.
 - Toda ação externa passa por `action authorize` antes do efeito e por
   `action complete` depois, com evidência. Relato sem evidência fica `uncertain`.
+- Imediatamente antes do efeito, chame `action check <id>` com responsável e
+  geração atuais. Se falhar, não execute: confira a tentativa e resolva o estado.
+  Publicações de LinkedIn/GitHub usam `profile_publish`, com autorização por
+  texto, versão e destino conforme [presença profissional](docs/PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
 - Releia o estado antes e depois de cada gravação. Falha de gravação bloqueia
   novas ações externas dependentes; pesquisa e leitura continuam.
+- Na retomada, `action show <id>` recupera a intenção histórica e o destino
+  para conferência. Essa consulta nunca autoriza repetir uma ação.
 - Nunca grave documento, credencial, corpo integral de e-mail ou endereço
   pessoal em evidência.
 
@@ -507,6 +515,9 @@ com `/inicio` como entrada explícita. Mantenha as duas cópias sincronizadas.
 | [inicio](.agents/skills/inicio/SKILL.md) | `iniciar`, continuar, "o que falta". Descobre estado e propõe a próxima etapa. |
 | [perfil](.agents/skills/perfil/SKILL.md) | Preencher, revisar ou aprovar o perfil, uma pergunta por vez. |
 | [curriculo](.agents/skills/curriculo/SKILL.md) | Anexar, criar, revisar e aprovar currículos. |
+| [presenca](.agents/skills/presenca/SKILL.md) | Revisar LinkedIn/GitHub e aplicar alterações especificamente autorizadas. |
+| [entrevista](.agents/skills/entrevista/SKILL.md) | Treinar entrevistas, receber feedback e retomar ensaios. |
+| [fontes](.agents/skills/fontes/SKILL.md) | Encontrar e verificar fontes antes da escolha da pessoa. |
 | [candidaturas](.agents/skills/candidaturas/SKILL.md) | Coordenar uma rodada completa de busca e envio. |
 | [busca](.agents/skills/busca/SKILL.md) | Pesquisar vagas e registrar cobertura. |
 | [avaliar-empresas](.agents/skills/avaliar-empresas/SKILL.md) | Priorizar por reputação e política de equipamento. |

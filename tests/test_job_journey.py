@@ -84,12 +84,15 @@ class JourneyTests(unittest.TestCase):
         if ask_all:
             self.turns.append({'ia': self.call('start')['message'], 'pessoa': 'Prefiro que você me pergunte antes de tudo.'})
             self.call('profile', 'save', 'permissions', data={action: 'ask' for action in ACTIONS})
-        for action in (() if ask_all else ACTIONS):
+        # Publishing profiles is optional and gets its own consent when requested.
+        for action in (() if ask_all else tuple(a for a in ACTIONS if a != 'profile_publish')):
             value = 'allow' if action in ('research', 'fill') else 'ask'
             words = 'Pode fazer.' if value == 'allow' else 'Me pergunte antes.'
             if action == 'email_read' and skip_email:
                 value, words = 'deny', 'Não quero conectar meu e-mail agora.'
             self.reply(words, 'permissions', action, value, confirmed=value == 'allow')
+        if not ask_all:
+            self.assertNotIn('profile_publish', self.call('profile', 'show')['sections']['permissions'])
         if not skip_email:
             if email_account:
                 self.reply('Sim, o mesmo e-mail. Eu uso Gmail.', 'connections', 'accounts', [{'provider': 'gmail', 'alias': 'principal', 'address': 'marina@example.invalid'}])
