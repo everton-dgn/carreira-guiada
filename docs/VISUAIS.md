@@ -11,8 +11,9 @@ Todas as conversas e endereços das demonstrações são fictícios.
 
 As animações não são gravações de contas reais nem evidência de candidaturas
 enviadas. Há uma alternativa estática e um percurso em texto junto de cada GIF.
-Cada animação tem cinco cenas, com 5,2 segundos por cena. Os textos e desenhos
-são renderizados diretamente na resolução indicada, sem ampliar uma imagem
+Cada animação tem cinco cenas com quadros intermediários de digitação,
+respostas progressivas e cursor piscando. Há pausas para ler cada conversa.
+Os textos e desenhos são renderizados diretamente na resolução indicada, sem ampliar uma imagem
 pequena. A aparência real dos terminais varia conforme versão e tema.
 O Carreira Guiada não oferece uma interface gráfica própria.
 
