@@ -10,7 +10,7 @@ durante o uso, a própria IA explica o próximo passo.
    os arquivos. Abra o arquivo baixado para extrair a pasta. Ela pode se chamar
    `carreira-guiada-main`; esse nome também funciona.
 2. Abra essa pasta no aplicativo de IA que você usa, como Codex ou Claude Code.
-   A pasta aberta deve conter `README.md`, `AGENTS.md` e o arquivo `job`.
+   A pasta aberta deve conter `README.md` e `AGENTS.md`.
    Só colar o link do GitHub em um chat comum não dá acesso aos arquivos locais.
 3. No chat desse projeto, escreva **iniciar**.
 4. A IA confere o ambiente e conduz uma pergunta por vez. Se faltar uma
@@ -30,8 +30,8 @@ uma das ferramentas seguindo o guia oficial: [Claude Code](https://code.claude.c
 ou [Codex CLI](https://learn.chatgpt.com/docs/codex/cli).
 As contas e permissões pertencem à ferramenta escolhida.
 
-Abra o terminal na pasta extraída do projeto. Se ele já estiver na pasta que
-contém `carreira-guiada`, entre nela com:
+Abra o terminal na pasta que contém a pasta extraída do projeto. Entre na
+pasta do projeto com o comando abaixo, usando o nome que ela realmente tem:
 
 ```sh
 cd carreira-guiada
@@ -40,6 +40,7 @@ cd carreira-guiada
 Use o nome que a pasta realmente tem, como `carreira-guiada-main` se baixou o
 ZIP. Caso não saiba localizar a pasta, peça ajuda ao assistente que já usa
 e informe o sistema operacional, sem compartilhar senhas.
+Se você já abriu o terminal dentro da pasta do projeto, pule o comando `cd`.
 
 Escolha **um** dos comandos, conforme a ferramenta instalada:
 

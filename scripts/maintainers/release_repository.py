@@ -15,7 +15,7 @@ class Repository:
 
     def git(self, *args):
         return subprocess.run(['git', '-C', str(self.root), *args], check=True,
-                              text=True, capture_output=True, timeout=60).stdout.strip()
+                              text=True, encoding='utf-8', capture_output=True, timeout=60).stdout.strip()
 
     def read(self, name, ref=None):
         if ref:
@@ -23,7 +23,7 @@ class Repository:
         path = self.root / name
         if path.is_symlink() or not path.is_file():
             raise ValueError(f'Arquivo ausente ou link simbólico: {name}')
-        return path.read_text()
+        return path.read_text(encoding='utf-8')
 
     def manifest(self, ref=None):
         return tomllib.loads(self.read('pyproject.toml', ref))
@@ -97,10 +97,10 @@ class Repository:
         try:
             for name in names:
                 written.append(name)
-                (self.root / name).write_text(changed[name])
+                (self.root / name).write_text(changed[name], encoding='utf-8')
         except OSError:
             for name in written:
-                (self.root / name).write_text(original[name])
+                (self.root / name).write_text(original[name], encoding='utf-8')
             raise
         return plan
 

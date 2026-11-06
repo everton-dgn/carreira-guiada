@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -117,19 +118,19 @@ class ReleaseRepositoryTests(unittest.TestCase):
         self.git('config', 'user.name', 'Example contributor')
         self.git('config', 'user.email', 'person@example.invalid')
         self.git('remote', 'add', 'origin', 'https://github.com/owner/project.git')
-        (self.root / 'pyproject.toml').write_text('[project]\nname = "sample"\nversion = "0.1.0"\n\n[tool.carreira-release]\nprerelease = true\n')
-        (self.root / 'uv.lock').write_text('version = 1\n\n[[package]]\nname = "sample"\nversion = "0.1.0"\nsource = { virtual = "." }\n\n[[package]]\nname = "dependency"\nversion = "2.0.0"\nsource = { registry = "https://pypi.org/simple" }\n')
-        (self.root / 'CHANGELOG.md').write_text('# Histórico\n\n## Unreleased\n\n## 0.1.0 - 2026-11-01\n\nInitial.\n')
+        (self.root / 'pyproject.toml').write_text('[project]\nname = "sample"\nversion = "0.1.0"\n\n[tool.carreira-release]\nprerelease = true\n', encoding='utf-8')
+        (self.root / 'uv.lock').write_text('version = 1\n\n[[package]]\nname = "sample"\nversion = "0.1.0"\nsource = { virtual = "." }\n\n[[package]]\nname = "dependency"\nversion = "2.0.0"\nsource = { registry = "https://pypi.org/simple" }\n', encoding='utf-8')
+        (self.root / 'CHANGELOG.md').write_text('# Histórico\n\n## Unreleased\n\n## 0.1.0 - 2026-11-01\n\nInitial.\n', encoding='utf-8')
         self.commit('feat: start project')
         self.git('tag', 'v0.1.0')
         self.git('switch', '-c', 'feat/example')
-        (self.root / 'feature.txt').write_text('Fictional feature')
+        (self.root / 'feature.txt').write_text('Fictional feature', encoding='utf-8')
         self.commit('feat: add example')
         self.repo = Repository(self.root)
 
     def git(self, *args):
         return subprocess.run(['git', '-C', str(self.root), *args], env=self.env,
-                              check=True, capture_output=True, text=True).stdout.strip()
+                              check=True, capture_output=True, text=True, encoding='utf-8').stdout.strip()
 
     def commit(self, message):
         self.git('add', '.')
@@ -145,11 +146,31 @@ class ReleaseRepositoryTests(unittest.TestCase):
         self.assertEqual(self.git('status', '--porcelain'), '')
         self.repo.prepare('2026-11-05')
         self.assertEqual(set(self.git('diff', '--name-only').splitlines()), {'pyproject.toml', 'uv.lock', 'CHANGELOG.md'})
-        self.assertIn('name = "dependency"\nversion = "2.0.0"', (self.root / 'uv.lock').read_text())
+        self.assertIn('name = "dependency"\nversion = "2.0.0"', (self.root / 'uv.lock').read_text(encoding='utf-8'))
         self.assertEqual(self.repo.assert_versions()[0]['version'], '0.2.0')
 
+    def test_prepare_preserves_unicode_without_locale_defaults(self):
+        changelog = self.root / 'CHANGELOG.md'
+        notes = 'Revisão de currículo e imagens em 2240 × 1400.'
+        changelog.write_text(changelog.read_text(encoding='utf-8').replace('## Unreleased\n', '## Unreleased\n\n' + notes + '\n'), encoding='utf-8')
+        self.commit('fix: preservar acentuação')
+        script = """
+import sys
+from pathlib import Path
+from scripts.maintainers.release_repository import Repository
+repo = Repository(sys.argv[1])
+plan = repo.prepare('2026-11-05')
+assert 'Revisão de currículo' in plan['notes']
+assert repo.assert_versions()[0]['version'] == '0.2.0'
+"""
+        result = subprocess.run([sys.executable, '-X', 'warn_default_encoding', '-W', 'error::EncodingWarning', '-c', script, str(self.root)],
+                                cwd=Path(__file__).resolve().parents[1], env=self.env,
+                                capture_output=True, encoding='utf-8', timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(notes, changelog.read_text(encoding='utf-8'))
+
     def test_dirty_tree_and_protected_branch_stop_before_changes(self):
-        (self.root / 'feature.txt').write_text('Uncommitted')
+        (self.root / 'feature.txt').write_text('Uncommitted', encoding='utf-8')
         with self.assertRaises(ValueError):
             self.repo.prepare()
         self.commit('docs: note')
@@ -163,7 +184,7 @@ class ReleaseRepositoryTests(unittest.TestCase):
         self.git('tag', 'v0.1.1')
         with self.assertRaises(ValueError):
             self.repo.plan()
-        (self.root / 'uv.lock').write_text((self.root / 'uv.lock').read_text().replace('version = "0.1.0"', 'version = "0.1.9"'))
+        (self.root / 'uv.lock').write_text((self.root / 'uv.lock').read_text(encoding='utf-8').replace('version = "0.1.0"', 'version = "0.1.9"'), encoding='utf-8')
         self.commit('chore: drift lock')
         with self.assertRaises(ValueError):
             self.repo.assert_versions()
@@ -181,11 +202,11 @@ class ReleaseRepositoryTests(unittest.TestCase):
 
     def test_untrusted_ci_wrong_remote_and_failed_check_never_write(self):
         source = self.prepared()
-        for patch in ({'event': 'pull_request'}, {'conclusion': 'failure'}, {'head_branch': 'feature'},
+        for override in ({'event': 'pull_request'}, {'conclusion': 'failure'}, {'head_branch': 'feature'},
                       {'path': '.github/workflows/other.yml'}, {'head_repository': {'full_name': 'fork/project'}},
                       {'head_repository': None}, {'head_sha': 'invalid'}):
             api = FakeGitHub(source)
-            api.run.update(patch)
+            api.run.update(override)
             with self.assertRaises(ValueError):
                 publish(self.repo, 'owner/project', '123', api)
             self.assertEqual(api.posts, [])

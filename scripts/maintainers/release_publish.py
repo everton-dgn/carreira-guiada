@@ -15,7 +15,7 @@ class GitHub:
         if payload is not None:
             args += ['--input', '-']
         result = subprocess.run(args, input=json.dumps(payload) if payload is not None else None,
-                                capture_output=True, text=True, timeout=60)
+                                capture_output=True, text=True, encoding='utf-8', timeout=60)
         try:
             value = json.loads(result.stdout) if result.stdout.strip() else {}
         except json.JSONDecodeError:

@@ -7,7 +7,8 @@ guarda essa escolha junto ao seu perfil privado.
 
 1. Abra a página onde você quer procurar vagas, no seu navegador.
 2. Clique na barra de endereço, no alto da janela, e copie o endereço.
-3. Cole no chat do Carreira Guiada. Pode enviar um de cada vez.
+3. Cole na conversa da ferramenta de IA em que você abriu o projeto.
+   Pode enviar um de cada vez.
 4. A IA confere o endereço e inclui os sites no resumo que você aprova.
 
 Se precisar, diga "me ajude a copiar o link". A IA explica o próximo passo

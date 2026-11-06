@@ -82,7 +82,7 @@ conectadas; nenhuma candidatura é enviada pela demonstração.*
 - Um link fornecido por você ainda precisa ser verificado. Ele não comprova
   legitimidade da empresa nem autorização para automatizar o serviço.
 
-Os registros ficam em `.job/`, no computador de quem usa. O aplicativo de IA
+Os registros ficam numa subpasta privada do projeto, no seu computador. O aplicativo de IA
 também processa o conteúdo que recebe; o banco local não é criptografado.
 [Leia o guia de privacidade](docs/PRIVACIDADE.md).
 
