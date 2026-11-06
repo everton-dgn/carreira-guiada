@@ -73,21 +73,33 @@ class Presence:
         confirmation = _text(confirmation, 'a escolha confirmada da pessoa', 500)
         return self._save(lambda state: state.update(decision=decision, topics=topics, confirmation=confirmation))
 
-    def source(self, topic, source):
+    def source(self, topic, source, material=None):
         source = _source(topic, source)
+        if material is not None:
+            material = _text(material, 'o material fornecido pela pessoa', 50_000)
         def change(state):
             if state['decision'] != 'now' or topic not in state['topics']:
                 raise ValueError('A revisão deste perfil ainda não foi escolhida pela pessoa.')
             previous = state['reviews'].get(topic, {})
-            link = None if source == 'candidate_text' else source
-            if previous and (link is None or _link(previous) == link):
-                previous['link'] = _link(previous)
+            link = _link(previous) if source == 'candidate_text' else source
+            old_material = state.get('materials', {}).get(topic)
+            new_material = {'content': material, 'source': source} if material is not None else None
+            changed_link = bool(previous) and link != _link(previous)
+            changed_material = new_material is not None and new_material != old_material
+            if previous and not changed_link and not (changed_material and previous.get('content')):
+                previous['link'] = link
                 if not previous.get('content'):
                     previous['source'] = source
-                return
-            _archive(state, topic, previous)
-            state['reviews'][topic] = {'source': source, 'link': link, 'content': None,
-                                      'version': previous.get('version', -1) + 1, 'reviewed': False}
+            else:
+                _archive(state, topic, previous)
+                state['reviews'][topic] = {'source': source, 'link': link, 'content': None,
+                                          'version': previous.get('version', -1) + 1, 'reviewed': False}
+            if changed_link or changed_material:
+                if old_material:
+                    state.setdefault('material_history', {}).setdefault(topic, []).append(old_material)
+                    state['materials'].pop(topic)
+                if new_material is not None:
+                    state.setdefault('materials', {})[topic] = new_material
         return self._save(change)
 
     def draft(self, topic, content, source):

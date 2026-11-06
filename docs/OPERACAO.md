@@ -42,7 +42,10 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `doctor` | Diagnóstico do ambiente. |
 | `checkpoint show` e `save` | Último progresso comprovado e próxima ação, persistidos entre sessões. Payload: `phase`, `summary`, `next_action`, `needs_user`; veja [acompanhamento](ACOMPANHAMENTO.md). |
 | `tabs status`, `reserve`, `update`, `release` | Reserva compartilhada antes da abertura, proteção de formulários e encerramento com evidência. Padrão de duas abas; veja [acompanhamento](ACOMPANHAMENTO.md). |
-| `presence status`, `show`, `choose`, `source`, `draft`, `finish` | Revisão opcional de LinkedIn/GitHub, com escolha, link salvo, rascunho privado versionado e conferência da pessoa. Não autoriza publicação; veja a [skill](../.agents/skills/presenca/SKILL.md). |
+| `presence status`, `show`, `choose`, `source`, `draft`, `finish` | Revisão opcional de LinkedIn/GitHub. `source` recebe `topic`, `source` e, opcionalmente, `material` para salvar texto recebido antes da análise. Material e sugestões ficam separados e privados. Não autoriza publicação; veja a [skill](../.agents/skills/presenca/SKILL.md). |
+| `practice catalog`, `show`, `status`, `choose`, `start`, `hint`, `answer`, `skip`, `feedback`, `advance`, `end-questions`, `finish` | Treino privado e opcional. `start --focus practice` entra direto; no onboarding aparece `interview_preparation`. Contratos e pausa em [ENTREVISTAS.md](ENTREVISTAS.md). |
+| `research save`, `list`, `get`, `suggestions` | Registra pareceres observados; não navega. `get` recebe `record_id`; `save` segue [EMPRESAS.md](EMPRESAS.md). Não confundir com a ação externa `research` em `action authorize`. |
+| `offers save`, `list`, `get`, `status`, `compare`, `equivalent` | `get` recebe `offer_id`; `compare` recebe `ids`; `equivalent` recebe `base_id` e `target_id`. Comparações aceitam `base_currency` e `rates`; esquema completo em [PROPOSTAS.md](PROPOSTAS.md). |
 | `profile show` | Perfil atual com versão e `approved_version`. |
 | `profile status` | `next_section`, `missing`, `approved`, `version`, `questions` com exemplos. Guia o onboarding. |
 | `profile answer <seção>` | Recebe `field`, `value` e, para autorização explícita, `confirmed: true`. Mescla uma resposta sem apagar as anteriores. Aceita `salary.floors` e outros campos salariais. |

@@ -63,6 +63,9 @@ Peça os links escolhidos pela pessoa e ajude a copiar o endereço no navegador.
 Registre em `sources.urls`; "deixe para depois" corresponde a `[]`. Não
 mostre esse código à pessoa. Explique que o currículo pode continuar e a busca
 espera pelos links e pela aprovação. Não sugira um catálogo próprio.
+Se a pessoa pedir ou aceitar ajuda para encontrar fontes, siga
+[fontes](../fontes/SKILL.md): pesquise opções públicas, verifique antes de
+sugerir e registre a escolha. Não acrescente sugestões automaticamente.
 Para acrescentar ou remover uma fonte, confirme a lista completa.
 
 ## Permissões

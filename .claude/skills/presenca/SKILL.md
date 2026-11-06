@@ -24,6 +24,13 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
 3. Se o perfil estiver indisponível, use o texto fornecido pela pessoa, com
    `source: candidate_text`. Explique o limite da análise. Não contorne login,
    bloqueio de automação ou privacidade para obter o perfil.
+   Antes de analisar, salve esse texto com `presence source`, acrescentando
+   `material` ao JSON. Guarde também o recorte escolhido, como os repositórios
+   autorizados, nesse material privado. Se a pessoa parar nesse ponto, a próxima
+   sessão lê `materials[topic]` em `presence show` sem pedir tudo novamente.
+   Material recebido não comprova fatos nem autoriza acesso a outros destinos.
+   Uma correção do material invalida as sugestões anteriores, preservadas em
+   `history`; o material anterior fica em `material_history`.
 4. Prepare diagnóstico priorizado e textos prontos conforme o guia: LinkedIn
    completo, posicionamento coerente e GitHub com README e projetos selecionados.
    Separe fatos confirmados de sugestões. Se não houver projetos, ajude a
@@ -32,6 +39,9 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
    `candidate_text`). Leia `presence show` somente para retomar o texto privado.
    Mostre uma seção por vez. Cada alteração gera nova versão e retira a
    confirmação de revisão anterior.
+   Use o material salvo e os fatos atuais do currículo. Quando uma data ou
+   experiência for corrigida depois, confira as sugestões afetadas antes de
+   apresentá-las como prontas; não mantenha informação antiga no perfil.
 6. Quando a pessoa conferir, use `presence finish` com `topic`, `version` e
    `confirmation`. Isso conclui a revisão local e nunca autoriza publicação.
    Para aplicar, mostre texto exato, conta, destino e visibilidade e obtenha

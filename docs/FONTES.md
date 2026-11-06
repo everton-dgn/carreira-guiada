@@ -1,7 +1,8 @@
 # Onde você quer procurar vagas?
 
-O Carreira Guiada não traz portais pré-selecionados. Você informa os endereços e a IA
-guarda essa escolha junto ao seu perfil privado.
+O Carreira Guiada não traz portais pré-selecionados. Você pode informar os
+endereços ou pedir ajuda para encontrar opções. A escolha aprovada fica no
+seu perfil privado.
 
 ## Como enviar um link
 
@@ -19,9 +20,19 @@ preencher uma configuração ou escolher um nome técnico para o site.
 
 ## Ainda não tenho os links
 
-Diga "deixe para depois". O currículo e as outras respostas podem continuar.
-Antes de pesquisar, a IA volta a esse ponto. Ela não usa uma lista escondida
-nem recupera os sites de outra pessoa.
+Diga "me ajude a encontrar sites de vagas". A IA usa seu cargo e mercado
+pretendidos, sem enviar seus contatos ou currículo, e pesquisa opções públicas.
+Antes de sugerir, confere identidade, domínio, origem oficial, evidência
+independente e pedidos de dados. Mostra o que verificou, quando e o que ainda
+não conseguiu confirmar. Você escolhe quais links quer usar e aprova a lista.
+
+Popularidade e HTTPS sozinhos não comprovam segurança. A IA não recomenda
+um site com identidade contraditória, pagamento suspeito ou risco não resolvido.
+Uma análise favorável também não garante cada anúncio: vagas e recrutadores
+são avaliados separadamente. Veja [pesquisa de empresas e vagas](EMPRESAS.md).
+
+Se preferir, diga "deixe para depois". O currículo e as outras respostas podem
+continuar. A IA não usa uma lista escondida nem os sites de outra pessoa.
 
 ## Se o endereço não for aceito
 
@@ -50,12 +61,14 @@ destino continuam sendo decisões suas.
 - Leia `sources.urls` no perfil aprovado. Nunca salve links pessoais neste guia.
 - Use `profile answer sources` com `field: "urls"` e a lista completa de
   endereços confirmada. "Deixe para depois" corresponde a uma lista vazia.
-- Antes de `research`, informe `source_url` em `action authorize`. O controle
+- Antes da ação de busca de vagas `research`, informe `source_url` em `action authorize`. O controle
   exige uma fonte não vazia aprovada e domínio, porta e caminho compatíveis.
 - A validação não resolve DNS nem verifica redirecionamentos. Confira cada
   destino observado, a identidade da empresa e as regras de uso do serviço.
-- Não use mecanismos de busca externos, outros portais ou redirecionamentos
-  para ampliar as fontes. Peça a inclusão quando ela for necessária.
+- Descoberta de fontes após pedido ou aceite é pesquisa pública específica;
+  siga a skill `fontes` e registre o parecer com `research save`. Esse comando
+  só salva análise, não navega nem autoriza candidatura. Pesquisa de vagas
+  permanece limitada a `sources.urls` aprovado. Não amplie essa lista sozinho.
 - Permissão da pessoa não substitui permissão do serviço. Pare a ação afetada
   diante de restrição de automação, CAPTCHA ou bloqueio e explique o próximo passo.
 - Registre consulta e cobertura por fonte. Busca parcial ou vazia não comprova

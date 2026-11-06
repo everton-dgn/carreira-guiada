@@ -39,7 +39,7 @@ Cada permissão precisa de uma resposta; uma resposta não encerra as demais.
 confirmação explícita da pessoa. `limits.mode=chat` é preenchido internamente.
 `limits.browser_tabs` permite de uma a cinco abas; ausência significa duas.
 `sources.urls` guarda endereços HTTPS escolhidos pela pessoa. A lista pode
-ficar vazia durante o preparo, mas `research` exige fontes aprovadas e
+ficar vazia durante o preparo, mas a ação externa `research` exige fontes aprovadas e
 `source_url` compatível com domínio, porta e caminho. Perfis anteriores sem
 essa seção precisam respondê-la e aprovar novamente. A validação é sintática
 e não confina o navegador nem verifica DNS ou redirecionamentos.
@@ -85,11 +85,32 @@ apenas porque ele apareceu no diretório.
 
 ## Operação e evidências
 
+`Practice(root)` guarda escolhas, sessões, tentativas versionadas e feedback
+no mesmo banco privado. Não exige perfil nem autoriza ações. As oito trilhas,
+estados e comandos estão em [ENTREVISTAS.md](ENTREVISTAS.md). `start --focus
+practice` permite entrada direta. `status` contém resposta e contexto privados.
+
+`DueDiligence(root)` registra pareceres imutáveis de sites, empresas e vagas.
+Não pesquisa automaticamente. `save(data)`, `list()`, `get(record_id)` e
+`suggestions()` ficam sob `research` na CLI. Esse grupo registra análises;
+é distinto da ação externa de busca de vagas. Sugestões usam a revisão com
+data de verificação mais recente por URL de site; em empate vale a última
+registrada. Confira o contrato em [EMPRESAS.md](EMPRESAS.md).
+
+`Offers(root)` salva cenários imutáveis, calcula com Decimal e compara somente
+com premissas explícitas. `save`, `list`, `get`, `status`, `compare` e
+`equivalent` ficam sob `offers`. Não aplica alíquotas nem escolhe propostas.
+Veja [PROPOSTAS.md](PROPOSTAS.md). Leituras dos três módulos não criam `.job`.
+
 `Presence(root)` em `scripts/job/presence.py` guarda a escolha opcional de
 LinkedIn/GitHub e sugestões privadas no mesmo banco. `choose` registra agora,
 depois ou pular; `draft` incrementa a versão quando o conteúdo muda; `finish`
 exige a versão atual e a confirmação da pessoa. `status` omite os textos e
 links; `get` retorna o material privado. Nenhuma dessas chamadas autoriza publicação.
+`source(topic, source, material=None)` aceita o texto fornecido antes da análise.
+Ele fica em `materials`, separado das sugestões. Alterar o material retira a
+confirmação das sugestões anteriores e preserva `history` e `material_history`.
+O material salvo não vira fato profissional confirmado automaticamente.
 
 `Tabs(root)` em `scripts/job/tabs.py` reserva capacidade em transação antes de
 abrir abas. `reserve(owner, purpose, owned)`, `update(reservation, external_id,

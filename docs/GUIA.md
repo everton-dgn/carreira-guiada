@@ -4,6 +4,12 @@ Você não precisa saber programar. O Carreira Guiada é uma pasta que sua IA l�
 conduzir a busca de emprego, uma etapa por vez. Este guia mostra o começo;
 durante o uso, a própria IA explica o próximo passo.
 
+Além das candidaturas, você pode pedir [revisão de LinkedIn e GitHub](PRESENCA-PROFISSIONAL.md),
+[treino de entrevistas](ENTREVISTAS.md), [ajuda para encontrar sites](FONTES.md),
+[pesquisa da empresa](EMPRESAS.md) ou [comparação de propostas](PROPOSTAS.md).
+São caminhos opcionais. No treino, experimente voz se seu aplicativo oferecer
+o recurso. Pode parar e retomar outro dia, com as respostas e o feedback salvos.
+
 ## Primeira vez
 
 1. Na página do projeto no GitHub, use **Code** e **Download ZIP** para baixar

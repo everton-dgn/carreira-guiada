@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from .profile import Profile
 from .resumes import _text
 
-PHASES = ('onboarding', 'resume', 'presence', 'research', 'fill', 'email', 'followup', 'waiting', 'stopped')
+PHASES = ('onboarding', 'resume', 'presence', 'practice', 'offers', 'research', 'fill', 'email', 'followup', 'waiting', 'stopped')
 
 
 def checkpoint(root, data=None):

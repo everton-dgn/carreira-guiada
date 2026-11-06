@@ -112,6 +112,7 @@ class JourneyTests(unittest.TestCase):
         self.assertEqual(self.call('start')['next_step'], 'professional_presence')
         self.turns.append({'ia': 'Quer revisar também o LinkedIn ou GitHub?', 'pessoa': 'Deixa para depois, quero procurar vagas.'})
         self.call('presence', 'choose', data={'decision': 'later', 'topics': [], 'confirmation': 'Deixa para depois, quero procurar vagas.'})
+        self.call('practice', 'choose', data={'decision': 'later'})
         state = self.call('start')
         self.assertEqual(state['next_step'], 'execution_readiness')
         self.assertFalse(state['automatic_execution_started'])
