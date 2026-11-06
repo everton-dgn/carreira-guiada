@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.4.1 - 2026-11-06
+
+- Diagrama do README reorganizado em três fases, com fundo branco, cores
+  distintas e leitura da esquerda para a direita, sem cartões ou sombras.
+- Apoios opcionais e desfechos de continuar ou encerrar separados do percurso.
+- Alternativa em texto alinhada à imagem, explicando que buscas e retornos
+  são intercalados durante a execução.
+
 ## 0.4.0 - 2026-11-06
 
 ### Novidades

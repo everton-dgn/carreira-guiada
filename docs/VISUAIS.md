@@ -6,7 +6,7 @@ Todas as conversas e endereços das demonstrações são fictícios.
 | Arquivo | Dimensões | Origem e finalidade |
 |---|---|---|
 | `assets/carreira-guiada-cover.png` | 2172 × 724 | Capa original gerada com a ferramenta integrada de imagens. |
-| `assets/fluxo-guiado.png` | 1536 × 1024 | Diagrama ilustrado original, gerado com a ferramenta integrada de imagens, do onboarding ao resultado e à nova rodada. |
+| `assets/fluxo-guiado.png` | 1586 × 992 | Diagrama editorial original, gerado com a ferramenta integrada de imagens, com três fases em cores distintas, dois desfechos e apoio opcional separado. |
 | `assets/inicio-guiado.gif` e `.png` | 2240 × 1400 | Conversa fictícia no terminal do Claude Code, do início à aprovação do perfil. |
 | `assets/candidatura-guiada.gif` e `.png` | 2240 × 1400 | Conversa fictícia no Codex CLI, da busca ao preenchimento, aprovação, confirmação e retomada. |
 | `assets/curriculo-guiado.gif` e `.png` | 2240 × 1400 | Conversa com uma IA genérica e prévia fictícia do currículo, dos fatos à versão aprovada. |
@@ -30,13 +30,13 @@ substituição exige nova revisão da imagem e dos metadados antes de atualizar
 essa referência. As outras imagens aceitam apenas os blocos necessários ao
 desenho e à animação.
 
-O diagrama usa nove cartões de papel ilustrados, verde escuro e verde-lima,
-com setas numeradas para mostrar preparação, fontes verificadas, busca,
-candidaturas, retornos, treino, propostas e resultado. LinkedIn, GitHub e voz
-quando disponível aparecem numa faixa opcional. O término
-indica o objetivo combinado ou a ordem da pessoa para parar. O texto completo
-está disponível junto da imagem no README. A imagem explica o processo e
-não representa uma interface do produto.
+O diagrama organiza três fases da esquerda para a direita: preparação em
+violeta, candidaturas em azul e acompanhamento em laranja. Os números, títulos
+e setas também indicam a sequência, sem depender apenas das cores. O fundo é
+branco, com ilustrações de traço e espaço entre as colunas. Continuar ou encerrar
+aparecem abaixo do percurso, junto do apoio opcional de LinkedIn, GitHub e treino
+de entrevistas. A imagem e o README explicam que novas buscas e retornos são
+intercalados. O desenho explica o processo e não representa uma interface do produto.
 
 ## Recriar as demonstrações
 
@@ -62,9 +62,19 @@ Os materiais visuais originais são distribuídos sob a licença do projeto,
 na medida dos direitos aplicáveis. Não são usadas capturas de produtos de
 terceiros ou marcas de plataformas de vagas.
 
-Atualização do diagrama: edição pela ferramenta integrada de imagens, usando
-o original como referência. Briefing: preservar papel recortado, paleta e
-legibilidade; acrescentar fontes verificadas, treino, propostas e retomada;
-manter explícitos autorização, etapas pessoais e término por objetivo ou parada.
-O arquivo final foi conferido visualmente e pela estrutura PNG, preservando
-o bloco de proveniência C2PA.
+## Direção do diagrama
+
+Edição pela ferramenta integrada de imagens, substituindo a composição anterior.
+Briefing final: "Criar um diagrama editorial horizontal, com fundo branco e
+três fases sem caixas: Prepare em violeta, Candidate-se em azul e Acompanhe em
+laranja. Usar tipografia grande, ilustrações simples de traço e bastante espaço.
+Ligar os títulos com duas setas discretas da esquerda para a direita. Explicar
+que a busca continua enquanto os retornos chegam. Abaixo, separar os desfechos
+Continuar e Encerrar, seguidos do apoio opcional de LinkedIn, GitHub e treino
+de entrevistas. Remover cartões, sombras, texturas e enfeites. Não representar
+uma interface de aplicativo."
+
+O arquivo final tem resolução nativa de 1586 × 992 pixels, sem ampliação
+artificial. Foi conferido visualmente e pela estrutura PNG, preservando o
+bloco de proveniência C2PA. O conteúdo de cada etapa tem uma alternativa em
+texto no README.
