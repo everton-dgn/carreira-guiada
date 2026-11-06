@@ -114,6 +114,29 @@ class CliTests(unittest.TestCase):
         self.assertEqual(state['browser']['limit'], 2)
         self.assertEqual(self.call('checkpoint', 'show')['phase'], 'waiting')
 
+    def test_presence_fact_dependencies_survive_cli_restart(self):
+        fact = self.call('resume', 'fact', data={'text': 'Experiência fictícia em atendimento.',
+            'source': 'candidate:experiencia', 'confirmed': True})
+        self.call('presence', 'choose', data={'decision': 'now', 'topics': ['linkedin'],
+            'confirmation': 'Quero revisar este perfil.'})
+        draft = {'topic': 'linkedin', 'content': 'Experiência fictícia em atendimento.',
+            'source': 'candidate_text', 'fact_ids': [fact['id']]}
+        self.call('presence', 'draft', data=draft)
+        self.call('presence', 'finish', data={'topic': 'linkedin', 'version': 1,
+            'confirmation': 'Conferi o texto.'})
+        correction = self.call('resume', 'fact-replace', data={'fact_id': fact['id'],
+            'text': 'Experiência fictícia em suporte.', 'source': 'candidate:correcao', 'confirmed': True})
+        self.assertEqual(self.call('presence', 'status')['pending'], ['linkedin'])
+        self.call('presence', 'draft', data=draft, success=False)
+        draft.update(content='Experiência fictícia em suporte.', fact_ids=[correction['replacement']['id']])
+        state = self.call('presence', 'draft', data=draft)
+        version = state['reviews']['linkedin']['version']
+        self.call('presence', 'finish', data={'topic': 'linkedin', 'version': version,
+            'confirmation': 'Conferi a correção.'})
+        review = self.call('presence', 'show')['reviews']['linkedin']
+        self.assertEqual(review['fact_ids'], draft['fact_ids'])
+        self.assertTrue(review['reviewed'])
+
     def test_launcher_resolves_project_when_called_from_elsewhere(self):
         result = subprocess.run([str(PROJECT / "job"), "--root", str(self.root), "start", "--json"],
                                 cwd=self.root, capture_output=True, text=True, timeout=20)

@@ -201,7 +201,8 @@ também processa o conteúdo que recebe; o banco local não é criptografado.
 | Controle local | Python 3.11 ou superior e `uv`. A IA ajuda a preparar o ambiente. |
 | Sites e e-mail | Ferramentas disponíveis e sessões conferidas no aplicativo. O acompanhamento de e-mail atual aceita Gmail e Outlook. Sem conexão, essas etapas ficam pendentes. |
 
-Os testes usam cenários fictícios. Ainda não comprovam uma campanha real por
+Os testes exercitam a CLI e um navegador com portal e e-mail fictícios locais.
+Ainda não comprovam uma campanha real por
 vários dias nem compatibilidade com todas as interfaces de recrutamento.
 [O que foi e o que não foi validado](docs/VALIDACAO.md).
 

@@ -20,6 +20,12 @@ A IA mostra o fato atual e a correção para você confirmar. O histórico conti
 guardado, mas as versões de currículo que usavam o fato antigo deixam de estar
 prontas para envio. Ela refaz somente essas versões e pede sua aprovação.
 
+Textos do LinkedIn e do GitHub que dependem desse fato também voltam para
+revisão. A IA mostra o que precisa mudar e prepara uma nova versão para você
+conferir. Textos antigos sem registro dos fatos usados também são revisados.
+Se o texto já estava publicado, a correção local não altera o site: a IA
+confere o perfil e combina com você a atualização necessária.
+
 Você também pode pedir para retirar um fato. Nesse caso, ele fica no histórico
 e não pode entrar em um novo currículo. Candidaturas já enviadas não são
 apagadas nem reenviadas. Se havia uma ação em andamento, a IA confere o destino

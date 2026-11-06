@@ -85,6 +85,7 @@ def parser():
         show.add_argument("id")
     for name, help_text in (
         ("goal", "Registrar o objetivo autorizado, JSON via stdin"),
+        ("goal-extend", "Adicionar ações ao objetivo ativo, JSON via stdin"),
         ("opportunity", "Registrar uma oportunidade, JSON via stdin"),
         ("decision", "Registrar uma decisão da pessoa somente para uma vaga"),
         ("capability", "Registrar uma capacidade verificada, JSON via stdin"),
@@ -274,7 +275,7 @@ def dispatch(args):
         data = payload()
         fields = {'choose': {'decision', 'topics', 'confirmation'}, 'source': {'topic', 'source'}, 'draft': {'topic', 'content', 'source'},
                   'finish': {'topic', 'version', 'confirmation'}}[args.action]
-        optional = {'material'} if args.action == 'source' else set()
+        optional = {'source': {'material'}, 'draft': {'fact_ids'}}.get(args.action, set())
         if not fields <= set(data) or set(data) - fields - optional:
             raise ValueError('Informe exatamente os campos desta etapa: ' + ', '.join(sorted(fields)))
         return getattr(presence, args.action)(**data)
@@ -381,6 +382,8 @@ def dispatch_workflow(workflow, root, args):
         return {"profile": Profile(root).get(), "resumes": ResumeManager(root).list(), "workflow": workflow.state(), "notice": "Contexto privado. Compartilhe somente os campos necessários com o destino autorizado. O piso salarial não é a pretensão."}
     if args.command == "goal":
         return workflow.configure_goal(payload())
+    if args.command == "goal-extend":
+        return workflow.extend_goal(payload())
     if args.command == "opportunity":
         return workflow.opportunity(payload())
     if args.command == 'decision':

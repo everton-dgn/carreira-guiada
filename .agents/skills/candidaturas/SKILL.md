@@ -37,6 +37,9 @@ para a campanha quando permitido pelo ambiente, seguindo a seção de
 continuidade do `AGENTS.md`. Não declare o modo ativo sem observar seu estado.
 Com permissões `allow`, siga os próximos itens autorizados sem perguntar
 "quer continuar?" ao fim de cada lote. Não infira permissão a partir do objetivo.
+Se a pessoa pedir apenas uma nova atividade, use `goal-extend` com
+`goal_version`, `add_actions` e `user_confirmation`. Preserve a campanha,
+suas contagens e o estado de parada; confira as permissões da nova atividade.
 
 ## Ciclo
 

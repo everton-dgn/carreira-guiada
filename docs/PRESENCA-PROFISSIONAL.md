@@ -71,6 +71,11 @@ pedir ajustes sem perder a versão anterior do seu perfil público. A revisão
 local não publica nada. Antes de qualquer alteração pública, confira o texto
 exato, a conta, o destino e a visibilidade e autorize aquela alteração.
 
+Se você corrigir uma experiência ou retirar um fato do currículo, as sugestões
+que usavam essa informação voltam para revisão. Seus textos e as versões
+anteriores continuam salvos. A IA refaz o trecho afetado antes de pedir nova
+aprovação; uma publicação anterior precisa ser conferida no próprio perfil.
+
 Com ferramenta conectada e ação permitida pelo serviço, a IA pode conduzir a
 aplicação aprovada. Sem essa capacidade, ela abre o destino e guia você para
 colar o conteúdo, uma seção por vez. Depois confere o resultado observado ou
@@ -86,13 +91,16 @@ antes de qualquer nova tentativa, inclusive ao voltar em outro dia.
 A revisão local pode acontecer antes do onboarding. Para a aplicação pela IA,
 o perfil precisa estar aprovado e o objetivo ativo deve incluir `profile_publish`.
 Inclua essa ação ao criar o objetivo, quando a pessoa pedir publicação.
-Se uma campanha ativa não a incluir, preserve o objetivo e o rascunho:
-ofereça a aplicação manual ou deixe a publicação para o próximo objetivo.
-Não use `replace_version` apenas para acrescentar essa ação: a substituição
-inicia outra contagem e invalida autorizações abertas da campanha anterior.
+Se a campanha ativa não a incluir, confirme que a pessoa quer acrescentar essa
+atividade e use `goal-extend`. A campanha mantém a data de início, a meta e
+as candidaturas contadas. Isso não concede permissões nem autoriza publicar
+um texto; cada alteração pública ainda exige a confirmação específica abaixo.
+Não use `replace_version` apenas para acrescentar uma atividade.
 
 Prepare uma seção por vez. Guarde o diagnóstico em uma nota privada e salve
 em `presence draft.content` somente o texto exato a publicar naquela seção.
+Inclua em `fact_ids` os IDs dos fatos ativos e confirmados usados no texto.
+Use uma lista vazia somente quando a seção não depender de fatos do currículo.
 Mostre o texto, o link, a conta autenticada, a seção e a visibilidade observada.
 Confirme que a conta pertence à pessoa e preserve o conteúdo anterior fora do
 registro operacional, em `.job/presence-notes/`, com arquivo exclusivo por

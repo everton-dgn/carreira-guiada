@@ -67,6 +67,7 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `resume show <id>` | Confere os hashes de todos os formatos antes de usar uma versão. |
 | `resume check <id>` | Compara o texto extraído dos arquivos gerados, verifica seções e tabelas. Não calcula pontuação de ATS. |
 | `goal` | Objetivo persistido com versão e critérios; não sobrescreve objetivo ativo incompatível. |
+| `goal-extend` | Acrescenta `add_actions` ao objetivo indicado em `goal_version`, com `user_confirmation`. Preserva início, meta e contagens; não concede permissões nem retoma uma parada. |
 | `opportunity` | Registro de oportunidade com chave e aliases; distinto de candidatura. |
 | `decision` | `opportunity_id`, `reasons` atuais e `user_confirmation`; aceita ausência permitida só nessa vaga, sem alterar os filtros gerais. |
 | `capability` | Observação de capacidade (navegador, e-mail) com provedor, apelido, horário, estado, evidência. |
@@ -160,7 +161,9 @@ Na ausência de referência individual estável, deixe a mensagem preservada.
    um item da rodada.
 2. Gate: perfil `approved`, permissão da ação (`allow`, ou `ask` respondido
    nesta rodada), currículo `approved` para envio.
-3. `goal` se não houver objetivo ativo compatível.
+3. `goal` se não houver objetivo ativo compatível. Se a pessoa apenas acrescentar
+   uma atividade, use `goal-extend` com a versão atual e a confirmação recebida,
+   sem substituir a campanha. Consulte as adições em `status.goal.amendments`.
 4. `capability` para navegador e cada conta de e-mail usada; sessão expirada
    revoga.
 5. Busca por lote finito, `opportunity` por anúncio, `evaluate` por vaga,
@@ -254,9 +257,13 @@ retomar em outro dia; não garante execução contínua nem sessões autenticada
 
 ## Validação local
 
-Testes usam diretórios temporários e dados fictícios; nunca enviam
-candidatura, e-mail ou abrem navegador:
+Os testes da CLI usam diretórios temporários e dados fictícios, com nenhuma
+candidatura ou mensagem real. Não abrem navegador:
 
 ```sh
 uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 ```
+
+Há também uma suíte separada com navegador headless, portal e webmail fictícios
+locais. Ela não usa contas reais. Veja a instalação, o comando e os limites em
+[Validação](VALIDACAO.md).

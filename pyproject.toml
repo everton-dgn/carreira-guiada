@@ -19,4 +19,7 @@ package = false
 prerelease = false
 
 [dependency-groups]
+browser = [
+    "playwright>=1.58,<2",
+]
 docs = ["pillow>=11"]

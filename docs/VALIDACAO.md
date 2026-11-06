@@ -19,6 +19,12 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 - Presença profissional: revisão de LinkedIn e GitHub, texto recebido antes
   da análise, correção que invalida sugestões antigas, adiamento de fontes e
   preservação de currículo, permissões e rascunhos ao voltar em outro dia.
+- Correção de fatos: LinkedIn/GitHub vinculados ao fato voltam para revisão
+  na mesma transação que aposenta o currículo. Histórico, rollback, textos
+  legados e conciliação de publicações interrompidas têm regressões próprias.
+- Continuidade da campanha: adição de atividades sem perder contagens,
+  período ou ações abertas; permissões continuam separadas. As regressões
+  cobrem banco anterior, adições simultâneas e parada preservada.
 - Busca e candidatura: filtros de salário e contrato, informação ausente,
   decisão restrita a uma vaga, duplicidade, cadastro, preenchimento, correção
   e confirmação de envio.
@@ -54,9 +60,38 @@ Não comprovam uma integração executada nos aplicativos citados ou um envio
 para um portal real. As recomendações de modelos não equivalem a um teste
 comparativo de automação; cada sessão precisa conferir suas capacidades.
 
+## Navegador e e-mail fictício
+
+A suíte em `tests/browser/` abre Chromium headless em um processo próprio.
+Ela acessa um portal e um webmail fictícios servidos localmente, preenche os
+formulários e anexa um PDF aprovado. Os recibos observados são registrados
+pela CLI real. Também percorre um formulário complementar, a resposta ao
+e-mail e uma retomada com o relógio avançado para o dia seguinte.
+
+Instale esse grupo somente para desenvolver ou validar o projeto:
+
+```sh
+uv sync --locked --group browser
+uv run --locked --group browser playwright install chromium
+uv run --locked --group browser python -m unittest discover -s tests/browser -p 'test_*.py' -v
+```
+
+O teste usa um contexto de navegador vazio, sem a sessão do usuário. Somente
+os destinos fictícios mapeados para o servidor local são aceitos. Uma tentativa
+de sair deles deve falhar; recibos e contadores do servidor verificam que a
+retomada não duplica candidaturas ou respostas. Servidor e navegador são
+encerrados ao final, inclusive quando uma verificação falha.
+
+O webmail local não acessa Gmail ou Outlook e não envia mensagens pela
+internet. A sequência de ações é um roteiro programado. Ela testa os efeitos
+no navegador e sua ligação com o controle local; não mede decisões de um
+modelo diante de um portal real. A passagem de um dia é simulada.
+
 A automação do GitHub executa a suíte em Linux com Python 3.11 e 3.13 e
 em macOS com Python 3.13. O resultado de cada execução fica na aba
 [Actions do projeto](https://github.com/everton-dgn/carreira-guiada/actions).
+O percurso com Chromium tem um job separado em Linux e também precisa passar
+para aprovar o check `quality`.
 
 Antes de um commit, confira os arquivos preparados para publicação:
 

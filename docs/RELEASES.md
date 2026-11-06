@@ -69,6 +69,21 @@ abra um pull request. O commit de preparação pode seguir o formato
 ## Publicação após a integração
 
 O pull request passa pela CI completa. A integração usa merge commit.
+Antes de integrar, confira o nome público e o e-mail de privacidade escolhidos
+para o autor e o responsável pelo commit. Um merge feito no site do GitHub
+usa a identidade da conta; o `git config` do computador não a substitui.
+Se precisar preservar outra identidade pública, prepare o merge normal no
+checkout local com essa identidade e confira a árvore, os dois pais e os
+metadados antes do push autorizado. Preserve as proteções da main e os checks;
+se o servidor recusar, investigue o motivo sem contornar a regra.
+
+Mudar a identidade dos commits futuros não remove metadados já publicados.
+Corrigir o histórico exige um plano separado, cópia de recuperação, validação
+das referências afetadas e autorização para a substituição. Commits e tags
+reescritos mudam de identificação e perdem as assinaturas anteriores; cópias,
+referências de PRs e caches podem continuar acessíveis. Consulte as
+[limitações de remoção de dados no GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository).
+
 Após o workflow `Checks` de um push na main terminar com sucesso, o workflow
 `Release` confere novamente o resultado e publica a versão preparada.
 

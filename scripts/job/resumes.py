@@ -346,17 +346,49 @@ class ResumeManager:
                         del answers[field]
                 if linked:
                     db.execute("UPDATE job_intake SET value=? WHERE id=1", (json.dumps(state, ensure_ascii=False),))
+        # Reuse the fact writer's transaction: no nested independent connection.
+        from .presence import Presence, _archive
+        state = Presence._read(db)
+        changed = False
+        for topic, review in list(state['reviews'].items()):
+            dependencies = review.get('fact_ids')
+            if review.get('content') and (dependencies is None or fact_id in dependencies):
+                state.setdefault('fact_invalidations', {}).setdefault(fact_id, []).append(
+                    {'topic': topic, 'version': review['version']})
+                _archive(state, topic, review)
+                state['reviews'][topic] = {
+                    'source': review['source'], 'link': review.get('link'),
+                    'content': None, 'reviewed': False,
+                    'version': review['version'] + 1,
+                    'invalidated_by': fact_id,
+                }
+                changed = True
+        if changed:
+            db.execute("UPDATE job_presence SET value=? WHERE id=1",
+                       (json.dumps(state, ensure_ascii=False),))
         return retired
 
     def _open_authorizations(self, db, fact_id):
         if not db.execute("SELECT 1 FROM sqlite_master WHERE name='wf_actions'").fetchone():
             return []
         versions = [resume_id for resume_id, fact_ids in db.execute("SELECT id, fact_ids FROM resume_versions") if fact_id in json.loads(fact_ids)]
-        if not versions:
-            return []
-        marks = ",".join("?" * len(versions))
-        rows = db.execute(f"SELECT id, action, status, resume_id FROM wf_actions WHERE status IN ('authorized','uncertain') AND resume_id IN ({marks}) ORDER BY id", versions)
-        return [dict(row) for row in rows]
+        result = []
+        if versions:
+            marks = ",".join("?" * len(versions))
+            rows = db.execute(f"SELECT id, action, status, resume_id FROM wf_actions WHERE status IN ('authorized','uncertain') AND resume_id IN ({marks}) ORDER BY id", versions)
+            result = [dict(row) for row in rows]
+        from .presence import Presence
+        affected = Presence._read(db).get('fact_invalidations', {}).get(fact_id, [])
+        if not affected or 'item_details' not in {row[1] for row in db.execute('PRAGMA table_info(wf_actions)')}:
+            return result
+        for row in db.execute("SELECT id, action, status, resume_id, item_details FROM wf_actions WHERE action='profile_publish' AND status IN ('authorized','uncertain') ORDER BY id"):
+            publication = json.loads(row["item_details"])
+            if {'topic': publication['topic'], 'version': publication['version']} in affected:
+                item = dict(row)
+                item.pop('item_details')
+                item['publication'] = publication
+                result.append(item)
+        return sorted(result, key=lambda item: item['id'])
 
     def _fact_state(self, db, fact_id):
         fact = dict(db.execute("SELECT * FROM resume_facts WHERE id=?", (fact_id,)).fetchone())
