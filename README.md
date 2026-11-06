@@ -26,7 +26,7 @@ contratação nem execução contínua quando a sessão da IA termina.
 
 ## Da configuração ao acompanhamento
 
-![Fluxo de cima para baixo: configurar, preparar, buscar e avaliar, candidatar, acompanhar e analisar o resultado. Depois, continuar buscando ou encerrar. LinkedIn, GitHub e treino de entrevistas são apoios opcionais.](docs/assets/fluxo-guiado.png)
+![Três fases da esquerda para a direita: prepare seu perfil, candidate-se às vagas e acompanhe os retornos. Depois, continue buscando ou encerre. LinkedIn, GitHub e treino de entrevistas são apoios opcionais.](docs/assets/fluxo-guiado.png)
 
 A ordem da imagem ajuda a entender o percurso. Durante a execução, a IA
 intercala novas buscas com os retornos dos processos em andamento: você não
@@ -41,12 +41,9 @@ da busca. Comparação de propostas entra quando você quiser analisar uma ofert
 <details>
 <summary>Ler o fluxo em texto</summary>
 
-1. Configurar: a IA pergunta uma coisa por vez para definir dados, filtros, salário e permissões.
-2. Preparar: vocês revisam o currículo para aprovação. Você informa as fontes ou pede ajuda para encontrar opções e escolhe os links.
-3. Buscar e avaliar: a IA pesquisa vagas e confere compatibilidade, duplicidade, empresas e sinais de risco.
-4. Candidatar: preenche formulários, anexa o currículo e envia dentro das permissões aprovadas.
-5. Acompanhar: associa e-mails às candidaturas e cuida dos prazos. Complementos e testes com auxílio permitido seguem as autorizações; etapas pessoais ficam com você.
-6. Analisar o resultado: registra o retorno. Se houver proposta, ajuda a comparar condições e preparar a negociação, com premissas explícitas.
+1. Prepare: a IA pergunta uma coisa por vez para definir dados, filtros, salário e permissões. Vocês revisam o currículo para aprovação e escolhem as fontes de vagas. Você pode pedir ajuda para encontrar essas fontes.
+2. Candidate-se: a IA busca vagas e confere compatibilidade, duplicidade, empresas e sinais de risco. Preenche formulários, anexa o currículo e envia dentro das permissões aprovadas.
+3. Acompanhe: a IA associa e-mails às candidaturas, cuida dos prazos e registra os resultados. Complementos e testes com auxílio permitido seguem as autorizações; etapas pessoais ficam com você. Se houver proposta, ajuda a comparar condições e preparar a negociação, com premissas explícitas.
 
 Continuar significa iniciar outra rodada de busca, sem repetir a configuração.
 Encerrar acontece quando o objetivo combinado é atingido ou você pede para parar.

@@ -6,7 +6,7 @@ Todas as conversas e endereços das demonstrações são fictícios.
 | Arquivo | Dimensões | Origem e finalidade |
 |---|---|---|
 | `assets/carreira-guiada-cover.png` | 2172 × 724 | Capa original gerada com a ferramenta integrada de imagens. |
-| `assets/fluxo-guiado.png` | 1024 × 1536 | Diagrama ilustrado original, gerado com a ferramenta integrada de imagens, com seis etapas de cima para baixo, dois desfechos e apoio opcional separado. |
+| `assets/fluxo-guiado.png` | 1586 × 992 | Diagrama editorial original, gerado com a ferramenta integrada de imagens, com três fases em cores distintas, dois desfechos e apoio opcional separado. |
 | `assets/inicio-guiado.gif` e `.png` | 2240 × 1400 | Conversa fictícia no terminal do Claude Code, do início à aprovação do perfil. |
 | `assets/candidatura-guiada.gif` e `.png` | 2240 × 1400 | Conversa fictícia no Codex CLI, da busca ao preenchimento, aprovação, confirmação e retomada. |
 | `assets/curriculo-guiado.gif` e `.png` | 2240 × 1400 | Conversa com uma IA genérica e prévia fictícia do currículo, dos fatos à versão aprovada. |
@@ -30,13 +30,13 @@ substituição exige nova revisão da imagem e dos metadados antes de atualizar
 essa referência. As outras imagens aceitam apenas os blocos necessários ao
 desenho e à animação.
 
-O diagrama usa uma coluna com seis cartões numerados e setas para baixo:
-configurar, preparar, buscar e avaliar, candidatar, acompanhar e analisar o
-resultado. A única bifurcação mostra continuar pela busca ou encerrar por
-objetivo atingido ou pedido para parar. LinkedIn, GitHub e treino de entrevistas
-ficam numa faixa opcional, fora da sequência. O texto do README explica que
-novas buscas e retornos são intercalados durante a execução. A imagem explica
-o processo e não representa uma interface do produto.
+O diagrama organiza três fases da esquerda para a direita: preparação em
+violeta, candidaturas em azul e acompanhamento em laranja. Os números, títulos
+e setas também indicam a sequência, sem depender apenas das cores. O fundo é
+branco, com ilustrações de traço e espaço entre as colunas. Continuar ou encerrar
+aparecem abaixo do percurso, junto do apoio opcional de LinkedIn, GitHub e treino
+de entrevistas. A imagem e o README explicam que novas buscas e retornos são
+intercalados. O desenho explica o processo e não representa uma interface do produto.
 
 ## Recriar as demonstrações
 
@@ -64,17 +64,17 @@ terceiros ou marcas de plataformas de vagas.
 
 ## Direção do diagrama
 
-Edição pela ferramenta integrada de imagens, usando o original como referência.
-Briefing final: "Refazer o fluxo em uma única coluna, de cima para baixo, com
-seis etapas numeradas e textos curtos. Preservar o papel claro, o verde escuro
-e os detalhes em verde-lima. Manter as ilustrações pequenas e as letras grandes.
-Depois da última etapa, mostrar dois desfechos: continuar a busca ou encerrar.
-Colocar LinkedIn, GitHub e treino de entrevistas em uma faixa de apoio opcional,
-sem setas ligadas ao percurso. Não usar zigue-zague, conectores cruzados,
-capturas de aplicativos ou controles de interface. Indicar que o progresso
-fica salvo para parar e retomar."
+Edição pela ferramenta integrada de imagens, substituindo a composição anterior.
+Briefing final: "Criar um diagrama editorial horizontal, com fundo branco e
+três fases sem caixas: Prepare em violeta, Candidate-se em azul e Acompanhe em
+laranja. Usar tipografia grande, ilustrações simples de traço e bastante espaço.
+Ligar os títulos com duas setas discretas da esquerda para a direita. Explicar
+que a busca continua enquanto os retornos chegam. Abaixo, separar os desfechos
+Continuar e Encerrar, seguidos do apoio opcional de LinkedIn, GitHub e treino
+de entrevistas. Remover cartões, sombras, texturas e enfeites. Não representar
+uma interface de aplicativo."
 
-O arquivo final tem resolução nativa de 1024 × 1536 pixels, sem ampliação
+O arquivo final tem resolução nativa de 1586 × 992 pixels, sem ampliação
 artificial. Foi conferido visualmente e pela estrutura PNG, preservando o
 bloco de proveniência C2PA. O conteúdo de cada etapa tem uma alternativa em
 texto no README.
