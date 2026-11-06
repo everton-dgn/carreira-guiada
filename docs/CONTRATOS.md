@@ -100,11 +100,40 @@ são escritos antes do registro final; uma falha de disco pode deixar um arquivo
 órfão privado, sem transformá-lo em versão aprovada. Nunca envie um arquivo
 apenas porque ele apareceu no diretório.
 
+## Treinos de entrevistas
+
+O agente usa `start --focus practice`, sem exigir onboarding, e os comandos
+`practice catalog`, `show` e `status`. A pessoa conversa normalmente.
+`Practice(root)` usa armazenamento privado aditivo. `catalog()`, `get()` e
+`status(session_id=None)` são leituras e não criam `.job`. `choose(decision)`
+aceita `now`, `later` ou `skip`. `start(track, mode, context=None, area=None,
+level=None, short=False, question_ids=None)` inicia uma sessão. As trilhas são
+`rh`, `presentation`, `behavioral`, `technical`, `coding`, `system_design`,
+`international` e `negotiation`; modos: `coach` e `mock`. `question_ids` permite
+um ensaio focado nos IDs do catálogo. Código e arquitetura têm contexto
+fictício inicial quando nenhum é fornecido.
+
+Para a pergunta atual, use `hint(session_id, question_id)`, `answer(session_id, question_id, text)`, `skip(session_id, question_id)` e `advance(session_id, question_id)`. Uma nova resposta cria versão e preserva as anteriores. `feedback(session_id, question_id, version, strengths, improvements, suggestion, exercise)` registra texto criado pelo modelo para a versão atual. No simulado, só depois das perguntas. `end_questions(session_id)` encerra a etapa antecipadamente e permite a devolutiva. `finish(session_id, report, next_steps)` guarda relatório, distinguindo conclusão de encerramento antecipado. `get()` permite acessar sessões, histórico e relatório; `status()` fornece `decision`, `session_id`, `phase`, `next_step`, `message` e `question` para retomar.
+
+Os comandos CLI recebem esses mesmos argumentos por JSON via entrada padrão;
+`show` corresponde a `get()` e `end-questions` a `end_questions()`. Para pausar
+somente o treino, use `practice choose` com `decision: later`. Pergunta e
+respostas já ficam salvas no treino. Preserve o checkpoint da campanha se
+ela continuar; use fase `practice` apenas se esse for o ponto geral de retomada.
+A busca de vagas pode continuar.
+Para voltar ao treino, use `decision: now`; não encerre as perguntas.
+
+Use `stop` somente quando a pessoa pedir para parar toda a execução. Nesse caso,
+ações externas abertas ficam incertas e exigem conferência no destino. Após
+pedido explícito de retomar tudo, use `resume-work`; isso não resolve esses
+resultados incertos. Depois do relatório, abra outra sessão para ensaiar de
+novo; as anteriores permanecem disponíveis.
+
 ## Operação e evidências
 
 `Practice(root)` guarda escolhas, sessões, tentativas versionadas e feedback
 no mesmo banco privado. Não exige perfil nem autoriza ações. As oito trilhas,
-estados e comandos estão em [ENTREVISTAS.md](ENTREVISTAS.md). `start --focus
+estados e comandos estão em [treinos de entrevistas](#treinos-de-entrevistas). `start --focus
 practice` permite entrada direta. `status` contém resposta e contexto privados.
 
 `DueDiligence(root)` registra pareceres imutáveis de sites, empresas e vagas.
@@ -137,7 +166,7 @@ Outro `draft` com fatos atuais e nova confirmação em `finish` são necessário
 `publication(payload)` confere o vínculo do texto atual, versão, seção, destino
 e visibilidade, sem autorizar nem publicar. A ação externa `profile_publish`
 passa por `Workflow.authorize`, `check` e `complete`; o contrato está em
-[presença profissional](PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
+[presença profissional](OPERACAO.md#publicação-de-perfis).
 
 `Workflow.check(action_id, {owner, generation})` é a conferência imediatamente
 anterior ao efeito externo. Recusa autorização expirada, incerta, de outro
@@ -161,7 +190,7 @@ do navegador pelo Python; os registros não substituem essa conferência.
 `phase`, `summary`, `next_action` e `needs_user`, com data UTC acrescentada pelo
 controle. É uma nota de retomada, separada das evidências de cada ação.
 `state()` inclui `checkpoint` e `browser` para expor a última nota e o orçamento
-de abas, sem afirmar execução ativa. [Procedimento completo](ACOMPANHAMENTO.md).
+de abas, sem afirmar execução ativa. [Procedimento completo](OPERACAO.md#progresso-e-abas).
 
 `Workflow(root)` em `scripts/job/workflow.py` coordena o banco implementado em
 `scripts/candidaturas/`. Seus payloads completos estão nas docstrings.
@@ -196,6 +225,10 @@ de abas, sem afirmar execução ativa. [Procedimento completo](ACOMPANHAMENTO.md
   `resume()` muda a geração; executores antigos não ganham nova autorização.
 - `ingest_email(payload)` identifica mensagem por provedor, conta e ID,
   vincula oportunidade e etapa e mantém duplicatas sem novo envio.
+  Repetir uma mensagem com a mesma oportunidade e chave de etapa atualiza os
+  metadados fornecidos, inclusive prazo com fuso, enquanto a etapa estiver
+  aberta. Não troca seu tipo, estado ou responsável, nem reabre uma etapa
+  encerrada. Omitir o prazo preserva o valor anterior.
 - `cleanup_rules(payload)` define categorias de mensagens que podem ir à
   lixeira; sem payload, consulta. Oferta, entrevista e teste são preservados.
 

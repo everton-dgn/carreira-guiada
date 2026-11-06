@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Início do README mais direto, com exemplos para pesquisar vagas, criar um
+  currículo, treinar entrevistas e retomar o progresso em linguagem comum.
+- Guias de acompanhamento, perfis profissionais e entrevistas voltados ao
+  candidato; protocolos técnicos reunidos na documentação do agente.
+- Orientação de atualização com cópia de segurança privada e conferência do
+  progresso, além da permissão de publicação de perfis no onboarding.
+- Prazos confirmados posteriormente por e-mail atualizam a etapa já vinculada,
+  sem duplicar mensagens ou mudar seu estado. Tipos contraditórios e prazos
+  sem fuso são recusados; etapas encerradas permanecem preservadas.
+- Regressões e jornada fictícia cobrem a confirmação posterior do prazo,
+  incluindo parada, retomada e retorno de candidatura sem envio real.
+
 ## 0.7.0 - 2026-11-06
 
 - Atividades podem ser acrescentadas à campanha sem reiniciar a meta, a data

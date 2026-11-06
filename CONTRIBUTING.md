@@ -47,12 +47,8 @@ Mudanças no fluxo externo também passam pela [suíte de navegador](docs/VALIDA
 Ela usa Chromium headless e serviços fictícios locais. As dependências do grupo
 `browser` são opcionais para quem usa o projeto e necessárias para essa suíte.
 
-Configure sua identidade Git com um e-mail de privacidade do GitHub se não
-quiser expor o endereço pessoal. Nome e e-mail dos commits são públicos.
-Confira também a identidade usada pela ferramenta que fará o merge. A
-configuração local não controla um merge criado pela interface do GitHub.
-Para manter uma identidade pública específica, prepare o merge localmente e
-confira seus metadados antes de publicá-lo, conforme o [guia de releases](docs/RELEASES.md).
+Nome e e-mail dos commits são públicos. Escolha a identidade que deseja usar
+antes de contribuir; um endereço de privacidade do GitHub é opcional.
 
 ## Abrir o pull request
 

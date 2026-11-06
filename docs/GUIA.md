@@ -120,6 +120,12 @@ conexões. Limites da conta, sessão expirada, CAPTCHA ou decisão pessoal ainda
 podem exigir sua participação. A IA preserva a vaga afetada e continua as
 demais. Diga `parar` a qualquer momento.
 
+Você pode ampliar a campanha depois. Por exemplo: "inclua os retornos por
+e-mail neste objetivo" ou "quero aplicar a melhoria do LinkedIn que aprovei".
+A IA confirma a atividade, confere as permissões e preserva o período e as
+candidaturas já contadas. Publicar um texto ou responder uma mensagem continua
+exigindo sua aprovação específica.
+
 ## Uma rodada de vagas
 
 Quer apenas ver vagas agora? Diga isso. A IA prepara os filtros e os links;
@@ -198,3 +204,28 @@ serviço devem ser respeitadas, sem tentativas de contorno.
 
 Você pode continuar preparando o perfil mesmo quando uma integração estiver
 indisponível. [Mais dúvidas](FAQ.md) · [Privacidade](PRIVACIDADE.md).
+
+## Atualizar sem perder o progresso
+
+Se já usa o Carreira Guiada, abra a pasta que contém seu progresso e diga:
+
+> Quero atualizar o Carreira Guiada. Pare a execução, preserve meus dados e
+> faça uma cópia de segurança local antes de alterar os arquivos. Depois
+> confira se meu perfil, currículos e histórico continuam disponíveis.
+
+A IA confere a versão instalada, explica a atualização e prepara uma cópia
+privada, inclusive dos arquivos ocultos. Ela só deve copiar os dados quando
+nenhuma outra sessão estiver gravando neles. Guarde a pasta anterior até
+conferir a atualização; não publique nem envie a cópia de segurança.
+
+Se baixou um ZIP novo, não apague a pasta antiga nem comece outro cadastro
+achando que o anterior desapareceu. Seus registros continuam na instalação
+que você já usava. Mostre as duas pastas à IA e peça que confira a atualização
+antes de continuar. Copiar só o arquivo do banco deixa currículos e outros
+materiais privados para trás.
+
+Ao terminar, a IA deve conferir o perfil, a integridade dos currículos, o
+histórico e as pendências. Você escolhe quando retomar a campanha. Se houver
+erro, mantenha a execução parada e preserve as duas cópias para diagnóstico.
+O projeto não tem atualizador automático nem transferência automática entre
+computadores. [Entenda onde ficam seus dados](PRIVACIDADE.md).

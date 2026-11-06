@@ -30,6 +30,9 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
   e confirmação de envio.
 - Retornos: vínculo de e-mail, lembretes repetidos, formulário complementar,
   questionário pessoal, rascunho aprovado, agendamento e resposta negativa.
+  Prazo confirmado depois atualiza a mesma etapa sem duplicar a mensagem;
+  tipo contraditório e prazo sem fuso são recusados, e etapas encerradas
+  permanecem intactas. O percurso completo inclui essa confirmação posterior.
 - Interrupções: sessão expirada, resultado incerto, parada, retomada,
   autorização antiga e consulta parcial da caixa postal.
 - Privacidade: recusa de dados sensíveis nos registros operacionais e
