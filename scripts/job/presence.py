@@ -16,11 +16,22 @@ def _source(topic, source):
     if source != 'candidate_text':
         parsed = urlsplit(source)
         domain = 'linkedin.com' if topic == 'linkedin' else 'github.com'
-        if (parsed.scheme != 'https' or parsed.hostname not in (domain, 'www.' + domain)
+        host = parsed.hostname or ''
+        allowed_host = host in (domain, 'www.' + domain) or (topic == 'linkedin' and host.endswith('.linkedin.com'))
+        if (parsed.scheme != 'https' or not allowed_host
                 or parsed.username or parsed.password or parsed.query or parsed.fragment
                 or parsed.port not in (None, 443) or not parsed.path.strip('/')):
             raise ValueError('Use o link HTTPS do perfil, sem rastreadores ou credenciais, ou candidate_text para texto fornecido pela pessoa.')
     return source
+
+
+def _link(review):
+    return review.get('link') or (review.get('source') if review.get('source') != 'candidate_text' else None)
+
+
+def _archive(state, topic, previous):
+    if previous.get('content'):
+        state.setdefault('history', {}).setdefault(topic, []).append(dict(previous))
 
 
 class Presence:
@@ -63,9 +74,13 @@ class Presence:
             if state['decision'] != 'now' or topic not in state['topics']:
                 raise ValueError('A revisão deste perfil ainda não foi escolhida pela pessoa.')
             previous = state['reviews'].get(topic, {})
-            if previous.get('source') != source:
-                state['reviews'][topic] = {'source': source, 'content': None,
-                                          'version': previous.get('version', -1) + 1, 'reviewed': False}
+            link = None if source == 'candidate_text' else source
+            if previous and (link is None or _link(previous) == link):
+                previous['link'] = _link(previous)
+                return
+            _archive(state, topic, previous)
+            state['reviews'][topic] = {'source': source, 'link': link, 'content': None,
+                                      'version': previous.get('version', -1) + 1, 'reviewed': False}
         return self._save(change)
 
     def draft(self, topic, content, source):
@@ -77,7 +92,9 @@ class Presence:
             previous = state['reviews'].get(topic, {})
             if previous.get('content') == content and previous.get('source') == source:
                 return
-            state['reviews'][topic] = {'content': content, 'source': source,
+            _archive(state, topic, previous)
+            link = _link(previous) if source == 'candidate_text' else source
+            state['reviews'][topic] = {'content': content, 'source': source, 'link': link,
                                       'version': previous.get('version', 0) + 1, 'reviewed': False}
         return self._save(change)
 

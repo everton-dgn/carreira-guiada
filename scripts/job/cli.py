@@ -165,10 +165,16 @@ def onboarding(root, focus='prepare'):
     else:
         message = "Seu perfil e currículo estão prontos. Vou conferir o acesso aos sites para seguir com o que combinamos. Se precisar de login, eu abro a página e explico o próximo passo."
         next_step = "execution_readiness"
-    saved = bool(data.get('sections') or intake['mode'] or versions or presence['decision'])
+    saved = bool(data.get('sections') or intake['mode'] or versions or presence['decision'] or resumes.sources() or resumes.facts())
     welcome = 'Encontrei seu progresso salvo. Quer continuar de onde parou ou revisar sua preparação? Revisar preserva as respostas e só muda o que você corrigir.' if saved else None
+    labels = {'curriculum_input': 'receber ou criar o currículo', 'curriculum_intake': 'continuar as informações profissionais',
+              'identity': 'dados de contato', 'preferences': 'preferências de trabalho', 'sources': 'fontes de vagas',
+              'permissions': 'permissões', 'connections': 'conexões de e-mail', 'profile_approval': 'conferir o perfil',
+              'resume_approval': 'revisar o currículo', 'professional_presence': 'revisão opcional de LinkedIn e GitHub',
+              'execution_readiness': 'conferir conexões e continuar o objetivo'}
     return {"message": message, "next_step": next_step, "question": question, "profile": status,
             "intake": intake, "presence": presence, "approved_resumes": approved,
+            "resume_hint": 'Próxima etapa: ' + labels[next_step] + '.' if saved else None,
             "welcome_back": welcome, "resume_options": ['continue', 'review'] if saved else [],
             "automatic_execution_started": False}
 
@@ -307,7 +313,9 @@ def dispatch_workflow(workflow, root, args):
 
 def render(value):
     if isinstance(value, dict) and value.get("message"):
-        return value.get('welcome_back') or value['message']
+        if value.get('welcome_back'):
+            return value['welcome_back'] + '\n' + value['resume_hint']
+        return value['message']
     return json.dumps(value, ensure_ascii=False, indent=2)
 
 

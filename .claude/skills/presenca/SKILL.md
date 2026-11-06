@@ -18,7 +18,9 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
    Esses links não entram automaticamente nas fontes de busca de vagas.
    Salve o link imediatamente com `presence source`, usando `topic` e `source`,
    antes da leitura externa. Na retomada, consulte `presence show` e reaproveite
-   o endereço já dado, sem pedir a mesma informação novamente.
+   `reviews[topic].link` já dado, sem pedir a mesma informação novamente.
+   O link fica separado de `source`, que pode ser `candidate_text` quando o
+   rascunho veio de texto colado. Preserve ambos; versões antigas ficam em `history`.
 3. Se o perfil estiver indisponível, use o texto fornecido pela pessoa, com
    `source: candidate_text`. Explique o limite da análise. Não contorne login,
    bloqueio de automação ou privacidade para obter o perfil.

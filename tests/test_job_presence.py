@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.job.cli import onboarding
+from scripts.job.cli import onboarding, render
 from scripts.job.presence import Presence
 from scripts.job.profile import Profile
 
@@ -51,6 +51,32 @@ class PresenceTests(unittest.TestCase):
         self.presence.draft('github', 'Sugestões fictícias.', 'https://github.com/example')
         self.assertEqual(self.presence.status()['reviews']['github']['version'], 1)
         self.assertEqual([p.name for p in self.root.iterdir()], ['.job'])
+
+    def test_pasted_text_keeps_regional_link_and_review_history(self):
+        self.presence.choose('now', ['linkedin'], 'Quero revisar o LinkedIn.')
+        link = 'https://br.linkedin.com/in/pessoa-exemplo'
+        self.presence.source('linkedin', link)
+        self.presence.draft('linkedin', 'Sugestões baseadas no texto da pessoa.', 'candidate_text')
+        self.presence.finish('linkedin', 1, 'Conferi as sugestões.')
+        self.presence.source('linkedin', link)
+        saved = Presence(self.root).get()['reviews']['linkedin']
+        self.assertEqual(saved['link'], link)
+        self.assertEqual(saved['source'], 'candidate_text')
+        self.assertEqual(saved['version'], 1)
+        self.assertTrue(saved['reviewed'])
+        self.presence.draft('linkedin', 'Sugestões corrigidas.', 'candidate_text')
+        state = self.presence.get()
+        self.assertFalse(state['reviews']['linkedin']['reviewed'])
+        self.assertEqual(state['history']['linkedin'][0], saved)
+        self.assertEqual(state['reviews']['linkedin']['link'], link)
+        with self.assertRaises(ValueError):
+            self.presence.source('linkedin', 'https://linkedin.com.evil.example/in/person')
+
+    def test_plain_start_shows_next_step_with_one_resume_question(self):
+        Profile(self.root).answer('identity', 'name', 'Pessoa Exemplo')
+        text = render(onboarding(self.root))
+        self.assertIn('Próxima etapa: dados de contato.', text)
+        self.assertEqual(text.count('?'), 1)
 
     def test_browser_budget_is_bounded_and_preserves_existing_mode(self):
         profile = Profile(self.root)
