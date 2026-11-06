@@ -446,6 +446,8 @@ explícita e exclusiva; nunca dois escritores. A skill
   texto, versão e destino conforme [presença profissional](docs/PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
 - Releia o estado antes e depois de cada gravação. Falha de gravação bloqueia
   novas ações externas dependentes; pesquisa e leitura continuam.
+- Na retomada, `action show <id>` recupera a intenção histórica e o destino
+  para conferência. Essa consulta nunca autoriza repetir uma ação.
 - Nunca grave documento, credencial, corpo integral de e-mail ou endereço
   pessoal em evidência.
 

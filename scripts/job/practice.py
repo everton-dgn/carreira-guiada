@@ -14,7 +14,8 @@ from .practice_questions import CATALOG, EXERCISES, HINTS, LABELS
 _ANSWER_ASSIGNMENT = re.compile(r"(?i)\b(?:password|passwd|senha|token|cookie|secret|segredo|api[_ -]?key|chave(?: de api)?|access[_ -]?key|client[_ -]?secret)\s*([:=])((?:[^\n;!?.]|\.(?=\S))*)")
 # Prose markers: a conceptual description reads as a phrase, not as a value.
 _CONNECTORS = frozenset('a de do da dos das com sem para por e ou em no na nos nas que of with for and or the in to'.split())
-_CONCEPTS = frozenset(('jwt', 'opaco', 'opaque', 'httponly', 'samesite', 'csrf', 'assinado', 'signed', 'criptografado', 'encrypted', 'hash', 'bcrypt', 'argon2', 'rotacionada', 'rotacionado'))
+_CONCEPTS = frozenset(('jwt', 'opaco', 'opaque', 'httponly', 'samesite', 'csrf', 'assinado', 'signed', 'criptografado', 'criptografada', 'encrypted', 'hash', 'bcrypt', 'argon2', 'guardada', 'armazenada', 'rotacionada', 'rotacionado'))
+_TECHNICAL_IDENTIFIER = re.compile(r'(?i)(?:sha-?(?:1|224|256|384|512)|[hre]s(?:256|384|512)|argon2(?:id|i|d)?|oauth2)\Z')
 _ANSWER_CREDENTIAL = re.compile(
     r"\beyJ[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_-]*"
     r"|\bBearer\s+[A-Za-z0-9._~+/=-]{16,}"
@@ -32,7 +33,7 @@ def _looks_secret(value):
     if value[:1] in ('"', "'", '`'):
         return True
     letters, digits = re.search(r'[A-Za-z]', value), re.search(r'\d', value)
-    return bool(letters and digits and len(value) >= 8) or len(value) >= 20
+    return bool(letters and digits and len(value) >= 6 and not _TECHNICAL_IDENTIFIER.fullmatch(value)) or len(value) >= 20
 
 
 def _conceptual(separator, clause):

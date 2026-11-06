@@ -23,7 +23,7 @@ from zipfile import ZipFile
 
 MAX_BYTES = 15 * 1024 * 1024
 _SECRET = re.compile(r"(?i)\b(?:password|senha|token|cookie|secret|api[_ -]?key|cpf|rg)\s*[:=]\s*\S+")
-_IMPORT_DOCUMENT = re.compile(r"(?i)\b(?:cpf|rg|cnh|passaporte|passport)\b\s*(?:n[º°o.]*\s*)?[:=]?\s*\d|\b\d{3}\.\d{3}\.\d{3}-\d{2}\b")
+_IMPORT_DOCUMENT = re.compile(r"(?i)\b(?:cpf|rg|cnh|passaporte|passport)\b\s*(?:n[º°o.]*\s*)?[:=]?\s*\d|\b\d{3}\.?\d{3}\.?\d{3}-\d{2}\b")
 _IMPORT_BLOCKED = (
     "O arquivo não foi importado porque parece conter documento de identidade, senha ou código de acesso. "
     "Nada dele foi copiado e suas respostas anteriores continuam salvas. O arquivo original fica onde está. "

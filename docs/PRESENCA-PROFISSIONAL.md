@@ -96,7 +96,8 @@ em `presence draft.content` somente o texto exato a publicar naquela seção.
 Mostre o texto, o link, a conta autenticada, a seção e a visibilidade observada.
 Confirme que a conta pertence à pessoa e preserve o conteúdo anterior fora do
 registro operacional, em `.job/presence-notes/`, com arquivo exclusivo por
-versão e permissões restritas. Separe diagnóstico e cópia do conteúdo anterior
+versão, diretório com modo `0700` e arquivos com modo `0600`, sem seguir links
+simbólicos nem sobrescrever notas existentes. Separe diagnóstico e cópia do conteúdo anterior
 do texto fornecido pela pessoa. Não use `presence source` para essas notas:
 alterar a fonte invalida o rascunho. `presence finish` registra a revisão;
 a autorização de publicação é uma confirmação separada para aquele conteúdo.

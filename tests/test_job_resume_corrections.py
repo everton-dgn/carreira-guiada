@@ -35,6 +35,10 @@ class PracticeAnswerFilterTests(Base):
         for text in ('Usaria token: JWT de curta duração com renovação.',
                      'cookie: HttpOnly e SameSite para a sessão.',
                      'senha: hash bcrypt com salt.',
+                     'senha: guardada com hash no cofre.',
+                     'senha: criptografada no banco.',
+                     'senha: hash Argon2id com salt.',
+                     'token: JWT assinado com RS256.',
                      'chave de API: rotacionada a cada 90 dias.',
                      'token: opaco, de vida curta.',
                      'A senha fica com hash lento, nunca em texto puro.',
@@ -56,6 +60,7 @@ class PracticeAnswerFilterTests(Base):
                    'token: abc com contexto', 'token: abcdefghijklmnop usado em produção',
                    'token: opaco com abc12345', 'token: JWT de exemplo abc12345',
                    'senha: hash bcrypt com abc12345',
+                   'token: JWT e hunter2', 'senha: hash com hunter2',
                    'cookie: abc def', 'secret: abcdef.', 'token: abc. Depois explico o resto do fluxo',
                    'token: abcdef, de exemplo', 'token:', 'client_secret = de para com']
         for text in samples:
@@ -89,6 +94,8 @@ class BlockedImportTests(Base):
                         'Pessoa Exemplo\nRG=12.345.678-9\nAtendimento.\n',
                         'Pessoa Exemplo\nsenha: exemplo-ficticio\n',
                         'Pessoa Exemplo\nCPF 000.000.000-00\n',
+                        'Pessoa Exemplo\nCPF 000000000-00\n',
+                        'Pessoa Exemplo\nDocumento 000000000-00\n',
                         'Pessoa Exemplo\nRG 12.345.678-9\n',
                         'Pessoa Exemplo\nDocumento 000.000.000-00\n'):
             with self.subTest(content=content):
