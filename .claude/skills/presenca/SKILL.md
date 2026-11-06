@@ -36,12 +36,17 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
    Separe fatos confirmados de sugestões. Se não houver projetos, ajude a
    apresentar o que existe; não invente repositórios ou experiência.
 5. Salve com `presence draft`: `topic`, `content`, `source` (link HTTPS limpo ou
-   `candidate_text`). Leia `presence show` somente para retomar o texto privado.
+   `candidate_text`) e `fact_ids` com os fatos ativos e confirmados usados.
+   Use `[]` somente quando não houver dependência de fatos do currículo;
+   omitir o campo mantém proveniência desconhecida, por compatibilidade.
+   Leia `presence show` somente para retomar o texto privado.
    Mostre uma seção por vez. Cada alteração gera nova versão e retira a
    confirmação de revisão anterior.
    Use o material salvo e os fatos atuais do currículo. Quando uma data ou
-   experiência for corrigida depois, confira as sugestões afetadas antes de
-   apresentá-las como prontas; não mantenha informação antiga no perfil.
+   experiência for corrigida depois, as sugestões dependentes perdem a
+   aprovação. Textos antigos sem proveniência também voltam para revisão.
+   Prepare outro rascunho com os fatos atuais antes de chamar `finish`;
+   não aprove novamente o texto invalidado sem refazê-lo.
 6. Quando a pessoa conferir, use `presence finish` com `topic`, `version` e
    `confirmation`. Isso conclui a revisão local e nunca autoriza publicação.
    Para aplicar, mostre texto exato, conta, destino e visibilidade e obtenha
@@ -49,7 +54,9 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
    Sem ferramenta ou permissão do serviço, guie a pessoa na aplicação manual.
    Para publicação pela IA, siga o [contrato de publicação](../../../docs/PRESENCA-PROFISSIONAL.md#contrato-de-publicação):
    perfil aprovado, objetivo contendo `profile_publish`, sessão conferida e
-   autorização por item. Prepare uma seção por vez; o último `draft.content`
+   autorização por item. Se faltar a atividade no objetivo, confirme sua
+   inclusão e use `goal-extend`, preservando a campanha e suas contagens.
+   Prepare uma seção por vez; o último `draft.content`
    contém somente o texto a publicar, com versão novamente revisada em `finish`.
    Chame `action authorize` com `publication` e, imediatamente antes do efeito,
    `action check <id>`. Uma revisão local nunca substitui esses registros.

@@ -281,6 +281,15 @@ class FactCorrectionTests(Base):
         self.manager.revoke_fact(self.old, 'candidate:resposta-3', True)
         self.assertEqual(self.status(self.approved), 'retired')
 
+    def test_legacy_actions_with_new_presence_review_keep_working(self):
+        from scripts.job.presence import Presence
+        presence = Presence(self.root)
+        presence.choose('now', ['github'], 'Revisar o perfil fictício.')
+        presence.draft('github', 'Experiência fictícia.', 'candidate_text', [self.old])
+        presence.finish('github', 1, 'Conferi o texto.')
+        self.test_open_authorization_is_reported_and_preserved()
+        self.assertEqual(presence.status()['pending'], ['github'])
+
 
 class IntakeConsistencyTests(Base):
     def setUp(self):

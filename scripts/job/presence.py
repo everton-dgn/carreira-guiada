@@ -5,7 +5,7 @@ import json
 from urllib.parse import urlsplit
 
 from .profile import Profile
-from .resumes import _text
+from .resumes import ResumeManager, _text
 
 TOPICS = ('linkedin', 'github')
 PUBLICATION_SECTIONS = {
@@ -60,9 +60,11 @@ class Presence:
         with self.profile._db() as db:
             return self._read(db)
 
-    def _save(self, change):
+    def _save(self, change, validate=None):
         with self.profile._db(True) as db:
             state = self._read(db)
+            if validate is not None:
+                validate(db)
             change(state)
             db.execute('CREATE TABLE IF NOT EXISTS job_presence (id INTEGER PRIMARY KEY CHECK(id=1), value TEXT NOT NULL)')
             db.execute('INSERT OR REPLACE INTO job_presence VALUES (1, ?)', (json.dumps(state, ensure_ascii=False),))
@@ -107,20 +109,32 @@ class Presence:
                     state.setdefault('materials', {})[topic] = new_material
         return self._save(change)
 
-    def draft(self, topic, content, source):
+    def draft(self, topic, content, source, fact_ids=None):
         source = _source(topic, source)
         content = _text(content, 'as sugestões para o perfil', 50_000)
+        if fact_ids is not None:
+            if (not isinstance(fact_ids, list) or any(type(item) is not str for item in fact_ids)
+                    or len(set(fact_ids)) != len(fact_ids)):
+                raise ValueError('Informe uma lista de identificadores únicos de fatos confirmados.')
+            fact_ids = list(fact_ids)
+        def validate(db):
+            for fact_id in fact_ids or []:
+                exists = db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_facts'").fetchone()
+                row = db.execute('SELECT confirmed FROM resume_facts WHERE id=?', (fact_id,)).fetchone() if exists else None
+                if not row or row[0] != 1 or ResumeManager._revocation(db, fact_id):
+                    raise ValueError('Use somente identificadores exatos de fatos atuais e confirmados.')
         def change(state):
             if state['decision'] != 'now' or topic not in state['topics']:
                 raise ValueError('A revisão deste perfil ainda não foi escolhida pela pessoa.')
             previous = state['reviews'].get(topic, {})
-            if previous.get('content') == content and previous.get('source') == source:
+            if (previous.get('content') == content and previous.get('source') == source
+                    and previous.get('fact_ids') == fact_ids):
                 return
             _archive(state, topic, previous)
             link = _link(previous) if source == 'candidate_text' else source
             state['reviews'][topic] = {'content': content, 'source': source, 'link': link,
-                                      'version': previous.get('version', 0) + 1, 'reviewed': False}
-        return self._save(change)
+                                      'version': previous.get('version', 0) + 1, 'reviewed': False, 'fact_ids': fact_ids}
+        return self._save(change, validate)
 
     def finish(self, topic, version, confirmation):
         if topic not in TOPICS or type(version) is not int:

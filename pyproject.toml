@@ -1,6 +1,6 @@
 [project]
 name = "carreira-guiada"
-version = "0.6.0"
+version = "0.7.0"
 description = "Automatize a busca de emprego, o currículo e as candidaturas com seu modelo de IA"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -19,4 +19,7 @@ package = false
 prerelease = false
 
 [dependency-groups]
+browser = [
+    "playwright>=1.58,<2",
+]
 docs = ["pillow>=11"]

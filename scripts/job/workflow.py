@@ -59,6 +59,7 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _SCHEMA = (
     "CREATE TABLE IF NOT EXISTS wf_control (id INTEGER PRIMARY KEY CHECK(id=1), generation INTEGER NOT NULL, stopped INTEGER NOT NULL, stopped_at TEXT, stop_reason TEXT, resumed_at TEXT, updated_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_goals (version INTEGER PRIMARY KEY, status TEXT NOT NULL, summary TEXT NOT NULL, criteria TEXT NOT NULL, profile_version INTEGER, created_at TEXT NOT NULL, superseded_at TEXT)",
+    "CREATE TABLE IF NOT EXISTS wf_goal_amendments (id INTEGER PRIMARY KEY, goal_version INTEGER NOT NULL REFERENCES wf_goals(version), add_actions TEXT NOT NULL, user_confirmation TEXT NOT NULL, created_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_opportunities (job_id INTEGER PRIMARY KEY REFERENCES jobs(id), source_key TEXT NOT NULL, record TEXT NOT NULL, vacancy TEXT NOT NULL, evaluation TEXT, evaluated_profile_version INTEGER, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_capabilities (id INTEGER PRIMARY KEY, kind TEXT NOT NULL, provider TEXT NOT NULL, account TEXT NOT NULL, status TEXT NOT NULL, checked_at TEXT NOT NULL, valid_until TEXT NOT NULL, agent_provider TEXT, evidence TEXT NOT NULL, created_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_actions (id TEXT PRIMARY KEY, action TEXT NOT NULL, dedupe_key TEXT NOT NULL, status TEXT NOT NULL, owner TEXT NOT NULL, generation INTEGER NOT NULL, job_id INTEGER, step_id INTEGER, store_owner TEXT, message_row INTEGER, capability_id INTEGER NOT NULL, profile_version INTEGER NOT NULL, permission TEXT NOT NULL, user_confirmation TEXT, evaluation TEXT, resume_id TEXT, resume_sha256 TEXT, item_details TEXT, goal_version INTEGER NOT NULL, authorized_at TEXT NOT NULL, expires_at TEXT NOT NULL, completed_at TEXT, evidence TEXT, evidence_source TEXT, evidence_url TEXT, checked_at TEXT, reason TEXT, resolved_by TEXT, updated_at TEXT NOT NULL)",
@@ -344,6 +345,33 @@ class Workflow:
             store.conn.execute("INSERT INTO wf_goals(version,status,summary,criteria,profile_version,created_at) VALUES(?,?,?,?,?,?)", (version, "active", summary, json.dumps(criteria, sort_keys=True), profile_version, _stamp(now)))
             return {**self._goal(store.conn), "unchanged": False}
 
+    def extend_goal(self, payload: dict) -> dict:
+        """Adiciona ações ao objetivo ativo sem alterar sua identidade ou conceder permissões."""
+        p = _fields(payload, {"goal_version", "add_actions", "user_confirmation"},
+                    ("goal_version", "add_actions", "user_confirmation"))
+        version = _int(p["goal_version"], "goal_version", 1, 2**63 - 1)
+        actions = p["add_actions"]
+        if (not isinstance(actions, list) or not actions
+                or any(not isinstance(action, str) or action not in ACTIONS for action in actions)
+                or len(set(actions)) != len(actions)):
+            raise ValueError("add_actions: lista não vazia de ações válidas, sem repetição")
+        confirmation = _text(p["user_confirmation"], "user_confirmation", limit=500)
+        store = self._writer()
+        with store.transaction():
+            active = self._goal(store.conn)
+            if active is None:
+                raise ValueError("objetivo: não há objetivo ativo")
+            if active["version"] != version:
+                raise ValueError("goal_version: objetivo ativo foi substituído ou versão está desatualizada")
+            criteria = active["criteria"]
+            added = [action for action in ACTIONS if action in actions and action not in criteria["actions"]]
+            if added:
+                criteria["actions"] = [action for action in ACTIONS if action in criteria["actions"] or action in added]
+                store.conn.execute("UPDATE wf_goals SET criteria=? WHERE version=?", (json.dumps(criteria, sort_keys=True), version))
+                store.conn.execute("INSERT INTO wf_goal_amendments(goal_version,add_actions,user_confirmation,created_at) VALUES(?,?,?,?)",
+                                   (version, json.dumps(added), confirmation, _stamp(self._now())))
+            return {**self._goal(store.conn), "added_actions": added, "unchanged": not added}
+
     def opportunity(self, payload: dict) -> dict:
         """Registra uma vaga (oportunidade), nunca uma candidatura.
 
@@ -490,6 +518,13 @@ class Workflow:
             conn = store.conn if store else None
             tables = _tables(conn) if conn else set()
             control, goal = self._control(conn), self._goal(conn)
+            if goal is not None:
+                goal["amendments"] = []
+                if "wf_goal_amendments" in tables:
+                    for row in conn.execute("SELECT id, add_actions, user_confirmation, created_at FROM wf_goal_amendments WHERE goal_version=? ORDER BY id", (goal["version"],)):
+                        amendment = dict(row)
+                        amendment["add_actions"] = json.loads(amendment["add_actions"])
+                        goal["amendments"].append(amendment)
             result = {"initialized": conn is not None, "control": control, "goal": goal, "progress": None, "ledger": None,
                       "counts": {"opportunities": 0, "actions": {}, "messages": 0}, "pending": [], "capabilities": [], "mail_coverage": None, "runner": None}
             if conn is not None:
@@ -744,6 +779,9 @@ class Workflow:
         accounts = sections.get("connections", {}).get("accounts", [])
         now = self._now()
         with store.transaction():
+            if action == 'profile_publish':
+                # Revalidate the captured payload while fact writers are excluded.
+                Presence(self.root).publication(details)
             self._expire(store, now)
             control = self._control(store.conn)
             if control["stopped"] or generation != control["generation"]:

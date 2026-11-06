@@ -67,8 +67,10 @@ confirmação e use `resume fact-replace` com `fact_id`, `text`, `source`,
 `confirmed: true` e motivo opcional. Para retirar, use `resume fact-revoke`
 com `fact_id`, origem `candidate:referência` e `confirmed: true`. O histórico
 permanece; não use fatos `replaced` ou `revoked` em outro rascunho. Gere novamente
-e peça nova aprovação de cada versão em `retired_versions`. Confira sugestões de
-LinkedIn/GitHub que dependiam desse fato. `open_authorizations` exige conferir
+e peça nova aprovação de cada versão em `retired_versions`. As sugestões de
+LinkedIn/GitHub dependentes voltam para revisão, assim como textos antigos
+sem vínculo de fatos. Consulte `presence status` e prepare novos rascunhos
+com os fatos atuais antes de pedir aprovação. `open_authorizations` exige conferir
 o destino, pois a correção local não desfaz um possível envio anterior.
 
 Se a pessoa pular todos os tópicos, prepare um currículo inicial com o nome,

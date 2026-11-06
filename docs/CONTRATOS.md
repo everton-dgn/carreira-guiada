@@ -72,7 +72,8 @@ combina esse progresso com o perfil, sem repetir as perguntas respondidas.
   fato confirmado e marca o anterior como substituído. `revoke_fact(fact_id,
   source, confirmed, reason=None)` retira um fato por pedido da pessoa. Ambos
   exigem `confirmed: true` e preservam o histórico e os arquivos. A alteração
-  dos fatos, das referências do questionário e das versões dependentes ocorre
+  dos fatos, das referências do questionário, das versões dependentes e das
+  sugestões de presença profissional que os usavam ocorre
   na mesma transação. A tabela de revogações é aditiva, compatível com bancos
   anteriores. `facts()` informa `status` e `replaced_by`.
 - As correções retornam `retired_versions` e `open_authorizations`. Versões
@@ -80,6 +81,10 @@ combina esse progresso com o perfil, sem repetir as perguntas respondidas.
   precisam ser refeitas e aprovadas. Autorizações abertas continuam registradas:
   confira possíveis efeitos no destino antes de resolver `confirmed` ou
   `not_received`. Não tente reenviar apenas porque o currículo mudou.
+  `open_authorizations` também inclui publicações de LinkedIn/GitHub cuja
+  versão foi invalidada, com o payload histórico em `publication`. O vínculo
+  usa os pares de tópico e versão guardados em `fact_invalidations`; uma
+  correção repetida não atribui novos rascunhos à informação antiga.
 - `draft(label, markdown, fact_ids)` exige fatos existentes e confirmados,
   produz PDF, DOCX e Markdown e registra os hashes dos três arquivos.
 - `approve(id)` aprova a versão conferida pela pessoa e substitui a aprovação
@@ -123,6 +128,12 @@ links; `get` retorna o material privado. Nenhuma dessas chamadas autoriza public
 Ele fica em `materials`, separado das sugestões. Alterar o material retira a
 confirmação das sugestões anteriores e preserva `history` e `material_history`.
 O material salvo não vira fato profissional confirmado automaticamente.
+`draft(topic, content, source, fact_ids=None)` vincula os IDs dos fatos ativos
+e confirmados usados no texto. `[]` declara ausência dessa dependência; omitir
+o campo mantém proveniência desconhecida para compatibilidade com registros
+anteriores. Corrigir ou revogar um fato invalida as sugestões vinculadas a ele
+e os textos sem proveniência conhecida, preservando as versões anteriores.
+Outro `draft` com fatos atuais e nova confirmação em `finish` são necessários.
 `publication(payload)` confere o vínculo do texto atual, versão, seção, destino
 e visibilidade, sem autorizar nem publicar. A ação externa `profile_publish`
 passa por `Workflow.authorize`, `check` e `complete`; o contrato está em
@@ -158,6 +169,12 @@ de abas, sem afirmar execução ativa. [Procedimento completo](ACOMPANHAMENTO.md
 - `configure_goal(payload)` registra escopo e critérios; meta e prazo são
   opcionais no modo chat. Um objetivo diferente exige substituir a versão
   explicitamente. Contagens usam oportunidades únicas e filtros atuais.
+- `extend_goal({goal_version, add_actions, user_confirmation})` acrescenta
+  atividades ao objetivo ativo. Preserva versão, início, meta, período,
+  portais, contagens e autorizações ainda válidas. A versão deve ser a atual;
+  repetir uma adição já presente não cria outro registro. `state().goal.amendments`
+  mostra as adições e suas confirmações. Não altera permissões, não retoma
+  uma execução parada e não dispensa autorização individual de uma ação.
 - `opportunity(payload)` registra vaga e aliases. ID de candidatura não
   substitui ID público de oportunidade. Conflitos impedem ações.
 - `decide_opportunity(payload)` registra ausência aceita pela pessoa para uma

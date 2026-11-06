@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## 0.7.0 - 2026-11-06
+
+- Atividades podem ser acrescentadas à campanha sem reiniciar a meta, a data
+  de início ou a contagem de candidaturas. Permissões e parada são preservadas.
+- Corrigir ou retirar um fato do currículo também invalida os textos de
+  LinkedIn/GitHub que o utilizam, com histórico e nova revisão obrigatória.
+- Publicações pendentes afetadas pela correção aparecem para conferência.
+  A autorização revalida o texto dentro da transação de escrita.
+- Testes com Chromium headless percorrem portal e webmail fictícios locais:
+  upload de PDF, recibos, resposta, formulário complementar e retomada no dia
+  seguinte sem duplicidade. O novo job participa da aprovação da CI.
+- Guias explicam a ampliação da campanha, os vínculos entre fatos e textos,
+  os limites da simulação e a conferência da autoria antes de publicar merges.
+
 ## 0.6.0 - 2026-11-06
 
 - Publicação opcional de textos aprovados no LinkedIn e GitHub com consentimento
