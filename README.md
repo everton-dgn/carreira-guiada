@@ -26,9 +26,11 @@ contratação nem execução contínua quando a sessão da IA termina.
 
 ## Da configuração ao acompanhamento
 
-![Fluxo ilustrado: início, perfil e currículo, fontes verificadas, busca e avaliação, preenchimento e envio, retornos, preparação para entrevistas, comparação de propostas e resultado. Uma nova rodada volta à busca.](docs/assets/fluxo-guiado.png)
+![Fluxo de cima para baixo: configurar, preparar, buscar e avaliar, candidatar, acompanhar e analisar o resultado. Depois, continuar buscando ou encerrar. LinkedIn, GitHub e treino de entrevistas são apoios opcionais.](docs/assets/fluxo-guiado.png)
 
-A IA intercala novas buscas com os retornos dos processos em andamento.
+A ordem da imagem ajuda a entender o percurso. Durante a execução, a IA
+intercala novas buscas com os retornos dos processos em andamento: você não
+precisa esperar a resposta de uma empresa para buscar outra vaga.
 Ela executa as ações permitidas pelo perfil aprovado; login, decisões pessoais
 e testes que não permitem auxílio ficam com você. O fim de uma rodada dá início
 à próxima. O ciclo encerra quando o objetivo combinado é atingido ou você pede
@@ -39,16 +41,19 @@ da busca. Comparação de propostas entra quando você quiser analisar uma ofert
 <details>
 <summary>Ler o fluxo em texto</summary>
 
-1. A IA conduz o onboarding, uma pergunta por vez.
-2. Vocês definem dados, filtros, salário e permissões, revisam o currículo e conferem a versão para aprovação.
-3. Você informa as fontes ou pede ajuda para encontrar opções verificadas e escolhe os links.
-4. A IA busca e avalia vagas, empresas, compatibilidade e duplicidade.
-5. Preenche formulários, anexa o currículo e envia quando autorizado.
-6. Associa retornos por e-mail às candidaturas; complementos e testes com auxílio permitido seguem as autorizações.
-7. Você pode ensaiar entrevistas, receber feedback e praticar as lacunas. Etapas pessoais ficam com você.
-8. A IA ajuda a comparar propostas e preparar a negociação, com premissas explícitas.
-9. O resultado fica registrado. A busca continua ou o ciclo termina conforme
-   o objetivo e sua decisão.
+1. Configurar: a IA pergunta uma coisa por vez para definir dados, filtros, salário e permissões.
+2. Preparar: vocês revisam o currículo para aprovação. Você informa as fontes ou pede ajuda para encontrar opções e escolhe os links.
+3. Buscar e avaliar: a IA pesquisa vagas e confere compatibilidade, duplicidade, empresas e sinais de risco.
+4. Candidatar: preenche formulários, anexa o currículo e envia dentro das permissões aprovadas.
+5. Acompanhar: associa e-mails às candidaturas e cuida dos prazos. Complementos e testes com auxílio permitido seguem as autorizações; etapas pessoais ficam com você.
+6. Analisar o resultado: registra o retorno. Se houver proposta, ajuda a comparar condições e preparar a negociação, com premissas explícitas.
+
+Continuar significa iniciar outra rodada de busca, sem repetir a configuração.
+Encerrar acontece quando o objetivo combinado é atingido ou você pede para parar.
+O progresso fica salvo para retomar depois.
+
+LinkedIn, GitHub e treino de entrevistas são apoios opcionais, disponíveis
+quando você quiser. Eles não precisam esperar uma resposta de empresa.
 
 </details>
 

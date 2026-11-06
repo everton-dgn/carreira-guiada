@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Diagrama do README reorganizado em seis etapas de cima para baixo, com
+  apoios opcionais separados e desfechos claros para continuar ou encerrar.
+- Alternativa em texto alinhada à imagem, explicando que buscas e retornos
+  são intercalados durante a execução.
+
 ## 0.4.0 - 2026-11-06
 
 ### Novidades
