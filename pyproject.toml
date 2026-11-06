@@ -1,7 +1,7 @@
 [project]
 name = "carreira-guiada"
 version = "0.2.1"
-description = "Busca de vagas e preenchimento de candidaturas guiados por IA, com menos trabalho manual"
+description = "Automatize a busca de emprego, o currículo e as candidaturas com seu modelo de IA"
 license = "MIT"
 license-files = ["LICENSE"]
 readme = "README.md"

@@ -1,9 +1,11 @@
 # Carreira Guiada: guia de candidaturas conduzido no chat
 
-Este projeto ajuda uma pessoa leiga a procurar vagas e enviar candidaturas com
-a ajuda de uma IA, dentro do chat. A pessoa abre a pasta no Codex ou no Claude
-Code, digita `iniciar` e a IA conduz uma etapa curta por vez. Este arquivo é o
-procedimento para o agente. A pessoa não precisa lê-lo.
+Este projeto automatiza a busca de emprego e as candidaturas autorizadas com
+o modelo de IA escolhido pela pessoa. Ela abre a pasta em uma ferramenta
+compatível, digita `iniciar` e a IA conduz o preparo e a execução por objetivo.
+Este arquivo é o procedimento para o agente. A pessoa não precisa lê-lo.
+Claude Code e Codex CLI são exemplos; qualquer ambiente com as capacidades
+necessárias pode ler e seguir o procedimento.
 
 Documentos para a pessoa: [README.md](README.md), [docs/GUIA.md](docs/GUIA.md),
 [docs/ONBOARDING.md](docs/ONBOARDING.md), [docs/CURRICULOS.md](docs/CURRICULOS.md)
@@ -42,6 +44,12 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   O agente localiza o anexo pela própria ferramenta e lista os arquivos da pasta.
 - Confirme fatos somente quando forem necessários para a próxima ação. Não
   repita confirmações já salvas.
+- Ofereça uma dica curta de [docs/ONBOARDING.md](docs/ONBOARDING.md#dicas-durante-o-preparo)
+  quando ajudar a pergunta atual. Não apresente toda a lista, crie perguntas
+  extras nem trate conselho como consentimento. No início, explique a escolha
+  de modelo em uma frase conforme [docs/MODELOS.md](docs/MODELOS.md): Astra ou
+  Opus para preparar, Terra 6.1 com esforço médio ou alto para operar. Essas
+  opções são sugestões; continue com o modelo disponível e não exija troca.
 - Diante de erro, explique em uma frase o que aconteceu e qual é a próxima ação
   concreta da pessoa ou do agente. Sem jargão, sem traceback.
 - Login é sempre feito pela pessoa, no navegador dela ou na integração
@@ -393,6 +401,19 @@ explícita e exclusiva; nunca dois escritores. A skill
   pessoal em evidência.
 
 ## Parada, retomada e continuidade
+
+Em um pedido operacional de buscar ou candidatar-se, persista o objetivo com
+`goal` e aproveite o modo objetivo nativo do aplicativo quando disponível e
+permitido pelo ambiente. Consulte e reutilize o objetivo do mesmo trabalho;
+crie um somente quando não houver outro incompatível e a ferramenta autorizar.
+Não invente comando de ativação, meta, prazo ou orçamento. Confira o estado
+retornado antes de afirmar que o modo está ativo. Uma consulta de status ou
+o onboarding isolado não inicia uma campanha.
+
+Com permissões `allow`, execute as ações cobertas sem pedir confirmação a cada
+vaga ou lote. `ask`, `deny`, ações pessoais e aprovações específicas continuam
+valendo. O objetivo nativo complementa o registro local, sem substituir suas
+verificações. Não instale executor nem agendamento para simular esse recurso.
 
 - Ordem explícita de parar prevalece. Chame `stop`, preserve formulários,
   registre o estado e encerre com relatório. Novas ações ficam revogadas.

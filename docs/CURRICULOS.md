@@ -42,6 +42,22 @@ para administrativo). Cada uma é aprovada separadamente. Você combina qual usa
 em cada área, e a IA guarda a escolha. Se aparecer uma dúvida que vocês ainda
 não resolveram, ela pergunta.
 
+## Exemplo do percurso
+
+![Prévia fictícia de um currículo organizado com a ajuda da IA.](assets/curriculo-guiado.png)
+
+1. A pessoa informa que atendia clientes na Empresa Exemplo e organizava
+   pedidos. Confirma nome, contato e período antes de usar esses fatos.
+2. A IA organiza contato, resumo, experiência e formação em seções legíveis.
+3. A frase informal vira "Atendimento a clientes e organização de pedidos".
+   Nenhum número, resultado ou habilidade é acrescentado sem confirmação.
+4. A pessoa confere as datas e aprova aquela versão.
+5. O controle gera PDF, Word e texto da versão aprovada, preservando o original.
+
+O GIF no README ilustra esse percurso com dados fictícios e digitação
+progressiva. A prévia do documento é uma ilustração; o arquivo real usa a
+formatação do gerador local e deve ser conferido antes do envio.
+
 ## O que a IA não faz com o currículo
 
 - Não envia para nenhum lugar fora de uma candidatura que você autorizou.

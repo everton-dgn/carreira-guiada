@@ -9,6 +9,15 @@ Leia [AGENTS.md](../../../AGENTS.md). A pessoa não precisa entender arquivos,
 comandos nem configurações. Conduza a próxima etapa com uma pergunta curta e
 um exemplo. Evite apresentar uma lista de tarefas para ela executar sozinha.
 
+No primeiro uso, ofereça uma orientação breve de
+[modelos](../../../docs/MODELOS.md) antes da pergunta atual: um modelo mais
+capaz ajuda a preparar perfil e currículo; a operação pode usar Terra 6.1 em
+esforço médio ou alto. Não faça a pessoa escolher um modelo para conseguir
+começar. Use o que estiver disponível e ofereça ajuda se ela pedir a troca.
+Ao longo do preparo, use as [dicas do onboarding](../../../docs/ONBOARDING.md#dicas-durante-o-preparo)
+quando forem pertinentes, uma por vez. Preserve a pergunta indicada pelo
+controle, sem adicionar questionário técnico ou repetir dicas já dadas.
+
 ## Conferir o que já existe
 
 1. Use `./job doctor --json`. Se faltar `uv`, explique a instalação necessária,

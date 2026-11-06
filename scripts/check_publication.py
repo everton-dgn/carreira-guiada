@@ -20,7 +20,7 @@ EMAIL = re.compile(r"[A-Za-z0-9_.+%-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})")
 AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed original. Retains its generated C2PA provenance.
-REVIEWED_COVER_SHA256 = "f3ca5d6166c7b2cbd5047a498af8109aadac7342c782d24bf31aef9b897c7692"
+REVIEWED_COVER_SHA256 = "5a422f0605a6c28b422c623ba20d2f4376e91526de60890510257f64f5833321"
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),
     "chave privada": re.compile(r"-----BEGIN (?:(?:RSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY|PGP PRIVATE KEY BLOCK)-----"),

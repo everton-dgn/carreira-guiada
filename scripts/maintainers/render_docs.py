@@ -143,7 +143,7 @@ def main():
           ("as ferramentas disponíveis antes da busca.", TEXT)],
          "O preparo é guiado. Sites e e-mail ainda dependem de conexões disponíveis."),
     ])
-    render("candidatura-guiada", "Codex CLI", "codex", "Menos busca manual. Menos formulários repetidos.", [
+    render("candidatura-guiada", "Codex CLI", "codex", "Automatize a busca e o preenchimento de candidaturas", [
         ([("> Procure vagas nas fontes que aprovei.", GREEN),
           ("", DIM), ("Codex: Vou usar seus filtros e conferir", TEXT),
           ("as oportunidades antes de preparar candidaturas.", TEXT),

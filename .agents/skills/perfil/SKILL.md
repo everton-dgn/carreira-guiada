@@ -39,6 +39,11 @@ Para quem não entende níveis ou tipos de contrato, explique uma opção por ve
 com o efeito prático e confirme a interpretação. Não confunda "não sei o que
 significa" com "não tenho preferência".
 
+Se uma dica de [ONBOARDING.md](../../../docs/ONBOARDING.md#dicas-durante-o-preparo)
+ajudar a decisão atual, explique-a antes da pergunta, em uma frase. Diferencie
+preferência de exigência, mínimo privado de pretensão pública e autorização
+da rodada de confirmação por vaga. Não transforme a dica em resposta da pessoa.
+
 ## Traduzir as respostas para o sistema
 
 Campos como `salary.floors` identificam uma pergunta dentro do objeto `salary`.

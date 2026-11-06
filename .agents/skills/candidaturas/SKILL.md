@@ -27,7 +27,11 @@ escolha, pergunte se quer "procurar e enviar o que for compatível" ou "só me
 mostrar as vagas". Persista com
 `./job goal`. Não invente meta numérica, prazo ou orçamento. Se já existir um
 objetivo ativo incompatível, explique o conflito antes de substituir. Objetivo
-nativo do chat, quando existir, é complemento.
+nativo do chat, quando existir, é complemento. Confira e reutilize esse modo
+para a campanha quando permitido pelo ambiente, seguindo a seção de
+continuidade do `AGENTS.md`. Não declare o modo ativo sem observar seu estado.
+Com permissões `allow`, siga os próximos itens autorizados sem perguntar
+"quer continuar?" ao fim de cada lote. Não infira permissão a partir do objetivo.
 
 ## Ciclo
 

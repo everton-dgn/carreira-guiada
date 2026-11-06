@@ -1,19 +1,20 @@
-![Carreira Guiada: menos busca manual, menos formulários repetidos.](docs/assets/carreira-guiada-cover.png)
+![Carreira Guiada: automatize sua busca de emprego. Sua IA cuida das candidaturas.](docs/assets/carreira-guiada-cover.png)
 
 # Carreira Guiada
 
-Seu objetivo é conseguir um emprego. Você não precisa passar horas procurando
-vagas manualmente e repetindo seus dados em formulários intermináveis.
+**Automatize sua busca de emprego com IA.** Prepare seu currículo, encontre
+vagas compatíveis e deixe a IA preencher formulários, enviar candidaturas
+autorizadas e acompanhar os retornos por e-mail.
 
-Você conta o que procura e confirma seus dados. A IA ajuda a encontrar vagas
-compatíveis, melhorar o currículo, preencher candidaturas e acompanhar os
-retornos, conforme suas permissões e as ferramentas conectadas. Assim, você
-dedica mais tempo às oportunidades que fazem sentido e à preparação para as
-próximas etapas.
+Você define o que procura e até onde a IA pode agir. Ela executa a busca por
+objetivo, continua pelas próximas vagas e salva o progresso, sem exigir que
+você repita seus dados ou peça para continuar a cada lote.
 
-O projeto funciona dentro do **Claude Code ou Codex CLI, no terminal**, e
-também em aplicativos de IA compatíveis. A conversa acontece na ferramenta
-que você escolheu. O Carreira Guiada não tem uma interface gráfica própria.
+Use o modelo de sua escolha em uma ferramenta de IA com acesso a arquivos,
+comandos locais e às integrações necessárias. O projeto é independente de
+fornecedor de LLM. Claude Code e Codex CLI são exemplos de ferramentas, não
+requisitos. A conversa acontece no aplicativo escolhido; o Carreira Guiada
+não tem uma interface gráfica própria.
 
 [Começar](docs/GUIA.md) · [Privacidade](docs/PRIVACIDADE.md) ·
 [Dúvidas comuns](docs/FAQ.md) · [Contribuir](CONTRIBUTING.md) · [Licença MIT](LICENSE)
@@ -24,8 +25,8 @@ contratação nem execução contínua quando a sessão da IA termina.
 
 ## Comece com "iniciar"
 
-1. Baixe o projeto e abra a pasta `carreira-guiada` no seu aplicativo de IA, como Codex
-   ou Claude Code. Ele precisa conseguir ler a pasta e executar ferramentas
+1. Baixe o projeto e abra a pasta `carreira-guiada` no seu aplicativo de IA.
+   Ele precisa conseguir ler a pasta e executar ferramentas
    locais. [Veja o passo a passo](docs/GUIA.md#primeira-vez).
 2. Escreva **iniciar** no chat.
 3. A IA pergunta uma coisa por vez. Anexe seu currículo ou diga que quer
@@ -41,6 +42,48 @@ faltar uma ferramenta, o assistente orienta a instalação autorizada.
 conforme a versão e o tema do terminal.*
 [Ver imagem sem animação](docs/assets/inicio-guiado.png) ·
 [Ler o percurso em texto](docs/ONBOARDING.md)
+
+## Escolha o modelo por etapa
+
+Para configurar o perfil e revisar o currículo, recomendamos começar com um
+modelo mais capaz, como **GPT-6 Astra ou Claude Opus 5.5**. Depois, **GPT-6.1
+Terra com esforço médio (`medium`)** é a sugestão do projeto para a operação;
+use alto (`high`) nos formulários e decisões mais difíceis.
+
+Essas são recomendações, sem bloquear outros modelos. A IA explica as opções
+disponíveis na sua ferramenta e ajuda a começar com o que você já tem.
+[Como escolher e trocar de modelo](docs/MODELOS.md).
+
+## Trabalhe por objetivo
+
+Depois do preparo, você pode dizer:
+
+> Procure vagas compatíveis nas fontes que aprovei e envie as candidaturas
+> permitidas pelo meu perfil. Continue pelas próximas vagas sem me perguntar
+> a cada lote. Use o modo objetivo, se estiver disponível, e me chame quando
+> precisar de uma decisão minha.
+
+A IA confirma o alcance das permissões e usa o modo objetivo (`goal`) quando
+o aplicativo oferece esse recurso. Com pesquisa, preenchimento e envio
+autorizados, a rodada segue sem confirmação por vaga. Em "pergunte antes",
+o envio continua dependendo da sua resposta.
+
+O objetivo é sustentar campanhas longas, inclusive por dias em ambientes que
+mantenham a execução ativa. Limites de uso, autenticação e ações exclusivas da
+pessoa ainda podem exigir intervenção. Um bloqueio isolado fica pendente e
+as outras vagas seguem. [Como funciona a continuidade](docs/GUIA.md#buscar-por-objetivo).
+
+## Prepare um currículo pronto para enviar
+
+A IA organiza suas experiências, melhora a redação e padroniza o documento
+com fatos que você confirmou. Você revisa a versão antes de aprovar os arquivos.
+
+![Simulação da IA organizando fatos, montando um currículo e gerando a versão aprovada.](docs/assets/curriculo-guiado.gif)
+
+*Documento e conversa fictícios. A prévia ilustra o conteúdo do currículo;
+não representa uma tela do Carreira Guiada.*
+[Ver imagem sem animação](docs/assets/curriculo-guiado.png) ·
+[Ler o percurso em texto](docs/CURRICULOS.md#exemplo-do-percurso)
 
 ## Você escolhe onde procurar
 
@@ -69,6 +112,19 @@ A IA explica como copiar um endereço e não escolhe um portal por você.
 conectadas; nenhuma candidatura é enviada pela demonstração.*
 [Ver imagem sem animação](docs/assets/candidatura-guiada.png) ·
 [Entender uma rodada de vagas](docs/GUIA.md#uma-rodada-de-vagas)
+
+## Veja o preenchimento de uma candidatura
+
+Com navegador conectado, a IA abre a vaga, preenche os dados confirmados,
+anexa o currículo aprovado e confere o resultado do envio autorizado.
+
+![Simulação da IA abrindo um portal fictício, digitando nos campos, anexando o currículo e conferindo o recebimento.](docs/assets/portal-guiado.gif)
+
+*Portal fictício, sem acesso a sites reais. Neste exemplo, a pessoa escolheu
+"pergunte antes de enviar". A conversa e o navegador pertencem à ferramenta
+de IA usada; o projeto não instala essas telas.*
+[Ver imagem sem animação](docs/assets/portal-guiado.png) ·
+[Ler o percurso em texto](docs/GUIA.md#exemplo-de-preenchimento-no-portal)
 
 ## Você continua no controle
 
@@ -105,6 +161,7 @@ vários dias nem compatibilidade com todas as interfaces de recrutamento.
 |---|---|
 | Começar do zero | [Guia de início](docs/GUIA.md) |
 | Entender as perguntas | [Onboarding](docs/ONBOARDING.md) |
+| Escolher modelo e esforço | [Modelos e ferramentas](docs/MODELOS.md) |
 | Escolher os links de busca | [Fontes escolhidas por você](docs/FONTES.md) |
 | Criar ou revisar um currículo | [Currículos](docs/CURRICULOS.md) |
 | Entender permissões e dados | [Privacidade](docs/PRIVACIDADE.md) |
