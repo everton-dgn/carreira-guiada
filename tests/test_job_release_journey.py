@@ -110,7 +110,7 @@ class ReleaseJourneyTests(unittest.TestCase):
                  'Conferi no portal: o prazo é amanhã, às 17h de Brasília.')
         local_time = datetime.fromisoformat(self.time).astimezone(timezone(timedelta(hours=-3)))
         deadline = (local_time + timedelta(days=1)).replace(hour=17, minute=0, second=0).isoformat()
-        repeated = self.call('email', data={**email, 'due_at': deadline})
+        repeated = self.call('email', data={**{key: value for key, value in email.items() if key != 'step_kind'}, 'due_at': deadline})
         self.assertTrue(repeated['duplicate'])
         self.assertEqual(repeated['step_id'], message['step_id'])
         step = next(item for item in self.call('steps') if item['id'] == message['step_id'])

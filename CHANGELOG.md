@@ -11,7 +11,8 @@
 - Orientação de atualização com cópia de segurança privada e conferência do
   progresso, além da permissão de publicação de perfis no onboarding.
 - Prazos confirmados posteriormente por e-mail atualizam a etapa já vinculada,
-  sem duplicar mensagens ou mudar seu estado. Tipos contraditórios e prazos
+  sem duplicar mensagens ou mudar seu estado. A omissão do tipo preserva o
+  tipo salvo; tipos explicitamente contraditórios e prazos
   sem fuso são recusados; etapas encerradas permanecem preservadas.
 - Regressões e jornada fictícia cobrem a confirmação posterior do prazo,
   incluindo parada, retomada e retorno de candidatura sem envio real.

@@ -207,11 +207,16 @@ indisponível. [Mais dúvidas](FAQ.md) · [Privacidade](PRIVACIDADE.md).
 
 ## Atualizar sem perder o progresso
 
-Se já usa o Carreira Guiada, abra a pasta que contém seu progresso e diga:
+Antes de alterar a instalação que já usa, dê à IA acesso ao
+[procedimento de atualização da versão nova](OPERACAO.md#atualização-de-uma-instalação-usada).
+Cole o link desse documento no chat ou anexe o arquivo da pasta nova. A versão
+antiga pode não conter essas instruções. Peça:
 
-> Quero atualizar o Carreira Guiada. Pare a execução, preserve meus dados e
-> faça uma cópia de segurança local antes de alterar os arquivos. Depois
-> confira se meu perfil, currículos e histórico continuam disponíveis.
+> Leia primeiro o procedimento de atualização da versão nova que enviei.
+> Quero atualizar a pasta que já uso. Pare a execução e confira que nenhuma
+> outra sessão está gravando nela. Preserve meus dados e faça uma cópia de
+> segurança local antes de alterar os arquivos. Depois confira meu perfil,
+> currículos e histórico.
 
 A IA confere a versão instalada, explica a atualização e prepara uma cópia
 privada, inclusive dos arquivos ocultos. Ela só deve copiar os dados quando
@@ -225,7 +230,10 @@ antes de continuar. Copiar só o arquivo do banco deixa currículos e outros
 materiais privados para trás.
 
 Ao terminar, a IA deve conferir o perfil, a integridade dos currículos, o
-histórico e as pendências. Você escolhe quando retomar a campanha. Se houver
-erro, mantenha a execução parada e preserve as duas cópias para diagnóstico.
+histórico e as pendências, e indicar qual pasta passa a ser a instalação em uso.
+Continue somente nela; a anterior fica como cópia de segurança. Usar as duas
+separadamente pode dividir o histórico e causar candidaturas repetidas.
+Você escolhe quando retomar a campanha. Se houver erro, mantenha a execução
+parada e preserve as duas cópias para diagnóstico.
 O projeto não tem atualizador automático nem transferência automática entre
 computadores. [Entenda onde ficam seus dados](PRIVACIDADE.md).

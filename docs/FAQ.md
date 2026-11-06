@@ -81,10 +81,12 @@ outra tentativa até verificar o resultado anterior. Outras vagas podem seguir.
 
 ## Como atualizar sem perder meus dados?
 
-Abra a pasta que já usa e peça à IA para atualizar com uma cópia de segurança
-local. Não apague a instalação anterior nem copie apenas o banco: currículos
-e outros materiais ficam em arquivos separados. A IA precisa parar as
+Envie primeiro à IA o [procedimento da versão nova](OPERACAO.md#atualização-de-uma-instalação-usada)
+e peça uma atualização com cópia de segurança local. Não apague a instalação
+anterior nem copie apenas o banco: currículos e outros materiais ficam em
+arquivos separados. A IA precisa parar as
 gravações antes da cópia e conferir o progresso depois da atualização.
+Após essa conferência, use somente a pasta indicada como instalação ativa.
 [Siga o passo a passo](GUIA.md#atualizar-sem-perder-o-progresso).
 
 ## Abri a pasta e parece que meu cadastro sumiu

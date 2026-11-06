@@ -115,7 +115,10 @@ fictício inicial quando nenhum é fornecido.
 
 Para a pergunta atual, use `hint(session_id, question_id)`, `answer(session_id, question_id, text)`, `skip(session_id, question_id)` e `advance(session_id, question_id)`. Uma nova resposta cria versão e preserva as anteriores. `feedback(session_id, question_id, version, strengths, improvements, suggestion, exercise)` registra texto criado pelo modelo para a versão atual. No simulado, só depois das perguntas. `end_questions(session_id)` encerra a etapa antecipadamente e permite a devolutiva. `finish(session_id, report, next_steps)` guarda relatório, distinguindo conclusão de encerramento antecipado. `get()` permite acessar sessões, histórico e relatório; `status()` fornece `decision`, `session_id`, `phase`, `next_step`, `message` e `question` para retomar.
 
-Os comandos CLI recebem esses mesmos argumentos por JSON via entrada padrão;
+Os comandos de alteração recebem os argumentos por JSON via entrada padrão.
+`practice catalog`, `practice show` e `practice status` não leem essa entrada.
+Na CLI, `status` consulta a sessão selecionada por padrão, sem aceitar um ID.
+Para recuperar outra sessão, use `practice show` e localize seu ID em `sessions`.
 `show` corresponde a `get()` e `end-questions` a `end_questions()`. Para pausar
 somente o treino, use `practice choose` com `decision: later`. Pergunta e
 respostas já ficam salvas no treino. Preserve o checkpoint da campanha se
@@ -228,7 +231,9 @@ de abas, sem afirmar execução ativa. [Procedimento completo](OPERACAO.md#progr
   Repetir uma mensagem com a mesma oportunidade e chave de etapa atualiza os
   metadados fornecidos, inclusive prazo com fuso, enquanto a etapa estiver
   aberta. Não troca seu tipo, estado ou responsável, nem reabre uma etapa
-  encerrada. Omitir o prazo preserva o valor anterior.
+  encerrada. Omitir `step_kind` preserva o tipo de uma etapa existente; em
+  etapa nova, o padrão é `category`. Tipo explícito contraditório é recusado.
+  Omitir o prazo preserva o valor anterior.
 - `cleanup_rules(payload)` define categorias de mensagens que podem ir à
   lixeira; sem payload, consulta. Oferta, entrevista e teste são preservados.
 

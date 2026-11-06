@@ -39,8 +39,9 @@ O candidato encontra o pedido em linguagem comum no
 é manual e assistido; não existe comando de atualização ou migração automática.
 
 1. Identifique a pasta em uso, a versão instalada e a versão pretendida. Leia
-   as notas da versão antes de propor alterações. Explique o que muda e use
-   a autorização da pessoa para aquele escopo.
+   este procedimento da versão nova e suas notas antes de propor alterações;
+   não presuma que a instalação antiga já contém estas instruções. Explique o
+   que muda e use a autorização da pessoa para aquele escopo.
 2. Pare a campanha e confira que nenhuma outra sessão ou processo está
    gravando no armazenamento. Uma ordem de parada não encerra outras sessões
    automaticamente. Não copie um banco em uso nem encerre processos alheios.
@@ -59,7 +60,12 @@ O candidato encontra o pedido em linguagem comum no
    currículos íntegros, contagens e pendências com o estado anterior. Uma tela
    de primeiro uso inesperada é motivo para investigar a pasta, não para apagar
    o banco ou cadastrar a pessoa de novo.
-6. Relate a versão conferida, o progresso preservado e o local privado da cópia.
+6. Após a conferência, identifique a única instalação ativa para a pessoa e
+   para as sessões que continuarão o trabalho. Em atualização por ZIP, a nova
+   pasta passa a ser a instalação ativa; a antiga permanece somente como cópia
+   de segurança e não deve retomar campanhas. Bancos copiados não sincronizam
+   entre si e podem permitir candidaturas repetidas se usados separadamente.
+   Relate a versão conferida, o progresso preservado e o local privado da cópia.
    Retome somente quando a pessoa pedir. Se houver falha, preserve original e
    cópia sem tentar downgrade sobre dados já modificados.
 

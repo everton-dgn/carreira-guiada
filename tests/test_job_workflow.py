@@ -234,6 +234,30 @@ class WorkflowTests(unittest.TestCase):
         profile.approve(profile.get()["version"])
         self.wf.configure_goal({"summary": "Novo objetivo", "actions": ["apply"], "period_days": 30, "target_applications": 1, "replace_version": 1})
         self.assertEqual(self.wf.state()["progress"]["confirmed_applications"], 0)
+    def test_repeated_email_preserves_custom_step_kind_when_omitted(self):
+        job_id, _ = self.ready()
+        message = {"provider": "gmail", "account": "principal", "message_id": "deadline",
+                   "category": "recruiter_contact", "received_at": iso(self.clock()),
+                   "opportunity_id": job_id, "link_evidence": "Processo fictício conferido",
+                   "step_key": "reply"}
+        first = self.wf.ingest_email({**message, "step_kind": "email_reply"})
+        deadline = self.clock() + timedelta(days=1)
+        repeated = self.wf.ingest_email({**message, "due_at": iso(deadline)})
+        self.assertTrue(repeated["duplicate"])
+        self.assertEqual(repeated["step_id"], first["step_id"])
+        step, = self.wf._writer().list_steps()
+        self.assertEqual(step["kind"], "email_reply")
+        self.assertEqual(datetime.fromisoformat(step["due_at"]), deadline)
+        for change, error in (({"step_kind": "interview"}, "tipo contradiz"),
+                              ({"category": "newsletter"}, "categoria")):
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, error):
+                self.wf.ingest_email({**message, "due_at": iso(deadline + timedelta(days=1)), **change})
+            self.assertEqual(self.wf._writer().list_steps(), [step])
+        new = self.wf.ingest_email({**message, "message_id": "other", "step_key": "new-step"})
+        new_step = next(row for row in self.wf._writer().list_steps() if row["id"] == new["step_id"])
+        self.assertEqual(new_step["kind"], message["category"])
+        self.assertEqual(self.wf._writer().summary()["messages"], 2)
+
     def test_email_duplicate_link_and_individual_cleanup(self):
         job_id, resume = self.ready()
         msg = {"provider": "gmail", "account": "principal", "message_id": "msg-alerta", "category": "job_alert", "received_at": iso(self.clock())}
