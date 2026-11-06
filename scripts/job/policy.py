@@ -25,6 +25,9 @@ range=maximum permanece compatível, mas tem o mesmo efeito de ask: teto
 ou faixa cruzando piso exige confirmação do mínimo; minimum pode descartar. Idiomas required da vaga
 são exigências; os restantes são diferenciais. Languages do perfil registra
 proficiência e required indica exigência de uso daquele idioma na vaga.
+Na vaga, languages=[] declara ausência de requisito de idioma; null indica
+informação não publicada. Esta ausência só aciona missing se o perfil exigir
+uso de algum idioma. Exigência explícita da vaga sempre confere proficiência.
 Ausências nos campos de bloqueio também seguem missing. Sem horas garantidas,
 remuneração horária não é convertida. Ano equivale a 12 meses, sem bônus.
 blocked significa decisão humana pendente; discarded significa incompatível.
@@ -180,7 +183,8 @@ def evaluate(preferences, vacancy):
         if vacancy.get('technologies') is None: absent('Tecnologias ausentes.')
         elif not categories(preferences['technologies']) <= categories(vacancy['technologies']): rejected.append('Tecnologias exigidas ausentes.')
     if vacancy.get('languages') is None:
-        absent('Idiomas da vaga desconhecidos.')
+        if any(lang['required'] for lang in preferences['languages']):
+            absent('Idiomas da vaga desconhecidos.')
     else:
         known = {category(x['name']): x['level'] for x in preferences['languages']}
         offered = {category(x['name']) for x in vacancy['languages']}

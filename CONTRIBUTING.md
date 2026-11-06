@@ -64,6 +64,7 @@ texto alternativo e uma versão estática para animações importantes.
 
 ```sh
 uv run --locked --group docs python scripts/maintainers/render_docs.py
+uv run --locked --group docs python scripts/maintainers/render_journeys.py
 ```
 
 O gerador usa uma fonte de texto (DejaVu Sans ou Arial) e uma monoespaçada

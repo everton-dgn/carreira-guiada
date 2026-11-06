@@ -39,6 +39,11 @@ Para quem não entende níveis ou tipos de contrato, explique uma opção por ve
 com o efeito prático e confirme a interpretação. Não confunda "não sei o que
 significa" com "não tenho preferência".
 
+Se uma dica de [ONBOARDING.md](../../../docs/ONBOARDING.md#dicas-durante-o-preparo)
+ajudar a decisão atual, explique-a antes da pergunta, em uma frase. Diferencie
+preferência de exigência, mínimo privado de pretensão pública e autorização
+da rodada de confirmação por vaga. Não transforme a dica em resposta da pessoa.
+
 ## Traduzir as respostas para o sistema
 
 Campos como `salary.floors` identificam uma pergunta dentro do objeto `salary`.
@@ -91,6 +96,15 @@ uma primeira permissão não significa que as demais foram discutidas.
   endereço de contato quando ela pedir; o agente escolhe o apelido interno.
   Se o serviço não puder ser identificado, pergunte se ela usa Gmail, Outlook
   ou outro, explicando que é o aplicativo onde costuma ler as mensagens.
+  O controle de e-mail atual aceita Gmail e Outlook. Se for outro provedor,
+  explique essa limitação antes da aprovação e ofereça deixar o acompanhamento
+  para depois, mantendo o endereço de contato. Não prometa uma conexão que
+  `capability` não suporta nem troque a conta por conta própria.
+- Sessões de navegador são observadas com `capability`, usando um apelido
+  interno, sem pedir endereço de e-mail nem acrescentar uma conta ao perfil.
+  Reutilize a sessão verificada; peça login só quando o portal exigir. O alias
+  `public` pode representar um formulário que dispensa login. Isso não dispensa
+  autorização da ação, verificação da vaga ou conferência do destino.
 - O modo chat é automático. Não pergunte por executor, duração, ciclos ou
   intervalo. Se a leitura de e-mail foi recusada e não há conta registrada,
   a etapa de conexão é dispensada.

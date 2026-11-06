@@ -9,7 +9,7 @@ durante o uso, a própria IA explica o próximo passo.
 1. Na página do projeto no GitHub, use **Code** e **Download ZIP** para baixar
    os arquivos. Abra o arquivo baixado para extrair a pasta. Ela pode se chamar
    `carreira-guiada-main`; esse nome também funciona.
-2. Abra essa pasta no aplicativo de IA que você usa, como Codex ou Claude Code.
+2. Abra essa pasta no aplicativo de IA que você usa.
    A pasta aberta deve conter `README.md` e `AGENTS.md`.
    Só colar o link do GitHub em um chat comum não dá acesso aos arquivos locais.
 3. No chat desse projeto, escreva **iniciar**.
@@ -22,13 +22,19 @@ que conseguir observar, sem inventar nomes de botões.
 
 O controle local usa macOS ou Linux. Windows nativo não é suportado; WSL ainda
 não foi validado. A IA precisa conseguir ler arquivos e executar ferramentas.
+O modelo pode ser de qualquer fornecedor. Se a ferramenta não ler o projeto
+automaticamente, diga "leia o AGENTS.md desta pasta e me guie pelo início".
+[Como escolher modelo e ferramenta](MODELOS.md).
 
 ## Usando pelo terminal
 
-O terminal é a janela em que você digita comandos. Instale e faça login em
-uma das ferramentas seguindo o guia oficial: [Claude Code](https://code.claude.com/docs/en/quickstart)
+O terminal é a janela em que você digita comandos. Abaixo estão dois exemplos
+de ferramentas compatíveis. Se escolher uma delas, siga o guia oficial:
+[Claude Code](https://code.claude.com/docs/en/quickstart)
 ou [Codex CLI](https://learn.chatgpt.com/docs/codex/cli).
 As contas e permissões pertencem à ferramenta escolhida.
+Em outro aplicativo, use o comando ou a opção de abrir pasta documentada por
+ele. Não precisa instalar esses dois exemplos.
 
 Abra o terminal na pasta que contém a pasta extraída do projeto. Entre na
 pasta do projeto com o comando abaixo, usando o nome que ela realmente tem:
@@ -42,7 +48,7 @@ ZIP. Caso não saiba localizar a pasta, peça ajuda ao assistente que já usa
 e informe o sistema operacional, sem compartilhar senhas.
 Se você já abriu o terminal dentro da pasta do projeto, pule o comando `cd`.
 
-Escolha **um** dos comandos, conforme a ferramenta instalada:
+Se estiver usando um desses exemplos, escolha **um** dos comandos:
 
 ```sh
 claude
@@ -84,7 +90,35 @@ para depois". O currículo pode continuar; a pesquisa espera por essa escolha.
 Você confere o resumo do perfil e aprova o currículo antes de qualquer envio.
 Detalhes das perguntas: [Onboarding](ONBOARDING.md).
 
+## Buscar por objetivo
+
+Com o perfil e o currículo aprovados, você pode dizer:
+
+> Quero que procure vagas compatíveis e envie as candidaturas autorizadas
+> pelo meu perfil. Continue o trabalho por objetivo, sem me perguntar a cada
+> lote. Me chame quando faltar uma decisão que só eu posso tomar.
+
+A IA reaproveita suas permissões. Se você escolheu "pode fazer" para pesquisa,
+preenchimento e envio, ela pode cuidar das próximas vagas sem aprovação por
+candidatura. Se escolheu "pergunte antes", confirma aquela ação quando chegar
+a hora. Responder e-mails, agendar e avaliações mantêm suas regras específicas.
+
+Quando o aplicativo oferece modo objetivo (`goal`), a IA verifica como usá-lo
+e mantém a campanha ativa conforme o recurso disponível. Você não precisa
+saber comandos de controle. Não existe um comando universal de `goal`.
+Sem esse recurso, ela trabalha durante a execução disponível e salva o ponto
+de retomada; uma mensagem de status não comprova execução em segundo plano.
+
+Uma campanha pode atravessar dias se a ferramenta sustentar a execução e as
+conexões. Limites da conta, sessão expirada, CAPTCHA ou decisão pessoal ainda
+podem exigir sua participação. A IA preserva a vaga afetada e continua as
+demais. Diga `parar` a qualquer momento.
+
 ## Uma rodada de vagas
+
+Quer apenas ver vagas agora? Diga isso. A IA prepara os filtros e os links;
+o currículo pode ficar para depois. Só o preenchimento e o envio exigem a
+versão aprovada.
 
 1. Diga o que quer: "só me mostre as vagas" ou "procure vagas e me pergunte
    antes de enviar". Uma permissão de pesquisa não autoriza envio.
@@ -101,10 +135,32 @@ Detalhes das perguntas: [Onboarding](ONBOARDING.md).
 Uma vaga bloqueada por login não impede cuidar de outra. Um envio com resultado
 incerto exige conferência antes de tentar novamente.
 
+## Exemplo de preenchimento no portal
+
+![Portal fictício com campos de candidatura preenchidos pela IA.](assets/portal-guiado.png)
+
+O GIF do README mostra um cenário ilustrativo com perfil, fontes e currículo
+já aprovados e uma ferramenta de navegador conectada:
+
+1. A IA abre a vaga de atendimento da Empresa Exemplo e confere os filtros.
+2. Abre o formulário e digita nome, contato e uma apresentação baseada nos
+   fatos confirmados. Relê os campos após preencher.
+3. Anexa `curriculo-exemplo.pdf`, a versão aprovada para aquela candidatura.
+4. Mostra o resumo e pede autorização, pois a pessoa escolheu "pergunte antes
+   de enviar". Com envio previamente autorizado, essa pergunta é dispensada.
+5. Após a autorização, envia, confere a confirmação e registra o resultado.
+
+O endereço `carreiras.example` é fictício. As telas são ilustrações de um
+portal externo, não uma interface do Carreira Guiada. Nenhum site é acessado
+e nenhum dado é enviado pela animação.
+
 ## Retornos por e-mail
 
 Você decide se quer permitir leitura. Faça login somente na interface da conta
 ou na conexão do aplicativo. Nunca informe senha ou código no chat.
+O controle atual aceita Gmail e Outlook com uma ferramenta conectada.
+Outros provedores podem ser usados como contato no currículo; o acompanhamento
+automático dessas caixas ainda não é suportado.
 
 A IA procura mensagens relacionadas às vagas acompanhadas e verifica a origem.
 Para responder, mostra o destinatário e o texto para sua aprovação. Para

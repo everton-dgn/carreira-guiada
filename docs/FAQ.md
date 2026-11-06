@@ -9,8 +9,16 @@ Se faltar uma ferramenta, ela pede autorização e ajuda a instalar.
 ## Isso é um aplicativo com tela própria?
 
 O Carreira Guiada funciona na conversa da ferramenta de IA escolhida. Os GIFs
-mostram simulações em terminal do Claude Code e do Codex CLI. O projeto não
-instala uma interface gráfica própria.
+mostram conversas, um currículo e um portal externo fictício. Os exemplos de
+Claude Code e Codex CLI não restringem a escolha de ferramenta ou modelo.
+O projeto não instala uma interface gráfica própria.
+
+## Funciona com outros modelos de IA?
+
+Sim, o procedimento é independente de fornecedor. A ferramenta precisa ler
+a pasta e executar os comandos locais; navegador e e-mail precisam das
+conexões correspondentes. Um LLM sem ferramentas não opera os sites por conta
+própria. [Veja os requisitos e as recomendações](MODELOS.md).
 
 ## Onde estão os sites de vagas?
 
@@ -26,12 +34,17 @@ Se não souber um valor, diga isso. A IA não deve inventar informações.
 
 Você pode recusar ou deixar para depois. A consulta depende da sua permissão
 e de uma ferramenta autenticada. A IA nunca pede a senha no chat.
+O acompanhamento atual suporta Gmail e Outlook. Se usa outro provedor,
+mantenha seu endereço como contato e deixe a leitura automática para depois.
 
 ## A IA fica procurando enquanto estou fora?
 
-O trabalho depende de uma execução ativa. Salvar progresso permite retomar,
-mas não mantém o modelo trabalhando após a sessão terminar. Uma janela aberta
-não comprova que há trabalho em execução.
+Com o modo objetivo (`goal`) e execução ativa na ferramenta, a IA pode seguir
+pelas próximas vagas sem pedir que você retome cada lote. Isso depende das
+permissões que você deu, dos limites da conta e das conexões disponíveis.
+Campanhas por dias exigem um ambiente que mantenha essa execução. O objetivo
+salvo na pasta permite retomar; não mantém o modelo rodando após o encerramento
+da sessão. [Como pedir uma campanha](GUIA.md#buscar-por-objetivo).
 
 ## Como parar ou mudar uma resposta?
 

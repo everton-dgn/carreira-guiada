@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## 0.3.0 - 2026-11-05
+
+### Novidades
+
+- Apresentação centrada na automação da busca de emprego, com continuidade
+  por objetivo em aplicativos compatíveis e liberdade de escolha do modelo.
+- Guia de modelos por etapa e dicas durante o onboarding, incluindo a
+  preparação de currículo com Astra ou Opus e a operação com Terra 6.1.
+- Demonstrações animadas de currículo e preenchimento de candidatura em
+  2240 × 1400 pixels, com digitação, versões estáticas e percursos em texto.
+- Início dedicado à pesquisa de vagas, sem exigir um currículo pronto.
+
+### Correções
+
+- Datas de envio separadas das datas de conferência, para contar corretamente
+  as candidaturas confirmadas depois do período da meta.
+- Bloqueios atuais de empresas e plataformas aplicados às etapas posteriores,
+  inclusive em redirecionamentos para outro portal.
+- Currículo aprovado e hash registrados antes do preenchimento, com importação
+  por entrada privada e arquivos criados com permissões restritas.
+- Orientações para currículo colado no chat, sessões de navegador, retomada de
+  formulários e importação de históricos, além dos filtros de idioma ausente.
+
 ## 0.2.1 - 2026-11-05
 
 - Animações de terminal com digitação, respostas progressivas e cursor piscando,

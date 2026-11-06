@@ -32,7 +32,8 @@ def parser():
     commands = main.add_subparsers(dest="command", required=True)
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
-    command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
+    start = command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
+    start.add_argument('--focus', choices=('prepare', 'search'), default='prepare', help='Use search quando a pessoa pedir somente busca, sem preparar currículo agora')
     command("status", "Conferir o progresso e as pendências")
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
@@ -63,8 +64,8 @@ def parser():
     for name in ("list", "sources", "facts", "fact", "draft"):
         subs.add_parser(name, parents=[common])
     imp = subs.add_parser("import", parents=[common])
-    imp.add_argument("--file", type=Path, required=True)
-    imp.add_argument("--label", required=True)
+    imp.add_argument("--file", type=Path, help="Compatibilidade: prefira file e label por JSON via stdin")
+    imp.add_argument("--label")
     approve = subs.add_parser("approve", parents=[common])
     approve.add_argument("id")
     show = subs.add_parser("show", parents=[common])
@@ -87,7 +88,7 @@ def parser():
     return main
 
 
-def onboarding(root):
+def onboarding(root, focus='prepare'):
     from .profile import Profile
     from .resumes import ResumeManager
     from .intake import Intake
@@ -105,7 +106,21 @@ def onboarding(root):
                 approved.append(version["id"])
             except ValueError:
                 pass
-    if not data.get("sections") and not resumes.sources() and not resumes.facts() and not intake["mode"]:
+    if focus == 'search':
+        if not status['approved']:
+            next_step = status.get('next_section') or 'profile_approval'
+            question = status['questions'][0] if status['questions'] else None
+            message = question['question'] + ' ' + question['example'] if question else 'Confira o resumo dos filtros e permissões para aprovar a busca.'
+        elif not data['sections'].get('sources', {}).get('urls'):
+            from .profile import QUESTIONS
+            field, prompt, example = QUESTIONS['sources'][0]
+            next_step = 'sources'
+            question = {'field': field, 'question': prompt, 'example': example}
+            message = prompt + ' ' + example
+        else:
+            next_step = 'execution_readiness'
+            message = 'Seu perfil e suas fontes estão prontos para a busca. Vou conferir as ferramentas; o currículo pode ficar para depois. Nenhum envio foi autorizado por esta consulta.'
+    elif not data.get("sections") and not resumes.sources() and not resumes.facts() and not intake["mode"]:
         message = "Vamos preparar sua busca, uma etapa por vez. Você já tem um currículo? Anexe o arquivo no chat. Se ainda não tiver, diga 'quero criar meu currículo' e eu ajudo a montar."
         next_step = "curriculum_input"
     elif status['next_section'] == 'identity':
@@ -144,7 +159,7 @@ def dispatch(args):
     if not root.is_dir():
         raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
     if args.command == "start":
-        return onboarding(root)
+        return onboarding(root, args.focus)
     if args.command in {"jobs", "steps", "step", "transition"}:
         from .records import ledger
         return ledger(root, args.command, payload() if args.command in {"step", "transition"} else None)
@@ -187,7 +202,14 @@ def dispatch(args):
         if args.action in {"list", "sources", "facts"}:
             return getattr(resumes, args.action)()
         if args.action == "import":
-            return resumes.import_file(args.file, args.label)
+            if args.file is not None:
+                return resumes.import_file(args.file, args.label)
+            data = payload()
+            if set(data) != {'file', 'label'} or not isinstance(data['file'], str) or not data['file'].strip():
+                raise ValueError('Importação: informe file e label por JSON via stdin.')
+            if args.label is not None:
+                raise ValueError('Importação: use label no mesmo JSON do arquivo.')
+            return resumes.import_file(Path(data['file']), data['label'])
         if args.action == "fact":
             data = payload()
             return resumes.add_fact(data.get("text"), data.get("source"), data.get("confirmed"))

@@ -23,6 +23,8 @@ class ProcessTests(unittest.TestCase):
         self.wf.configure_goal({'summary': 'Percurso fictício completo', 'actions': list(support.ACTIONS), 'replace_version': goal['version']})
 
     def authorize(self, action, **extra):
+        if action == 'fill':
+            extra = {'resume_id': self.resume['id'], 'resume_sha256': self.resume['sha256'], **extra}
         return self.wf.authorize({'action': action, 'owner': 'chat:sessao', 'generation': 1,
                                   'channel': {'provider': 'chrome', 'account': 'portal-teste'},
                                   'opportunity_id': self.job, 'user_confirmation': 'Pessoa confirmou esta etapa no cenário fictício', **extra})

@@ -251,23 +251,26 @@ class Workflow:
         profile = Profile(self.root).get()
         preferences = profile.get("sections", {}).get("preferences")
         rows = conn.execute(
-            "SELECT DISTINCT a.job_id, o.vacancy FROM wf_actions a "
+            "SELECT DISTINCT a.job_id, o.vacancy, a.item_details FROM wf_actions a "
             "JOIN wf_opportunities o ON o.job_id=a.job_id "
             "JOIN jobs j ON j.id=a.job_id "
-            "WHERE a.action='apply' AND a.status='confirmed' AND a.checked_at>=? "
+            "WHERE a.action='apply' AND a.status='confirmed' "
             "AND a.goal_version=? AND j.identity_verified=1 "
             "AND NOT EXISTS (SELECT 1 FROM identity_conflicts c WHERE c.job_id=a.job_id)",
-            (since, goal["version"]),
+            (goal["version"],),
         ).fetchall()
-        done = 0
+        done = set()
         for row in rows:
             try:
+                submitted = json.loads(row['item_details'] or '{}').get('submitted_at')
+                if submitted is None or _moment(submitted, 'submitted_at') < _instant(since):
+                    continue
                 if preferences and self._evaluate_for(conn, row['job_id'], preferences, profile['version'], row['vacancy'])['decision'] == 'eligible':
-                    done += 1
+                    done.add(row['job_id'])
             except ValueError:
                 pass  # Perfil incompleto ou vaga sem avaliação válida não conta na meta.
         target = goal["criteria"]["target_applications"]
-        return {"confirmed_applications": done, "target_applications": target, "period_days": period, "reached": done >= target}
+        return {"confirmed_applications": len(done), "target_applications": target, "period_days": period, "reached": len(done) >= target}
 
     def _approved_profile(self):
         try:
@@ -629,11 +632,13 @@ class Workflow:
         message?: {provider, account, message_id} (email_reply/email_trash),
         scope_key?: str (research/email_read; diferencia escopos),
         source_url?: str (obrigatória em research, dentro das fontes aprovadas), resume_id? +
-        resume_sha256? (obrigatórios em apply), user_confirmation?: str (obrigatório
+        resume_sha256? (obrigatórios em fill/apply), user_confirmation?: str (obrigatório
         quando a permissão é ask e SEMPRE em email_reply/schedule/assessment, mesmo com
         allow; resumo da resposta explícita do usuário para este item),
         assistance_rules?: str (obrigatório em assessment: regra da avaliação
-        que permite assistência), reply?: {recipient: "message_sender", content_sha256:
+        que permite assistência), destination_platform?: str (plataforma de destino
+        conferida; obrigatória em etapa complementar com bloqueios de plataforma),
+        reply?: {recipient: "message_sender", content_sha256:
         sha256 do texto exato confirmado, summary: str} (obrigatório em email_reply),
         profile_version?: int, lease_seconds?: 60..3600 (padrão 900)}``.
         Bloqueia: parada, geração antiga, sem objetivo ou ação fora
@@ -644,7 +649,7 @@ class Workflow:
         Retorna ``{action_id, action, status: authorized, owner, generation, expires_at,
         dedupe_key, opportunity_id, profile_version, permission, resume}``.
         """
-        p = _fields(payload, {"action", "owner", "generation", "channel", "opportunity_id", "step_key", "message", "scope_key", "resume_id", "resume_sha256", "user_confirmation", "profile_version", "lease_seconds", "assistance_rules", "reply", "schedule", "source_url"}, ("action", "owner", "generation"))
+        p = _fields(payload, {"action", "owner", "generation", "channel", "opportunity_id", "step_key", "message", "scope_key", "resume_id", "resume_sha256", "user_confirmation", "profile_version", "lease_seconds", "assistance_rules", "reply", "schedule", "source_url", "destination_platform"}, ("action", "owner", "generation"))
         action = p["action"]
         if action not in ACTIONS:
             raise ValueError("action: use " + ", ".join(ACTIONS))
@@ -697,8 +702,13 @@ class Workflow:
                        "summary": _text(reply["summary"], "reply.summary", limit=500)}
         elif p.get("reply") is not None:
             raise ValueError("reply: só se aplica a email_reply")
+        destination = _text(p.get('destination_platform'), 'destination_platform', optional=True, limit=100)
+        if destination is not None:
+            if action not in OPPORTUNITY_ACTIONS | PROCESS_STEP_ACTIONS:
+                raise ValueError('destination_platform: informe somente para uma ação no portal da vaga.')
+            details = {**(details or {}), 'destination_platform': destination}
         resume = None
-        if action == "apply" or p.get("resume_id") is not None:
+        if action in {'fill', 'apply'} or p.get("resume_id") is not None:
             resume = self._approved_resume(p.get("resume_id"), p.get("resume_sha256"))
         accounts = sections.get("connections", {}).get("accounts", [])
         now = self._now()
@@ -717,7 +727,7 @@ class Workflow:
                 raise ValueError(f"objetivo: {action} não faz parte do objetivo ativo")
             job, message, step_id, evaluation = None, None, None, None
             if action in OPPORTUNITY_ACTIONS | PROCESS_STEP_ACTIONS:
-                job = self._eligible_job(store.conn, p.get("opportunity_id"), action, sections, goal, process_action=process_action, profile_version=profile['version'])
+                job = self._eligible_job(store.conn, p.get("opportunity_id"), action, sections, goal, process_action=process_action, profile_version=profile['version'], destination_platform=destination)
                 evaluation = job.pop("evaluation")
             if action in MESSAGE_ACTIONS:
                 message = self._message_for(store.conn, p.get("message"), action)
@@ -808,7 +818,7 @@ class Workflow:
             raise ValueError("currículo: hash informado não corresponde ao PDF aprovado")
         return version
 
-    def _eligible_job(self, conn, job_id, action, sections, goal, *, process_action=False, profile_version=None):
+    def _eligible_job(self, conn, job_id, action, sections, goal, *, process_action=False, profile_version=None, destination_platform=None):
         if type(job_id) is not int:
             raise ValueError("opportunity_id: informe a oportunidade registrada")
         job = conn.execute("SELECT * FROM jobs WHERE id=?", (job_id,)).fetchone()
@@ -829,6 +839,19 @@ class Workflow:
         if process_action:
             if job["state"] != "confirmed":
                 raise ValueError("oportunidade: etapa complementar exige candidatura confirmada")
+            from .policy import category, categories
+            vacancy = json.loads(opp['vacancy'])
+            for setting, field in (('blocked_companies', 'company'), ('blocked_sectors', 'sector'), ('blocked_platforms', 'platform')):
+                blocked = categories(sections['preferences'][setting])
+                value = vacancy.get(field) or (job['company'] if field == 'company' else job['portal'] if field == 'platform' else None)
+                if blocked and (value is None or category(value) in blocked):
+                    raise ValueError('Bloqueio vigente da etapa: ' + field)
+            if sections['preferences']['blocked_platforms'] and destination_platform is None:
+                raise ValueError('destination_platform: confira a plataforma de destino da etapa antes de continuar.')
+        if destination_platform is not None:
+            from .policy import category, categories
+            if category(destination_platform) in categories(sections['preferences']['blocked_platforms']):
+                raise ValueError('Bloqueio: plataforma de destino da etapa')
         if not process_action or action == 'fill':
             if action == "apply" and job["state"] == "confirmed":
                 raise ValueError("duplicata: candidatura já confirmada para esta oportunidade")
@@ -872,8 +895,8 @@ class Workflow:
         declared = [a for a in accounts if a.get("alias") == account]
         if kind == "mail" and not any(str(a.get("provider", "")).casefold() == provider for a in declared):
             raise ValueError("channel: conta de e-mail não declarada no perfil aprovado")
-        if kind == "browser" and not (account == "public" and action == "research") and not declared:
-            raise ValueError("channel: conta não declarada no perfil aprovado (public só serve para research)")
+        # Browser aliases describe an observed session, not a mailbox account.
+        # Its readiness is still required below; every action has its own consent.
         capability = _capability_usable(conn, kind, provider, account, now)
         if capability is None:
             raise ValueError(f"capacidade: {kind} {provider}/{account} sem observação válida; observe a sessão antes")
@@ -888,6 +911,8 @@ class Workflow:
         evidence: str curta sem dados pessoais, evidence_source: destination_page|
         destination_email|destination_listing|agent_report (padrão agent_report),
         checked_at?: ISO com fuso (obrigatório em confirmed/not_received),
+        submitted_at?: ISO com fuso (somente apply confirmado: horário do envio
+        comprovado no destino; ausente fica fora de metas por período),
         evidence_url?: URL https pública, destination?: "trash" (obrigatório em
         email_trash confirmado), resume_sha256?: str}``.
         ``confirmed`` e ``not_received`` exigem fonte ``destination_*``: relato do agente
@@ -898,7 +923,7 @@ class Workflow:
         """
         if not isinstance(action_id, str) or not action_id.startswith("act_"):
             raise ValueError("action_id: informe o ID devolvido por authorize")
-        p = _fields(payload, {"owner", "generation", "outcome", "evidence", "evidence_source", "checked_at", "evidence_url", "destination", "resume_sha256"}, ("owner", "generation", "outcome", "evidence"))
+        p = _fields(payload, {"owner", "generation", "outcome", "evidence", "evidence_source", "checked_at", "submitted_at", "evidence_url", "destination", "resume_sha256"}, ("owner", "generation", "outcome", "evidence"))
         owner, generation = _owner(p["owner"]), _int(p["generation"], "generation", 1, 10**9)
         outcome = p["outcome"]
         if outcome not in OUTCOMES:
@@ -922,6 +947,13 @@ class Workflow:
             row = store.conn.execute("SELECT * FROM wf_actions WHERE id=?", (action_id,)).fetchone()
             if row is None:
                 raise ValueError("action_id: ação não encontrada")
+            submitted = None
+            if p.get('submitted_at') is not None:
+                if row['action'] != 'apply' or outcome != 'confirmed':
+                    raise ValueError('submitted_at: somente para candidatura confirmada.')
+                submitted = _moment(p['submitted_at'], 'submitted_at')
+                if not _instant(row['authorized_at']) <= submitted <= checked:
+                    raise ValueError('submitted_at: o envio deve estar entre a autorização e a conferência.')
             if row["status"] in ("confirmed", "not_received"):
                 if row["status"] == outcome:
                     return {**self._action_view(row), "duplicate": True}
@@ -958,7 +990,10 @@ class Workflow:
                                        'reason': 'A entrevista é feita pela própria pessoa'})
                 if row["action"] == "apply":
                     if outcome == "confirmed":
-                        local_day = datetime.fromisoformat(p["checked_at"].replace("Z", "+00:00")).date().isoformat()
+                        details = json.loads(row['item_details'] or '{}')
+                        details['submitted_at'] = _stamp(submitted) if submitted is not None else None
+                        store.conn.execute('UPDATE wf_actions SET item_details=? WHERE id=?', (json.dumps(details), action_id))
+                        local_day = datetime.fromisoformat(p['submitted_at'].replace('Z', '+00:00')).date().isoformat() if submitted is not None else None
                         self._sync_job(store, row["job_id"], "confirmed", evidence, local_day)
                     else:
                         self._sync_job(store, row["job_id"], "discovered")

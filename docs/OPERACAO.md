@@ -48,8 +48,8 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `intake choose` | Registra `mode: create` ou `mode: import`, conforme a escolha da pessoa. |
 | `intake answer` | Registra `field` e `text` da pergunta profissional. `null` é uma escolha explícita de pular. Cria o fato confirmado uma única vez. |
 | `intake show` e `intake status` | Respostas privadas e próxima pergunta do currículo. `fact_ids` contém somente as respostas atuais para o rascunho. |
-| `evaluate` | `preferences` + payload da vaga; devolve `eligible`, `blocked` ou `discarded` com motivos. |
-| `resume import --file <arquivo> --label <rótulo>` | Importa PDF ou DOCX; preserva original, extrai texto, devolve id e sha256. |
+| `evaluate` | Payload da vaga, direto ou dentro de `vacancy`. Usa as preferências do perfil salvo; devolve `eligible`, `blocked` ou `discarded` com motivos. |
+| `resume import` | Recebe `file` e `label` por JSON via stdin. Importa PDF ou DOCX, preserva original, extrai texto e devolve id e sha256. As flags antigas permanecem por compatibilidade; prefira stdin para não expor o caminho. |
 | `resume sources` | Originais importados. |
 | `resume fact` | Registra fato com origem e confirmação; nunca inventado. |
 | `resume facts` | Fatos registrados. |
@@ -62,7 +62,7 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `decision` | `opportunity_id`, `reasons` atuais e `user_confirmation`; aceita ausência permitida só nessa vaga, sem alterar os filtros gerais. |
 | `capability` | Observação de capacidade (navegador, e-mail) com provedor, apelido, horário, estado, evidência. |
 | `action authorize` | Intenção persistida antes de efeito externo; devolve ID; bloqueia após parada, duplicata e incerteza pendente. |
-| `action complete <id>` | `confirmed`, `uncertain` ou `not_received` com evidência conferida no destino. |
+| `action complete <id>` | `confirmed`, `uncertain` ou `not_received` com evidência do destino. `checked_at` é a conferência; `submitted_at` é o envio comprovado de `apply`, com fuso. Sem este último, não conta na meta do período. |
 | `email` | Ingestão de mensagem ou etapa vinculada; limpeza individual exige ID, conta, ausência de etapa pendente e categoria autorizada. |
 | `stop` | Parada persistida; revoga novas ações. |
 | `resume-work` | Nova geração; revalida estado; não resolve incerteza. |
@@ -79,11 +79,33 @@ e `scripts/job/resumes.py` para os demais. Se `uv` faltar, o atalho `./job`
 imprime a instrução para pedir a instalação à IA; o agente então conduz a
 instalação conforme a seção anterior.
 
+Em pedido apenas de busca, `start --focus search --json` prioriza perfil e
+fontes; currículo não é requisito de pesquisa. No preparo completo, use `start`
+sem essa opção. `connections.accounts` guarda as contas de e-mail autorizadas.
+O canal do navegador usa um alias de sessão observado em `capability`, inclusive
+`public` para páginas que não exigem login. Isso não concede permissões da ação.
+
 Os registros Markdown em `templates/` são formatos portáteis vazios. No uso
 local, o banco é a fonte operacional; não mantenha tabelas paralelas à mão.
-O módulo herdado `scripts.candidaturas.cli` serve para importar registros
+As APIs de `scripts.candidaturas` sustentam o controle atual. Sua CLI legada,
+`scripts.candidaturas.cli`, serve para importar registros
 portáteis de outro candidato, somente a pedido dele. Seu banco padrão também
 fica em `.job/`; não use essa entrada para contornar as autorizações do fluxo.
+Mantenha as tabelas privadas fora da raiz publicável e informe sua pasta por
+`--root` ao importar. Informe também `--db` com o caminho absoluto do
+`.job/control.sqlite3` deste projeto. Sem `--db`, o padrão acompanha `--root`
+e cria outro banco dentro da pasta das tabelas, invisível para `./job status`.
+Os três nomes de tabelas também são ignorados na raiz como proteção adicional;
+isso não protege uma cópia manual da pasta.
+
+Em `fill` e `apply`, informe `resume_id` e `resume_sha256` da versão aprovada.
+Nas etapas complementares, bloqueios atuais continuam valendo. Quando houver
+plataformas bloqueadas, `destination_platform` identifica o destino conferido
+da etapa, inclusive quando diferente do portal da candidatura.
+
+`submitted_at` é guardado nos detalhes da ação, separado de `checked_at`.
+Registros anteriores sem esse horário comprovado ficam fora da meta calculada
+por objetivo; não use a data de conferência para preencher essa lacuna.
 
 ## Cobertura de pesquisa e e-mail
 
@@ -142,8 +164,8 @@ Na ausência de referência individual estável, deixe a mensagem preservada.
 ## Estados
 
 - Ação: autorizada, `confirmed`, `uncertain`, `not_received`.
-- Etapa: `pending`, `blocked`, `candidate_pending`, `action_started`,
-  `uncertain`, `completed`.
+- Etapa: `pending`, `in_progress` (reserva), `blocked`, `candidate_pending`,
+  `action_started`, `uncertain`, `completed`, `cancelled`.
 - Avaliação: `eligible`, `blocked`, `discarded`.
 - Motivos (não estados): `senioridade_nao_confirmada`,
   `remuneracao_a_confirmar`, `duplicidade_a_verificar`, `plataforma_bloqueada`,
@@ -216,5 +238,5 @@ Testes usam diretórios temporários e dados fictícios; nunca enviam
 candidatura, e-mail ou abrem navegador:
 
 ```sh
-uv run python -m unittest discover -s tests -p 'test_*.py'
+uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 ```

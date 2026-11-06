@@ -138,7 +138,7 @@ class ProcessJourneyTests(unittest.TestCase):
                    'user_confirmation': 'Marina confirmou esta ação no roteiro fictício', **extra}
         if action == 'research':
             payload['source_url'] = 'https://jobs.example.org/'
-        if action == 'apply':
+        if action in {'fill', 'apply'}:
             payload.update(resume_id=self.resume['id'], resume_sha256=self.resume['sha256'])
         return self.call('action', 'authorize', data=payload, success=success)
 

@@ -11,6 +11,27 @@ preencher nada aqui.
 - Nada é inventado por você ou pela IA. Se mudar de ideia, diga e ela corrige.
 - Senha, código de verificação e número de documento nunca entram na conversa.
 
+## Dicas durante o preparo
+
+A IA oferece uma dica curta quando ela ajuda a responder a pergunta atual.
+Você não precisa decidir tudo antes de começar, nem ler esta lista inteira.
+
+| Momento | Orientação que você deve receber |
+|---|---|
+| Primeiro acesso | Comece com um modelo capaz, como Astra ou Opus, se já tiver acesso. A IA explica as opções sem exigir outra assinatura. |
+| Currículo | Separe experiências, cursos e resultados que consegue confirmar. Trabalhos simultâneos podem ter datas sobrepostas; a IA não deve alterá-las para esconder isso. |
+| Primeiro emprego | Estudos, projetos e atividades voluntárias podem entrar quando forem reais. Experiência profissional anterior não é obrigatória. |
+| Cargos e filtros | Diferencie o que é obrigatório do que é uma preferência. A IA explica o efeito de cada filtro, sem ampliar a busca por conta própria. |
+| Salário | Seu mínimo privado e a pretensão apresentada às empresas podem ser diferentes. Informe o período do valor e o regime; a IA não escolhe números por você. |
+| Fontes | Cole o link da página em que quer procurar. Links de login ou com código de acesso não devem ser compartilhados. |
+| Permissões | Você pode autorizar a busca, o preenchimento e o envio durante a rodada para evitar perguntas repetidas. Também pode pedir confirmação por vaga. |
+| E-mail | Use uma conta que consiga acompanhar. A conexão é opcional; a IA explica como isso afeta os retornos. |
+| Antes da operação | Confira uma primeira candidatura com a IA. Depois do preparo, Terra 6.1 com esforço médio ou alto é a sugestão para operar. |
+| Continuidade | Defina o objetivo em linguagem comum. A IA usa o modo objetivo quando disponível, respeita seus limites e salva as pendências para retomar. |
+
+[Entenda as recomendações de modelos](MODELOS.md). Essas dicas não substituem
+suas escolhas. A IA não muda filtros, permissões ou modelo sem sua decisão.
+
 ## As cinco partes da conversa
 
 ### 1. Quem é você
@@ -65,6 +86,10 @@ A IA pergunta se você quer acompanhar retornos pelo mesmo e-mail de contato
 ou deixar para depois. Ela organiza as contas internamente; você não precisa
 escolher apelidos técnicos. Se não autorizar a leitura, ela pula essa conexão.
 O login é sempre feito por você, na aba aberta. A IA nunca pede senha.
+O acompanhamento de e-mail atual aceita Gmail e Outlook, quando a ferramenta
+oferece a conexão. Para outros provedores, você pode manter seu e-mail de
+contato e deixar o acompanhamento para depois. Sessões nos sites de vagas
+são conferidas separadamente, sem exigir uma conta de e-mail conectada.
 
 O trabalho acontece neste chat, sem escolher um executor. Ao parar, as
 respostas ficam salvas. "Não sei" e perguntas que você escolheu pular também

@@ -13,6 +13,10 @@ Leia "E-mails e etapas complementares" e "Duplicidade e estados" em
 Perfil `approved`, etapa vinculada a oportunidade conhecida, permissão da
 ação específica (`fill`, `email_reply`, `schedule`, `assessment`) e nenhuma
 parada ativa. `candidate_pending` só avança com resposta da pessoa.
+Bloqueios atuais de empresa, setor e plataforma continuam valendo depois do
+envio inicial. Confira também os redirecionamentos. Com plataformas bloqueadas
+no perfil, informe `destination_platform` na autorização da etapa, usando a
+plataforma de destino efetivamente verificada. Não use o nome do navegador.
 
 ## Executar
 
@@ -26,8 +30,12 @@ parada ativa. `candidate_pending` só avança com resposta da pessoa.
 4. Complemento cadastral: fatos confirmados do perfil e do currículo aprovado,
    reaplicando filtros e regras de dados pessoais. Registre uma etapa `form`
    (ou `additional_form`, `profile_update`, `fill`) e autorize `fill` com sua
-   `step_key`. A candidatura precisa estar confirmada. Não reutilize a ação de
-   preenchimento inicial nem abra outra candidatura.
+   `step_key`, `resume_id` e `resume_sha256` da versão aprovada vigente.
+   O controle exige essa versão mesmo quando o complemento não pede anexo.
+   Se uma correção de fatos retirou a aprovação, conduza a revisão e aprovação
+   do currículo atualizado antes de continuar. Preserve a etapa e siga outras
+   ações independentes enquanto aguarda. A candidatura precisa estar confirmada.
+   Não reutilize a ação de preenchimento inicial nem abra outra candidatura.
 5. Resposta ao recrutador: rascunho mostrado, "pode enviar" da pessoa para
    aquele conteúdo e destinatário.
 6. Entrevista: só aceita horário com disponibilidade confirmada e autorização
