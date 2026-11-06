@@ -1,5 +1,8 @@
 # Dados de cada pessoa, credenciais e anexos nunca entram no repositório.
 .job/
+/historico-candidaturas.md
+/portais-pendentes.md
+/vagas-arquivadas.md
 .env
 .env.*
 *.pem

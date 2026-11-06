@@ -36,8 +36,10 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 
 `tests/test_job_journey.py` exercita conversas de preparação pela CLI real.
 `tests/test_job_process_journey.py` exercita busca, candidatura e retorno com
-portal e caixa postal simulados. Os processos desses percursos bloqueiam
-conexões de rede e abertura de subprocessos para impedir efeitos externos.
+portal e caixa postal simulados. Os processos do percurso de busca e retorno
+bloqueiam conexões de rede e abertura de subprocessos para impedir efeitos
+externos. O percurso de preparação usa arquivos fictícios e a CLI local;
+ele não instala esse bloqueio adicional de rede e subprocessos.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio

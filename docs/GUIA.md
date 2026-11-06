@@ -116,6 +116,10 @@ demais. Diga `parar` a qualquer momento.
 
 ## Uma rodada de vagas
 
+Quer apenas ver vagas agora? Diga isso. A IA prepara os filtros e os links;
+o currículo pode ficar para depois. Só o preenchimento e o envio exigem a
+versão aprovada.
+
 1. Diga o que quer: "só me mostre as vagas" ou "procure vagas e me pergunte
    antes de enviar". Uma permissão de pesquisa não autoriza envio.
 2. A IA busca nos endereços aprovados e explica quais vagas combinam com os
@@ -154,6 +158,9 @@ e nenhum dado é enviado pela animação.
 
 Você decide se quer permitir leitura. Faça login somente na interface da conta
 ou na conexão do aplicativo. Nunca informe senha ou código no chat.
+O controle atual aceita Gmail e Outlook com uma ferramenta conectada.
+Outros provedores podem ser usados como contato no currículo; o acompanhamento
+automático dessas caixas ainda não é suportado.
 
 A IA procura mensagens relacionadas às vagas acompanhadas e verifica a origem.
 Para responder, mostra o destinatário e o texto para sua aprovação. Para

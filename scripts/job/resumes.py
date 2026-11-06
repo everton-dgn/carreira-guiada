@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import sqlite3
 from contextlib import contextmanager
@@ -175,8 +176,7 @@ class ResumeManager:
             raise ValueError("Destino fora da área privada.")
         path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         path.parent.chmod(0o700)
-        with path.open("xb") as handle:
-            path.chmod(0o600)
+        with os.fdopen(os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), 'wb') as handle:
             handle.write(data)
         return relative
 

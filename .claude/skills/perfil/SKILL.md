@@ -96,6 +96,15 @@ uma primeira permissão não significa que as demais foram discutidas.
   endereço de contato quando ela pedir; o agente escolhe o apelido interno.
   Se o serviço não puder ser identificado, pergunte se ela usa Gmail, Outlook
   ou outro, explicando que é o aplicativo onde costuma ler as mensagens.
+  O controle de e-mail atual aceita Gmail e Outlook. Se for outro provedor,
+  explique essa limitação antes da aprovação e ofereça deixar o acompanhamento
+  para depois, mantendo o endereço de contato. Não prometa uma conexão que
+  `capability` não suporta nem troque a conta por conta própria.
+- Sessões de navegador são observadas com `capability`, usando um apelido
+  interno, sem pedir endereço de e-mail nem acrescentar uma conta ao perfil.
+  Reutilize a sessão verificada; peça login só quando o portal exigir. O alias
+  `public` pode representar um formulário que dispensa login. Isso não dispensa
+  autorização da ação, verificação da vaga ou conferência do destino.
 - O modo chat é automático. Não pergunte por executor, duração, ciclos ou
   intervalo. Se a leitura de e-mail foi recusada e não há conta registrada,
   a etapa de conexão é dispensada.

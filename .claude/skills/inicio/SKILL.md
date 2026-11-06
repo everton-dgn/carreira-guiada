@@ -24,8 +24,16 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
    aproveite a autorização que já existir e consulte as instruções oficiais.
    Instale apenas no espaço do usuário quando autorizado. O `uv` pode resolver
    o Python e as dependências locais. Não peça senha de administrador.
+   Sem `uv`, o comando termina com uma mensagem em texto antes de produzir
+   JSON. Reconheça esse diagnóstico do inicializador, conduza a instalação
+   autorizada e repita `doctor` depois. Não trate a ausência de JSON como
+   corrupção do perfil nem peça para a pessoa resolver sozinha.
 2. Leia `./job start --json` e `./job status --json`. Consultar a instalação
    vazia não deve criar perfil nem iniciar trabalho externo.
+   Se o pedido for somente procurar ou mostrar vagas, use
+   `./job start --focus search --json`: esse caminho prepara o perfil e as
+   fontes sem exigir currículo. Preserve o foco nas consultas seguintes até
+   a pessoa pedir preparo ou envio. A pessoa não precisa conhecer essa opção.
 3. Consulte `./job context --json` apenas quando precisar das respostas salvas.
    Não repita contatos e valores privados sem necessidade.
 

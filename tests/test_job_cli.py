@@ -35,6 +35,27 @@ class CliTests(unittest.TestCase):
             self.call(*args)
         self.assertFalse((self.root / ".job").exists())
 
+    def test_search_focus_prepares_sources_without_requiring_a_resume(self):
+        from scripts.job.profile import Profile
+        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'identity')
+        self.assertFalse((self.root / '.job').exists())
+        profile = Profile(self.root)
+        sections = json.loads((PROJECT / 'templates/profile.json').read_text())['sections']
+        sections['identity'] = {'name': 'Pessoa Exemplo', 'email': 'pessoa@example.invalid'}
+        sections['preferences'].update(roles=['Atendimento'], modalities=['remote'], currencies=['BRL'])
+        sections['permissions']['confirmed'] = list(sections['permissions'].keys() - {'confirmed'})
+        for section, value in sections.items():
+            profile.save(section, value)
+        profile.approve(profile.get()['version'])
+        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'sources')
+        profile.answer('sources', 'urls', ['https://carreiras.example/vagas'])
+        profile.approve(profile.get()['version'])
+        result = self.call('start', '--focus', 'search')
+        self.assertEqual(result['next_step'], 'execution_readiness')
+        self.assertEqual(result['approved_resumes'], [])
+        self.assertFalse(result['automatic_execution_started'])
+        self.assertEqual(self.call('start')['next_step'], 'resume_approval')
+
     def test_restart_and_rejected_input_preserve_answers(self):
         self.call("profile", "save", "identity", data={"name": "Pessoa fictícia"})
         questions = self.call("profile", "status")["questions"]

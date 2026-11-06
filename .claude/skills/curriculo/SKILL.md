@@ -15,11 +15,17 @@ pessoa: [docs/CURRICULOS.md](../../../docs/CURRICULOS.md).
   projeto". Nunca pergunte caminho. Localize o anexo pela ferramenta do chat ou
   liste os arquivos da raiz e confirme pelo nome ("é este: curriculo.pdf?").
 - Registre `intake choose` com `mode=import` e importe com
-  `./job resume import --file <arquivo> --label Geral`. Use "Geral" para o
+  `./job resume import`, com `file` (caminho localizado) e `label` por JSON via
+  stdin. Não exponha o caminho nos argumentos do comando. Use "Geral" para o
   primeiro currículo; a pessoa não precisa escolher um nome técnico. O original é preservado; nunca
   sobrescreva. `./job resume sources` lista os originais importados.
 - Mostre o texto extraído em blocos curtos e pergunte se está correto. Fatos
   extraídos não viram aprovação automática.
+- Se a pessoa colar o texto no chat, use o caminho de criação com
+  `intake choose` e `mode=create`, mesmo que antes tivesse escolhido importar.
+  Confirme os trechos com ela, reaproveite os dados confirmados em
+  `intake answer` e pergunte apenas o que faltar. Não crie um TXT ou Markdown
+  com o currículo na raiz. A troca de modo preserva respostas já salvas.
 
 ## Criar sem currículo
 

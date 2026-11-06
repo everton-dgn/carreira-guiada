@@ -44,6 +44,17 @@ class PolicyTests(unittest.TestCase):
         self.p['languages'] = [{'name': 'Idioma sintético', 'level': 3, 'required': False}]
         self.assertEqual(self.decision(), 'eligible')
 
+    def test_unmentioned_languages_only_block_an_active_language_filter(self):
+        self.v.pop('languages')
+        for missing in ('ask', 'reject', 'accept'):
+            self.p['missing'] = missing
+            self.assertEqual(self.decision(), 'eligible')
+        self.p['languages'] = [{'name': 'Português', 'level': 6, 'required': False}]
+        self.p['missing'] = 'ask'
+        self.assertEqual(self.decision(), 'eligible')
+        self.p['languages'][0]['required'] = True
+        self.assertEqual(self.decision(), 'blocked')
+
     def test_filters_and_absence(self):
         for pref, field in [('levels', 'level'), ('contracts', 'contract'), ('locations', 'location')]:
             with self.subTest(field=field):

@@ -149,7 +149,7 @@ também processa o conteúdo que recebe; o banco local não é criptografado.
 | Aplicativo de IA | Conta e sessão próprias, com acesso à pasta e a ferramentas locais. O Carreira Guiada não inclui assinatura de IA. |
 | Sistema | macOS ou Linux. Windows nativo não é suportado; uso via WSL ainda precisa de validação. |
 | Controle local | Python 3.11 ou superior e `uv`. A IA ajuda a preparar o ambiente. |
-| Sites e e-mail | Ferramentas disponíveis e sessões autenticadas no aplicativo. Sem conexão, essas etapas ficam pendentes. |
+| Sites e e-mail | Ferramentas disponíveis e sessões conferidas no aplicativo. O acompanhamento de e-mail atual aceita Gmail e Outlook. Sem conexão, essas etapas ficam pendentes. |
 
 Os testes usam cenários fictícios. Ainda não comprovam uma campanha real por
 vários dias nem compatibilidade com todas as interfaces de recrutamento.

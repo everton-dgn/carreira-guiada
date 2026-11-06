@@ -160,6 +160,17 @@ class JourneyTests(unittest.TestCase):
         self.assertIsNone(saved['skills']['text'])
         self.assertEqual(len(self.call('resume', 'facts')), 3)
 
+    def test_pasted_curriculum_can_continue_without_creating_a_public_file(self):
+        self.call('intake', 'choose', data={'mode': 'import'})
+        self.call('profile', 'answer', 'identity', data={'field': 'name', 'value': 'Pessoa Exemplo'})
+        self.call('profile', 'answer', 'identity', data={'field': 'email', 'value': 'pessoa@example.invalid'})
+        self.assertEqual(self.call('start')['next_step'], 'curriculum_input')
+        self.call('intake', 'choose', data={'mode': 'create'})
+        self.call('intake', 'answer', data={'field': 'education', 'text': 'Curso fictício de atendimento.'})
+        self.assertEqual(self.call('start')['question']['field'], 'experience')
+        self.assertEqual(len(self.call('resume', 'facts')), 1)
+        self.assertEqual({path.name for path in self.root.iterdir()}, {'.job'})
+
     def test_existing_cv_correction_and_no_email_connection(self):
         from docx import Document
         source = self.root / 'curriculo.docx'
@@ -171,7 +182,7 @@ class JourneyTests(unittest.TestCase):
         original = source.read_bytes()
         self.turns.append({'ia': self.call('start')['message'], 'pessoa': 'Já tenho. Anexei o Word.'})
         self.call('intake', 'choose', data={'mode': 'import'})
-        imported = self.call('resume', 'import', '--file', str(source), '--label', 'Geral')
+        imported = self.call('resume', 'import', data={'file': str(source), 'label': 'Geral'})
         self.assertIn('2021', imported['text'])
         self.turns.append({'ia': 'Li Marina Exemplo, o e-mail e atendimento na Loja Exemplo de 2021 a 2023. Esses dados estão certos?', 'pessoa': 'O nome e o e-mail estão certos, mas comecei na loja em 2020.'})
         self.call('profile', 'answer', 'identity', data={'field': 'name', 'value': 'Marina Exemplo'})

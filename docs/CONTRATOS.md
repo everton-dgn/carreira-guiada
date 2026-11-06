@@ -101,6 +101,9 @@ apenas porque ele apareceu no diretório.
 - `authorize(payload)` verifica geração, parada, escopo, permissões,
   capacidade, elegibilidade e currículo antes de persistir uma intenção.
 - `complete(id, payload)` registra `confirmed`, `uncertain` ou `not_received`.
+  Em `apply` confirmado, `submitted_at` guarda o horário comprovado do envio;
+  `checked_at` continua sendo a conferência. Horário desconhecido não entra
+  na meta do período. `fill` e `apply` exigem currículo aprovado com hash.
   Confirmação e ausência de recebimento exigem evidência conferida no destino.
 - `stop()` revoga novas ações e preserva tentativas abertas como incertas.
   `resume()` muda a geração; executores antigos não ganham nova autorização.

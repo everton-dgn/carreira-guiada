@@ -31,7 +31,8 @@ dados pessoais" em [AGENTS.md](../../../AGENTS.md).
   Conclua esse registro separadamente. Login, senha, código e CAPTCHA ficam
   com a pessoa. Reutilize a conta nas outras vagas do mesmo portal.
 - Antes de escrever ou anexar dados, registre `action authorize` com
-  `action: "fill"` e a oportunidade. Use o ID retornado durante o
+  `action: "fill"`, a oportunidade, `resume_id` e `resume_sha256` da versão
+  aprovada. Use o ID retornado durante o
   preenchimento. Conclua com `action complete` após conferir os campos;
   isso não confirma uma candidatura enviada.
   Se precisar corrigir antes do envio, autorize outro `fill` e confira o
@@ -46,6 +47,11 @@ dados pessoais" em [AGENTS.md](../../../AGENTS.md).
   anexar, avançar ou enviar, inclusive telefone, cidade e remuneração.
 - Dado obrigatório ausente ou ação exclusiva da pessoa (login, código, CAPTCHA,
   documento): preserve a aba, peça em uma frase, siga outra vaga.
+  Antes de uma espera longa, registre o estado observado do preenchimento.
+  Ao voltar, consulte `status`: autorização expirada vira `uncertain`. Releia
+  o formulário e conclua essa ação com evidência do que foi preservado ou não
+  recebido antes de autorizar uma correção. Não repita autorização incerta,
+  não avance para `apply` nem registre confirmação sem conferir o destino.
 - Desmarque seguir empresa e marketing, salvo instrução salva no perfil.
 - Se houver pedido de dado familiar, registre o bloqueio e siga as demais
   vagas, sem pedir esse dado à pessoa. Documento obrigatório fica pendente da
@@ -60,6 +66,10 @@ dados pessoais" em [AGENTS.md](../../../AGENTS.md).
 2. Clique uma única vez.
 3. Confira no portal. Confirmação inequívoca: `./job action complete` com
    `confirmed` e evidência breve (texto da confirmação, sem dados pessoais).
+   Informe `checked_at` para a conferência e `submitted_at` somente para o
+   horário de envio comprovado, ambos com fuso. Conferir hoje não significa
+   ter enviado hoje. Sem horário comprovado, omita `submitted_at`: a confirmação
+   histórica permanece, mas fica fora da meta do período.
 4. Timeout ou resposta ambígua: `./job action complete` com `uncertain`
    imediatamente. Não clique de novo. Verifique a lista de candidaturas do
    portal; só `not_received` com evidência libera nova tentativa.

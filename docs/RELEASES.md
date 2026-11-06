@@ -30,6 +30,11 @@ versão. Essa mesma regra de incremento vale antes de 1.0.0.
 Use uma branch de trabalho e deixe a árvore limpa. Não prepare na main.
 Primeiro busque as tags e confira o plano, que não altera arquivos:
 
+Confira também se a branch inclui a main atual. Se houver commits novos,
+integre-os por merge normal, revise o resultado e valide antes de preparar a
+versão. Se a main avançar novamente depois do preparo, confira o cálculo no
+resultado integrado; uma versão preparada na branch pode ficar insuficiente.
+
 ```sh
 git fetch origin --tags
 uv run --locked python -m scripts.maintainers.release plan
@@ -82,6 +87,25 @@ Leia o erro na aba Actions antes de repetir. Se a tag já foi criada no commit
 correto e a criação da release falhou, uma nova execução reutiliza a tag.
 Se a release já corresponder ao conteúdo validado, nada é recriado.
 Tags divergentes e notas conflitantes são preservadas e interrompem a publicação.
+
+Se o erro for "Prepare a versão calculada" e ainda não houver tag para a
+versão preparada, a main pode ter recebido commits de impacto maior depois
+do preparo. Reexecutar o workflow com os mesmos arquivos não corrige isso.
+Abra uma branch de correção a partir da main atual e confira a última tag
+publicada antes de alterar os metadados:
+
+1. Reponha somente a versão do projeto em `pyproject.toml` e a do pacote local
+   em `uv.lock` para a versão dessa tag. Preserve dependências e outras alterações.
+2. Mova as notas da versão ainda não publicada para `Unreleased`, mantendo uma
+   única seção com esse nome. Preserve todas as seções de versões publicadas.
+3. Faça o commit dessa correção de preparo para deixar a árvore limpa. Rode
+   `plan` e `prepare` novamente sobre os commits integrados, confira o diff e
+   faça o commit dos três arquivos de versão.
+4. Envie o PR, espere os checks e integre por merge normal. A CI da nova main
+   passa a ser a origem da publicação. Não mova tags nem reescreva o histórico.
+
+Se a tag da versão já existir, este procedimento não se aplica. Preserve-a
+e investigue a divergência informada antes de qualquer nova publicação.
 
 Para retomar, abra o workflow `Release` na aba Actions, escolha a main e
 informe o ID da execução aprovada de `Checks` para um push na main. O ID é o

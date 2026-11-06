@@ -13,9 +13,10 @@ def box(draw, bounds, fill, outline=None, radius=12):
 
 def paragraph(draw, position, value, width, size=19, fill=TEXT):
     x, y = position
-    for line in wrap(draw, value, width=width, size=size):
-        text(draw, (x, y), line, size, fill, True)
-        y += size + 8
+    for part in value.split('\n'):
+        for line in wrap(draw, part, width=width, size=size):
+            text(draw, (x, y), line, size, fill, True)
+            y += size + 8
     return y
 
 
@@ -77,7 +78,8 @@ def resume_frame(stage, progress, blink=False):
         for line in shown.split("\n"):
             y = paragraph(draw, (506, y), line, 516, 18, INK) + 12
         if blink:
-            text(draw, (506, min(y, 535)), "|", 20, INK, True)
+            x = 506 + draw.textlength(shown.split('\n')[-1], font=font(18, True)) / SCALE
+            text(draw, (x, min(y - 38, 535)), "|", 18, INK, True)
     else:
         text(draw, (506, 232), "Pessoa Exemplo", 28, INK)
         text(draw, (506, 272), "pessoa@example.invalid", 17, MUTED)
@@ -95,7 +97,8 @@ def resume_frame(stage, progress, blink=False):
             if stage > 2 or progress > 0.65:
                 text(draw, (506, 502), "Curso de atendimento ao público", 18, INK)
             if stage == 2 and blink:
-                text(draw, (1018, 348), "|", 18, INK, True)
+                x = 506 + draw.textlength(summary, font=font(16, True)) / SCALE
+                text(draw, (x, 346), "|", 16, INK, True)
         if stage == 3:
             box(draw, (875, 229, 1038, 265), "#eef4df")
             text(draw, (892, 237), "EM REVISÃO", 15, INK)

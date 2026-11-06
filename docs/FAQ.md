@@ -34,6 +34,8 @@ Se não souber um valor, diga isso. A IA não deve inventar informações.
 
 Você pode recusar ou deixar para depois. A consulta depende da sua permissão
 e de uma ferramenta autenticada. A IA nunca pede a senha no chat.
+O acompanhamento atual suporta Gmail e Outlook. Se usa outro provedor,
+mantenha seu endereço como contato e deixe a leitura automática para depois.
 
 ## A IA fica procurando enquanto estou fora?
 

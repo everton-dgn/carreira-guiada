@@ -86,6 +86,10 @@ A IA pergunta se você quer acompanhar retornos pelo mesmo e-mail de contato
 ou deixar para depois. Ela organiza as contas internamente; você não precisa
 escolher apelidos técnicos. Se não autorizar a leitura, ela pula essa conexão.
 O login é sempre feito por você, na aba aberta. A IA nunca pede senha.
+O acompanhamento de e-mail atual aceita Gmail e Outlook, quando a ferramenta
+oferece a conexão. Para outros provedores, você pode manter seu e-mail de
+contato e deixar o acompanhamento para depois. Sessões nos sites de vagas
+são conferidas separadamente, sem exigir uma conta de e-mail conectada.
 
 O trabalho acontece neste chat, sem escolher um executor. Ao parar, as
 respostas ficam salvas. "Não sei" e perguntas que você escolheu pular também

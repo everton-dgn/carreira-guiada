@@ -23,6 +23,12 @@ fora dos arquivos públicos (guias, regras e skills). Uma instalação nova come
 sem perfil. Alterações nos arquivos exigem nova conferência do conteúdo
 antes de compartilhar.
 
+Se importar tabelas portáteis (`historico-candidaturas.md`,
+`portais-pendentes.md` e `vagas-arquivadas.md`), mantenha os arquivos preenchidos
+na área privada ou fora da cópia distribuída. Eles contêm seu histórico e não
+devem substituir os modelos vazios de `templates/`. Ignorar arquivos no Git
+não impede que sejam incluídos ao copiar ou compactar a pasta manualmente.
+
 ## O que o agente não deve coletar
 
 - Número de documento de identidade, senha, código de verificação, token,

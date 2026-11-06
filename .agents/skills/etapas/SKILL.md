@@ -13,6 +13,10 @@ Leia "E-mails e etapas complementares" e "Duplicidade e estados" em
 Perfil `approved`, etapa vinculada a oportunidade conhecida, permissão da
 ação específica (`fill`, `email_reply`, `schedule`, `assessment`) e nenhuma
 parada ativa. `candidate_pending` só avança com resposta da pessoa.
+Bloqueios atuais de empresa, setor e plataforma continuam valendo depois do
+envio inicial. Confira também os redirecionamentos. Com plataformas bloqueadas
+no perfil, informe `destination_platform` na autorização da etapa, usando a
+plataforma de destino efetivamente verificada. Não use o nome do navegador.
 
 ## Executar
 

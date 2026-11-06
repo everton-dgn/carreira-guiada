@@ -78,6 +78,8 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    de preparação (`curriculum_input`, `curriculum_intake`, uma seção do perfil,
    `profile_approval`, `resume_approval`, `execution_readiness`). O currículo
    pode vir antes do perfil; siga a ordem devolvida.
+   Em pedido explícito somente de busca, use `start --focus search --json`
+   para preparar filtros e fontes sem exigir currículo.
 3. Ler `status --json`: objetivo, ações pendentes, resultados incertos,
    parada ativa e observações de capacidade (navegador e e-mail).
 4. Ler `context --json` somente quando o detalhe privado for necessário para
@@ -124,8 +126,10 @@ Reaproveite fatos já confirmados no currículo, sem repetir a pergunta.
   de perguntar. Consentimento nunca é inferido de outra resposta.
 - `limits`: detalhe interno definido automaticamente como `chat`. Não faça
   perguntas sobre executor, duração, ciclos ou intervalo.
-- `connections`: contas de portal e e-mail com provedor, apelido e endereço
-  privado. Nunca senha, token ou cookie.
+- `connections`: contas de e-mail com provedor, apelido e endereço privado.
+  O acompanhamento atual aceita Gmail e Outlook. Sessões de navegador são
+  observadas em `capability`, sem exigir uma conta de e-mail conectada.
+  Nunca peça senha, token ou cookie.
 
 Mudança material em qualquer seção invalida a aprovação. Depois de preencher o
 necessário, apresente um resumo legível e peça aprovação explícita; só então
@@ -279,7 +283,8 @@ perfil aprovado e permissão `research` em `allow` ou resposta afirmativa a
   ausência.
 - Estados de ação no banco: autorizada, `confirmed`, `uncertain`,
   `not_received`. Estados de etapa: `pending`, `blocked`, `candidate_pending`,
-  `action_started`, `uncertain`, `completed`. `candidate_pending` depende de
+  `in_progress` (reserva), `action_started`, `uncertain`, `completed`,
+  `cancelled`. `candidate_pending` depende de
   ação exclusiva da pessoa e não é revalidado sem resposta dela.
 - Motivos como `senioridade_nao_confirmada`, `remuneracao_a_confirmar`,
   `duplicidade_a_verificar`, `plataforma_bloqueada`, `vinculo_a_verificar` e
@@ -322,6 +327,9 @@ hash conferido, permissão `fill` para preencher e `apply` para enviar.
    `action complete` com `confirmed` e evidência breve. Relato do agente sem
    evidência não confirma. Clique, formulário salvo ou tela de currículo não
    comprovam envio.
+   Registre `checked_at` para a conferência e `submitted_at` para o horário
+   de envio comprovado. Sem este último, preserve a confirmação histórica
+   sem atribuí-la à meta do período. Não copie a data de conferência como envio.
 9. Em timeout ou resposta ambígua, registre `uncertain` imediatamente. Não
    clique de novo. Confira a lista de candidaturas no portal; só tente de novo
    após `not_received` com evidência.

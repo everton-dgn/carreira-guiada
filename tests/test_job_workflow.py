@@ -217,7 +217,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_target_counts_only_this_goal_and_current_eligibility(self):
         job_id, resume = self.ready({"summary": "Primeiro objetivo", "actions": ["apply"], "target_applications": 2})
-        self.done(self.apply(job_id, resume)["action_id"])
+        self.done(self.apply(job_id, resume)["action_id"], submitted_at=iso(self.clock()))
         self.assertEqual(self.wf.state()["progress"]["confirmed_applications"], 1)
         self.assertEqual(self.wf.state()["ledger"]["eligible_confirmed"], 1)
         profile = Profile(self.root)
@@ -259,6 +259,97 @@ class WorkflowTests(unittest.TestCase):
         self.wf.ingest_email(rejection)
         with self.assertRaisesRegex(ValueError, "etapa pendente"):
             self.wf.authorize({**trash, "message": {k: rejection[k] for k in ("provider", "account", "message_id")}})
+
+    def test_late_confirmation_without_submission_date_does_not_count_today(self):
+        job_id, resume = self.ready({"summary": "Meta diária", "actions": ["apply"],
+                                     "target_applications": 1, "period_days": 1})
+        action = self.apply(job_id, resume)
+        self.done(action['action_id'], 'uncertain')
+        self.clock.value += timedelta(days=3)
+        self.done(action['action_id'])
+        state = self.wf.state()
+        self.assertEqual(state['ledger']['confirmed'], 1)
+        self.assertEqual(state['ledger']['confirmed_without_date'], 1)
+        self.assertEqual(state['progress']['confirmed_applications'], 0)
+        self.assertFalse(state['progress']['reached'])
+
+    def test_verified_submission_date_is_distinct_from_late_check(self):
+        job_id, resume = self.ready({"summary": "Meta diária", "actions": ["apply"],
+                                     "target_applications": 1, "period_days": 1})
+        action = self.apply(job_id, resume)
+        sent = iso(self.clock())
+        self.done(action['action_id'], 'uncertain')
+        self.clock.value += timedelta(days=3)
+        self.done(action['action_id'], submitted_at=sent)
+        self.assertEqual(self.wf.state()['progress']['confirmed_applications'], 0)
+        job = self.wf._store.conn.execute('SELECT confirmed_at FROM jobs WHERE id=?', (job_id,)).fetchone()
+        self.assertEqual(job['confirmed_at'], datetime.fromisoformat(sent).date().isoformat())
+
+    def test_submission_date_must_be_between_authorization_and_check(self):
+        job_id, resume = self.ready()
+        action = self.apply(job_id, resume)
+        for moment in (self.clock() - timedelta(days=1), self.clock() + timedelta(days=1)):
+            with self.assertRaisesRegex(ValueError, 'submitted_at'):
+                self.done(action['action_id'], submitted_at=iso(moment))
+        self.assertEqual(self.wf.state()['counts']['actions'], {'authorized': 1})
+
+    def test_followup_respects_new_platform_block_and_destination(self):
+        job_id, resume = self.ready()
+        self.done(self.apply(job_id, resume)['action_id'])
+        self.wf._writer().upsert_step({'job_id': job_id, 'step_key': 'teste', 'kind': 'assessment'})
+        profile = Profile(self.root)
+        base = {'action': 'assessment', 'owner': 'chat:sessao', 'generation': 1,
+                'opportunity_id': job_id, 'step_key': 'teste',
+                'channel': {'provider': 'chrome', 'account': 'portal-teste'},
+                'user_confirmation': 'Pessoa aprovou ajuda neste teste',
+                'assistance_rules': 'O teste permite consulta'}
+        profile.answer('preferences', 'blocked_platforms', ['portal'])
+        profile.approve(profile.get()['version'])
+        with self.assertRaisesRegex(ValueError, 'Bloqueio'):
+            self.wf.authorize(base)
+        profile.answer('preferences', 'blocked_platforms', ['teste.example'])
+        profile.approve(profile.get()['version'])
+        with self.assertRaisesRegex(ValueError, 'destination_platform'):
+            self.wf.authorize(base)
+        with self.assertRaisesRegex(ValueError, 'Bloqueio'):
+            self.wf.authorize({**base, 'destination_platform': 'TESTE.EXAMPLE'})
+        self.assertEqual(self.wf.state()['counts']['actions'], {'confirmed': 1})
+        result = self.wf.authorize({**base, 'destination_platform': 'permitido.example'})
+        self.assertEqual(result['status'], 'authorized')
+
+    def test_fill_requires_and_records_approved_resume(self):
+        job_id, resume = self.ready({'summary': 'Preencher com versão aprovada', 'actions': ['fill']})
+        base = {'action': 'fill', 'owner': 'chat:sessao', 'generation': 1,
+                'opportunity_id': job_id, 'channel': {'provider': 'chrome', 'account': 'portal-teste'},
+                'user_confirmation': 'Pessoa autorizou o preenchimento'}
+        with self.assertRaisesRegex(ValueError, 'currículo'):
+            self.wf.authorize(base)
+        with self.assertRaisesRegex(ValueError, 'hash'):
+            self.wf.authorize({**base, 'resume_id': resume['id'], 'resume_sha256': '0' * 64})
+        result = self.wf.authorize({**base, 'resume_id': resume['id'], 'resume_sha256': resume['sha256']})
+        row = self.wf._store.conn.execute('SELECT resume_id,resume_sha256 FROM wf_actions WHERE id=?', (result['action_id'],)).fetchone()
+        self.assertEqual(row['resume_id'], resume['id'])
+        self.assertEqual(row['resume_sha256'], resume['sha256'])
+
+    def test_browser_session_does_not_require_an_email_account(self):
+        job_id, resume = self.ready({'summary': 'Formulário sem e-mail conectado', 'actions': ['fill']})
+        profile = Profile(self.root)
+        profile.answer('connections', 'accounts', [])
+        version = profile.get()['version']
+        profile.approve(version)
+        payload = {'action': 'fill', 'owner': 'chat:sessao', 'generation': 1,
+                   'opportunity_id': job_id, 'channel': {'provider': 'chrome', 'account': 'public'},
+                   'resume_id': resume['id'], 'resume_sha256': resume['sha256'],
+                   'user_confirmation': 'Pessoa confirmou preencher o formulário público'}
+        result = self.wf.authorize(payload)
+        self.assertEqual(result['status'], 'authorized')
+        self.assertEqual(profile.get()['approved_version'], version)
+        self.wf.capability({'kind': 'browser', 'provider': 'chrome', 'account': 'public',
+                            'status': 'unavailable', 'checked_at': iso(self.clock()),
+                            'evidence': 'Ferramenta deixou de responder'})
+        self.done(result['action_id'], 'not_received')
+        with self.assertRaisesRegex(ValueError, 'capacidade'):
+            self.wf.authorize(payload)
 
     def test_reply_schedule_assessment_need_per_item_conditions(self):
         job_id, resume = self.ready()
