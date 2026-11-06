@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.0 - 2026-11-06
+
 - Publicação opcional de textos aprovados no LinkedIn e GitHub com consentimento
   por seção, conferência antes da ação e recuperação de tentativas incertas.
 - Correção e retirada de fatos do currículo preservam o histórico e retiram a
