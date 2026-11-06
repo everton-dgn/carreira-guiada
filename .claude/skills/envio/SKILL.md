@@ -26,6 +26,10 @@ dados pessoais" em [AGENTS.md](../../../AGENTS.md).
 
 ## Preencher
 
+Após cada autorização de `register`, `fill` ou `apply`, use `action check <id>`
+com `owner` e `generation` imediatamente antes do efeito. Erro impede executar;
+preserve o estado e confira o destino antes de resolver a ação ou reautorizá-la.
+
 - Se precisar criar cadastro, confira antes se a conta já existe. Só use
   `action authorize` com `action: "register"` para cadastro novo autorizado.
   Conclua esse registro separadamente. Login, senha, código e CAPTCHA ficam
@@ -63,7 +67,8 @@ dados pessoais" em [AGENTS.md](../../../AGENTS.md).
 1. `./job action authorize` com `action: "apply"`, vaga, perfil, versão do
    currículo e permissão. A autorização de preenchimento não libera o envio.
    Guarde o ID. Sem ID, não clique.
-2. Clique uma única vez.
+2. Confira `./job action check <id>` com `owner` e `generation`. Só após
+   sucesso, confira a página e clique uma única vez.
 3. Confira no portal. Confirmação inequívoca: `./job action complete` com
    `confirmed` e evidência breve (texto da confirmação, sem dados pessoais).
    Informe `checked_at` para a conferência e `submitted_at` somente para o

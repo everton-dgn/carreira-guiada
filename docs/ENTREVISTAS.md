@@ -110,6 +110,11 @@ flowchart LR
 
 ## Contrato do módulo
 
+Se uma resposta for recusada por parecer conter credenciais ou documentos,
+troque os valores por uma explicação do conceito. Não cole senha, chave ou
+número de documento para pedir ajuda. O aviso preserva as respostas anteriores;
+a conferência automática pode errar e não substitui esse cuidado.
+
 O agente usa `start --focus practice`, sem exigir onboarding, e os comandos
 `practice catalog`, `show` e `status`. A pessoa conversa normalmente.
 `Practice(root)` usa armazenamento privado aditivo. `catalog()`, `get()` e
@@ -124,8 +129,15 @@ fictício inicial quando nenhum é fornecido.
 Para a pergunta atual, use `hint(session_id, question_id)`, `answer(session_id, question_id, text)`, `skip(session_id, question_id)` e `advance(session_id, question_id)`. Uma nova resposta cria versão e preserva as anteriores. `feedback(session_id, question_id, version, strengths, improvements, suggestion, exercise)` registra texto criado pelo modelo para a versão atual. No simulado, só depois das perguntas. `end_questions(session_id)` encerra a etapa antecipadamente e permite a devolutiva. `finish(session_id, report, next_steps)` guarda relatório, distinguindo conclusão de encerramento antecipado. `get()` permite acessar sessões, histórico e relatório; `status()` fornece `decision`, `session_id`, `phase`, `next_step`, `message` e `question` para retomar.
 
 Os comandos CLI recebem esses mesmos argumentos por JSON via entrada padrão;
-`show` corresponde a `get()` e `end-questions` a `end_questions()`. Para pausar,
-salve checkpoint `practice` e use `stop`; não encerre as perguntas. Para seguir
-a busca sem perder o treino, use `choose later`. Retomada expressa usa
-`resume-work` e `choose now`. Depois do relatório, abra uma nova sessão para
-ensaiar outra vez; as anteriores permanecem disponíveis.
+`show` corresponde a `get()` e `end-questions` a `end_questions()`. Para pausar
+somente o treino, use `practice choose` com `decision: later`. Pergunta e
+respostas já ficam salvas no treino. Preserve o checkpoint da campanha se
+ela continuar; use fase `practice` apenas se esse for o ponto geral de retomada.
+A busca de vagas pode continuar.
+Para voltar ao treino, use `decision: now`; não encerre as perguntas.
+
+Use `stop` somente quando a pessoa pedir para parar toda a execução. Nesse caso,
+ações externas abertas ficam incertas e exigem conferência no destino. Após
+pedido explícito de retomar tudo, use `resume-work`; isso não resolve esses
+resultados incertos. Depois do relatório, abra outra sessão para ensaiar de
+novo; as anteriores permanecem disponíveis.

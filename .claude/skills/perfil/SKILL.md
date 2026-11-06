@@ -82,6 +82,9 @@ literal como `allow`, `ask` ou `deny`:
 - `email_trash`: mover mensagens individuais para a lixeira.
 - `schedule`: aceitar horário de entrevista.
 - `assessment`: ajudar em testes quando as regras do teste permitirem.
+- `profile_publish`: aplicar um texto aprovado ao LinkedIn ou GitHub. É opcional;
+  explique e ofereça `allow`, `ask` ou `deny` quando a pessoa pedir publicação,
+  antes da ação. Mesmo `allow` exige confirmação para cada conteúdo e destino.
 
 "Pergunte sempre antes" é `ask`. "Pode fazer" é `allow`. "Nunca" é `deny`.
 Sem resposta, fica `ask`. Nenhuma permissão é inferida de outra.

@@ -77,6 +77,69 @@ colar o conteúdo, uma seção por vez. Depois confere o resultado observado ou
 registra que ainda falta conferência. Não declare uma publicação por ter
 preparado o rascunho ou clicado em salvar.
 
+Se disser "deixe para depois", seus textos continuam salvos e você pode seguir
+com o currículo ou a busca. Uma publicação interrompida é conferida no destino
+antes de qualquer nova tentativa, inclusive ao voltar em outro dia.
+
+## Contrato de publicação
+
+A revisão local pode acontecer antes do onboarding. Para a aplicação pela IA,
+o perfil precisa estar aprovado e o objetivo ativo deve incluir `profile_publish`.
+Inclua essa ação ao criar o objetivo, quando a pessoa pedir publicação.
+Se uma campanha ativa não a incluir, preserve o objetivo e o rascunho:
+ofereça a aplicação manual ou deixe a publicação para o próximo objetivo.
+Não use `replace_version` apenas para acrescentar essa ação: a substituição
+inicia outra contagem e invalida autorizações abertas da campanha anterior.
+
+Prepare uma seção por vez. Guarde o diagnóstico em uma nota privada e salve
+em `presence draft.content` somente o texto exato a publicar naquela seção.
+Mostre o texto, o link, a conta autenticada, a seção e a visibilidade observada.
+Confirme que a conta pertence à pessoa e preserve o conteúdo anterior fora do
+registro operacional, em `.job/presence-notes/`, com arquivo exclusivo por
+versão e permissões restritas. Separe diagnóstico e cópia do conteúdo anterior
+do texto fornecido pela pessoa. Não use `presence source` para essas notas:
+alterar a fonte invalida o rascunho. `presence finish` registra a revisão;
+a autorização de publicação é uma confirmação separada para aquele conteúdo.
+
+Use `action authorize` com `action: profile_publish`, `owner`, `generation`,
+`channel: {provider, account}` da sessão observada, `user_confirmation` e
+`publication` com todos os campos abaixo. A permissão `deny` bloqueia;
+`ask`, inclusive quando omitida no perfil, exige confirmação. `allow`
+também exige confirmação por publicação.
+
+| Campo de `publication` | Conteúdo |
+|---|---|
+| `topic` | `linkedin` ou `github`. |
+| `version` | Número da versão atual, já conferida com `presence finish`. |
+| `section` | LinkedIn: `headline`, `about`, `experience`, `education`, `skills` ou `featured`. GitHub: `bio`, `profile_readme`, `pinned_repositories` ou `repository_readme`. |
+| `destination` | Link HTTPS exato salvo na revisão, sem rastreadores, credenciais ou fragmentos. Para um repositório, use a revisão daquele endereço. |
+| `visibility` | Público (`public`), conexões (`connections`) ou privado (`private`), conforme a opção realmente disponível e aprovada no serviço. Não altere configurações de privacidade por inferência. |
+| `content_sha256` | SHA-256 dos bytes UTF-8 de `presence show.reviews[topic].content`, sem acrescentar espaços ou quebras de linha. |
+
+Imediatamente antes de alterar o serviço, use `action check <id>` com `owner`
+e `generation`. A resposta devolve o vínculo conferido em `publication`.
+Mudança de texto, fonte, versão, perfil, objetivo, sessão ou parada impede usar
+uma autorização antiga. Confira também a página e a conta na ferramenta.
+O controle local não detecta uma troca de conta feita dentro do navegador.
+Se a conta observada divergir da conta aprovada, suspenda somente a publicação.
+Esses comandos registram e validam o protocolo; não publicam conteúdo sozinhos.
+
+Depois da ação, confira a página final e use `action complete <id>`. Para
+`confirmed`, envie `evidence_source: destination_page`, `evidence_url` igual
+ao destino autorizado, `publication_sha256` do texto observado, `checked_at`
+e evidência curta sem dados pessoais. Clique sem confirmação usa `uncertain`.
+Para resolver `not_received`, confira no destino que a mudança não ocorreu e
+informe a mesma página autorizada com `evidence_source: destination_page`;
+não informe `publication_sha256`. Uma versão nova não libera repetição enquanto
+houver autorização aberta ou resultado incerto para a mesma seção e destino.
+Na retomada, leia `action show <id>` para recuperar conta, destino, seção,
+visibilidade e hash daquela tentativa. Essa leitura funciona mesmo durante
+parada ou com autorização expirada e não permite executar a ação novamente.
+Confira o texto no histórico de `presence show` pela versão e pelo hash salvos.
+Se o serviço salvar conteúdo diferente, mantenha `uncertain` e mostre a
+diferença à pessoa. Não declare `not_received` nem altere o hash aprovado para
+liberar outro envio. Confira limites do campo antes de pedir a aprovação.
+
 ## Ajustar a estratégia com evidências
 
 Ao revisar uma rodada, compare vagas compatíveis, candidaturas confirmadas e

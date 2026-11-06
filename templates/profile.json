@@ -34,6 +34,7 @@
       "email_trash": "ask",
       "schedule": "ask",
       "assessment": "ask",
+      "profile_publish": "ask",
       "confirmed": []
     },
     "limits": {

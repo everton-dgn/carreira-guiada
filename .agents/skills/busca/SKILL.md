@@ -25,7 +25,8 @@ outros agentes. Mostre progresso observado durante buscas demoradas.
 
 Antes da consulta, peça ao registrador `action authorize` para `research`, com
 o canal, `source_url` dentro das fontes aprovadas e `scope_key` identificando
-portal e consulta. Depois, devolva a evidência
+portal e consulta. Confira `action check <id>` com `owner` e `generation`
+imediatamente antes da pesquisa; erro impede executar. Depois, devolva a evidência
 para `action complete`. Consultas diferentes têm escopos distintos.
 
 1. Monte consultas a partir de cargos, tecnologias, modalidade e regimes das

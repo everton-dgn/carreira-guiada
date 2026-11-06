@@ -47,9 +47,18 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
    Para aplicar, mostre texto exato, conta, destino e visibilidade e obtenha
    autorização específica. Preserve o conteúdo público anterior para reversão.
    Sem ferramenta ou permissão do serviço, guie a pessoa na aplicação manual.
+   Para publicação pela IA, siga o [contrato de publicação](../../../docs/PRESENCA-PROFISSIONAL.md#contrato-de-publicação):
+   perfil aprovado, objetivo contendo `profile_publish`, sessão conferida e
+   autorização por item. Prepare uma seção por vez; o último `draft.content`
+   contém somente o texto a publicar, com versão novamente revisada em `finish`.
+   Chame `action authorize` com `publication` e, imediatamente antes do efeito,
+   `action check <id>`. Uma revisão local nunca substitui esses registros.
 7. Salve o resultado observado e a próxima ação no checkpoint. Alteração com
    resultado incerto exige conferência antes de repetir. Não declare aplicado
-   apenas porque o rascunho ficou pronto. Retome o onboarding com `start`.
+   apenas porque o rascunho ficou pronto. Use `action complete` com a evidência
+   e, para confirmação, o destino e o hash do texto publicado. Retome com `start`.
+   Em outra sessão, use `action show <id>` para recuperar os detalhes da
+   tentativa incerta antes de conferir o destino. Essa leitura não libera reenvio.
 
 `later` e `skip` liberam o restante do preparo sem repetir a oferta em todo
 início. A pessoa pode reabrir a revisão quando quiser com nova escolha.

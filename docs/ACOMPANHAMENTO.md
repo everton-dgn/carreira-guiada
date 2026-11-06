@@ -40,8 +40,8 @@ o registro de uma autorização, candidatura, mensagem ou resultado incerto.
 
 O checkpoint tem `phase`, `summary`, `next_action` e `needs_user`; o controle
 acrescenta `saved_at`. `status` mostra o último ponto salvo, com sua data.
-As fases aceitas são `onboarding`, `resume`, `presence`, `research`, `fill`,
-`email`, `followup`, `waiting` e `stopped`. Traduza esses valores na conversa;
+As fases aceitas são `onboarding`, `resume`, `presence`, `practice`, `offers`,
+`research`, `fill`, `email`, `followup`, `waiting` e `stopped`. Traduza esses valores na conversa;
 nunca peça que a pessoa escolha um identificador técnico.
 Esse registro não comprova que um executor está ativo nem mantém o computador
 ou o aplicativo funcionando.

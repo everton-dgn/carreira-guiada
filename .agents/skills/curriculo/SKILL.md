@@ -55,7 +55,21 @@ que usavam o fato anterior, preservando os arquivos. Uma resposta idêntica não
 duplica o fato. Para um fato extraído de arquivo, use o ID do original importado
 como `source` e só marque confirmado depois da conferência. Nunca registre um
 fato que a pessoa não disse. `./job resume facts` lista os fatos. Monte o
-rascunho com `./job resume draft`, vinculando os IDs dos fatos.
+rascunho com `./job resume draft`, vinculando os IDs dos fatos ativos e confirmados.
+
+Se a importação bloquear documentos ou credenciais, preserve o original e
+oriente a pessoa a preparar uma cópia limpa ou colar o texto sem esses dados.
+Não peça o conteúdo bloqueado, não copie o arquivo para contornar o filtro e
+reaproveite as respostas já salvas.
+
+Para corrigir um fato já registrado, mostre o texto atual e o novo, obtenha
+confirmação e use `resume fact-replace` com `fact_id`, `text`, `source`,
+`confirmed: true` e motivo opcional. Para retirar, use `resume fact-revoke`
+com `fact_id`, origem `candidate:referência` e `confirmed: true`. O histórico
+permanece; não use fatos `replaced` ou `revoked` em outro rascunho. Gere novamente
+e peça nova aprovação de cada versão em `retired_versions`. Confira sugestões de
+LinkedIn/GitHub que dependiam desse fato. `open_authorizations` exige conferir
+o destino, pois a correção local não desfaz um possível envio anterior.
 
 Se a pessoa pular todos os tópicos, prepare um currículo inicial com o nome,
 contato e objetivo que ela confirmou no perfil. Registre esse objetivo como

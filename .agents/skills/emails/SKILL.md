@@ -16,7 +16,9 @@ pendente para aquela conta e siga as demais fontes. Login é da pessoa.
 ## Consultar
 
 Antes de ler uma conta, registre `action authorize` com `action: "email_read"`,
-canal da conta e `scope_key` da consulta. Uma conta não autoriza outra. Ao
+canal da conta e `scope_key` da consulta. Confira `action check <id>` com
+`owner` e `generation` imediatamente antes do acesso. Erro impede executar.
+Uma conta não autoriza outra. Ao
 terminar a consulta, registre `action complete` com evidência. As chamadas de
 cobertura registram o alcance, mas não substituem essa autorização.
 
@@ -51,9 +53,12 @@ cobertura registram o alcance, mas não substituem essa autorização.
 ## Ações que exigem autorização própria
 
 - Responder: `email_reply` e um "pode enviar" da pessoa para aquele rascunho e
-  destinatário. Mostre o rascunho antes. Depois: `action authorize`, envio
-  único, `action complete` com evidência.
+  destinatário. Mostre o rascunho antes. Depois: `action authorize`,
+  `action check <id>` com `owner` e `generation`, envio único e
+  `action complete` com evidência.
 - Agendar: `schedule`, disponibilidade confirmada, autorização para o horário.
+- Antes de agendar ou mover para a lixeira, use `action check <id>` com
+  `owner` e `generation`. Erro impede executar a ação autorizada.
 - Lixeira: `email_trash`, por mensagem individual com ID e conta, sem etapa
   pendente, categoria autorizada pela pessoa. Mover para a lixeira do provedor
   (restaurável), conferir o destino, relatar qual mensagem e como restaurar.

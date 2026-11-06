@@ -7,6 +7,25 @@ avise. A IA encontra o arquivo, mostra o texto que leu em partes curtas e
 pergunta se está certo. O arquivo original fica guardado como está; ela nunca
 o altera.
 
+Se aparecer um aviso sobre CPF, RG, senha ou código de acesso, o arquivo foi
+bloqueado antes de ser copiado. Guarde seu original, faça outra cópia e remova
+dela documentos pessoais e credenciais. Anexe essa cópia ou cole o texto limpo.
+A IA ajuda a continuar; suas respostas anteriores permanecem salvas. Não cole
+os dados bloqueados no chat para pedir ajuda.
+
+## Corrigir uma informação já confirmada
+
+Diga, por exemplo: "A data dessa experiência está errada; o correto é 2023".
+A IA mostra o fato atual e a correção para você confirmar. O histórico continua
+guardado, mas as versões de currículo que usavam o fato antigo deixam de estar
+prontas para envio. Ela refaz somente essas versões e pede sua aprovação.
+
+Você também pode pedir para retirar um fato. Nesse caso, ele fica no histórico
+e não pode entrar em um novo currículo. Candidaturas já enviadas não são
+apagadas nem reenviadas. Se havia uma ação em andamento, a IA confere o destino
+antes de decidir como continuar; um dado corrigido não prova que um envio
+anterior deixou de acontecer.
+
 ## Se você não tem currículo
 
 Primeiro, ela confirma o nome e o e-mail que vão no currículo. Se você já

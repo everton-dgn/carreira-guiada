@@ -36,7 +36,7 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 
 | Comando | Uso no fluxo |
 |---|---|
-| `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `profile_approval`, `resume_approval`, `professional_presence`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
+| `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `sources`, `profile_approval`, `resume_approval`, `professional_presence`, `interview_preparation`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
 | `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
 | `doctor` | Diagnóstico do ambiente. |
@@ -58,7 +58,9 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `resume import` | Recebe `file` e `label` por JSON via stdin. Importa PDF ou DOCX, preserva original, extrai texto e devolve id e sha256. As flags antigas permanecem por compatibilidade; prefira stdin para não expor o caminho. |
 | `resume sources` | Originais importados. |
 | `resume fact` | Registra fato com origem e confirmação; nunca inventado. |
-| `resume facts` | Fatos registrados. |
+| `resume facts` | Fatos e histórico, com `status: active`, `replaced` ou `revoked` e `replaced_by`. Use somente fatos ativos e confirmados em novos rascunhos. |
+| `resume fact-replace` | JSON com `fact_id`, `text`, `source`, `confirmed: true` e `reason` opcional. Substitui o fato sem apagar o histórico e aposenta todas as versões dependentes. |
+| `resume fact-revoke` | JSON com `fact_id`, `source: candidate:referência`, `confirmed: true` e `reason` opcional. Retira o fato de novos currículos e aposenta versões dependentes. |
 | `resume draft` | Rascunho com MD, PDF e DOCX a partir de fatos confirmados. |
 | `resume approve <id>` | Versão `approved` após conferência de arquivos e hash. |
 | `resume list` | Versões com id, rótulo, status, sha256 e caminhos. |
@@ -69,6 +71,8 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `decision` | `opportunity_id`, `reasons` atuais e `user_confirmation`; aceita ausência permitida só nessa vaga, sem alterar os filtros gerais. |
 | `capability` | Observação de capacidade (navegador, e-mail) com provedor, apelido, horário, estado, evidência. |
 | `action authorize` | Intenção persistida antes de efeito externo; devolve ID; bloqueia após parada, duplicata e incerteza pendente. |
+| `action check <id>` | Imediatamente antes do efeito, recebe `owner` e `generation` por stdin. Confere validade, responsável, parada, perfil, objetivo, sessão e currículo; em publicação, também o texto e a versão revisada. Erro impede executar; uma autorização antiga não substitui esta conferência. |
+| `action show <id>` | Leitura privada da intenção histórica, canal e detalhes, inclusive após parada ou incerteza. Não recebe payload nem autoriza execução. Use para conferir a tentativa no destino durante a retomada. |
 | `action complete <id>` | `confirmed`, `uncertain` ou `not_received` com evidência do destino. `checked_at` é a conferência; `submitted_at` é o envio comprovado de `apply`, com fuso. Sem este último, não conta na meta do período. |
 | `email` | Ingestão de mensagem ou etapa vinculada; limpeza individual exige ID, conta, ausência de etapa pendente e categoria autorizada. |
 | `stop` | Parada persistida; revoga novas ações. |
@@ -194,13 +198,22 @@ Na ausência de referência individual estável, deixe a mensagem preservada.
 
 ## Condições de confirmação por etapa
 
-`email_reply`, `schedule` e `assessment` pedem `user_confirmation` referente
+`email_reply`, `schedule`, `assessment` e `profile_publish` pedem `user_confirmation` referente
 àquele item mesmo com permissão geral `allow`. O agente registra esses
 itens para a pessoa e continua as outras vagas; ele não dá a confirmação por ela.
 Em avaliação, `assistance_rules` registra a regra que permite ajuda. Em resposta
 de e-mail, `reply` recebe `recipient: "message_sender"`, o `content_sha256` do
 texto aprovado e um `summary` breve sem contatos. Preserve o rascunho aprovado
 no chat e confira o hash do texto antes de enviar ao remetente verificado.
+
+Publicação de LinkedIn/GitHub usa `profile_publish`, conforme o contrato em
+[presença profissional](PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
+Essa permissão é opcional em perfis antigos e assume `ask` quando ausente.
+Cada publicação exige confirmação própria, mesmo com permissão geral `allow`.
+Antes de qualquer efeito externo, use `action check <id>` e confira também a
+página, os campos e o destinatário observados. O controle local não observa o
+navegador nem executa o efeito. Falha ou resultado incerto exige reconciliação;
+não apague a autorização para tentar de novo.
 
 Uma ausência aceita somente para uma vaga usa `decision` com os motivos exatos
 devolvidos por `opportunity`. O perfil precisa estar aprovado. A decisão fica
