@@ -14,14 +14,19 @@ def _source(topic, source):
         raise ValueError('Perfil desconhecido.')
     source = _text(source, 'a origem do material revisado', 1000)
     if source != 'candidate_text':
-        parsed = urlsplit(source)
+        guidance = 'Use o link HTTPS do perfil, sem rastreadores ou credenciais, ou candidate_text para texto fornecido pela pessoa.'
+        try:
+            parsed = urlsplit(source)
+            port = parsed.port
+        except ValueError:
+            raise ValueError(guidance) from None
         domain = 'linkedin.com' if topic == 'linkedin' else 'github.com'
         host = parsed.hostname or ''
         allowed_host = host in (domain, 'www.' + domain) or (topic == 'linkedin' and host.endswith('.linkedin.com'))
         if (parsed.scheme != 'https' or not allowed_host
                 or parsed.username or parsed.password or parsed.query or parsed.fragment
-                or parsed.port not in (None, 443) or not parsed.path.strip('/')):
-            raise ValueError('Use o link HTTPS do perfil, sem rastreadores ou credenciais, ou candidate_text para texto fornecido pela pessoa.')
+                or port not in (None, 443) or not parsed.path.strip('/')):
+            raise ValueError(guidance)
     return source
 
 
@@ -65,8 +70,8 @@ class Presence:
             raise ValueError('Escolha LinkedIn, GitHub ou ambos.')
         if decision == 'now' and not topics:
             raise ValueError('Informe qual perfil a pessoa quer revisar.')
-        _text(confirmation, 'a escolha confirmada da pessoa', 500)
-        return self._save(lambda state: state.update(decision=decision, topics=topics))
+        confirmation = _text(confirmation, 'a escolha confirmada da pessoa', 500)
+        return self._save(lambda state: state.update(decision=decision, topics=topics, confirmation=confirmation))
 
     def source(self, topic, source):
         source = _source(topic, source)
@@ -77,6 +82,8 @@ class Presence:
             link = None if source == 'candidate_text' else source
             if previous and (link is None or _link(previous) == link):
                 previous['link'] = _link(previous)
+                if not previous.get('content'):
+                    previous['source'] = source
                 return
             _archive(state, topic, previous)
             state['reviews'][topic] = {'source': source, 'link': link, 'content': None,
@@ -101,12 +108,13 @@ class Presence:
     def finish(self, topic, version, confirmation):
         if topic not in TOPICS or type(version) is not int:
             raise ValueError('Informe o perfil e a versão revisada.')
-        _text(confirmation, 'a confirmação de revisão da pessoa', 500)
+        confirmation = _text(confirmation, 'a confirmação de revisão da pessoa', 500)
         def change(state):
             review = state['reviews'].get(topic)
             if state['decision'] != 'now' or topic not in state['topics'] or not review or not review.get('content') or review['version'] != version:
                 raise ValueError('As sugestões mudaram ou ainda não existem. Confira a versão atual.')
             review['reviewed'] = True
+            review['confirmation'] = confirmation
         return self._save(change)
 
     def status(self):

@@ -33,6 +33,9 @@
   por entrada privada e arquivos criados com permissões restritas.
 - Orientações para currículo colado no chat, sessões de navegador, retomada de
   formulários e importação de históricos, além dos filtros de idioma ausente.
+- Revisões de perfil preservadas na retomada, com origem e confirmação privadas.
+  A conferência do currículo aceita quebras de linha em links longos e explica
+  no terminal os pontos que precisam de correção.
 
 ## 0.2.1 - 2026-11-05
 

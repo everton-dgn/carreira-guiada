@@ -63,6 +63,28 @@ def _blocks(markdown):
             paragraph.append(line.strip())
 
 
+def _extraction_preserved(expected, actual, allow_line_wraps=False):
+    """Allow PDF word wrapping only across a line break, preserving word order."""
+    wanted = re.findall(r'\w+', expected.casefold())
+    actual = actual.casefold()
+    tokens = list(re.finditer(r'\w+', actual))
+    index = 0
+    for word in wanted:
+        if index == len(tokens):
+            return False
+        token = tokens[index].group()
+        while allow_line_wraps and token != word and word.startswith(token) and index + 1 < len(tokens):
+            gap = actual[tokens[index].end():tokens[index + 1].start()]
+            if not re.fullmatch(r'[ \t]*\r?\n[ \t]*', gap):
+                break
+            index += 1
+            token += tokens[index].group()
+        if token != word:
+            return False
+        index += 1
+    return bool(wanted) and index == len(tokens)
+
+
 def _render(markdown):
     """Generate a restrained, searchable PDF and editable DOCX from one source."""
     import reportlab
@@ -328,13 +350,18 @@ class ResumeManager:
         document = Document(BytesIO(self._read(version['paths']['docx'])))
         texts = {'pdf': '\n'.join(page.extract_text() or '' for page in pdf.pages),
                  'docx': '\n'.join(paragraph.text for paragraph in document.paragraphs)}
-        def words(text):
-            return re.findall(r'\w+', text.casefold())
-        checks = {fmt + '_text_preserved': bool(words(expected)) and words(text) == words(expected)
+        checks = {fmt + '_text_preserved': _extraction_preserved(expected, text, allow_line_wraps=fmt == 'pdf')
                   for fmt, text in texts.items()}
         checks['clear_sections'] = any(kind == 'heading' and level == 2 for kind, level, _ in blocks)
         checks['no_docx_tables'] = not document.tables
         checks['no_markdown_tables'] = not any(re.match(r'^\s*\|.*\|\s*$', line) for line in markdown.splitlines())
-        return {'resume_id': resume_id, 'checks': checks, 'passed': all(checks.values()),
-                'pages': len(pdf.pages), 'issues': [name for name, passed in checks.items() if not passed],
-                'ats_score': None, 'message': 'Conferência local de leitura concluída. A IA ainda deve revisar os fatos, os termos da vaga e a prévia no portal; isto não garante classificação em ATS.'}
+        issues = [name for name, passed in checks.items() if not passed]
+        explanations = {'pdf_text_preserved': 'O texto extraído do PDF difere do rascunho.',
+                        'docx_text_preserved': 'O texto extraído do Word difere do rascunho.',
+                        'clear_sections': 'Separe as seções com títulos de nível 2 (## no rascunho).',
+                        'no_docx_tables': 'Troque as tabelas do Word por parágrafos.',
+                        'no_markdown_tables': 'Troque as tabelas do rascunho por parágrafos.'}
+        message = 'Conferência local de leitura aprovada.' if not issues else 'A conferência local encontrou pontos para corrigir:\n' + '\n'.join('- ' + explanations[name] for name in issues)
+        message += '\nA IA ainda deve revisar os fatos, os termos da vaga e a prévia no portal; isto não garante classificação em ATS.'
+        return {'resume_id': resume_id, 'checks': checks, 'passed': not issues,
+                'pages': len(pdf.pages), 'issues': issues, 'ats_score': None, 'message': message}

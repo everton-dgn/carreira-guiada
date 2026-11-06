@@ -37,7 +37,7 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | Comando | Uso no fluxo |
 |---|---|
 | `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `profile_approval`, `resume_approval`, `professional_presence`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
-| `status` | Estado seguro: objetivo, contagens, pendências, próximos passos. Sem perfil completo. |
+| `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
 | `doctor` | Diagnóstico do ambiente. |
 | `checkpoint show` e `save` | Último progresso comprovado e próxima ação, persistidos entre sessões. Payload: `phase`, `summary`, `next_action`, `needs_user`; veja [acompanhamento](ACOMPANHAMENTO.md). |

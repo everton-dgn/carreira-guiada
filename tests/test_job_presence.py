@@ -78,6 +78,27 @@ class PresenceTests(unittest.TestCase):
         self.assertIn('Próxima etapa: dados de contato.', text)
         self.assertEqual(text.count('?'), 1)
 
+    def test_source_fallback_and_confirmations_survive_restart(self):
+        self.presence.choose('now', ['linkedin'], 'Quero revisar o LinkedIn.')
+        link = 'https://linkedin.com/in/pessoa-exemplo'
+        self.presence.source('linkedin', link)
+        self.presence.source('linkedin', 'candidate_text')
+        saved = Presence(self.root).get()
+        self.assertEqual(saved['confirmation'], 'Quero revisar o LinkedIn.')
+        self.assertEqual(saved['reviews']['linkedin']['source'], 'candidate_text')
+        self.assertEqual(saved['reviews']['linkedin']['link'], link)
+        self.presence.draft('linkedin', 'Texto revisado.', link)
+        self.presence.finish('linkedin', 1, 'Conferi a versão atual.')
+        self.presence.source('linkedin', 'candidate_text')
+        saved = Presence(self.root).get()['reviews']['linkedin']
+        self.assertEqual(saved['source'], link)
+        self.assertEqual(saved['confirmation'], 'Conferi a versão atual.')
+        self.presence.draft('linkedin', 'Novo texto revisado.', 'candidate_text')
+        self.assertNotIn('confirmation', self.presence.get()['reviews']['linkedin'])
+        for invalid in ('https://linkedin.com:99999/in/person', 'https://linkedin.com:abc/in/person'):
+            with self.subTest(url=invalid), self.assertRaisesRegex(ValueError, 'Use o link HTTPS'):
+                self.presence.source('linkedin', invalid)
+
     def test_browser_budget_is_bounded_and_preserves_existing_mode(self):
         profile = Profile(self.root)
         for value in (0, 6, True, '2'):
