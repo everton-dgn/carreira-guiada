@@ -477,7 +477,8 @@ class Store:
                 if existing["job_id"] is not None and existing["job_id"] != job_id:
                     raise ValueError("message_id: mensagem já registrada com outro vínculo")
                 if existing["step_id"] is not None and payload.get("step_key") is not None:
-                    if self._step(existing["step_id"])["step_key"] != payload["step_key"]:
+                    existing_step = self._step(existing["step_id"])
+                    if existing_step["step_key"] != payload["step_key"]:
                         raise ValueError("message_id: mensagem já registrada com outra etapa")
                 new_link = job_id is not None and (existing["job_id"] is None or (existing["step_id"] is None and payload.get("step_key") is not None))
                 if new_link:
@@ -488,6 +489,8 @@ class Store:
                     self.conn.execute("UPDATE messages SET job_id=?,step_id=? WHERE id=?", (job_id, step_id, existing["id"]))
                     self.conn.execute("INSERT INTO message_links(message_id,job_id,step_id,evidence,created_at) VALUES(?,?,?,?,?)", (existing["id"], job_id, step_id, link_evidence, _stamp()))
                     existing = self.conn.execute("SELECT * FROM messages WHERE id=?", (existing["id"],)).fetchone()
+                elif existing["step_id"] is not None and payload.get("step_key") is not None:
+                    self._upsert_step({**payload, "job_id": job_id, "kind": payload.get("kind", existing_step["kind"])})
                 return {**dict(existing), "duplicate": True, "link_pending": existing["job_id"] is None}
             job_id = payload.get("job_id")
             if job_id is not None:
