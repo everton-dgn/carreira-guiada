@@ -19,7 +19,7 @@ a pessoa a informá-los, sem escolher portais por ela. Sem perfil aprovado, volt
 ## Executar
 
 Leia `tabs status` antes de usar o navegador e siga
-[ACOMPANHAMENTO.md](../../../docs/ACOMPANHAMENTO.md). Reutilize abas seguras,
+[procedimento de progresso e abas](../../../docs/OPERACAO.md#progresso-e-abas). Reutilize abas seguras,
 reserve antes de abrir outra e respeite o limite global, inclusive se houver
 outros agentes. Mostre progresso observado durante buscas demoradas.
 

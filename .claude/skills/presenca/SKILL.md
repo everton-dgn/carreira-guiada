@@ -52,7 +52,7 @@ regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
    Para aplicar, mostre texto exato, conta, destino e visibilidade e obtenha
    autorização específica. Preserve o conteúdo público anterior para reversão.
    Sem ferramenta ou permissão do serviço, guie a pessoa na aplicação manual.
-   Para publicação pela IA, siga o [contrato de publicação](../../../docs/PRESENCA-PROFISSIONAL.md#contrato-de-publicação):
+   Para publicação pela IA, siga o [contrato de publicação](../../../docs/OPERACAO.md#publicação-de-perfis):
    perfil aprovado, objetivo contendo `profile_publish`, sessão conferida e
    autorização por item. Se faltar a atividade no objetivo, confirme sua
    inclusão e use `goal-extend`, preservando a campanha e suas contagens.

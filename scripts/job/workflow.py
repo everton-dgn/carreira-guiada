@@ -1232,7 +1232,8 @@ class Workflow:
         category: EMAIL_CATEGORIES, received_at: ISO com fuso, summary?: str curta,
         safe_url?: URL https pública, opportunity_id?: int, link_evidence?: str
         (obrigatória com opportunity_id), step_key?: str (obrigatória em interview/
-        assessment vinculados), step_kind?: str (padrão = category), due_at?: ISO}``.
+        assessment vinculados), step_kind?: str (etapa nova: category;
+        existente: tipo salvo), due_at?: ISO}``.
         Duplicata idêntica é idempotente; categoria divergente é recusada.
         Retorna ``{message_row, provider, account, message_id, category, status,
         duplicate, link_pending, opportunity_id, step_id}``.
@@ -1258,6 +1259,10 @@ class Workflow:
             store_payload["kind"] = p.get("step_kind") or p["category"]
         store = self._writer()
         with store.transaction():
+            if p.get("step_key") is not None and p.get("step_kind") is None:
+                step = store.conn.execute("SELECT kind FROM steps WHERE job_id=? AND step_key=?", (job_id, p["step_key"])).fetchone()
+                if step is not None:
+                    store_payload["kind"] = step["kind"]
             message = store.ingest_message(store_payload)
             existing = store.conn.execute("SELECT * FROM wf_messages WHERE message_row=?", (message["id"],)).fetchone()
             if existing and existing["category"] != p["category"]:

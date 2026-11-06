@@ -103,6 +103,6 @@ pessoa. Só descreva botões que você observou. Nunca peça para configurar MCP
 obter chave de API ou executar comandos. Sem ferramenta disponível, explique
 o que ficou pendente e continue o preparo ou a pesquisa que ainda for possível.
 
-Use [ACOMPANHAMENTO.md](../../../docs/ACOMPANHAMENTO.md) desde o início: feedback
+Use [procedimento de progresso e abas](../../../docs/OPERACAO.md#progresso-e-abas) desde o início: feedback
 curto durante a execução, checkpoint após progresso e antes de esperas,
 reserva de abas antes de abrir e reconciliação na retomada.

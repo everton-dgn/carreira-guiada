@@ -5,7 +5,7 @@ description: Conduzir treino privado e opcional de entrevistas, com perguntas in
 
 # Treino de entrevistas
 
-Leia `docs/ENTREVISTAS.md` e `practice status` antes de perguntar. Use
+Leia `docs/ENTREVISTAS.md`, o [contrato de treino](../../../docs/CONTRATOS.md#treinos-de-entrevistas) e `practice status` antes de perguntar. Use
 `start --focus practice` para entrada direta. Se não souber escolher, recomende
 uma apresentação curta com ajuda. Adapte tema, nível e idioma à pessoa.
 

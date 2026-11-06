@@ -60,7 +60,7 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   Oriente: "faça o login na aba aberta e me avise quando terminar".
 - Salve progresso a cada resposta. Explique no início que pode parar e voltar
   depois digitando `iniciar`, sem repetir esse aviso a cada pergunta.
-- Siga [ACOMPANHAMENTO.md](docs/ACOMPANHAMENTO.md) para feedback, checkpoint e
+- Siga [progresso e abas](docs/OPERACAO.md#progresso-e-abas) para feedback, checkpoint e
   controle de abas. Avise a cada mudança de etapa e, durante execução demorada,
   em até 60 segundos quando a ferramenta devolver controle. Diga o que foi
   comprovado, o próximo passo e a ação exata que depende da pessoa.
@@ -443,7 +443,7 @@ explícita e exclusiva; nunca dois escritores. A skill
 - Imediatamente antes do efeito, chame `action check <id>` com responsável e
   geração atuais. Se falhar, não execute: confira a tentativa e resolva o estado.
   Publicações de LinkedIn/GitHub usam `profile_publish`, com autorização por
-  texto, versão e destino conforme [presença profissional](docs/PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
+  texto, versão e destino conforme [presença profissional](docs/OPERACAO.md#publicação-de-perfis).
 - Releia o estado antes e depois de cada gravação. Falha de gravação bloqueia
   novas ações externas dependentes; pesquisa e leitura continuam.
 - Na retomada, `action show <id>` recupera a intenção histórica e o destino

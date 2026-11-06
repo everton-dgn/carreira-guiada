@@ -3,19 +3,41 @@
 Diga à IA: **"Quero treinar uma entrevista"**. Se não souber por onde começar,
 ela oferece uma apresentação curta com ajuda, uma pergunta por vez.
 
-O treino é opcional e privado. Pode ser feito antes de montar currículo ou perfil e não inicia candidatura, teste de empresa ou publicação. Escolha praticar agora, mais tarde ou pular. Você pode usar uma pergunta para um treino curto, interromper e retomar, ou encerrar antes do final.
+O treino é opcional e privado. Você pode começar sem currículo ou cadastro,
+usar só uma pergunta, parar e retomar outro dia. As respostas ficam salvas;
+você pode tentar de novo sem perder as versões anteriores.
 
-A conversa com ajuda traz uma devolutiva após cada resposta. O simulado guarda as respostas e apresenta a devolutiva depois das perguntas. Você pode informar sua área, nível e colar a descrição da vaga. Evite dados sensíveis. Cada resposta pode ser refeita; o histórico permanece e a devolutiva anterior deixa de valer para a versão nova.
+## Escolha como quer ensaiar
 
-Para preparar histórias verdadeiras, organize situação, sua ação, resultado e aprendizado. Se não tiver experiência profissional, use exemplos reais de estudo, projetos pessoais ou outras atividades. Se não souber responder, diga "não sei": a pessoa que conduz pode sugerir uma estrutura sem inventar fatos.
+| Formato | Como funciona |
+|---|---|
+| Com ajuda | Você recebe feedback após cada resposta e pode pedir uma dica antes de tentar novamente. |
+| Simulado | A IA faz as perguntas e guarda a devolutiva para o final, como preparação para uma conversa real. |
 
-Exemplo de conversa: "Conte sobre um desafio." Resposta: "Em um projeto de estudo, os testes falhavam e eu organizei os casos para encontrar a causa." Devolutiva: "Você deu contexto e descreveu sua ação. Conte qual foi o resultado, se lembrar. Uma forma de organizar é: situação, ação e resultado. No próximo exercício, tente explicar em um minuto." A devolutiva deve se limitar ao que a pessoa contou.
+Conte sua área e o tipo de vaga. Se tiver uma descrição, cole o texto sem
+informações sensíveis. A IA adapta as perguntas ao que você precisa praticar.
+Não ter vivido uma situação é uma resposta válida; diga isso.
 
-No roteiro de RH, pratique apresentação, motivação pela vaga, saída anterior, desafio, erro e aprendizado, qualidade e ponto a desenvolver, e planos futuros. Uma pergunta por vez permite adaptar a conversa. Não há resposta obrigatória para qualquer experiência que a pessoa não tenha vivido.
+Para contar uma história, organize a situação, sua ação, o resultado e o que
+aprendeu. Se ainda não trabalhou, use exemplos reais de estudo, projetos ou
+atividades voluntárias. A IA ajuda a organizar a resposta com o que você contou.
 
-Na área técnica, explique decisões e investigação de falhas. Para código, o condutor propõe um exercício original proporcional à área e esclarece entradas, saídas e exemplos antes da solução. Raciocínio, código e testes locais podem ser discutidos; executar código exige autorização. Código recebido de terceiros nunca é executado automaticamente.
+> IA: Conte sobre um desafio.
+>
+> Você: Em um projeto de estudo, os testes falhavam. Organizei os casos para
+> encontrar a causa.
+>
+> IA: Você explicou o problema e sua ação. Falta contar como conferiu a
+> solução. O que aconteceu depois da correção? Tente incluir isso em uma frase.
 
-Para arquitetura, comece por requisitos e hipóteses, depois trate escala, dados e APIs, diagrama textual ou Mermaid, decisões e alternativas, falhas, segurança, observabilidade e custo. O exercício é fictício e não substitui teste real de empresa. O relatório traz próximos passos, sem prever contratação. Dados do treino não são copiados para o perfil ou currículo sem conferência explícita.
+Em exercícios de código, a IA esclarece entradas, saídas e exemplos antes da
+solução. Você discute o raciocínio e pode autorizar a execução de testes locais.
+Código recebido de terceiros não é executado automaticamente. Em arquitetura,
+comece pelos requisitos e explique as decisões e alternativas; o desenho vem
+depois de entender o problema.
+
+Os exercícios são fictícios. O feedback orienta seu estudo sem prever uma
+contratação, e suas respostas não viram fatos do currículo sem sua conferência.
 
 ## Experimente responder por voz
 
@@ -108,36 +130,16 @@ flowchart LR
   C --> E[Notificação após confirmação]
 ```
 
-## Contrato do módulo
+## Pausar e voltar ao treino
+
+Você pode pausar só o treino e continuar a busca de vagas. Diga "deixe este
+treino para depois"; suas respostas ficam salvas. Para voltar, diga "vamos
+continuar o treino". Se quiser interromper toda a execução, diga "pare tudo".
+Depois do relatório, você pode ensaiar de novo sem perder as tentativas anteriores.
+
+## Se uma resposta não puder ser salva
 
 Se uma resposta for recusada por parecer conter credenciais ou documentos,
 troque os valores por uma explicação do conceito. Não cole senha, chave ou
 número de documento para pedir ajuda. O aviso preserva as respostas anteriores;
 a conferência automática pode errar e não substitui esse cuidado.
-
-O agente usa `start --focus practice`, sem exigir onboarding, e os comandos
-`practice catalog`, `show` e `status`. A pessoa conversa normalmente.
-`Practice(root)` usa armazenamento privado aditivo. `catalog()`, `get()` e
-`status(session_id=None)` são leituras e não criam `.job`. `choose(decision)`
-aceita `now`, `later` ou `skip`. `start(track, mode, context=None, area=None,
-level=None, short=False, question_ids=None)` inicia uma sessão. As trilhas são
-`rh`, `presentation`, `behavioral`, `technical`, `coding`, `system_design`,
-`international` e `negotiation`; modos: `coach` e `mock`. `question_ids` permite
-um ensaio focado nos IDs do catálogo. Código e arquitetura têm contexto
-fictício inicial quando nenhum é fornecido.
-
-Para a pergunta atual, use `hint(session_id, question_id)`, `answer(session_id, question_id, text)`, `skip(session_id, question_id)` e `advance(session_id, question_id)`. Uma nova resposta cria versão e preserva as anteriores. `feedback(session_id, question_id, version, strengths, improvements, suggestion, exercise)` registra texto criado pelo modelo para a versão atual. No simulado, só depois das perguntas. `end_questions(session_id)` encerra a etapa antecipadamente e permite a devolutiva. `finish(session_id, report, next_steps)` guarda relatório, distinguindo conclusão de encerramento antecipado. `get()` permite acessar sessões, histórico e relatório; `status()` fornece `decision`, `session_id`, `phase`, `next_step`, `message` e `question` para retomar.
-
-Os comandos CLI recebem esses mesmos argumentos por JSON via entrada padrão;
-`show` corresponde a `get()` e `end-questions` a `end_questions()`. Para pausar
-somente o treino, use `practice choose` com `decision: later`. Pergunta e
-respostas já ficam salvas no treino. Preserve o checkpoint da campanha se
-ela continuar; use fase `practice` apenas se esse for o ponto geral de retomada.
-A busca de vagas pode continuar.
-Para voltar ao treino, use `decision: now`; não encerre as perguntas.
-
-Use `stop` somente quando a pessoa pedir para parar toda a execução. Nesse caso,
-ações externas abertas ficam incertas e exigem conferência no destino. Após
-pedido explícito de retomar tudo, use `resume-work`; isso não resolve esses
-resultados incertos. Depois do relatório, abra outra sessão para ensaiar de
-novo; as anteriores permanecem disponíveis.

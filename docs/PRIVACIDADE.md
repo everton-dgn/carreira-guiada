@@ -34,6 +34,22 @@ na área privada ou fora da cópia distribuída. Eles contêm seu histórico e n
 devem substituir os modelos vazios de `templates/`. Ignorar arquivos no Git
 não impede que sejam incluídos ao copiar ou compactar a pasta manualmente.
 
+## Cópias de segurança e atualização
+
+Uma cópia de segurança contém seus dados pessoais e precisa ficar em um local
+privado escolhido por você, fora da pasta que será atualizada. Ela não deve
+ser anexada a uma issue, incluída em um PR ou compartilhada junto com o projeto.
+
+Antes de copiar, a IA deve parar a campanha e conferir que nenhuma outra
+sessão está gravando no banco. A cópia precisa incluir a área privada inteira,
+com seus arquivos ocultos e permissões de acesso, além de originais pessoais
+que você tenha guardado fora dela. Copiar apenas `control.sqlite3` não preserva
+os currículos e todos os materiais da preparação.
+
+Guarde a instalação anterior até conferir o perfil, os currículos e as
+pendências na versão atualizada. A atualização não deve reiniciar seu cadastro
+nem autorizar novos envios. [Como pedir a atualização](GUIA.md#atualizar-sem-perder-o-progresso).
+
 ## O que o agente não deve coletar
 
 - Número de documento de identidade, senha, código de verificação, token,

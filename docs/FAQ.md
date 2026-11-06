@@ -52,6 +52,13 @@ e de uma ferramenta autenticada. A IA nunca pede a senha no chat.
 O acompanhamento atual suporta Gmail e Outlook. Se usa outro provedor,
 mantenha seu endereço como contato e deixe a leitura automática para depois.
 
+## Posso usar só uma parte do projeto?
+
+Sim. Diga "quero só pesquisar vagas", "quero melhorar meu currículo" ou
+"quero treinar uma entrevista". A pesquisa prepara filtros e fontes sem
+exigir currículo; o treino também dispensa perfil e contas. Enviar candidaturas
+exige o preparo e as permissões correspondentes.
+
 ## A IA fica procurando enquanto estou fora?
 
 Com o modo objetivo (`goal`) e execução ativa na ferramenta, a IA pode seguir
@@ -71,6 +78,23 @@ antes das próximas ações.
 
 A candidatura fica pendente de conferência no portal. O procedimento impede
 outra tentativa até verificar o resultado anterior. Outras vagas podem seguir.
+
+## Como atualizar sem perder meus dados?
+
+Envie primeiro à IA o [procedimento da versão nova](OPERACAO.md#atualização-de-uma-instalação-usada)
+e peça uma atualização com cópia de segurança local. Não apague a instalação
+anterior nem copie apenas o banco: currículos e outros materiais ficam em
+arquivos separados. A IA precisa parar as
+gravações antes da cópia e conferir o progresso depois da atualização.
+Após essa conferência, use somente a pasta indicada como instalação ativa.
+[Siga o passo a passo](GUIA.md#atualizar-sem-perder-o-progresso).
+
+## Abri a pasta e parece que meu cadastro sumiu
+
+Você pode ter aberto uma instalação nova ou uma segunda cópia. Diga à IA
+onde guardou a pasta que usava antes; ela deve localizar os registros e
+conferir o estado antes de oferecer outro cadastro. Não apague nenhuma das
+pastas nem refaça candidaturas para tentar recuperar o histórico.
 
 ## Ele responde testes por mim?
 

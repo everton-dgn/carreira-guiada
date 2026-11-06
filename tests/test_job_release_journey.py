@@ -1,5 +1,6 @@
 """One fictional person, real CLI, blocked network and simulated next day."""
 import hashlib
+from datetime import datetime, timedelta, timezone
 import unittest
 
 from tests import test_job_preparation_journey as preparation
@@ -100,10 +101,20 @@ class ReleaseJourneyTests(unittest.TestCase):
         self.call('tabs', 'release', data={'reservation': slot['reservation'], 'outcome': 'closed', 'evidence': 'Aba fictícia encerrada.'})
         self.assertEqual(self.call('tabs', 'status')['in_use'], 0)
         read = self.authorize('email_read', channel={'provider': 'gmail', 'account': 'principal'}, scope_key='retorno')
-        message = self.call('email', data={'provider': 'gmail', 'account': 'principal', 'message_id': 'convite-ficticio',
+        email = {'provider': 'gmail', 'account': 'principal', 'message_id': 'convite-ficticio',
             'category': 'recruiter_contact', 'received_at': self.time, 'summary': 'Convite fictício para continuar.',
             'opportunity_id': job['opportunity_id'], 'link_evidence': 'Empresa e processo conferidos no cenário.',
-            'step_key': 'resposta', 'step_kind': 'email_reply'})
+            'step_key': 'resposta', 'step_kind': 'email_reply'}
+        message = self.call('email', data=email)
+        self.say('O convite não informa o fuso do prazo. Vou registrar essa pendência.',
+                 'Conferi no portal: o prazo é amanhã, às 17h de Brasília.')
+        local_time = datetime.fromisoformat(self.time).astimezone(timezone(timedelta(hours=-3)))
+        deadline = (local_time + timedelta(days=1)).replace(hour=17, minute=0, second=0).isoformat()
+        repeated = self.call('email', data={**{key: value for key, value in email.items() if key != 'step_kind'}, 'due_at': deadline})
+        self.assertTrue(repeated['duplicate'])
+        self.assertEqual(repeated['step_id'], message['step_id'])
+        step = next(item for item in self.call('steps') if item['id'] == message['step_id'])
+        self.assertEqual(datetime.fromisoformat(step['due_at']), datetime.fromisoformat(deadline))
         self.complete(read, evidence_source='destination_email')
         self.say('Chegou um convite fictício. Preparei uma resposta confirmando seu interesse.', 'Pode simular o envio desse texto.')
         reply = self.authorize('email_reply', channel={'provider': 'gmail', 'account': 'principal'},

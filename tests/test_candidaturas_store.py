@@ -233,6 +233,47 @@ class StoreTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.store.ingest_message({**message, "step_key": "test-2", "link_evidence": "Outra etapa"})
 
+    def test_linked_message_updates_verified_deadline_without_duplicates(self):
+        message = dict(provider="gmail", account="principal", message_id="deadline",
+                       job_id=self.job(), step_key="test-1", kind="test", summary="Teste recebido")
+        original = self.store.ingest_message(message)
+        self.store.claim_step(original["step_id"], "chat:fixture")
+        for due_at, expected in (("2026-09-16T14:00:00-03:00", "2026-09-16T17:00:00Z"),
+                                 ("2026-09-17T14:00:00-03:00", "2026-09-17T17:00:00Z")):
+            result = self.store.ingest_message({**message, "due_at": due_at})
+            self.assertTrue(result["duplicate"])
+            self.assertEqual((result["id"], result["step_id"]), (original["id"], original["step_id"]))
+            step, = self.store.list_steps()
+            self.assertEqual(datetime.fromisoformat(step["due_at"]), datetime.fromisoformat(expected))
+            self.assertEqual(step["state"], "in_progress")
+            self.assertEqual(step["owner"], "chat:fixture")
+        self.store.ingest_message(message)
+        self.assertEqual(datetime.fromisoformat(self.store.list_steps()[0]["due_at"]),
+                         datetime(2026, 9, 17, 17, tzinfo=timezone.utc))
+        self.assertEqual(self.store.summary()["messages"], 1)
+        self.assertEqual(self.store.summary()["confirmed"], 0)
+
+    def test_linked_message_rejects_conflicting_kind_and_invalid_deadline(self):
+        message = dict(provider="gmail", account="principal", message_id="deadline",
+                       job_id=self.job(), step_key="test-1", kind="test")
+        self.store.ingest_message(message)
+        for change in ({"kind": "interview"}, {"due_at": "2026-09-16T14:00:00"}):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                self.store.ingest_message({**message, **change})
+        step, = self.store.list_steps()
+        self.assertEqual(step["kind"], "test")
+        self.assertIsNone(step["due_at"])
+        self.assertEqual(self.store.summary()["messages"], 1)
+
+    def test_linked_message_does_not_rewrite_completed_step(self):
+        message = dict(provider="gmail", account="principal", message_id="deadline",
+                       job_id=self.job(), step_key="test-1", kind="test")
+        original = self.store.ingest_message(message)
+        self.store.transition_step(original["step_id"], "completed", evidence="Conclusão fictícia conferida")
+        before = self.store.list_steps()[0]
+        self.store.ingest_message({**message, "due_at": "2026-09-16T14:00:00-03:00"})
+        self.assertEqual(self.store.list_steps()[0], before)
+
     def test_provider_aliases_preserve_compound_public_ids(self):
         self.job(aliases=["job:github:example-org/jobs/1001", "job:inhire:example-company:fixture-uuid"])
         self.assertEqual(len(self.store.list_jobs()[0]["aliases"]), 2)

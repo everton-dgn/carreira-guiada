@@ -94,6 +94,12 @@ Se não responder, fica "pergunte antes".
 | Lixeira | Mover uma mensagem específica para a lixeira. |
 | Agendar | Aceitar horário de entrevista que você confirmou. |
 | Testes | Ajudar em testes quando as regras do teste permitirem. |
+| Publicar no LinkedIn ou GitHub | Aplicar uma melhoria no perfil. Você confere e aprova o texto, a conta e o destino de cada alteração. |
+
+Revisar seu perfil profissional é opcional e não publica nada. Mesmo com
+"pode fazer", cada publicação exige essa conferência. A mesma distinção vale
+para respostas de e-mail, agendamentos e avaliações: a permissão geral não
+substitui a aprovação do item.
 
 ### 5. Contas
 

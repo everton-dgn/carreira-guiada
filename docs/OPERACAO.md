@@ -32,6 +32,43 @@ resolvidas por `uv` a partir de `pyproject.toml` e `uv.lock`; nada é instalado
 globalmente. Se a instalação falhar, informe o erro em uma frase e a próxima
 tentativa concreta; não encerre o turno delegando o problema à pessoa.
 
+## Atualização de uma instalação usada
+
+O candidato encontra o pedido em linguagem comum no
+[guia de atualização](GUIA.md#atualizar-sem-perder-o-progresso). Este procedimento
+é manual e assistido; não existe comando de atualização ou migração automática.
+
+1. Identifique a pasta em uso, a versão instalada e a versão pretendida. Leia
+   este procedimento da versão nova e suas notas antes de propor alterações;
+   não presuma que a instalação antiga já contém estas instruções. Explique o
+   que muda e use a autorização da pessoa para aquele escopo.
+2. Pare a campanha e confira que nenhuma outra sessão ou processo está
+   gravando no armazenamento. Uma ordem de parada não encerra outras sessões
+   automaticamente. Não copie um banco em uso nem encerre processos alheios.
+3. Prepare uma cópia local completa em destino privado fora da pasta alterada,
+   incluindo arquivos ocultos, anexos e permissões. Preserve `.job/` inteira,
+   não apenas `control.sqlite3`; não exclua arquivos auxiliares do SQLite.
+   Confira a cópia antes de substituir qualquer arquivo. Não imprima dados
+   privados nem use um destino de nuvem por conta própria.
+4. Confira como a instalação foi obtida. Em checkout Git, inspecione mudanças
+   locais e siga o fluxo do repositório sem descartar edições. Para ZIP, mantenha
+   as duas pastas e confira o conteúdo antes de transferir dados privados para
+   a instalação nova. Não mescle dois históricos preenchidos nem substitua
+   uma área privada já existente. Incompatibilidade de versão exige diagnóstico.
+5. Use as dependências do lock da versão escolhida e confira `doctor`,
+   `start --json` e `status --json` sem iniciar ações externas. Compare perfil,
+   currículos íntegros, contagens e pendências com o estado anterior. Uma tela
+   de primeiro uso inesperada é motivo para investigar a pasta, não para apagar
+   o banco ou cadastrar a pessoa de novo.
+6. Após a conferência, identifique a única instalação ativa para a pessoa e
+   para as sessões que continuarão o trabalho. Em atualização por ZIP, a nova
+   pasta passa a ser a instalação ativa; a antiga permanece somente como cópia
+   de segurança e não deve retomar campanhas. Bancos copiados não sincronizam
+   entre si e podem permitir candidaturas repetidas se usados separadamente.
+   Relate a versão conferida, o progresso preservado e o local privado da cópia.
+   Retome somente quando a pessoa pedir. Se houver falha, preserve original e
+   cópia sem tentar downgrade sobre dados já modificados.
+
 ## Comandos da entrada técnica
 
 | Comando | Uso no fluxo |
@@ -40,10 +77,10 @@ tentativa concreta; não encerre o turno delegando o problema à pessoa.
 | `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
 | `doctor` | Diagnóstico do ambiente. |
-| `checkpoint show` e `save` | Último progresso comprovado e próxima ação, persistidos entre sessões. Payload: `phase`, `summary`, `next_action`, `needs_user`; veja [acompanhamento](ACOMPANHAMENTO.md). |
-| `tabs status`, `reserve`, `update`, `release` | Reserva compartilhada antes da abertura, proteção de formulários e encerramento com evidência. Padrão de duas abas; veja [acompanhamento](ACOMPANHAMENTO.md). |
+| `checkpoint show` e `save` | Último progresso comprovado e próxima ação, persistidos entre sessões. Payload: `phase`, `summary`, `next_action`, `needs_user`; veja [progresso e abas](#progresso-e-abas). |
+| `tabs status`, `reserve`, `update`, `release` | Reserva compartilhada antes da abertura, proteção de formulários e encerramento com evidência. Padrão de duas abas; veja [progresso e abas](#progresso-e-abas). |
 | `presence status`, `show`, `choose`, `source`, `draft`, `finish` | Revisão opcional de LinkedIn/GitHub. `source` recebe `topic`, `source` e, opcionalmente, `material` para salvar texto recebido antes da análise. Material e sugestões ficam separados e privados. Não autoriza publicação; veja a [skill](../.agents/skills/presenca/SKILL.md). |
-| `practice catalog`, `show`, `status`, `choose`, `start`, `hint`, `answer`, `skip`, `feedback`, `advance`, `end-questions`, `finish` | Treino privado e opcional. `start --focus practice` entra direto; no onboarding aparece `interview_preparation`. Contratos e pausa em [ENTREVISTAS.md](ENTREVISTAS.md). |
+| `practice catalog`, `show`, `status`, `choose`, `start`, `hint`, `answer`, `skip`, `feedback`, `advance`, `end-questions`, `finish` | Treino privado e opcional. `start --focus practice` entra direto; no onboarding aparece `interview_preparation`. Contratos e pausa em [treinos de entrevistas](CONTRATOS.md#treinos-de-entrevistas). |
 | `research save`, `list`, `get`, `suggestions` | Registra pareceres observados; não navega. `get` recebe `record_id`; `save` segue [EMPRESAS.md](EMPRESAS.md). Não confundir com a ação externa `research` em `action authorize`. |
 | `offers save`, `list`, `get`, `status`, `compare`, `equivalent` | `get` recebe `offer_id`; `compare` recebe `ids`; `equivalent` recebe `base_id` e `target_id`. Comparações aceitam `base_currency` e `rates`; esquema completo em [PROPOSTAS.md](PROPOSTAS.md). |
 | `profile show` | Perfil atual com versão e `approved_version`. |
@@ -210,7 +247,7 @@ texto aprovado e um `summary` breve sem contatos. Preserve o rascunho aprovado
 no chat e confira o hash do texto antes de enviar ao remetente verificado.
 
 Publicação de LinkedIn/GitHub usa `profile_publish`, conforme o contrato em
-[presença profissional](PRESENCA-PROFISSIONAL.md#contrato-de-publicação).
+[presença profissional](OPERACAO.md#publicação-de-perfis).
 Essa permissão é opcional em perfis antigos e assume `ask` quando ausente.
 Cada publicação exige confirmação própria, mesmo com permissão geral `allow`.
 Antes de qualquer efeito externo, use `action check <id>` e confira também a
@@ -247,6 +284,153 @@ Só o relato da pessoa conclui essa participação, usando `transition` com
 Rejeição recebida por `email` não apaga histórico nem cancela etapas
 automaticamente. Confira a mensagem e cancele cada etapa afetada por
 `transition`, com a evidência. Continue processos de outras empresas.
+
+## Progresso e abas
+
+Procedimento para o agente. O candidato encontra exemplos e orientações em
+[acompanhamento](ACOMPANHAMENTO.md).
+
+### Feedback durante a execução
+
+O agente informa progresso real a cada mudança de etapa e, em trabalho
+demorado, em intervalos de até 60 segundos quando a ferramenta permitir.
+Use operações e esperas curtas para conseguir atualizar a conversa. Uma
+chamada que bloqueia o chat pode impedir mensagens durante sua execução;
+nesse caso, avise antes e atualize assim que a ferramenta devolver controle.
+
+Cada aviso usa poucas frases e responde ao que for relevante naquele momento:
+o que está acontecendo, o que já foi confirmado, qual o próximo passo e se
+algo depende da pessoa. Exemplos com dados fictícios:
+
+| Situação | Exemplo de aviso |
+|---|---|
+| Busca | "Estou conferindo as vagas da fonte escolhida. Três foram avaliadas; uma combina com seu perfil." |
+| Preenchimento | "Estou preenchendo a vaga da Empresa Exemplo com os dados e o currículo aprovados." |
+| Envio incerto | "O site não confirmou o recebimento. Vou conferir essa tentativa antes de enviar de novo; as outras vagas podem seguir." |
+| Login necessário | "Esta vaga precisa de login. A aba está preservada; entre nela e me avise quando terminar." |
+| Fonte indisponível | "Essa fonte apresentou erro duas vezes. Registrei a pendência e vou continuar nas outras fontes aprovadas." |
+| Retomada | "Encontrei o progresso de ontem. Há um envio para conferir e uma etapa aguardando sua resposta." |
+
+Não invente contagens, previsão de conclusão ou trabalho em andamento. Na
+espera por resposta da pessoa, mostre a ação exata uma vez e siga frentes
+independentes. Não repita a mesma cobrança a cada minuto.
+
+### Progresso salvo
+
+Cada resposta do onboarding, versão de currículo e resultado operacional é
+salvo na área privada. Além desses registros, `checkpoint save` guarda a etapa,
+o progresso comprovado e a próxima ação. Salve após uma mudança importante,
+antes de esperar uma intervenção e ao parar. Nunca use essa nota para substituir
+o registro de uma autorização, candidatura, mensagem ou resultado incerto.
+
+O checkpoint tem `phase`, `summary`, `next_action` e `needs_user`; o controle
+acrescenta `saved_at`. `status` mostra o último ponto salvo, com sua data.
+As fases aceitas são `onboarding`, `resume`, `presence`, `practice`, `offers`,
+`research`, `fill`, `email`, `followup`, `waiting` e `stopped`. Traduza esses valores na conversa;
+nunca peça que a pessoa escolha um identificador técnico.
+Esse registro não comprova que um executor está ativo nem mantém o computador
+ou o aplicativo funcionando.
+
+Ao voltar em outro dia, escreva `iniciar`. A IA oferece continuar de onde parou
+ou revisar a preparação. Se já disser `continuar`, ela aproveita essa escolha.
+Revisar mostra as respostas existentes, uma seção por vez, sem apagar tudo.
+Só as correções confirmadas são salvas, e mudanças materiais pedem a aprovação
+da nova versão. Uma autorização anterior não libera uma ação diferente.
+
+### Poucas abas, com controle compartilhado
+
+O padrão é de duas abas de trabalho para a campanha inteira, incluindo abas
+aguardando login e todos os agentes que participarem. O perfil pode reduzir
+para uma ou autorizar até cinco; nunca aumente por conta própria. Se o
+computador estiver lento, pare de abrir abas e proponha usar uma de cada vez.
+
+Antes de abrir ou assumir uma aba, consulte `tabs status` e faça `tabs reserve`.
+A reserva consome uma vaga imediatamente. Depois da abertura, registre o ID
+real, com prefixo do navegador, em `tabs update`. Uma reserva começa protegida;
+só use `protected: false` após conferir que não há formulário não salvo,
+login, envio incerto ou outra pendência dependente da aba.
+
+- Reutilize uma aba segura antes de abrir outra. Preserve as abas da pessoa.
+- Feche abas próprias sem utilidade após salvar o resultado. Confirme o
+  fechamento na ferramenta antes de `tabs release` com `outcome: closed`.
+- Abas da pessoa nunca são fechadas; ao terminar a interação, use
+  `returned_to_user`. Abas próprias pendentes continuam no limite.
+- Se a criação comprovadamente não ocorreu, use `not_created`. Se uma aba
+  identificada já não existe após reiniciar o navegador, confira o inventário
+  e use `already_absent`. Isso não resolve um possível envio incerto.
+
+Se as duas abas tiverem pendências, não abra uma terceira nem feche o formulário
+para liberar espaço. Continue tarefas sem navegador ou explique qual ação
+permite avançar. Na retomada, reconcilie reservas e abas observadas antes de
+abrir outras. Tempo passado não prova que uma aba desapareceu.
+
+O controle local recusa reservas acima do limite; a abertura e o fechamento
+reais são feitos pela ferramenta do aplicativo. Nunca redimensione, maximize,
+minimize ou mova a janela compartilhada do navegador. Não encerre processos
+da pessoa, não execute buscas sem limite e respeite os limites do serviço.
+
+## Publicação de perfis
+
+A revisão local pode acontecer antes do onboarding. Para a aplicação pela IA,
+o perfil precisa estar aprovado e o objetivo ativo deve incluir `profile_publish`.
+Inclua essa ação ao criar o objetivo, quando a pessoa pedir publicação.
+Se a campanha ativa não a incluir, confirme que a pessoa quer acrescentar essa
+atividade e use `goal-extend`. A campanha mantém a data de início, a meta e
+as candidaturas contadas. Isso não concede permissões nem autoriza publicar
+um texto; cada alteração pública ainda exige a confirmação específica abaixo.
+Não use `replace_version` apenas para acrescentar uma atividade.
+
+Prepare uma seção por vez. Guarde o diagnóstico em uma nota privada e salve
+em `presence draft.content` somente o texto exato a publicar naquela seção.
+Inclua em `fact_ids` os IDs dos fatos ativos e confirmados usados no texto.
+Use uma lista vazia somente quando a seção não depender de fatos do currículo.
+Mostre o texto, o link, a conta autenticada, a seção e a visibilidade observada.
+Confirme que a conta pertence à pessoa e preserve o conteúdo anterior fora do
+registro operacional, em `.job/presence-notes/`, com arquivo exclusivo por
+versão, diretório com modo `0700` e arquivos com modo `0600`, sem seguir links
+simbólicos nem sobrescrever notas existentes. Separe diagnóstico e cópia do conteúdo anterior
+do texto fornecido pela pessoa. Não use `presence source` para essas notas:
+alterar a fonte invalida o rascunho. `presence finish` registra a revisão;
+a autorização de publicação é uma confirmação separada para aquele conteúdo.
+
+Use `action authorize` com `action: profile_publish`, `owner`, `generation`,
+`channel: {provider, account}` da sessão observada, `user_confirmation` e
+`publication` com todos os campos abaixo. A permissão `deny` bloqueia;
+`ask`, inclusive quando omitida no perfil, exige confirmação. `allow`
+também exige confirmação por publicação.
+
+| Campo de `publication` | Conteúdo |
+|---|---|
+| `topic` | `linkedin` ou `github`. |
+| `version` | Número da versão atual, já conferida com `presence finish`. |
+| `section` | LinkedIn: `headline`, `about`, `experience`, `education`, `skills` ou `featured`. GitHub: `bio`, `profile_readme`, `pinned_repositories` ou `repository_readme`. |
+| `destination` | Link HTTPS exato salvo na revisão, sem rastreadores, credenciais ou fragmentos. Para um repositório, use a revisão daquele endereço. |
+| `visibility` | Público (`public`), conexões (`connections`) ou privado (`private`), conforme a opção realmente disponível e aprovada no serviço. Não altere configurações de privacidade por inferência. |
+| `content_sha256` | SHA-256 dos bytes UTF-8 de `presence show.reviews[topic].content`, sem acrescentar espaços ou quebras de linha. |
+
+Imediatamente antes de alterar o serviço, use `action check <id>` com `owner`
+e `generation`. A resposta devolve o vínculo conferido em `publication`.
+Mudança de texto, fonte, versão, perfil, objetivo, sessão ou parada impede usar
+uma autorização antiga. Confira também a página e a conta na ferramenta.
+O controle local não detecta uma troca de conta feita dentro do navegador.
+Se a conta observada divergir da conta aprovada, suspenda somente a publicação.
+Esses comandos registram e validam o protocolo; não publicam conteúdo sozinhos.
+
+Depois da ação, confira a página final e use `action complete <id>`. Para
+`confirmed`, envie `evidence_source: destination_page`, `evidence_url` igual
+ao destino autorizado, `publication_sha256` do texto observado, `checked_at`
+e evidência curta sem dados pessoais. Clique sem confirmação usa `uncertain`.
+Para resolver `not_received`, confira no destino que a mudança não ocorreu e
+informe a mesma página autorizada com `evidence_source: destination_page`;
+não informe `publication_sha256`. Uma versão nova não libera repetição enquanto
+houver autorização aberta ou resultado incerto para a mesma seção e destino.
+Na retomada, leia `action show <id>` para recuperar conta, destino, seção,
+visibilidade e hash daquela tentativa. Essa leitura funciona mesmo durante
+parada ou com autorização expirada e não permite executar a ação novamente.
+Confira o texto no histórico de `presence show` pela versão e pelo hash salvos.
+Se o serviço salvar conteúdo diferente, mantenha `uncertain` e mostre a
+diferença à pessoa. Não declare `not_received` nem altere o hash aprovado para
+liberar outro envio. Confira limites do campo antes de pedir a aprovação.
 
 ## Ambiente e limites da validação
 

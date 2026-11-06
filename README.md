@@ -2,15 +2,14 @@
 
 # Carreira Guiada
 
-Procurar vaga não deveria consumir o tempo de se preparar para ela.
-O Carreira Guiada transforma sua IA em uma parceira de busca: encontra vagas
-compatíveis, preenche formulários com seus dados confirmados, envia candidaturas
-autorizadas e acompanha os retornos por e-mail.
+Automatize a busca de emprego e as candidaturas com sua IA. Ela encontra vagas
+compatíveis, preenche os formulários com seus dados confirmados, envia o currículo
+aprovado e acompanha os retornos por e-mail, dentro das permissões que você definir.
 
-**Automatize a busca e pare de preencher os mesmos dados em cada vaga.**
-Você define o objetivo, os filtros e as permissões. A IA segue pelas próximas
-oportunidades, informa o andamento e salva o progresso. Currículo, LinkedIn,
-GitHub e treino de entrevistas também entram no preparo, quando você quiser.
+Você deixa de repetir os mesmos dados em cada portal e ganha tempo para se
+preparar para as entrevistas. A IA também ajuda com currículo para ATS,
+LinkedIn e GitHub, treinos com feedback e comparação de propostas.
+Durante a campanha, informa o andamento e salva o progresso para retomar depois.
 
 Use o modelo de sua escolha em uma ferramenta de IA com acesso a arquivos,
 comandos locais e às integrações necessárias. O projeto é independente de
@@ -26,6 +25,32 @@ não tem uma interface gráfica própria.
 das permissões que você deu e das regras de cada serviço. O Carreira Guiada não garante
 contratação nem execução contínua quando a sessão da IA termina.
 
+## Comece com "iniciar"
+
+1. Baixe o projeto e abra a pasta `carreira-guiada` no seu aplicativo de IA.
+   Ele precisa conseguir ler a pasta e executar ferramentas
+   locais. [Veja o passo a passo](docs/GUIA.md#primeira-vez).
+2. Escreva **iniciar** no chat.
+3. A IA pergunta uma coisa por vez. Anexe seu currículo ou diga que quer
+   criar um. Se não souber responder, diga "não sei".
+
+Depois de abrir a ferramenta, você conversa em linguagem comum. A IA conduz
+os comandos locais. O guia explica como abrir uma sessão no terminal; se
+faltar uma ferramenta, o assistente orienta a instalação autorizada.
+
+Você também pode começar por uma necessidade específica:
+
+| Diga no chat | O que acontece |
+|---|---|
+| "Quero só ver vagas por enquanto" | A IA prepara filtros e fontes; o currículo pode ficar para depois. |
+| "Não tenho currículo" | Ela monta um rascunho com você, sem inventar experiências. |
+| "Quero treinar uma entrevista" | O treino começa sem exigir cadastro, currículo ou conta de e-mail. |
+| "Continue de onde parei" | Ela confere o progresso salvo e segue pelas próximas ações autorizadas. |
+
+![Simulação em terminal do Claude Code: iniciar, criar currículo, escolher fontes e aprovar o perfil.](docs/assets/inicio-guiado.gif)
+
+*Exemplo no Claude Code. A aparência real depende da versão e do tema.*
+
 ## Uma jornada para chegar preparado
 
 ![Jornada ilustrada em azul: prepare perfil, filtros e currículo; automatize busca e candidaturas; avance com e-mails, entrevistas e propostas. Novas buscas continuam enquanto os retornos chegam. É possível pausar e retomar ou encerrar o ciclo.](docs/assets/fluxo-guiado.png)
@@ -40,26 +65,9 @@ para parar, respeitando a duração da sessão e os limites que definiu.
 LinkedIn, GitHub e treino de entrevistas são opcionais e podem acontecer antes
 da busca. Comparação de propostas entra quando você quiser analisar uma oferta.
 
-As animações abaixo usam dados fictícios. Os terminais e o portal ilustram
+As demonstrações desta página usam dados fictícios. Os terminais e o portal ilustram
 ferramentas externas; o projeto não instala essas telas. Nenhuma ação real é
 executada nas demonstrações.
-
-## Comece com "iniciar"
-
-1. Baixe o projeto e abra a pasta `carreira-guiada` no seu aplicativo de IA.
-   Ele precisa conseguir ler a pasta e executar ferramentas
-   locais. [Veja o passo a passo](docs/GUIA.md#primeira-vez).
-2. Escreva **iniciar** no chat.
-3. A IA pergunta uma coisa por vez. Anexe seu currículo ou diga que quer
-   criar um. Se não souber responder, diga "não sei".
-
-Depois de abrir a ferramenta, você conversa em linguagem comum. A IA conduz
-os comandos locais. O guia explica como abrir uma sessão no terminal; se
-faltar uma ferramenta, o assistente orienta a instalação autorizada.
-
-![Simulação em terminal do Claude Code: iniciar, criar currículo, escolher fontes e aprovar o perfil.](docs/assets/inicio-guiado.gif)
-
-*Exemplo no Claude Code. A aparência real depende da versão e do tema.*
 
 ## Escolha o modelo por etapa
 
@@ -90,6 +98,10 @@ O objetivo é sustentar campanhas longas, inclusive por dias em ambientes que
 mantenham a execução ativa. Limites de uso, autenticação e ações exclusivas da
 pessoa ainda podem exigir intervenção. Um bloqueio isolado fica pendente e
 as outras vagas seguem. [Como funciona a continuidade](docs/GUIA.md#buscar-por-objetivo).
+
+Se quiser acrescentar outra atividade depois, diga, por exemplo: "inclua o
+acompanhamento dos e-mails nesta campanha". A IA amplia o objetivo com sua
+confirmação, preserva o histórico e confere as permissões necessárias.
 
 ## Transforme sua experiência em um currículo claro
 
@@ -211,6 +223,7 @@ vários dias nem compatibilidade com todas as interfaces de recrutamento.
 | Quero... | Leia |
 |---|---|
 | Começar do zero | [Guia de início](docs/GUIA.md) |
+| Atualizar sem perder progresso | [Atualização e cópia de segurança](docs/GUIA.md#atualizar-sem-perder-o-progresso) |
 | Entender as perguntas | [Onboarding](docs/ONBOARDING.md) |
 | Escolher modelo e esforço | [Modelos e ferramentas](docs/MODELOS.md) |
 | Escolher os links de busca | [Fontes escolhidas por você](docs/FONTES.md) |
