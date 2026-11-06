@@ -92,7 +92,9 @@ As APIs de `scripts.candidaturas` sustentam o controle atual. Sua CLI legada,
 portáteis de outro candidato, somente a pedido dele. Seu banco padrão também
 fica em `.job/`; não use essa entrada para contornar as autorizações do fluxo.
 Mantenha as tabelas privadas fora da raiz publicável e informe sua pasta por
-`--root` ao importar. O banco de destino é escolhido separadamente por `--db`.
+`--root` ao importar. Informe também `--db` com o caminho absoluto do
+`.job/control.sqlite3` deste projeto. Sem `--db`, o padrão acompanha `--root`
+e cria outro banco dentro da pasta das tabelas, invisível para `./job status`.
 Os três nomes de tabelas também são ignorados na raiz como proteção adicional;
 isso não protege uma cópia manual da pasta.
 

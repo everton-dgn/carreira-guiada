@@ -30,8 +30,12 @@ plataforma de destino efetivamente verificada. Não use o nome do navegador.
 4. Complemento cadastral: fatos confirmados do perfil e do currículo aprovado,
    reaplicando filtros e regras de dados pessoais. Registre uma etapa `form`
    (ou `additional_form`, `profile_update`, `fill`) e autorize `fill` com sua
-   `step_key`. A candidatura precisa estar confirmada. Não reutilize a ação de
-   preenchimento inicial nem abra outra candidatura.
+   `step_key`, `resume_id` e `resume_sha256` da versão aprovada vigente.
+   O controle exige essa versão mesmo quando o complemento não pede anexo.
+   Se uma correção de fatos retirou a aprovação, conduza a revisão e aprovação
+   do currículo atualizado antes de continuar. Preserve a etapa e siga outras
+   ações independentes enquanto aguarda. A candidatura precisa estar confirmada.
+   Não reutilize a ação de preenchimento inicial nem abra outra candidatura.
 5. Resposta ao recrutador: rascunho mostrado, "pode enviar" da pessoa para
    aquele conteúdo e destinatário.
 6. Entrevista: só aceita horário com disponibilidade confirmada e autorização
