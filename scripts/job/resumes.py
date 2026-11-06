@@ -315,3 +315,26 @@ class ResumeManager:
             db.execute("UPDATE resume_versions SET status='retired' WHERE label=? AND status='approved' AND id<>?", (version["label"], resume_id))
             db.execute("UPDATE resume_versions SET status='approved', approved_at=? WHERE id=?", (_now(), resume_id))
         return self.get(resume_id)
+
+    def check(self, resume_id):
+        """Check extraction fidelity locally; this is not an ATS ranking score."""
+        from docx import Document
+        from pypdf import PdfReader
+        version = self.get(resume_id)
+        markdown = self._read(version['paths']['md']).decode('utf-8')
+        blocks = list(_blocks(markdown))
+        expected = ' '.join(text for _, _, text in blocks)
+        pdf = PdfReader(BytesIO(self._read(version['paths']['pdf'])))
+        document = Document(BytesIO(self._read(version['paths']['docx'])))
+        texts = {'pdf': '\n'.join(page.extract_text() or '' for page in pdf.pages),
+                 'docx': '\n'.join(paragraph.text for paragraph in document.paragraphs)}
+        def words(text):
+            return re.findall(r'\w+', text.casefold())
+        checks = {fmt + '_text_preserved': bool(words(expected)) and words(text) == words(expected)
+                  for fmt, text in texts.items()}
+        checks['clear_sections'] = any(kind == 'heading' and level == 2 for kind, level, _ in blocks)
+        checks['no_docx_tables'] = not document.tables
+        checks['no_markdown_tables'] = not any(re.match(r'^\s*\|.*\|\s*$', line) for line in markdown.splitlines())
+        return {'resume_id': resume_id, 'checks': checks, 'passed': all(checks.values()),
+                'pages': len(pdf.pages), 'issues': [name for name, passed in checks.items() if not passed],
+                'ats_score': None, 'message': 'Conferência local de leitura concluída. A IA ainda deve revisar os fatos, os termos da vaga e a prévia no portal; isto não garante classificação em ATS.'}

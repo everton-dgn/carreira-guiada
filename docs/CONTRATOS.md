@@ -37,6 +37,7 @@ As seis seções são `identity`, `preferences`, `sources`, `permissions`, `limi
 Cada permissão precisa de uma resposta; uma resposta não encerra as demais.
 "Pergunte antes para tudo" permite salvar todas como `ask`. `allow` exige
 confirmação explícita da pessoa. `limits.mode=chat` é preenchido internamente.
+`limits.browser_tabs` permite de uma a cinco abas; ausência significa duas.
 `sources.urls` guarda endereços HTTPS escolhidos pela pessoa. A lista pode
 ficar vazia durante o preparo, mas `research` exige fontes aprovadas e
 `source_url` compatível com domínio, porta e caminho. Perfis anteriores sem
@@ -73,6 +74,8 @@ combina esse progresso com o perfil, sem repetir as perguntas respondidas.
   anterior do mesmo rótulo. Outras especialidades continuam independentes.
 - `get(id)` confere todos os arquivos e hashes. `list()`, `facts()` e
   `sources()` consultam o inventário sem aprovar nem alterar conteúdo.
+- `check(id)` compara a ordem do texto do Markdown com a extração dos arquivos
+  PDF e DOCX, verifica seções e tabelas. Não calcula nota de ATS nem prova os fatos.
 
 Proveniência não comprova automaticamente a narrativa: o agente mostra o
 rascunho completo à pessoa. O envio exige aprovação e hash válido. Arquivos
@@ -81,6 +84,26 @@ são escritos antes do registro final; uma falha de disco pode deixar um arquivo
 apenas porque ele apareceu no diretório.
 
 ## Operação e evidências
+
+`Presence(root)` em `scripts/job/presence.py` guarda a escolha opcional de
+LinkedIn/GitHub e sugestões privadas no mesmo banco. `choose` registra agora,
+depois ou pular; `draft` incrementa a versão quando o conteúdo muda; `finish`
+exige a versão atual e a confirmação da pessoa. `status` omite os textos e
+links; `get` retorna o material privado. Nenhuma dessas chamadas autoriza publicação.
+
+`Tabs(root)` em `scripts/job/tabs.py` reserva capacidade em transação antes de
+abrir abas. `reserve(owner, purpose, owned)`, `update(reservation, external_id,
+protected, evidence)` e `release(reservation, outcome, evidence)` recebem os
+campos por JSON na CLI. A reserva permanece ativa entre sessões; tempo passado
+não a encerra. O agente confere a ferramenta para registrar `closed`,
+`not_created`, `returned_to_user` ou `already_absent`. Não há controle direto
+do navegador pelo Python; os registros não substituem essa conferência.
+
+`checkpoint(root, data=None)` em `scripts/job/checkpoint.py` consulta ou salva
+`phase`, `summary`, `next_action` e `needs_user`, com data UTC acrescentada pelo
+controle. É uma nota de retomada, separada das evidências de cada ação.
+`state()` inclui `checkpoint` e `browser` para expor a última nota e o orçamento
+de abas, sem afirmar execução ativa. [Procedimento completo](ACOMPANHAMENTO.md).
 
 `Workflow(root)` em `scripts/job/workflow.py` coordena o banco implementado em
 `scripts/candidaturas/`. Seus payloads completos estão nas docstrings.

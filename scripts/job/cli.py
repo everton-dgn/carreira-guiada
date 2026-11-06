@@ -37,6 +37,12 @@ def parser():
     command("status", "Conferir o progresso e as pendências")
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
+    presence = command('presence', 'Preparar a revisão opcional do LinkedIn e GitHub')
+    presence.add_argument('action', choices=('show', 'status', 'choose', 'source', 'draft', 'finish'))
+    tabs = command('tabs', 'Controlar o limite compartilhado de abas de trabalho')
+    tabs.add_argument('action', choices=('status', 'reserve', 'update', 'release'))
+    saved = command('checkpoint', 'Guardar o último progresso e a próxima ação para outra sessão')
+    saved.add_argument('action', choices=('show', 'save'))
     for name in ("jobs", "steps", "step", "transition"):
         command(name, "Consultar ou registrar oportunidades e etapas")
     for name in ("coverage", "cleanup-rules"):
@@ -68,8 +74,9 @@ def parser():
     imp.add_argument("--label")
     approve = subs.add_parser("approve", parents=[common])
     approve.add_argument("id")
-    show = subs.add_parser("show", parents=[common])
-    show.add_argument("id")
+    for name in ('show', 'check'):
+        show = subs.add_parser(name, parents=[common])
+        show.add_argument("id")
     for name, help_text in (
         ("goal", "Registrar o objetivo autorizado, JSON via stdin"),
         ("opportunity", "Registrar uma oportunidade, JSON via stdin"),
@@ -92,10 +99,12 @@ def onboarding(root, focus='prepare'):
     from .profile import Profile
     from .resumes import ResumeManager
     from .intake import Intake
+    from .presence import Presence
     profile = Profile(root)
     status, data = profile.status(), profile.get()
     resumes = ResumeManager(root)
     intake = Intake(root).status()
+    presence = Presence(root).status()
     question = None
     versions = resumes.list()
     approved = []
@@ -141,6 +150,12 @@ def onboarding(root, focus='prepare'):
     elif not approved:
         message = "Seu perfil foi confirmado. Agora vamos revisar o currículo juntos e aprovar a versão que será enviada."
         next_step = "resume_approval"
+    elif presence['decision'] is None:
+        next_step = 'professional_presence'
+        message = 'Quer revisar também sua apresentação no LinkedIn ou, se fizer sentido para sua área, no GitHub? Podemos fazer agora, deixar para depois ou pular.'
+    elif presence['next_topic']:
+        next_step = 'professional_presence'
+        message = 'Vamos continuar a revisão do ' + ('LinkedIn' if presence['next_topic'] == 'linkedin' else 'GitHub') + '. As sugestões ficam salvas; nada é publicado por esta consulta.'
     elif not data.get('sections', {}).get('sources', {}).get('urls'):
         from .profile import QUESTIONS
         field, prompt, example = QUESTIONS['sources'][0]
@@ -150,8 +165,12 @@ def onboarding(root, focus='prepare'):
     else:
         message = "Seu perfil e currículo estão prontos. Vou conferir o acesso aos sites para seguir com o que combinamos. Se precisar de login, eu abro a página e explico o próximo passo."
         next_step = "execution_readiness"
+    saved = bool(data.get('sections') or intake['mode'] or versions or presence['decision'])
+    welcome = 'Encontrei seu progresso salvo. Quer continuar de onde parou ou revisar sua preparação? Revisar preserva as respostas e só muda o que você corrigir.' if saved else None
     return {"message": message, "next_step": next_step, "question": question, "profile": status,
-            "intake": intake, "approved_resumes": approved, "automatic_execution_started": False}
+            "intake": intake, "presence": presence, "approved_resumes": approved,
+            "welcome_back": welcome, "resume_options": ['continue', 'review'] if saved else [],
+            "automatic_execution_started": False}
 
 
 def dispatch(args):
@@ -160,6 +179,32 @@ def dispatch(args):
         raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
     if args.command == "start":
         return onboarding(root, args.focus)
+    if args.command == 'checkpoint':
+        from .checkpoint import checkpoint
+        return checkpoint(root, payload() if args.action == 'save' else None)
+    if args.command == 'presence':
+        from .presence import Presence
+        presence = Presence(root)
+        if args.action in ('show', 'status'):
+            return presence.get() if args.action == 'show' else presence.status()
+        data = payload()
+        fields = {'choose': {'decision', 'topics', 'confirmation'}, 'source': {'topic', 'source'}, 'draft': {'topic', 'content', 'source'},
+                  'finish': {'topic', 'version', 'confirmation'}}[args.action]
+        if set(data) != fields:
+            raise ValueError('Informe exatamente os campos desta etapa: ' + ', '.join(sorted(fields)))
+        return getattr(presence, args.action)(**data)
+    if args.command == 'tabs':
+        from .tabs import Tabs
+        tabs = Tabs(root)
+        if args.action == 'status':
+            return tabs.status()
+        data = payload()
+        fields = {'reserve': {'owner', 'purpose', 'owned'},
+                  'update': {'reservation', 'external_id', 'protected', 'evidence'},
+                  'release': {'reservation', 'outcome', 'evidence'}}[args.action]
+        if set(data) != fields:
+            raise ValueError('Informe exatamente os campos desta etapa: ' + ', '.join(sorted(fields)))
+        return getattr(tabs, args.action)(**data)
     if args.command in {"jobs", "steps", "step", "transition"}:
         from .records import ledger
         return ledger(root, args.command, payload() if args.command in {"step", "transition"} else None)
@@ -210,6 +255,8 @@ def dispatch(args):
             if args.label is not None:
                 raise ValueError('Importação: use label no mesmo JSON do arquivo.')
             return resumes.import_file(Path(data['file']), data['label'])
+        if args.action == 'check':
+            return resumes.check(args.id)
         if args.action == "fact":
             data = payload()
             return resumes.add_fact(data.get("text"), data.get("source"), data.get("confirmed"))
@@ -260,7 +307,7 @@ def dispatch_workflow(workflow, root, args):
 
 def render(value):
     if isinstance(value, dict) and value.get("message"):
-        return value["message"]
+        return value.get('welcome_back') or value['message']
     return json.dumps(value, ensure_ascii=False, indent=2)
 
 

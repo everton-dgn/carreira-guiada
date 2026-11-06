@@ -540,8 +540,15 @@ class Workflow:
             finally:
                 monitor.db.close()
         result["profile"] = self._profile_status()
+        from .checkpoint import checkpoint
+        from .tabs import Tabs
+        result['checkpoint'] = checkpoint(self.root)
+        result['browser'] = Tabs(self.root).status()
         result["next_steps"] = self._next_steps(result)
         result["message"] = "\n".join(["Situação do Carreira Guiada:"] + [f"- {step}" for step in result["next_steps"]])
+        if result['checkpoint']:
+            note = result['checkpoint']
+            result['message'] += '\nÚltimo ponto salvo (' + note['saved_at'] + '): ' + note['summary'] + '\nPróxima ação: ' + note['next_action']
         return result
 
     @staticmethod

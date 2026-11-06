@@ -64,6 +64,11 @@ e experiências depois; nunca preencha uma seção com experiência inventada.
 
 ## Revisar e aprovar
 
+- Siga [ATS.md](../../../docs/ATS.md): uma coluna, seções claras, termos da vaga
+  sustentados por fatos e nenhum conteúdo invisível. Execute `resume check <id>`
+  e confira o texto extraído dos formatos antes de mostrar a versão final.
+  Corrija diferenças de leitura ou tabelas; explique que isso não é nota de ATS
+  nem garantia de aprovação. Confira a prévia importada no portal antes de enviar.
 - Mostre o rascunho em texto corrido e disponibilize links para os arquivos
   gerados, peça ajustes e refaça o rascunho. Cada
   rascunho tem PDF, DOCX e Markdown gerados localmente.

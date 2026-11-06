@@ -19,8 +19,11 @@ PRIVATE_SUFFIXES = {".pem", ".key", ".p12", ".pfx", ".crt", ".pdf", ".docx", ".d
 EMAIL = re.compile(r"[A-Za-z0-9_.+%-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})")
 AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
-# Exact, visually reviewed original. Retains its generated C2PA provenance.
-REVIEWED_COVER_SHA256 = "5a422f0605a6c28b422c623ba20d2f4376e91526de60890510257f64f5833321"
+# Exact, visually reviewed originals. Retain their generated C2PA provenance.
+REVIEWED_IMAGES = {
+    "docs/assets/carreira-guiada-cover.png": "5a422f0605a6c28b422c623ba20d2f4376e91526de60890510257f64f5833321",
+    "docs/assets/fluxo-guiado.png": "b2f680336213fec1645fa60105d8ce6ec1e92c5f4bf4034c66d1a3408865dd3f",
+}
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),
     "chave privada": re.compile(r"-----BEGIN (?:(?:RSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY|PGP PRIVATE KEY BLOCK)-----"),
@@ -51,7 +54,7 @@ def path_problem(name):
 def image_problem(name, data):
     if not name.startswith("docs/assets/"):
         return "imagem fora da pasta de documentação"
-    if name == "docs/assets/carreira-guiada-cover.png" and hashlib.sha256(data).hexdigest() == REVIEWED_COVER_SHA256:
+    if name in REVIEWED_IMAGES and hashlib.sha256(data).hexdigest() == REVIEWED_IMAGES[name]:
         return None
     if name.endswith(".png"):
         if not data.startswith(b"\x89PNG\r\n\x1a\n"):

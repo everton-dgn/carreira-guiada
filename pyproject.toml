@@ -16,7 +16,7 @@ dependencies = [
 package = false
 
 [tool.carreira-release]
-prerelease = true
+prerelease = false
 
 [dependency-groups]
 docs = ["pillow>=11"]

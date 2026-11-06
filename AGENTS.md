@@ -57,6 +57,14 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   Oriente: "faça o login na aba aberta e me avise quando terminar".
 - Salve progresso a cada resposta. Explique no início que pode parar e voltar
   depois digitando `iniciar`, sem repetir esse aviso a cada pergunta.
+- Siga [ACOMPANHAMENTO.md](docs/ACOMPANHAMENTO.md) para feedback, checkpoint e
+  controle de abas. Avise a cada mudança de etapa e, durante execução demorada,
+  em até 60 segundos quando a ferramenta devolver controle. Diga o que foi
+  comprovado, o próximo passo e a ação exata que depende da pessoa.
+- Antes de abrir ou assumir uma aba, reserve uma vaga com `tabs reserve`.
+  O padrão é de duas abas para toda a campanha. Confira o ID observado e
+  preserve formulários pendentes. Feche somente abas próprias sem pendência;
+  uma aba da pessoa nunca é fechada nem a janela redimensionada.
 - O trabalho acontece durante a execução ativa no chat. Não proponha instalação
   de executor externo nem prometa que uma conversa aberta mantém a IA trabalhando.
 - Escreva em português do Brasil, com acentuação, sem travessão nem emojis.
@@ -76,10 +84,14 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    mandando a pessoa resolver sozinha ou procurar quem montou a pasta.
 2. Ler `start --json`: `next_step` e `message` são a fonte da próxima etapa
    de preparação (`curriculum_input`, `curriculum_intake`, uma seção do perfil,
-   `profile_approval`, `resume_approval`, `execution_readiness`). O currículo
+   `profile_approval`, `resume_approval`, `professional_presence`, `execution_readiness`). O currículo
    pode vir antes do perfil; siga a ordem devolvida.
    Em pedido explícito somente de busca, use `start --focus search --json`
    para preparar filtros e fontes sem exigir currículo.
+   Se houver `welcome_back`, ofereça continuar ou revisar quando a pessoa disser
+   apenas `iniciar`. Um pedido explícito de continuar já escolhe a retomada.
+   Revisar preserva o perfil, o histórico e o currículo; só altera respostas
+   corrigidas pela pessoa. Nunca reinicie apagando o banco.
 3. Ler `status --json`: objetivo, ações pendentes, resultados incertos,
    parada ativa e observações de capacidade (navegador e e-mail).
 4. Ler `context --json` somente quando o detalhe privado for necessário para
@@ -94,6 +106,12 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
 
 Uma pergunta, uma contagem ou um pedido de revisão não inicia candidaturas nem
 cria objetivo.
+
+Em `professional_presence`, siga [presenca](.agents/skills/presenca/SKILL.md).
+A revisão de LinkedIn e GitHub é opcional, separada das fontes de vagas e das
+permissões de candidatura. Sugestões ficam privadas; concluir a revisão não
+autoriza publicar. Antes de aprovar um currículo, siga a revisão para
+[ATS](docs/ATS.md) e execute `resume check`.
 
 ## Perfil, consentimento e permissões
 
@@ -125,7 +143,9 @@ Reaproveite fatos já confirmados no currículo, sem repetir a pergunta.
   explícita da pessoa muda para `allow`. Explique cada ação em uma frase antes
   de perguntar. Consentimento nunca é inferido de outra resposta.
 - `limits`: detalhe interno definido automaticamente como `chat`. Não faça
-  perguntas sobre executor, duração, ciclos ou intervalo.
+  perguntas sobre executor, duração, ciclos ou intervalo. `browser_tabs` é
+  opcional, com padrão de duas abas próprias e intervalo de uma a cinco.
+  Só altere esse limite quando a pessoa pedir; nunca amplie para contornar uma pendência.
 - `connections`: contas de e-mail com provedor, apelido e endereço privado.
   O acompanhamento atual aceita Gmail e Outlook. Sessões de navegador são
   observadas em `capability`, sem exigir uma conta de e-mail conectada.

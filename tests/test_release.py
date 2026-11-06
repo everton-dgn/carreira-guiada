@@ -34,7 +34,18 @@ class VersioningTests(unittest.TestCase):
         for messages, expected in cases:
             with self.subTest(messages=messages):
                 self.assertEqual(plan_version('1.2.3', [('a' * 40, m) for m in messages])['version'], expected)
-        self.assertIsNone(plan_version('1.2.3', [('a' * 40, 'docs: explain usage'), ('b' * 40, 'chore(release): v1.2.3')]))
+        self.assertIsNone(plan_version('1.2.3', [('b' * 40, 'chore(release): v1.2.3')]))
+
+    def test_guides_and_maintenance_also_generate_releases(self):
+        docs = plan_version('1.2.3', [('a' * 40, 'docs: guide the next step')])
+        self.assertEqual(docs['version'], '1.3.0')
+        self.assertIn('### Novidades', docs['notes'])
+        for kind in ('refactor', 'style', 'test', 'ci', 'build', 'chore'):
+            with self.subTest(kind=kind):
+                plan = plan_version('1.2.3', [('a' * 40, kind + ': update project')])
+                self.assertEqual(plan['version'], '1.2.4')
+                self.assertIn('### Manutenção', plan['notes'])
+        self.assertEqual(plan_version('1.2.3', [('a' * 40, 'docs!: replace the workflow')])['version'], '2.0.0')
 
     def test_breaking_examples_inside_fences_do_not_bump_major(self):
         for opening, inner, closing in [('````', '```', '````'), ('~~~', '```', '~~~'), ('```', '```python', '````')]:
@@ -217,6 +228,18 @@ assert repo.assert_versions()[0]['version'] == '0.2.0'
         with self.assertRaises(ValueError):
             publish(self.repo, 'another/project', '123', api)
         self.assertEqual(api.posts, [])
+
+    def test_normal_release_is_published_as_a_latest_candidate(self):
+        manifest = self.root / 'pyproject.toml'
+        manifest.write_text(manifest.read_text(encoding='utf-8').replace('prerelease = true', 'prerelease = false'), encoding='utf-8')
+        self.commit('fix: publish a normal release')
+        api = FakeGitHub(self.prepared())
+        result = publish(self.repo, 'owner/project', '123', api)
+        self.assertEqual(result['status'], 'published')
+        self.assertFalse(api.release['draft'])
+        self.assertFalse(api.release['prerelease'])
+        self.assertEqual(api.release['make_latest'], 'legacy')
+        self.assertEqual(api.release['body'], release_notes(self.repo.read('CHANGELOG.md'), '0.2.0'))
 
     def test_unrelated_tag_is_preserved_and_conflicting_release_fails(self):
         source = self.prepared()

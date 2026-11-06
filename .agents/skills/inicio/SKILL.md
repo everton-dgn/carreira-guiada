@@ -39,6 +39,14 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 
 ## Escolher a próxima etapa
 
+- Se `start` trouxer `welcome_back` e a pessoa disser só "iniciar", apresente
+  continuar ou revisar. Se ela já pediu "continuar", "retomar" ou uma tarefa
+  específica, siga esse pedido sem repetir o menu. Leia `status.checkpoint`,
+  os registros atuais e `tabs status`; o ponto salvo não prova execução ativa.
+- Se escolher revisar, leia as respostas privadas por seção e mostre o resumo
+  existente, uma seção por vez. Pergunte o que deseja corrigir; use
+  `profile answer` apenas para as correções. Preserve histórico e arquivos.
+  Depois confira a nova versão do perfil e dos currículos afetados.
 - Pedido apenas de andamento: responda com o estado observado e pare aí.
 - Parada registrada: "continuar" ou "retomar" já autoriza `resume-work`.
   Se a pessoa disse apenas "iniciar", pergunte se quer retomar o objetivo
@@ -58,6 +66,11 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
   a versão aprovada e preserve a busca para depois.
 - `profile_approval`: apresente o resumo e peça a confirmação da versão.
 - `resume_approval`: apresente o rascunho e conduza a revisão do currículo.
+- `professional_presence`: siga [presenca](../presenca/SKILL.md), com escolha
+  explícita de revisar LinkedIn/GitHub, deixar para depois ou pular.
+  Um pedido explícito de continuar uma campanha já preparada tem prioridade
+  sobre essa oferta opcional. Siga as candidaturas autorizadas sem exigir a
+  revisão de perfis nem registrar uma recusa que a pessoa não deu.
 - Perfil e currículo prontos, com objetivo ativo e pedido de continuar:
   confira conexões e siga [candidaturas](../candidaturas/SKILL.md).
 - Tudo pronto, sem objetivo: pergunte o que a pessoa quer agora, por exemplo
@@ -78,3 +91,7 @@ Se faltar uma conexão, use a interface do próprio aplicativo para conduzir a
 pessoa. Só descreva botões que você observou. Nunca peça para configurar MCP,
 obter chave de API ou executar comandos. Sem ferramenta disponível, explique
 o que ficou pendente e continue o preparo ou a pesquisa que ainda for possível.
+
+Use [ACOMPANHAMENTO.md](../../../docs/ACOMPANHAMENTO.md) desde o início: feedback
+curto durante a execução, checkpoint após progresso e antes de esperas,
+reserva de abas antes de abrir e reconciliação na retomada.

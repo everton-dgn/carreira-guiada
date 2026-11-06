@@ -6,6 +6,7 @@ Todas as conversas e endereços das demonstrações são fictícios.
 | Arquivo | Dimensões | Origem e finalidade |
 |---|---|---|
 | `assets/carreira-guiada-cover.png` | 2172 × 724 | Capa original gerada com a ferramenta integrada de imagens. |
+| `assets/fluxo-guiado.png` | 1536 × 1024 | Diagrama ilustrado original, gerado com a ferramenta integrada de imagens, do onboarding ao resultado e à nova rodada. |
 | `assets/inicio-guiado.gif` e `.png` | 2240 × 1400 | Conversa fictícia no terminal do Claude Code, do início à aprovação do perfil. |
 | `assets/candidatura-guiada.gif` e `.png` | 2240 × 1400 | Conversa fictícia no Codex CLI, da busca ao preenchimento, aprovação, confirmação e retomada. |
 | `assets/curriculo-guiado.gif` e `.png` | 2240 × 1400 | Conversa com uma IA genérica e prévia fictícia do currículo, dos fatos à versão aprovada. |
@@ -22,11 +23,17 @@ O Carreira Guiada não oferece uma interface gráfica própria. A prévia do
 currículo ilustra o conteúdo, não reproduz exatamente o PDF gerado. O portal
 usa um domínio reservado de exemplo e nunca é acessado pelo renderizador.
 
-A capa preserva a identificação de origem C2PA da ferramenta geradora.
-O verificador permite somente esse arquivo exato, conferido por hash. Uma
+A capa e o diagrama preservam a identificação de origem C2PA da ferramenta geradora.
+O verificador permite somente esses arquivos exatos, conferidos por hash. Uma
 substituição exige nova revisão da imagem e dos metadados antes de atualizar
 essa referência. As outras imagens aceitam apenas os blocos necessários ao
 desenho e à animação.
+
+O diagrama usa nove cartões de papel ilustrados, verde escuro e verde-lima,
+com setas numeradas para mostrar a sequência e o retorno à busca. O término
+indica o objetivo combinado ou a ordem da pessoa para parar. O texto completo
+está disponível junto da imagem no README. A imagem explica o processo e
+não representa uma interface do produto.
 
 ## Recriar as demonstrações
 

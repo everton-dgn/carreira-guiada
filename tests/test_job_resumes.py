@@ -87,6 +87,16 @@ class ResumeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "não confirmado"):
             self.manager.draft("Em revisão", CV, [fact["id"]])
 
+    def test_local_ats_check_preserves_extraction_and_flags_tables(self):
+        draft = self.draft()
+        result = self.manager.check(draft['id'])
+        self.assertTrue(result['passed'])
+        self.assertIsNone(result['ats_score'])
+        self.assertEqual(self.manager.get(draft['id'])['status'], 'draft')
+        fact = self.manager.add_fact('Formação confirmada.', 'candidate:1', True)
+        table = self.manager.draft('Tabela', '# Currículo\n\n## Formação\n\n| Curso | Ano |\n| Exemplo | 2024 |', [fact['id']])
+        self.assertIn('no_markdown_tables', self.manager.check(table['id'])['issues'])
+
     def test_pdf_and_docx_import_are_readable(self):
         draft = self.draft()
         for fmt in ("pdf", "docx"):
