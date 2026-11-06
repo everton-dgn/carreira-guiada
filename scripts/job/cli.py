@@ -33,12 +33,18 @@ def parser():
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
     start = command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
-    start.add_argument('--focus', choices=('prepare', 'search'), default='prepare', help='Use search quando a pessoa pedir somente busca, sem preparar currículo agora')
+    start.add_argument('--focus', choices=('prepare', 'search', 'practice'), default='prepare', help='Use search para buscar vagas ou practice para treinar entrevistas sem exigir currículo')
     command("status", "Conferir o progresso e as pendências")
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
     presence = command('presence', 'Preparar a revisão opcional do LinkedIn e GitHub')
     presence.add_argument('action', choices=('show', 'status', 'choose', 'source', 'draft', 'finish'))
+    practice = command('practice', 'Treinar entrevistas em particular, sem candidaturas ou contas reais')
+    practice.add_argument('action', choices=('catalog', 'show', 'status', 'choose', 'start', 'hint', 'answer', 'skip', 'feedback', 'advance', 'end-questions', 'finish'))
+    diligence = command('research', 'Registrar análises verificadas de fontes, empresas e vagas')
+    diligence.add_argument('action', choices=('save', 'list', 'get', 'suggestions'))
+    offers = command('offers', 'Comparar propostas com premissas explícitas, sem aceitar ofertas')
+    offers.add_argument('action', choices=('save', 'list', 'get', 'status', 'compare', 'equivalent'))
     tabs = command('tabs', 'Controlar o limite compartilhado de abas de trabalho')
     tabs.add_argument('action', choices=('status', 'reserve', 'update', 'release'))
     saved = command('checkpoint', 'Guardar o último progresso e a próxima ação para outra sessão')
@@ -100,11 +106,13 @@ def onboarding(root, focus='prepare'):
     from .resumes import ResumeManager
     from .intake import Intake
     from .presence import Presence
+    from .practice import Practice
     profile = Profile(root)
     status, data = profile.status(), profile.get()
     resumes = ResumeManager(root)
     intake = Intake(root).status()
     presence = Presence(root).status()
+    practice = Practice(root).status()
     question = None
     versions = resumes.list()
     approved = []
@@ -115,7 +123,13 @@ def onboarding(root, focus='prepare'):
                 approved.append(version["id"])
             except ValueError:
                 pass
-    if focus == 'search':
+    if focus == 'practice' or (focus == 'prepare' and practice['decision'] == 'now' and practice['phase'] in ('idle', 'questions', 'feedback')):
+        next_step = 'interview_preparation'
+        question = practice['question']
+        message = practice['message']
+        if question:
+            message += '\n' + question['question']
+    elif focus == 'search':
         if not status['approved']:
             next_step = status.get('next_section') or 'profile_approval'
             question = status['questions'][0] if status['questions'] else None
@@ -123,6 +137,7 @@ def onboarding(root, focus='prepare'):
         elif not data['sections'].get('sources', {}).get('urls'):
             from .profile import QUESTIONS
             field, prompt, example = QUESTIONS['sources'][0]
+            example = 'Pode colar os endereços ou pedir ajuda para encontrar opções verificadas. Se preferir deixar a busca para depois, suas respostas ficam salvas.'
             next_step = 'sources'
             question = {'field': field, 'question': prompt, 'example': example}
             message = prompt + ' ' + example
@@ -156,25 +171,37 @@ def onboarding(root, focus='prepare'):
     elif presence['next_topic']:
         next_step = 'professional_presence'
         message = 'Vamos continuar a revisão do ' + ('LinkedIn' if presence['next_topic'] == 'linkedin' else 'GitHub') + '. As sugestões ficam salvas; nada é publicado por esta consulta.'
+    elif practice['decision'] is None:
+        next_step = 'interview_preparation'
+        message = 'Quer treinar para as entrevistas? Posso ajudar na conversa com RH, na apresentação da sua trajetória ou na parte técnica. Podemos treinar agora, deixar para depois ou pular.'
     elif not data.get('sections', {}).get('sources', {}).get('urls'):
         from .profile import QUESTIONS
         field, prompt, example = QUESTIONS['sources'][0]
+        example = 'Pode colar os endereços ou pedir ajuda para encontrar opções verificadas. Se quiser somente o currículo e os perfis por enquanto, podemos deixar a busca para depois.'
         question = {'field': field, 'question': prompt, 'example': example}
         next_step = 'sources'
         message = 'Seu currículo está pronto. Para começar a busca, precisamos combinar os sites. ' + prompt + ' ' + example
     else:
         message = "Seu perfil e currículo estão prontos. Vou conferir o acesso aos sites para seguir com o que combinamos. Se precisar de login, eu abro a página e explico o próximo passo."
         next_step = "execution_readiness"
-    saved = bool(data.get('sections') or intake['mode'] or versions or presence['decision'] or resumes.sources() or resumes.facts())
+    from .checkpoint import checkpoint
+    from .offers import Offers
+    from .due_diligence import DueDiligence
+    additional_progress = bool(checkpoint(root) or Offers(root).status()['count'] or DueDiligence(root).list())
+    saved = bool(data.get('sections') or intake['mode'] or versions or presence['decision'] or practice['decision'] or resumes.sources() or resumes.facts() or additional_progress)
     welcome = 'Encontrei seu progresso salvo. Quer continuar de onde parou ou revisar sua preparação? Revisar preserva as respostas e só muda o que você corrigir.' if saved else None
+    if practice['decision'] in ('later', 'skip') and practice['phase'] in ('questions', 'feedback'):
+        message += ' Seu treino adiado continua salvo e pode ser retomado quando quiser.'
+        welcome += ' Há também um treino adiado com respostas salvas.'
     labels = {'curriculum_input': 'receber ou criar o currículo', 'curriculum_intake': 'continuar as informações profissionais',
               'identity': 'dados de contato', 'preferences': 'preferências de trabalho', 'sources': 'fontes de vagas',
               'permissions': 'permissões', 'connections': 'conexões de e-mail', 'profile_approval': 'conferir o perfil',
               'resume_approval': 'revisar o currículo', 'professional_presence': 'revisão opcional de LinkedIn e GitHub',
+              'interview_preparation': 'preparação opcional para entrevistas',
               'execution_readiness': 'conferir conexões e continuar o objetivo'}
     return {"message": message, "next_step": next_step, "question": question, "profile": status,
-            "intake": intake, "presence": presence, "approved_resumes": approved,
-            "resume_hint": 'Próxima etapa: ' + labels[next_step] + '.' if saved else None,
+            "intake": intake, "presence": presence, "practice": practice, "approved_resumes": approved,
+            "resume_hint": ('Há análises ou um ponto de retomada salvo. Vou conferir o status antes de seguir.' if additional_progress and not data.get('sections') and practice['phase'] == 'idle' else 'Próxima etapa: ' + labels[next_step] + '.') if saved else None,
             "welcome_back": welcome, "resume_options": ['continue', 'review'] if saved else [],
             "automatic_execution_started": False}
 
@@ -188,6 +215,53 @@ def dispatch(args):
     if args.command == 'checkpoint':
         from .checkpoint import checkpoint
         return checkpoint(root, payload() if args.action == 'save' else None)
+    if args.command == 'research':
+        from .due_diligence import DueDiligence
+        research = DueDiligence(root)
+        if args.action in ('list', 'suggestions'):
+            return getattr(research, args.action)()
+        data = payload()
+        if args.action == 'save':
+            return research.save(data)
+        if set(data) != {'record_id'}:
+            raise ValueError('Informe o identificador do parecer salvo.')
+        result = research.get(data['record_id'])
+        if result is None:
+            raise ValueError('Parecer não encontrado. Consulte a lista de análises salvas.')
+        return result
+    if args.command == 'offers':
+        from .offers import Offers
+        offers = Offers(root)
+        if args.action in ('list', 'status'):
+            return getattr(offers, args.action)()
+        data = payload()
+        if args.action == 'save':
+            return offers.save(data)
+        required, optional = {'get': ({'offer_id'}, set()),
+                              'compare': ({'ids'}, {'base_currency', 'rates'}),
+                              'equivalent': ({'base_id', 'target_id'}, {'base_currency', 'rates'})}[args.action]
+        if not required <= set(data) or set(data) - required - optional:
+            raise ValueError('Confira os campos da comparação: ' + ', '.join(sorted(required)))
+        return getattr(offers, args.action)(**data)
+    if args.command == 'practice':
+        from .practice import Practice
+        practice = Practice(root)
+        if args.action in ('catalog', 'show', 'status'):
+            return practice.get() if args.action == 'show' else getattr(practice, args.action)()
+        data = payload()
+        fields = {'choose': ({'decision'}, set()),
+                  'start': ({'track', 'mode'}, {'context', 'area', 'level', 'short', 'question_ids'}),
+                  'hint': ({'session_id', 'question_id'}, set()),
+                  'answer': ({'session_id', 'question_id', 'text'}, set()),
+                  'skip': ({'session_id', 'question_id'}, set()),
+                  'feedback': ({'session_id', 'question_id', 'version', 'strengths', 'improvements', 'suggestion', 'exercise'}, set()),
+                  'advance': ({'session_id', 'question_id'}, set()),
+                  'end-questions': ({'session_id'}, set()),
+                  'finish': ({'session_id', 'report', 'next_steps'}, set())}
+        required, optional = fields[args.action]
+        if not required <= set(data) or set(data) - required - optional:
+            raise ValueError('Confira os campos desta etapa do treino: ' + ', '.join(sorted(required)))
+        return getattr(practice, args.action.replace('-', '_'))(**data)
     if args.command == 'presence':
         from .presence import Presence
         presence = Presence(root)
@@ -196,7 +270,8 @@ def dispatch(args):
         data = payload()
         fields = {'choose': {'decision', 'topics', 'confirmation'}, 'source': {'topic', 'source'}, 'draft': {'topic', 'content', 'source'},
                   'finish': {'topic', 'version', 'confirmation'}}[args.action]
-        if set(data) != fields:
+        optional = {'material'} if args.action == 'source' else set()
+        if not fields <= set(data) or set(data) - fields - optional:
             raise ValueError('Informe exatamente os campos desta etapa: ' + ', '.join(sorted(fields)))
         return getattr(presence, args.action)(**data)
     if args.command == 'tabs':
@@ -313,8 +388,12 @@ def dispatch_workflow(workflow, root, args):
 
 def render(value):
     if isinstance(value, dict) and value.get("message"):
+        if value.get('example'):
+            return value['message'] + '\n' + value['example']
         if value.get('welcome_back'):
             return value['welcome_back'] + '\n' + value['resume_hint']
+        if value.get('session_id') and value.get('decision') not in ('later', 'skip') and isinstance(value.get('question'), dict):
+            return value['message'] + '\n' + value['question']['question']
         return value['message']
     return json.dumps(value, ensure_ascii=False, indent=2)
 

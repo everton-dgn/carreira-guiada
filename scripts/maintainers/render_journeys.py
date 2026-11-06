@@ -58,8 +58,8 @@ RESUME_SCENES = [
     ("IA: Sugestão: atendimento a clientes e organização de pedidos.\n\nVocê: Está correto. Fiz também um curso de atendimento.",
      "A redação melhora sem acrescentar habilidades ou números não confirmados."),
     ("IA: Confira os fatos e as datas desta versão.\n\nVocê: Conferi. Aprovo o currículo.",
-     "A pessoa aprova o conteúdo antes da geração dos arquivos para envio."),
-    ("IA: Versão aprovada gerada em PDF, Word e texto.\n\nVou conferir esta versão antes de anexar a uma candidatura.",
+     "A pessoa confere os arquivos e aprova o conteúdo antes de qualquer envio."),
+    ("IA: PDF, Word e texto conferidos. Versão aprovada.\n\nVou conferir esta versão antes de anexar a uma candidatura.",
      "O original é preservado. Cada versão tem sua própria aprovação."),
 ]
 
@@ -179,6 +179,29 @@ def portal_frame(stage, progress, blink=False):
     return image
 
 
+PRACTICE_SCENES = [
+    ("Você: Quero treinar uma entrevista.\n\nIA: Vamos começar com uma pergunta e ajuda a cada resposta?", "O treino é opcional. Você pode começar sem currículo ou conta em um portal.", "Treinar do seu jeito", "RH e apresentação\nTécnica e arquitetura\nInternacional e negociação\n\nVoz, se seu app oferecer.\nTexto também funciona."),
+    ("IA: Conte um erro e o que fez depois.\n\nVocê: Alterei a validação do formulário. Deu erro e eu corrigi.", "Uma pergunta por vez. A resposta fica salva antes da análise.", "Primeira tentativa", "Contexto: formulário\nAção: corrigir a validação\n\nAinda falta explicar como\nvocê verificou o resultado."),
+    ("IA: Você assumiu o erro. Como conferiu a correção?\n\nNão precisamos inventar números para contar o resultado.", "Feedback sobre a resposta, com evidências e um próximo passo concreto.", "Um exercício pequeno", "Descreva a verificação\nem uma frase.\n\nUse somente fatos que\nvocê consegue confirmar.\nPode pedir uma dica."),
+    ("Você: Fiquei cansada. Continuo amanhã.\n\nIA: Salvei sua resposta e o exercício. Podemos parar aqui.", "Pausa preserva a pergunta, a resposta e o feedback. Não há trabalho de fundo.", "Progresso salvo", "Treino: comportamento\nPergunta: erro e aprendizado\nTentativa: 1\nPróximo passo: ensaiar\na verificação da correção."),
+    ("Você: Continuar meu treino.\n\nIA: Vamos retomar a verificação do formulário, de onde paramos.", "Ao refazer, compare o que ficou mais claro e escolha o próximo exercício.", "No dia seguinte", "Você: Testei campos vazios\ne preenchidos e conferi\no envio.\n\nIA: Agora a verificação\nestá concreta. Próximo:\ncomo prevenir esse erro?"),
+]
+
+
+def practice_frame(stage, progress, blink=False):
+    message, note, title, content = PRACTICE_SCENES[stage]
+    image, draw = base('Da primeira resposta a um ensaio mais claro', stage, message, progress, note)
+    box(draw, (456, 160, 1084, 596), '#e4e9dd')
+    text(draw, (480, 183), 'ANOTAÇÕES ILUSTRATIVAS DO TREINO', 16, MUTED)
+    box(draw, (482, 222, 1058, 575), '#ffffff', radius=3)
+    text(draw, (506, 245), title, 26, INK)
+    shown = content[:int(len(content) * progress)]
+    paragraph(draw, (506, 294), shown, 520, 21, INK)
+    if blink:
+        text(draw, (1018, 538), '|', 20, INK, True)
+    return image
+
+
 def render(name, draw_frame, poster):
     draw_frame(poster, 1).save(OUT / (name + ".png"))
     # A single palette keeps text colors steady and allows compact delta frames.
@@ -203,3 +226,4 @@ if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     render("curriculo-guiado", resume_frame, 4)
     render("portal-guiado", portal_frame, 3)
+    render("entrevista-guiada", practice_frame, 2)

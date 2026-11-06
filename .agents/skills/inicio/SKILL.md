@@ -34,6 +34,8 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
    `./job start --focus search --json`: esse caminho prepara o perfil e as
    fontes sem exigir currículo. Preserve o foco nas consultas seguintes até
    a pessoa pedir preparo ou envio. A pessoa não precisa conhecer essa opção.
+   Para treino de entrevista, use `start --focus practice --json` e siga
+   [entrevista](../entrevista/SKILL.md), mesmo sem perfil ou currículo.
 3. Consulte `./job context --json` apenas quando precisar das respostas salvas.
    Não repita contatos e valores privados sem necessidade.
 
@@ -46,7 +48,8 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 - Se escolher revisar, leia as respostas privadas por seção e mostre o resumo
   existente, uma seção por vez. Pergunte o que deseja corrigir; use
   `profile answer` apenas para as correções. Preserve histórico e arquivos.
-  Depois confira a nova versão do perfil e dos currículos afetados.
+  Depois confira a nova versão do perfil, dos currículos e das sugestões de
+  LinkedIn/GitHub afetadas. Refaça apenas o conteúdo que depende da correção.
 - Pedido apenas de andamento: responda com o estado observado e pare aí.
 - Parada registrada: "continuar" ou "retomar" já autoriza `resume-work`.
   Se a pessoa disse apenas "iniciar", pergunte se quer retomar o objetivo
@@ -62,9 +65,14 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 - Uma seção do perfil está incompleta: siga [perfil](../perfil/SKILL.md).
 - `next_step=sources` após o currículo aprovado: apresente a pergunta devolvida
   para os links adiados e siga [docs/FONTES.md](../../../docs/FONTES.md).
-  Não inicie pesquisa sem fontes. Se a pessoa quiser só o currículo, entregue
+  Se pedir ajuda para descobrir sites, siga [fontes](../fontes/SKILL.md).
+  A busca de vagas espera os links escolhidos e aprovados. Se quiser só o currículo, entregue
   a versão aprovada e preserve a busca para depois.
 - `profile_approval`: apresente o resumo e peça a confirmação da versão.
+- `interview_preparation`: siga [entrevista](../entrevista/SKILL.md). Treino é
+  opcional; continuar uma campanha preparada tem prioridade sem exigir recusa.
+- Pedido de analisar proposta: siga `docs/PROPOSTAS.md`; não altera filtros,
+  autoriza contraproposta nem depende de terminar o onboarding.
 - `resume_approval`: apresente o rascunho e conduza a revisão do currículo.
 - `professional_presence`: siga [presenca](../presenca/SKILL.md), com escolha
   explícita de revisar LinkedIn/GitHub, deixar para depois ou pular.

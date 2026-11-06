@@ -34,7 +34,7 @@ class SourceProfileTests(unittest.TestCase):
             for section, data in sections.items():
                 if section != 'sources': profile.save(section, data)
             self.assertEqual(profile.status()['next_section'], 'sources')
-            self.assertEqual(profile.status()['questions'][0]['question'], 'Em quais sites você quer procurar vagas?')
+            self.assertEqual(profile.status()['questions'][0]['question'], 'Você já tem sites onde quer procurar vagas ou quer ajuda para encontrar opções?')
             with self.assertRaises(ValueError): profile.answer('sources', 'urls', ['javascript:alert(1)'])
             profile.answer('sources', 'urls', [])
             profile.approve(profile.get()['version'])

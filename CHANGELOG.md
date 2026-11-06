@@ -2,6 +2,41 @@
 
 ## Unreleased
 
+### Novidades
+
+- Treino opcional de processos seletivos em oito trilhas: RH, apresentação,
+  comportamento, técnica, código, arquitetura, internacional e negociação.
+- Respostas versionadas, dicas, feedback com evidências, exercícios de estudo
+  e simulado com devolutiva ao final. Pausa e retomada preservam o treino.
+- Recomendação de entrevista por voz quando o aplicativo oferecer o recurso,
+  distinguindo análise do conteúdo de avaliação de áudio realmente acessível.
+- Ajuda para descobrir fontes com análise prévia, escolha e aprovação da
+  pessoa. Pareceres de sites, empresas e vagas preservam evidências e incertezas.
+- Comparação de propostas CLT, PJ, MEI, cooperado e internacional com valores
+  anuais, premissas explícitas, câmbio informado e estimativa de equivalência.
+- Orientações de mercado internacional, reputação, referências salariais e
+  negociação, sem transformar estimativas em fatos ou aceitar ofertas.
+- Diagrama atualizado e animação do treino em 2240 × 1400 pixels, com digitação,
+  feedback, pausa e retomada no dia seguinte.
+
+### Correções
+
+- Texto fornecido de LinkedIn/GitHub salvo antes da análise; correções retiram
+  a confirmação das sugestões anteriores e preservam seu histórico.
+- Status respeita a parada e o preparo, sem pedir conexões ou dados de contato
+  desnecessários durante o treino e a comparação de propostas.
+- Perguntas sobre fontes adaptadas ao currículo pronto e à ajuda para descobrir
+  sites; nenhuma sugestão entra automaticamente no perfil.
+- Revisões antigas não reabilitam fontes com verificação mais recente adversa.
+- Demonstração de currículo ajustada à conferência dos arquivos antes do envio.
+
+### Validação
+
+- Percursos fictícios pela CLI com rede bloqueada, incluindo LinkedIn, GitHub,
+  currículo, entrevistas, propostas, abas pendentes e relógio simulado em outro dia.
+- Testes de histórico, versões de respostas, feedback antecipado, premissas
+  desconhecidas, moedas, cálculos decimais e isolamento das permissões.
+
 ## 0.3.0 - 2026-11-06
 
 ### Novidades

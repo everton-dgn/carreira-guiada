@@ -16,6 +16,9 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
   permissões individuais e conexão de e-mail adiada ou recusada.
 - Currículos: extração, fatos confirmados, versões por especialidade, geração
   de PDF e Word, aprovação, integridade e preservação dos arquivos originais.
+- Presença profissional: revisão de LinkedIn e GitHub, texto recebido antes
+  da análise, correção que invalida sugestões antigas, adiamento de fontes e
+  preservação de currículo, permissões e rascunhos ao voltar em outro dia.
 - Busca e candidatura: filtros de salário e contrato, informação ausente,
   decisão restrita a uma vaga, duplicidade, cadastro, preenchimento, correção
   e confirmação de envio.
@@ -40,6 +43,11 @@ portal e caixa postal simulados. Os processos do percurso de busca e retorno
 bloqueiam conexões de rede e abertura de subprocessos para impedir efeitos
 externos. O percurso de preparação usa arquivos fictícios e a CLI local;
 ele não instala esse bloqueio adicional de rede e subprocessos.
+`tests/test_job_preparation_journey.py` percorre a preparação completa com a
+CLI real em processos separados, bloqueio de rede e novos subprocessos, além
+de relógio simulado. A data avança um dia entre parada e retomada; não se trata
+de uma execução mantida durante 24 horas. Também confere reservas de abas
+pendentes e a ausência de candidaturas e mensagens durante o preparo.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio
@@ -62,6 +70,15 @@ Ela complementa a revisão humana e não comprova ausência absoluta de segredos
 Para guardar os diálogos e currículos fictícios, informe um diretório externo
 novo em `JOB_JOURNEY_REPORT` ou `JOB_PROCESS_REPORT`, respectivamente. Esses
 relatórios são opcionais e não devem entrar na cópia distribuída.
+O percurso de preparação completa usa `JOB_PREPARATION_REPORT` para salvar
+o diálogo, as chamadas locais e os currículos fictícios em uma pasta externa.
+
+O mesmo percurso testa treino sem conta ou currículo, dica para "não sei",
+nova versão de resposta, rejeição de feedback antigo, simulado sem devolutiva
+antecipada e retomada no dia seguinte. Também registra um portal fictício
+favorável com anúncio suspeito separado e compara propostas com imposto
+desconhecido, estimativa explícita e equivalência anual. O relógio é simulado;
+rede e subprocessos externos permanecem bloqueados nesses processos de teste.
 
 ## Alcance e limites
 

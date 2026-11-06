@@ -9,6 +9,11 @@ as referências de mensagens. Arquivos recebidos são preservados também no
 local original, inclusive quando você os copiou para a pasta do projeto.
 Nada é enviado a servidor do projeto; o projeto não tem servidor.
 
+Textos de LinkedIn e GitHub, respostas de entrevistas, feedback, pareceres
+de pesquisa e propostas também ficam nessa área privada. Respostas de treino
+não viram fatos do currículo automaticamente. Voz e transcrição seguem as
+condições do aplicativo de IA; o projeto não instala gravador nem serviço de áudio.
+
 O aplicativo de IA que você escolheu processa as informações que você fornece
 no chat e os arquivos que ele lê. Os dados necessários também são enviados aos
 portais quando você autoriza uma candidatura. A pasta privada protege a

@@ -477,13 +477,13 @@ class Workflow:
         return {'opportunity_id': job_id, 'profile_version': profile['version'], 'evaluation': result}
 
     def state(self) -> dict:
-        """Status seguro, somente leitura; em instalação nova devolve estado vazio sem criar ``.job``.
+        """Status privado, somente leitura; em instalação nova não cria ``.job``.
 
         Retorna ``{initialized, control: {generation, stopped, ...}, goal, progress,
         profile: {available, approved, version, next_section, missing, questions},
         counts, ledger (Store.summary), pending: [...], capabilities: [...],
-        mail_coverage, runner, next_steps: [str], message}``. Não inclui identidade,
-        contatos, preferências ou piso salarial.
+        mail_coverage, runner, checkpoint, browser, next_steps: [str], message}``.
+        Notas livres e pendências podem conter dados privados da pessoa ou da vaga.
         """
         now = self._now()
         with self._read() as store:
@@ -542,8 +542,10 @@ class Workflow:
         result["profile"] = self._profile_status()
         from .checkpoint import checkpoint
         from .tabs import Tabs
+        from .practice import Practice
         result['checkpoint'] = checkpoint(self.root)
         result['browser'] = Tabs(self.root).status()
+        result['practice'] = Practice(self.root).status()
         result["next_steps"] = self._next_steps(result)
         result["message"] = "\n".join(["Situação do Carreira Guiada:"] + [f"- {step}" for step in result["next_steps"]])
         if result['checkpoint']:
@@ -559,10 +561,27 @@ class Workflow:
             steps.append(f"Nos registros: {ledger['confirmed']} candidatura(s) confirmada(s), {ledger['uncertain']} envio(s) em dúvida e {ledger['discarded']} vaga(s) descartada(s).")
         if s["control"]["stopped"]:
             steps.append('O trabalho está parado. Seu progresso está salvo; diga "continuar" quando quiser retomar.')
-        if not s["profile"].get("approved"):
+            uncertain_count = sum(p['type'] == 'action' and p.get('status') == 'uncertain' for p in s['pending'])
+            user_count = sum(p['type'] == 'step' and p.get('state') == 'candidate_pending' for p in s['pending'])
+            if uncertain_count or user_count:
+                steps.append(f'Pendências preservadas: {uncertain_count} ação(ões) sem confirmação e {user_count} etapa(s) que dependem de você. Nada será repetido durante a parada.')
+            return steps
+        practice = s.get('practice') or {}
+        training = practice.get('decision') == 'now' and practice.get('phase') in {'idle', 'questions', 'feedback'}
+        comparing = (s.get('checkpoint') or {}).get('phase') == 'offers'
+        if not s["profile"].get("approved") and not training and not comparing:
             section = s["profile"].get("next_section")
             labels = {'identity': 'seus dados de contato', 'preferences': 'o tipo de vaga que procura', 'sources': 'os endereços dos sites onde quer procurar vagas', 'permissions': 'o que posso fazer por você', 'connections': 'as contas que quer usar', 'limits': 'o funcionamento no chat'}
             steps.append(f"Vamos completar {labels.get(section, 'seu perfil')}." if section else "Confira o resumo do perfil e diga se está correto.")
+        if training:
+            steps.append('Há um treino salvo. ' + practice['message'])
+        elif practice.get('phase') in {'questions', 'feedback'}:
+            steps.append('Seu treino adiado continua salvo. Você pode pedir para retomá-lo quando quiser.')
+        if comparing:
+            steps.append('A comparação de propostas está salva. Vamos continuar pelas premissas que faltam.')
+        preparing = training or comparing or (s.get('checkpoint') or {}).get('phase') in {'onboarding', 'resume', 'presence', 'practice'}
+        if s['goal'] is None and (preparing or not s['profile'].get('approved')):
+            return steps
         if s["goal"] is None:
             steps.append('Diga se quer apenas conhecer vagas ou também se candidatar. Não precisa escolher uma quantidade nem um prazo.')
         uncertain = [p for p in s["pending"] if p["type"] == "action" and p["status"] == "uncertain"]
@@ -582,7 +601,7 @@ class Workflow:
                 summary = {'apply': 'Conferir o envio da candidatura', 'fill': 'Concluir o preenchimento do formulário',
                            'register': 'Concluir o cadastro no portal'}.get(pending['kind'], 'Conferir a próxima etapa no portal')
             steps.append(f"{label} em {pending['company']}: {summary}.")
-        if not any(c["usable"] for c in s["capabilities"]):
+        if (s['goal'] or s['pending']) and not any(c["usable"] for c in s["capabilities"]):
             steps.append('Ainda preciso conferir o acesso aos sites ou ao e-mail. Se houver login, eu explico onde entrar; não me passe sua senha.')
         if s["progress"] and s["progress"]["reached"]:
             steps.append("Meta do período atingida.")

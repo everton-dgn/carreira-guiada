@@ -26,27 +26,27 @@ contratação nem execução contínua quando a sessão da IA termina.
 
 ## Da configuração ao acompanhamento
 
-![Fluxo ilustrado: onboarding, perfil e regras, currículo aprovado, busca, seleção, preenchimento e envio, retornos por e-mail, próximas etapas e registro do resultado. Uma nova rodada volta à busca; o ciclo termina no objetivo combinado ou quando a pessoa pede para parar.](docs/assets/fluxo-guiado.png)
+![Fluxo ilustrado: início, perfil e currículo, fontes verificadas, busca e avaliação, preenchimento e envio, retornos, preparação para entrevistas, comparação de propostas e resultado. Uma nova rodada volta à busca.](docs/assets/fluxo-guiado.png)
 
 A IA intercala novas buscas com os retornos dos processos em andamento.
 Ela executa as ações permitidas pelo perfil aprovado; login, decisões pessoais
 e testes que não permitem auxílio ficam com você. O fim de uma rodada dá início
 à próxima. O ciclo encerra quando o objetivo combinado é atingido ou você pede
 para parar, respeitando a duração da sessão e os limites que definiu.
-Na preparação, você também pode escolher a revisão do LinkedIn e do GitHub.
+LinkedIn, GitHub e treino de entrevistas são opcionais e podem acontecer antes
+da busca. Comparação de propostas entra quando você quiser analisar uma oferta.
 
 <details>
 <summary>Ler o fluxo em texto</summary>
 
 1. A IA conduz o onboarding, uma pergunta por vez.
-2. Vocês definem dados, filtros, salário, fontes e permissões.
-3. A IA organiza o currículo; você confere e aprova a versão.
-4. A busca usa os links escolhidos por você.
-5. As vagas passam por conferência de compatibilidade, confiança e duplicidade.
-6. A IA preenche formulários, anexa o currículo e envia quando autorizado.
-7. Os retornos por e-mail são associados às candidaturas e aos prazos.
-8. Complementos e testes com auxílio permitido avançam dentro das autorizações;
-   entrevistas e respostas pessoais dependem de você.
+2. Vocês definem dados, filtros, salário e permissões, revisam o currículo e conferem a versão para aprovação.
+3. Você informa as fontes ou pede ajuda para encontrar opções verificadas e escolhe os links.
+4. A IA busca e avalia vagas, empresas, compatibilidade e duplicidade.
+5. Preenche formulários, anexa o currículo e envia quando autorizado.
+6. Associa retornos por e-mail às candidaturas; complementos e testes com auxílio permitido seguem as autorizações.
+7. Você pode ensaiar entrevistas, receber feedback e praticar as lacunas. Etapas pessoais ficam com você.
+8. A IA ajuda a comparar propostas e preparar a negociação, com premissas explícitas.
 9. O resultado fica registrado. A busca continua ou o ciclo termina conforme
    o objetivo e sua decisão.
 
@@ -122,15 +122,51 @@ projetos em destaque e apresentação dos repositórios. A IA prepara os textos
 e você decide o que publicar. O currículo também passa por
 [revisão para ATS](docs/ATS.md), com conferência de leitura dos arquivos.
 
+## Treine para conquistar a vaga
+
+Escreva "quero treinar uma entrevista". Você pode praticar antes de se
+candidatar ou colar a descrição de uma vaga para preparar aquela conversa.
+A IA faz uma pergunta por vez, escuta sua resposta e ajuda a contar sua
+trajetória com exemplos verdadeiros.
+
+Escolha treino com ajuda a cada resposta ou simulado com devolutiva ao final.
+Há preparação para RH, apresentação pessoal, perguntas comportamentais e,
+na área de tecnologia, entrevista técnica, exercício de código e system design.
+Você pode pedir uma dica, tentar novamente, parar e continuar em outro dia.
+Respostas e feedback ficam privados e não são enviados a recrutadores.
+O feedback aponta lacunas, sugere um exercício e compara suas tentativas.
+Se seu aplicativo oferecer voz, experimente falar para tornar o treino mais
+realista. Também há preparação internacional e negociação salarial.
+[Conheça os treinos e exemplos](docs/ENTREVISTAS.md).
+
+![Conversa fictícia de treino: pergunta sobre um erro, resposta, feedback específico, pausa e retomada no dia seguinte.](docs/assets/entrevista-guiada.gif)
+
+*Simulação em terminal ilustrativo, com digitação e respostas progressivas.
+Voz depende do aplicativo usado; esta demonstração não contém áudio.*
+[Ver imagem sem animação](docs/assets/entrevista-guiada.png) ·
+[Ler o percurso e os critérios de feedback](docs/ENTREVISTAS.md)
+
 ## Você escolhe onde procurar
 
 O projeto começa **sem lista de sites de vagas**. No onboarding, a IA pede
 os links que você quer usar. Basta copiar o endereço da barra do navegador
 e colar no chat. A escolha fica no seu perfil privado.
 
-Não conhece nenhum site ainda? Diga "deixe para depois". Vocês podem preparar
-o currículo e os filtros; a busca espera pelos links e pela sua aprovação.
-A IA explica como copiar um endereço e não escolhe um portal por você.
+Não conhece nenhum site ainda? Peça ajuda para encontrar opções verificadas.
+A IA pesquisa identidade, origem e sinais de risco antes de sugerir; você
+escolhe os links. Pode também deixar a busca para depois. Cada vaga passa por
+conferência própria, mesmo quando o site é conhecido.
+
+## Entenda a empresa e compare propostas
+
+Peça uma [análise da empresa](docs/EMPRESAS.md): reputação, relatos de
+funcionários, condições da vaga e referências salariais com fonte e data.
+A IA separa fatos, relatos e dúvidas, sem tratar popularidade como segurança.
+
+Recebeu uma oferta? [Compare CLT, PJ, MEI, cooperado ou internacional](docs/PROPOSTAS.md)
+com valores anuais, benefícios, custos, reservas e impostos informados.
+Premissas ausentes ficam visíveis; a IA ajuda a negociar e você decide.
+Para trabalhar fora ou para outro país, veja [a preparação internacional](docs/INTERNACIONAL.md).
 [Como informar e alterar os links](docs/FONTES.md).
 
 ## O que acontece depois

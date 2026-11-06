@@ -85,6 +85,8 @@ class CliTests(unittest.TestCase):
         self.assertEqual(self.call('presence', 'status')['next_topic'], 'linkedin')
         self.call('presence', 'finish', data={'topic': 'linkedin', 'version': 1, 'confirmation': 'Conferi as sugestões; vou aplicar depois.'})
         self.assertFalse(self.call('presence', 'status')['publication_authorized'])
+        self.assertEqual(self.call('start')['next_step'], 'interview_preparation')
+        self.call('practice', 'choose', data={'decision': 'later'})
         deferred = self.call("start")
         self.assertEqual(deferred["next_step"], "sources")
         self.assertEqual(deferred["question"]["field"], "urls")

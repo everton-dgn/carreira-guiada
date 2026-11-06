@@ -23,7 +23,22 @@ própria. [Veja os requisitos e as recomendações](MODELOS.md).
 ## Onde estão os sites de vagas?
 
 Você escolhe os links no início. O projeto começa sem catálogo de portais.
+Se não conhecer sites, peça ajuda: a IA pesquisa e confere opções antes de
+sugerir. Você escolhe a lista. Um portal conhecido não valida todos os anúncios.
 [Veja como copiar e informar os endereços](FONTES.md).
+
+## Posso treinar entrevistas por voz?
+
+Sim, quando seu aplicativo oferecer esse recurso. A IA recomenda falar para
+aproximar o treino de uma conversa, mas texto também funciona. Com transcrição,
+ela avalia conteúdo; entonação e pausas exigem acesso ao áudio. O treino é
+opcional e fica salvo. [Veja os oito caminhos de preparação](ENTREVISTAS.md).
+
+## A IA ajuda a escolher entre CLT e PJ?
+
+Ela organiza a [comparação de propostas](PROPOSTAS.md) com valores anuais,
+benefícios, impostos e custos informados. Dados desconhecidos ficam pendentes;
+não há aceitação automática. A decisão também considera jornada e condições.
 
 ## Posso começar sem currículo ou sem saber o salário?
 

@@ -22,7 +22,7 @@ RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
     "docs/assets/carreira-guiada-cover.png": "5a422f0605a6c28b422c623ba20d2f4376e91526de60890510257f64f5833321",
-    "docs/assets/fluxo-guiado.png": "b2f680336213fec1645fa60105d8ce6ec1e92c5f4bf4034c66d1a3408865dd3f",
+    "docs/assets/fluxo-guiado.png": "fe3d6faf28b724cf5119541da7f5513dec3d2d8023cac7ff354321ca7d6b728d",
 }
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),

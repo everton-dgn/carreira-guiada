@@ -32,7 +32,7 @@ ACTIONS = ('research', 'register', 'fill', 'apply', 'email_read', 'email_reply',
 QUESTIONS = {
     'identity': [('name', 'Qual nome você quer colocar no currículo?', 'Pode escrever seu nome como gostaria que a empresa o visse'), ('email', 'Qual e-mail você quer usar para receber contatos das empresas?', 'Digite apenas o endereço, sem senha')],
     'preferences': [('roles', 'Que tipo de trabalho você procura?', 'Pode dizer o cargo ou descrever o que gostaria de fazer; eu ajudo a encontrar os nomes'), ('modalities', 'Você quer trabalhar de casa, no local da empresa, parte em cada lugar ou não tem preferência?', 'Pode escolher uma dessas opções; eu explico as diferenças se precisar')],
-    'sources': [('urls', 'Em quais sites você quer procurar vagas?', 'Copie o endereço da barra do navegador e envie aqui. Se ainda não souber, diga "deixe para depois" e continuamos preparando o currículo. Antes da busca, vamos combinar os sites.')],
+    'sources': [('urls', 'Você já tem sites onde quer procurar vagas ou quer ajuda para encontrar opções?', 'Pode colar os endereços, dizer "me ajude a encontrar sites" ou deixar para depois. Vou verificar as opções antes de sugerir; você escolhe quais usar.')],
     'permissions': [],
     'connections': [('accounts', 'Você quer acompanhar os retornos pelo mesmo e-mail de contato?', 'Pode dizer sim, informar outro e-mail ou deixar para depois. O login será feito por você, sem passar a senha')],
 }
@@ -68,7 +68,7 @@ QUESTIONS['preferences'] += [
     ('currencies', 'Em quais moedas você aceita receber?', 'Por exemplo, reais ou euros'),
     ('levels', 'Você quer limitar as vagas a algum nível de experiência?', 'Pode dizer iniciante, pleno, sênior ou sem preferência; eu explico as diferenças se precisar'),
     ('contracts', 'Você tem preferência pelo tipo de contratação?', 'Por exemplo, carteira assinada, prestação de serviço ou sem preferência'),
-    ('locations', 'Há algum limite de cidade ou país para as vagas?', 'Pode dizer os locais que aceita ou sem preferência'),
+    ('locations', 'Você procura trabalho no Brasil, em outros países ou nos dois?', 'Diga os lugares que aceita ou sem preferência. Se for internacional, vamos distinguir trabalhar daqui de mudar de país'),
     ('technologies', 'Existe alguma ferramenta que precisa fazer parte do trabalho?', 'Diga quais ou responda que não tem essa exigência'),
     ('languages', 'Quais idiomas você consegue usar no trabalho?', 'Descreva o que consegue ler, escrever ou conversar; eu ajudo a registrar o nível'),
     ('blocked_companies', 'Há empresas em que você não quer trabalhar?', 'Diga os nomes ou responda nenhuma'),
