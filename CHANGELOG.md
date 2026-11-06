@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 0.5.0 - 2026-11-06
+
+- Nova identidade visual em azul na capa, na jornada e nas cinco demonstrações.
+- GIFs em 2240 × 1400 pixels com digitação progressiva, navegação simulada,
+  etapas visíveis e versões estáticas para consulta.
+- README com chamadas sobre busca automática, preenchimento de formulários,
+  currículo e preparação para entrevistas.
+- Alternativas às animações reunidas em uma seção recolhida. Removidos os
+  créditos visuais e as notas de produção das artes.
+
 ## 0.4.1 - 2026-11-06
 
 - Diagrama do README reorganizado em três fases, com fundo branco, cores

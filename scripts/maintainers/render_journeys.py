@@ -1,9 +1,9 @@
 """Render fictional resume and browser walkthroughs without network access."""
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
-from render_docs import OUT, SIZE, SCALE, PAPER, INK, MUTED, TERMINAL, TEXT, GREEN
-from render_docs import coords, font, text, wrap
+from render_docs import OUT, SIZE, SCALE, INK, MUTED, TEXT, ACCENT
+from render_docs import coords, font, text, wrap, backdrop, progress_track, BLUE, LINE, PALE, DIM
 
 
 def box(draw, bounds, fill, outline=None, radius=12):
@@ -24,30 +24,37 @@ def pointer(draw, position, clicking=False):
     x, y = position
     if clicking:
         draw.ellipse(coords((x - 14, y - 14, x + 14, y + 14)),
-                     outline="#79a53b", width=3 * SCALE)
+                     outline="#60d9f4", width=3 * SCALE)
     draw.polygon(coords((x, y, x + 5, y + 23, x + 11, y + 15,
                          x + 22, y + 14)), fill=INK, outline="#ffffff", width=2 * SCALE)
 
 
 def base(title, number, message, progress, note):
-    image = Image.new("RGB", SIZE, PAPER)
-    draw = ImageDraw.Draw(image)
-    text(draw, (36, 22), "Carreira Guiada", 30, INK)
-    text(draw, (785, 32), "DEMONSTRAÇÃO FICTÍCIA", 16, MUTED)
-    text(draw, (36, 75), title, 27, INK)
-    text(draw, (36, 117), "Qualquer modelo com as ferramentas necessárias. Nenhuma ação real.", 18, MUTED)
-    box(draw, (36, 160, 434, 596), TERMINAL)
-    text(draw, (56, 180), "Conversa com sua IA", 19, GREEN)
-    text(draw, (56, 212), "Terminal ilustrativo", 15, "#afc2b4", True)
-    draw.line(coords((56, 244, 414, 244)), fill="#42594b", width=SCALE)
+    image, draw = backdrop(dark=True)
+    text(draw, (40, 78), title, 35, TEXT, bold=True)
+    text(draw, (40, 132), "Do que você conta ao próximo passo concreto.", 20, DIM)
+    text(draw, (40, 206), ">_ conversa com sua IA", 19, ACCENT, True)
+    draw.line(coords((40, 244, 407, 244)), fill="#28426a", width=SCALE)
     visible = message[:max(1, int(len(message) * min(1, progress * 2)))]
-    paragraph(draw, (56, 265), visible, 350, 20)
-    text(draw, (56, 553), f"ETAPA {number + 1} / 5", 16, GREEN, True)
-    text(draw, (36, 618), note, 19, INK)
-    text(draw, (36, 652), "Ilustração do fluxo. O Carreira Guiada não tem interface gráfica própria.", 17, MUTED)
-    box(draw, (36, 686, 1084, 692), "#d9dfd2", radius=3)
-    box(draw, (36, 686, 36 + 1048 * (number + progress) / 5, 692), INK, radius=3)
+    end = paragraph(draw, (40, 266), visible, 374, 20)
+    if end > 550:
+        raise ValueError("A conversa ultrapassou a área de leitura.")
+    text(draw, (40, 556), f"0{number + 1}", 32, ACCENT, bold=True)
+    text(draw, (96, 568), "DE 05 ETAPAS", 14, DIM)
+    for index, line in enumerate(wrap(draw, note, 1030, 18, mono=False)):
+        text(draw, (40, 635 + index * 23), line, 18, TEXT)
+    progress_track(draw, number, progress, dark=True)
     return image, draw
+
+
+def paper(draw, label):
+    """A document on the stage, not a second application window."""
+    text(draw, (480, 177), label, 14, DIM)
+    box(draw, (492, 221, 1076, 606), "#14366a", radius=8)
+    box(draw, (480, 210, 1064, 594), "#ffffff", radius=8)
+    draw.rectangle(coords((480, 226, 486, 280)), fill=BLUE)
+    draw.polygon(coords((1026, 210, 1064, 248, 1064, 210)), fill="#a9c8fb")
+    draw.polygon(coords((1026, 210, 1026, 248, 1064, 248)), fill=PALE)
 
 
 RESUME_SCENES = [
@@ -65,11 +72,9 @@ RESUME_SCENES = [
 
 
 def resume_frame(stage, progress, blink=False):
-    image, draw = base("Do que você conta a um currículo pronto para enviar", stage,
+    image, draw = base("Sua história. Um currículo pronto para enviar.", stage,
                        RESUME_SCENES[stage][0], progress, RESUME_SCENES[stage][1])
-    box(draw, (456, 160, 1084, 596), "#e4e9dd")
-    text(draw, (478, 178), "PRÉVIA ILUSTRATIVA DO DOCUMENTO", 15, MUTED)
-    box(draw, (482, 213, 1058, 575), "#ffffff", radius=3)
+    paper(draw, "PRÉVIA DO CURRÍCULO FICTÍCIO")
     if stage == 0:
         text(draw, (506, 236), "Fatos confirmados", 27, INK)
         raw = "Pessoa Exemplo\npessoa@example.invalid\nEmpresa Exemplo | 2023 a 2025\nAtendia clientes e organizava pedidos."
@@ -87,7 +92,7 @@ def resume_frame(stage, progress, blink=False):
         for index, (label, y) in enumerate(headings):
             if stage > 1 or progress >= index / 3:
                 text(draw, (506, y), label, 14, MUTED)
-                draw.line(coords((506, y + 24, 1030, y + 24)), fill="#d9dfd2", width=SCALE)
+                draw.line(coords((506, y + 24, 1030, y + 24)), fill="#c4d7f5", width=SCALE)
         if stage >= 2:
             summary = "Atendimento a clientes e organização de pedidos."
             summary = summary[:int(len(summary) * progress)] if stage == 2 else summary
@@ -100,14 +105,14 @@ def resume_frame(stage, progress, blink=False):
                 x = 506 + draw.textlength(summary, font=font(16, True)) / SCALE
                 text(draw, (x, 346), "|", 16, INK, True)
         if stage == 3:
-            box(draw, (875, 229, 1038, 265), "#eef4df")
+            box(draw, (875, 229, 1038, 265), "#e6f0ff")
             text(draw, (892, 237), "EM REVISÃO", 15, INK)
         if stage == 4:
-            box(draw, (884, 229, 1038, 265), GREEN)
+            box(draw, (884, 229, 1038, 265), ACCENT)
             text(draw, (903, 237), "APROVADO", 15, INK)
             for index, label in enumerate(("PDF", "WORD", "TEXTO")):
                 if progress >= index / 3:
-                    box(draw, (506 + index * 170, 538, 662 + index * 170, 565), "#e4edce")
+                    box(draw, (506 + index * 170, 538, 662 + index * 170, 565), "#dceaff")
                     text(draw, (549 + index * 170, 543), label, 13, INK)
     return image
 
@@ -128,7 +133,7 @@ PORTAL_SCENES = [
 
 def field(draw, y, label, value, active=False, blink=False):
     text(draw, (482, y), label, 16, MUTED)
-    box(draw, (482, y + 25, 1058, y + 65), "#ffffff", INK if active else "#ccd6c7", radius=6)
+    box(draw, (482, y + 25, 1058, y + 65), "#ffffff", INK if active else "#bdd1ef", radius=6)
     text(draw, (494, y + 33), value, 18, INK)
     if active and blink:
         x = 497 + draw.textlength(value, font=font(18)) / SCALE
@@ -136,10 +141,10 @@ def field(draw, y, label, value, active=False, blink=False):
 
 
 def portal_frame(stage, progress, blink=False):
-    image, draw = base("A IA navega e preenche a candidatura para você", stage,
+    image, draw = base("Chega de preencher os mesmos dados.", stage,
                        PORTAL_SCENES[stage][0], progress, PORTAL_SCENES[stage][1])
-    box(draw, (456, 160, 1084, 596), "#ffffff", "#ccd6c7")
-    box(draw, (470, 174, 1070, 213), "#edf0e7", radius=7)
+    box(draw, (456, 160, 1084, 596), "#ffffff", "#bdd1ef")
+    box(draw, (470, 174, 1070, 213), "#e9f1ff", radius=7)
     text(draw, (485, 185), "carreiras.example | PORTAL FICTÍCIO", 16, INK, True)
     if stage == 0:
         text(draw, (482, 241), "Empresa Exemplo", 26, INK)
@@ -150,7 +155,7 @@ def portal_frame(stage, progress, blink=False):
         text(draw, (507, 499), "Abrir candidatura", 21)
         pointer(draw, (992 - 300 * progress, 442 + 70 * progress), blink and progress == 1)
     elif stage == 4:
-        box(draw, (484, 251, 1054, 435), "#eff5df")
+        box(draw, (484, 251, 1054, 435), "#e2efff")
         text(draw, (510, 283), "Candidatura recebida", 30, INK)
         text(draw, (510, 334), "Confirmação simulada", 20, MUTED)
         text(draw, (510, 373), "Empresa Exemplo | Atendimento", 19, INK)
@@ -190,13 +195,12 @@ PRACTICE_SCENES = [
 
 def practice_frame(stage, progress, blink=False):
     message, note, title, content = PRACTICE_SCENES[stage]
-    image, draw = base('Da primeira resposta a um ensaio mais claro', stage, message, progress, note)
-    box(draw, (456, 160, 1084, 596), '#e4e9dd')
-    text(draw, (480, 183), 'ANOTAÇÕES ILUSTRATIVAS DO TREINO', 16, MUTED)
-    box(draw, (482, 222, 1058, 575), '#ffffff', radius=3)
-    text(draw, (506, 245), title, 26, INK)
+    image, draw = base('Ensaie hoje. Chegue mais preparado.', stage, message, progress, note)
+    paper(draw, 'CADERNO DE TREINO FICTÍCIO')
+    text(draw, (506, 245), title, 26, BLUE, bold=True)
+    draw.line(coords((506, 287, 1028, 287)), fill=LINE, width=SCALE)
     shown = content[:int(len(content) * progress)]
-    paragraph(draw, (506, 294), shown, 520, 21, INK)
+    paragraph(draw, (506, 308), shown, 520, 21, INK)
     if blink:
         text(draw, (1018, 538), '|', 20, INK, True)
     return image

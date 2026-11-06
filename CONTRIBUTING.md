@@ -77,7 +77,6 @@ uv run --locked --group docs python scripts/maintainers/render_journeys.py
 O gerador usa uma fonte de texto (DejaVu Sans ou Arial) e uma monoespaçada
 (DejaVu Sans Mono, Menlo ou Consolas) disponíveis no sistema. Confira acentos
 e legibilidade antes de publicar. Não copie fontes de terceiros para o projeto.
-[Créditos e origem das imagens](docs/VISUAIS.md).
 
 ## Licença das contribuições
 
