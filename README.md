@@ -1,14 +1,16 @@
-![Carreira Guiada: automatize sua busca de emprego. Sua IA cuida das candidaturas.](docs/assets/carreira-guiada-cover.png)
+![Carreira Guiada. Sua próxima vaga. Sem a busca manual interminável. Automatize buscas e candidaturas com sua IA.](docs/assets/carreira-guiada-cover.png)
 
 # Carreira Guiada
 
-**Automatize sua busca de emprego com IA.** Prepare seu currículo, encontre
-vagas compatíveis e deixe a IA preencher formulários, enviar candidaturas
-autorizadas e acompanhar os retornos por e-mail.
+Procurar vaga não deveria consumir o tempo de se preparar para ela.
+O Carreira Guiada transforma sua IA em uma parceira de busca: encontra vagas
+compatíveis, preenche formulários com seus dados confirmados, envia candidaturas
+autorizadas e acompanha os retornos por e-mail.
 
-Você define o que procura e até onde a IA pode agir. Ela executa a busca por
-objetivo, continua pelas próximas vagas e salva o progresso, sem exigir que
-você repita seus dados ou peça para continuar a cada lote.
+**Automatize a busca e pare de preencher os mesmos dados em cada vaga.**
+Você define o objetivo, os filtros e as permissões. A IA segue pelas próximas
+oportunidades, informa o andamento e salva o progresso. Currículo, LinkedIn,
+GitHub e treino de entrevistas também entram no preparo, quando você quiser.
 
 Use o modelo de sua escolha em uma ferramenta de IA com acesso a arquivos,
 comandos locais e às integrações necessárias. O projeto é independente de
@@ -24,9 +26,9 @@ não tem uma interface gráfica própria.
 das permissões que você deu e das regras de cada serviço. O Carreira Guiada não garante
 contratação nem execução contínua quando a sessão da IA termina.
 
-## Da configuração ao acompanhamento
+## Uma jornada para chegar preparado
 
-![Três fases da esquerda para a direita: prepare seu perfil, candidate-se às vagas e acompanhe os retornos. Depois, continue buscando ou encerre. LinkedIn, GitHub e treino de entrevistas são apoios opcionais.](docs/assets/fluxo-guiado.png)
+![Jornada ilustrada em azul: prepare perfil, filtros e currículo; automatize busca e candidaturas; avance com e-mails, entrevistas e propostas. Novas buscas continuam enquanto os retornos chegam. É possível pausar e retomar ou encerrar o ciclo.](docs/assets/fluxo-guiado.png)
 
 A ordem da imagem ajuda a entender o percurso. Durante a execução, a IA
 intercala novas buscas com os retornos dos processos em andamento: você não
@@ -38,21 +40,9 @@ para parar, respeitando a duração da sessão e os limites que definiu.
 LinkedIn, GitHub e treino de entrevistas são opcionais e podem acontecer antes
 da busca. Comparação de propostas entra quando você quiser analisar uma oferta.
 
-<details>
-<summary>Ler o fluxo em texto</summary>
-
-1. Prepare: a IA pergunta uma coisa por vez para definir dados, filtros, salário e permissões. Vocês revisam o currículo para aprovação e escolhem as fontes de vagas. Você pode pedir ajuda para encontrar essas fontes.
-2. Candidate-se: a IA busca vagas e confere compatibilidade, duplicidade, empresas e sinais de risco. Preenche formulários, anexa o currículo e envia dentro das permissões aprovadas.
-3. Acompanhe: a IA associa e-mails às candidaturas, cuida dos prazos e registra os resultados. Complementos e testes com auxílio permitido seguem as autorizações; etapas pessoais ficam com você. Se houver proposta, ajuda a comparar condições e preparar a negociação, com premissas explícitas.
-
-Continuar significa iniciar outra rodada de busca, sem repetir a configuração.
-Encerrar acontece quando o objetivo combinado é atingido ou você pede para parar.
-O progresso fica salvo para retomar depois.
-
-LinkedIn, GitHub e treino de entrevistas são apoios opcionais, disponíveis
-quando você quiser. Eles não precisam esperar uma resposta de empresa.
-
-</details>
+As animações abaixo usam dados fictícios. Os terminais e o portal ilustram
+ferramentas externas; o projeto não instala essas telas. Nenhuma ação real é
+executada nas demonstrações.
 
 ## Comece com "iniciar"
 
@@ -69,10 +59,7 @@ faltar uma ferramenta, o assistente orienta a instalação autorizada.
 
 ![Simulação em terminal do Claude Code: iniciar, criar currículo, escolher fontes e aprovar o perfil.](docs/assets/inicio-guiado.gif)
 
-*Exemplo ilustrativo no Claude Code, com dados fictícios. O visual real varia
-conforme a versão e o tema do terminal.*
-[Ver imagem sem animação](docs/assets/inicio-guiado.png) ·
-[Ler o percurso em texto](docs/ONBOARDING.md)
+*Exemplo no Claude Code. A aparência real depende da versão e do tema.*
 
 ## Escolha o modelo por etapa
 
@@ -104,25 +91,22 @@ mantenham a execução ativa. Limites de uso, autenticação e ações exclusiva
 pessoa ainda podem exigir intervenção. Um bloqueio isolado fica pendente e
 as outras vagas seguem. [Como funciona a continuidade](docs/GUIA.md#buscar-por-objetivo).
 
-## Prepare um currículo pronto para enviar
+## Transforme sua experiência em um currículo claro
 
-A IA organiza suas experiências, melhora a redação e padroniza o documento
-com fatos que você confirmou. Você revisa a versão antes de aprovar os arquivos.
+A IA organiza suas experiências, melhora a redação e prepara PDF, Word e texto
+com fatos que você confirmou. A [revisão para ATS](docs/ATS.md) confere a leitura
+dos arquivos e ajuda a apresentar as experiências relevantes para a vaga.
+Você revisa e aprova cada versão antes do envio.
 
 ![Simulação da IA organizando fatos, montando um currículo e gerando a versão aprovada.](docs/assets/curriculo-guiado.gif)
 
-*Documento e conversa fictícios. A prévia ilustra o conteúdo do currículo;
-não representa uma tela do Carreira Guiada.*
-[Ver imagem sem animação](docs/assets/curriculo-guiado.png) ·
-[Ler o percurso em texto](docs/CURRICULOS.md#exemplo-do-percurso)
-
-## Prepare também sua apresentação profissional
+## Faça seu perfil contar a mesma história
 
 Você pode pedir uma [revisão da sua apresentação profissional](docs/PRESENCA-PROFISSIONAL.md):
 título, resumo e experiências do LinkedIn; para tecnologia, README do GitHub,
 projetos em destaque e apresentação dos repositórios. A IA prepara os textos
-e você decide o que publicar. O currículo também passa por
-[revisão para ATS](docs/ATS.md), com conferência de leitura dos arquivos.
+e você decide o que publicar. O objetivo é deixar claro o que você faz,
+quais problemas já resolveu e por que sua experiência importa para a vaga.
 
 ## Treine para conquistar a vaga
 
@@ -143,10 +127,7 @@ realista. Também há preparação internacional e negociação salarial.
 
 ![Conversa fictícia de treino: pergunta sobre um erro, resposta, feedback específico, pausa e retomada no dia seguinte.](docs/assets/entrevista-guiada.gif)
 
-*Simulação em terminal ilustrativo, com digitação e respostas progressivas.
-Voz depende do aplicativo usado; esta demonstração não contém áudio.*
-[Ver imagem sem animação](docs/assets/entrevista-guiada.png) ·
-[Ler o percurso e os critérios de feedback](docs/ENTREVISTAS.md)
+*Treino fictício em texto. Para ensaiar falando, use voz se seu aplicativo oferecer.*
 
 ## Você escolhe onde procurar
 
@@ -171,35 +152,25 @@ Premissas ausentes ficam visíveis; a IA ajuda a negociar e você decide.
 Para trabalhar fora ou para outro país, veja [a preparação internacional](docs/INTERNACIONAL.md).
 [Como informar e alterar os links](docs/FONTES.md).
 
-## O que acontece depois
+## Coloque a busca para trabalhar
 
-| Etapa | O que você acompanha |
-|---|---|
-| Perfil | Tipo de trabalho, local, salário e suas permissões. |
-| Currículo | Fatos confirmados, revisão e aprovação de cada versão. |
-| Busca | Vagas nos endereços escolhidos, com motivos para seguir ou descartar. |
-| Candidatura | Conferência da empresa, formulário, currículo e resultado do envio. |
-| Retornos | Mensagens relacionadas às vagas, próximas etapas e prazos. |
+A IA aplica seus filtros, avalia as oportunidades e segue pelas vagas
+processáveis. Uma pendência em um portal fica registrada enquanto as outras
+avançam. Os retornos por e-mail entram na mesma rotina, com prazos e próxima
+ação ligados à candidatura certa.
 
 ![Simulação em terminal do Codex CLI: buscar vagas e preencher formulários com os dados já confirmados.](docs/assets/candidatura-guiada.gif)
 
-*Exemplo ilustrativo no Codex CLI. Pressupõe perfil aprovado e ferramentas
-conectadas; nenhuma candidatura é enviada pela demonstração.*
-[Ver imagem sem animação](docs/assets/candidatura-guiada.png) ·
-[Entender uma rodada de vagas](docs/GUIA.md#uma-rodada-de-vagas)
+*Exemplo no Codex CLI, com perfil aprovado e ferramentas conectadas.*
 
-## Veja o preenchimento de uma candidatura
+## Um formulário a menos para preencher à mão
 
 Com navegador conectado, a IA abre a vaga, preenche os dados confirmados,
 anexa o currículo aprovado e confere o resultado do envio autorizado.
 
 ![Simulação da IA abrindo um portal fictício, digitando nos campos, anexando o currículo e conferindo o recebimento.](docs/assets/portal-guiado.gif)
 
-*Portal fictício, sem acesso a sites reais. Neste exemplo, a pessoa escolheu
-"pergunte antes de enviar". A conversa e o navegador pertencem à ferramenta
-de IA usada; o projeto não instala essas telas.*
-[Ver imagem sem animação](docs/assets/portal-guiado.png) ·
-[Ler o percurso em texto](docs/GUIA.md#exemplo-de-preenchimento-no-portal)
+*Neste exemplo, a pessoa escolheu "pergunte antes de enviar".*
 
 ## Você continua no controle
 
@@ -234,6 +205,29 @@ Os testes usam cenários fictícios. Ainda não comprovam uma campanha real por
 vários dias nem compatibilidade com todas as interfaces de recrutamento.
 [O que foi e o que não foi validado](docs/VALIDACAO.md).
 
+<details>
+<summary>Versões sem animação e descrição das demonstrações</summary>
+
+| Demonstração | Imagem estática | Percurso em texto |
+|---|---|---|
+| Início guiado | [Ver](docs/assets/inicio-guiado.png) | [Onboarding](docs/ONBOARDING.md) |
+| Currículo | [Ver](docs/assets/curriculo-guiado.png) | [Preparação do currículo](docs/CURRICULOS.md#exemplo-do-percurso) |
+| Treino de entrevista | [Ver](docs/assets/entrevista-guiada.png) | [Treinos e feedback](docs/ENTREVISTAS.md) |
+| Busca e acompanhamento | [Ver](docs/assets/candidatura-guiada.png) | [Rodada de vagas](docs/GUIA.md#uma-rodada-de-vagas) |
+| Preenchimento no portal | [Ver](docs/assets/portal-guiado.png) | [Candidatura](docs/GUIA.md#exemplo-de-preenchimento-no-portal) |
+
+O diagrama reúne três fases:
+
+1. Prepare: a IA pergunta uma coisa por vez para definir dados, filtros, salário e permissões. Vocês revisam o currículo e escolhem as fontes. LinkedIn e GitHub são opcionais.
+2. Automatize: a IA busca vagas e confere compatibilidade, duplicidade, empresa e sinais de risco. Preenche formulários, anexa o currículo e envia dentro das permissões aprovadas.
+3. Avance: a IA associa e-mails às candidaturas, cuida de prazos e registra resultados. Complementos e testes com auxílio permitido seguem as autorizações; etapas pessoais ficam com você. O treino de entrevistas pode começar a qualquer momento. Se houver proposta, a IA ajuda a comparar condições e preparar a negociação.
+
+Novas buscas e retornos são intercalados. Você pode pausar e retomar com o
+progresso salvo. O ciclo encerra quando o objetivo combinado é atingido ou
+você pede para parar.
+
+</details>
+
 ## Encontre o guia certo
 
 | Quero... | Leia |
@@ -263,5 +257,3 @@ checagem antes de publicar. A comunidade segue o [código de conduta](CODE_OF_CO
 distribuir, inclusive comercialmente, preservando os avisos exigidos pela
 licença. O software é fornecido sem garantia. A licença do projeto não
 substitui as regras dos serviços acessados.
-
-As imagens são descritas em [Créditos visuais](docs/VISUAIS.md).
