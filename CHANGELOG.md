@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 - 2026-11-06
+
 ### Novidades
 
 - Treino opcional de processos seletivos em oito trilhas: RH, apresentação,
