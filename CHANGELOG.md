@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.1 - 2026-11-06
+
 - Removido do README o bloco de versões estáticas e descrições das
   demonstrações, incluindo a tabela e a repetição textual do fluxo.
 
