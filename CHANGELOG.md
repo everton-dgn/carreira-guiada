@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.0 - 2026-11-06
+
 - Atividades podem ser acrescentadas à campanha sem reiniciar a meta, a data
   de início ou a contagem de candidaturas. Permissões e parada são preservadas.
 - Corrigir ou retirar um fato do currículo também invalida os textos de
