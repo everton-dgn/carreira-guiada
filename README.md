@@ -205,29 +205,6 @@ Os testes usam cenários fictícios. Ainda não comprovam uma campanha real por
 vários dias nem compatibilidade com todas as interfaces de recrutamento.
 [O que foi e o que não foi validado](docs/VALIDACAO.md).
 
-<details>
-<summary>Versões sem animação e descrição das demonstrações</summary>
-
-| Demonstração | Imagem estática | Percurso em texto |
-|---|---|---|
-| Início guiado | [Ver](docs/assets/inicio-guiado.png) | [Onboarding](docs/ONBOARDING.md) |
-| Currículo | [Ver](docs/assets/curriculo-guiado.png) | [Preparação do currículo](docs/CURRICULOS.md#exemplo-do-percurso) |
-| Treino de entrevista | [Ver](docs/assets/entrevista-guiada.png) | [Treinos e feedback](docs/ENTREVISTAS.md) |
-| Busca e acompanhamento | [Ver](docs/assets/candidatura-guiada.png) | [Rodada de vagas](docs/GUIA.md#uma-rodada-de-vagas) |
-| Preenchimento no portal | [Ver](docs/assets/portal-guiado.png) | [Candidatura](docs/GUIA.md#exemplo-de-preenchimento-no-portal) |
-
-O diagrama reúne três fases:
-
-1. Prepare: a IA pergunta uma coisa por vez para definir dados, filtros, salário e permissões. Vocês revisam o currículo e escolhem as fontes. LinkedIn e GitHub são opcionais.
-2. Automatize: a IA busca vagas e confere compatibilidade, duplicidade, empresa e sinais de risco. Preenche formulários, anexa o currículo e envia dentro das permissões aprovadas.
-3. Avance: a IA associa e-mails às candidaturas, cuida de prazos e registra resultados. Complementos e testes com auxílio permitido seguem as autorizações; etapas pessoais ficam com você. O treino de entrevistas pode começar a qualquer momento. Se houver proposta, a IA ajuda a comparar condições e preparar a negociação.
-
-Novas buscas e retornos são intercalados. Você pode pausar e retomar com o
-progresso salvo. O ciclo encerra quando o objetivo combinado é atingido ou
-você pede para parar.
-
-</details>
-
 ## Encontre o guia certo
 
 | Quero... | Leia |
