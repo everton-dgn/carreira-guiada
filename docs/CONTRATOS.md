@@ -144,7 +144,19 @@ Não pesquisa automaticamente. `save(data)`, `list()`, `get(record_id)` e
 `suggestions()` ficam sob `research` na CLI. Esse grupo registra análises;
 é distinto da ação externa de busca de vagas. Sugestões usam a revisão com
 data de verificação mais recente por URL de site; em empate vale a última
-registrada. Confira o contrato em [EMPRESAS.md](EMPRESAS.md).
+registrada. Confira o contrato em [investigação para o agente](INVESTIGACAO-AGENTE.md#pareceres-anteriores).
+
+`ResearchScopes(root)`, `CompanyDossiers(root)` e `CareerGuide(root)` guardam
+revisões privadas independentes do perfil. Consultas não criam `.job`; alterações
+exigem a versão atual na mesma transação. Não modificam filtros, currículos,
+fontes ou permissões operacionais. Os comandos, esquemas e limites estão em
+[INVESTIGACAO-AGENTE.md](INVESTIGACAO-AGENTE.md).
+
+`start --focus career` e `start --focus company` permitem entrada sem cadastro.
+`status` inclui o guia de carreira e os dossiês salvos. Um checkpoint `career`
+ou `company` permite voltar à preparação correspondente. Pedido explícito de
+busca preserva `--focus search`. Escopos de pesquisa conferem alvo, finalidade,
+URL exata, versão, revogação, parada e geração de execução; não interceptam rede.
 
 `Offers(root)` salva cenários imutáveis, calcula com Decimal e compara somente
 com premissas explícitas. `save`, `list`, `get`, `status`, `compare` e

@@ -4,6 +4,10 @@ A IA faz as perguntas uma por vez e salva cada resposta. Você pode parar quando
 quiser e voltar com `iniciar`. Este arquivo mostra o que esperar; não precisa
 preencher nada aqui.
 
+Ainda não sabe que trabalho procurar? Peça o [guia de carreira](CARREIRA.md)
+antes de montar os filtros. Se já tem uma empresa em vista, pode começar pelo
+[dossiê da empresa](EMPRESAS.md). Ambos são opcionais e dispensam cadastro completo.
+
 Se já houver progresso salvo, `iniciar` oferece continuar ou revisar a
 preparação. Revisar preserva o histórico e reaproveita as respostas que você
 não quiser mudar. [Como parar e retomar em outro dia](ACOMPANHAMENTO.md).
@@ -33,6 +37,8 @@ Você não precisa decidir tudo antes de começar, nem ler esta lista inteira.
 | Currículo | Separe experiências, cursos e resultados que consegue confirmar. Trabalhos simultâneos podem ter datas sobrepostas; a IA não deve alterá-las para esconder isso. |
 | Primeiro emprego | Estudos, projetos e atividades voluntárias podem entrar quando forem reais. Experiência profissional anterior não é obrigatória. |
 | Cargos e filtros | Diferencie o que é obrigatório do que é uma preferência. A IA explica o efeito de cada filtro, sem ampliar a busca por conta própria. |
+| Dúvida sobre carreira | Compare possibilidades e experimente um passo pequeno. Interesse não comprova habilidade; a IA preserva essa diferença. |
+| Empresa | Peça fontes, contexto dos relatos e perguntas para a entrevista. Ausência de reclamações não garante boas condições. |
 | Salário | Seu mínimo privado e a pretensão apresentada às empresas podem ser diferentes. Informe o período do valor e o regime; a IA não escolhe números por você. |
 | Fontes | Cole os links ou peça ajuda para descobrir opções verificadas. Não compartilhe links com código de acesso. |
 | Mercado internacional | Defina destino, idioma, fuso e moedas. Trabalho remoto pode ter restrição de residência. |

@@ -33,7 +33,7 @@ def parser():
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
     start = command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
-    start.add_argument('--focus', choices=('prepare', 'search', 'practice'), default='prepare', help='Use search para buscar vagas ou practice para treinar entrevistas sem exigir currículo')
+    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company'), default='prepare', help='Escolher preparo, busca, treino, guia de carreira ou pesquisa de empresa')
     command("status", "Conferir o progresso e as pendências")
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
@@ -43,6 +43,12 @@ def parser():
     practice.add_argument('action', choices=('catalog', 'show', 'status', 'choose', 'start', 'hint', 'answer', 'skip', 'feedback', 'advance', 'end-questions', 'finish'))
     diligence = command('research', 'Registrar análises verificadas de fontes, empresas e vagas')
     diligence.add_argument('action', choices=('save', 'list', 'get', 'suggestions'))
+    scopes = command('research-scope', 'Combinar e conferir o alcance de uma pesquisa pública específica')
+    scopes.add_argument('action', choices=('grant', 'get', 'list', 'check', 'revoke'))
+    company = command('company', 'Guardar um dossiê privado de empresa, com fontes e dúvidas')
+    company.add_argument('action', choices=('create', 'get', 'list', 'revise', 'summary'))
+    career = command('career', 'Explorar caminhos profissionais e guardar um próximo passo')
+    career.add_argument('action', choices=('start', 'get', 'status', 'answer', 'propose', 'choose', 'experiment', 'reflect', 'pause', 'resume'))
     offers = command('offers', 'Comparar propostas com premissas explícitas, sem aceitar ofertas')
     offers.add_argument('action', choices=('save', 'list', 'get', 'status', 'compare', 'equivalent'))
     tabs = command('tabs', 'Controlar o limite compartilhado de abas de trabalho')
@@ -107,7 +113,33 @@ def parser():
 
 
 def onboarding(root, focus='prepare'):
+    from .career import CareerGuide, QUESTIONS as CAREER_QUESTIONS
+    from .checkpoint import checkpoint
+    from .company import CompanyDossiers
     from .profile import Profile
+    career = CareerGuide(root).status()
+    point = checkpoint(root)
+    saved_career = career['session'] is not None and career['phase'] != 'finished'
+    if focus == 'career' or (focus == 'prepare' and saved_career and (not point or point['phase'] == 'career')):
+        message = career['message']
+        question = career['question']
+        if career['session'] is None:
+            question = {'field': 'goal', 'question': CAREER_QUESTIONS['goal']}
+        if question and question['question'] not in message:
+            message += '\n' + question['question']
+        return {'message': message, 'next_step': 'career_guidance', 'question': question,
+                'career': career, 'welcome_back': 'Seu guia de carreira está salvo. Podemos continuar ou revisar suas respostas.' if career['session'] else None,
+                'resume_hint': message, 'resume_options': ['continue', 'review'] if career['session'] else [],
+                'automatic_execution_started': False}
+    dossiers = CompanyDossiers(root).list()
+    if focus == 'company' or (focus == 'prepare' and ((point and point['phase'] == 'company') or
+                                                    (not point and dossiers and not Profile(root).get()['sections']))):
+        message = ('Seus dossiês estão salvos. Diga qual empresa quer continuar analisando ou indique outra.' if dossiers else
+                   'Qual empresa você quer conhecer e o que precisa esclarecer? Pode colar o site ou a vaga; se não tiver o link, diga o nome e o país.')
+        return {'message': message, 'next_step': 'company_dossier', 'question': None,
+                'companies': dossiers, 'welcome_back': 'Encontrei suas análises de empresas.' if dossiers else None,
+                'resume_hint': message, 'resume_options': ['continue', 'review'] if dossiers else [],
+                'automatic_execution_started': False}
     from .resumes import ResumeManager
     from .intake import Intake
     from .presence import Presence
@@ -217,6 +249,24 @@ def dispatch(args):
         raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
     if args.command == "start":
         return onboarding(root, args.focus)
+    if args.command in ('career', 'company', 'research-scope'):
+        from .career import CareerGuide
+        from .company import CompanyDossiers
+        from .research_scope import ResearchScopes
+        service = {'career': CareerGuide, 'company': CompanyDossiers, 'research-scope': ResearchScopes}[args.command](root)
+        if args.action in ('list', 'status'):
+            return getattr(service, args.action)()
+        data = payload()
+        if args.action in ('get', 'summary'):
+            key = 'scope_id' if args.command == 'research-scope' else 'id'
+            optional = {'version'} if args.action == 'get' else set()
+            if key not in data or set(data) - {key} - optional:
+                raise ValueError('Informe o identificador do registro salvo; a IA pode consultar a lista para encontrá-lo.')
+            result = getattr(service, args.action)(data[key], **({'version': data['version']} if 'version' in data else {}))
+            if result is None:
+                raise ValueError('Esse registro não foi encontrado. Vou conferir os registros salvos antes de continuar; nenhum dado foi alterado.')
+            return result
+        return getattr(service, args.action)(data)
     if args.command == 'checkpoint':
         from .checkpoint import checkpoint
         return checkpoint(root, payload() if args.action == 'save' else None)

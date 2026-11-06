@@ -5,15 +5,21 @@ description: Descobrir empresas e priorizar vagas por reputação como empregado
 
 # Avaliar empresas
 
-Leia "Busca e cobertura" em [AGENTS.md](../../../AGENTS.md) e as preferências
-aprovadas do perfil. Esta skill pesquisa e recomenda; a decisão de prosseguir
-continua com os filtros do perfil e com a pessoa.
+Leia [AGENTS.md](../../../AGENTS.md) e o
+[protocolo de investigação](../../../docs/INVESTIGACAO-AGENTE.md). O pedido
+pode começar sem perfil aprovado, currículo ou fontes de vagas. Pergunte a
+empresa e a dúvida da pessoa, uma coisa por vez, aproveitando o que ela já
+informou. Se houver perfil aprovado, suas preferências ajudam a contextualizar.
 
 ## Descoberta e evidência
 
-- Busque nas fontes do perfil aprovado, conforme
-  [docs/FONTES.md](../../../docs/FONTES.md). Se precisar de outra origem para
-  conferir a empresa, explique e peça a inclusão antes de pesquisar nela.
+- Consulte `company list` e `get` para retomar ou `company create` para criar
+  o dossiê pedido. Nunca una homônimos por semelhança de nome.
+- Combine a pergunta e os endereços públicos da investigação. Aproveite uma
+  autorização explícita que já cubra esse alcance. Registre `research-scope
+  grant` e confira `check` antes de cada consulta e redirecionamento. Se precisar
+  ampliar, agrupe os novos endereços em uma pergunta clara. Não mude as fontes
+  de candidatura. Login, bloqueio e fonte inacessível ficam como limitações.
 - Identifique empregadora, consultoria e cliente final: cultura de um não
   comprova a do outro. Confirme domínio, país e entidade para não misturar
   homônimos.
@@ -36,11 +42,23 @@ nada para verificar requisitos.
 
 ## Resultado
 
-Comparação curta com empresa, vaga, URL, evidências, incertezas e
-recomendação (`priorizar`, `considerar`, `informacao_insuficiente`), com data
-da consulta e links próximos às afirmações. Separe política confirmada,
-relato e inferência. Boa reputação não supera os filtros do perfil. Salário
-estimado e relato salarial não são oferta da vaga.
+Grave uma revisão com `company revise` e confira `summary`. Separe fato,
+relato e inferência; vincule inferências às evidências que as sustentam.
+Agrupe cópias de um relato em uma única origem. Reclame Aqui e outras fontes
+de consumidores ficam nesse contexto e não preenchem lacunas trabalhistas.
+Mantenha perguntas, contradições e informação ausente visíveis. Não dê nota
+geral, selo de segurança nem diagnóstico jurídico. A sugestão prática precisa
+explicar a evidência e o efeito para a prioridade declarada pela pessoa.
+
+Salário observado não é oferta. Preserve faixa, média ou mediana, cargo,
+regime, local, moeda, período e amostra; desconhecido fica `null`. Não agregue
+fontes incompatíveis nem transforme percentil em mínimo ou máximo. Registre
+amostra ou metodologia ausente como limitação. Mostre a data da consulta e
+revalide antes de usar informação antiga em uma decisão atual.
+
+Salve `checkpoint` com fase `company`, o progresso e a próxima pergunta.
+Ao parar, preserve dossiê e histórico. Retomada operacional não renova
+escopos de pesquisa antigos. Nenhum parecer altera filtros ou permissões.
 
 Devolva as vagas priorizadas à [busca](../busca/SKILL.md) para deduplicação e
 triagem. Empresa sem vaga compatível fica como prospecção, sem contar como
