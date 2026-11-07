@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.12.0 - 2026-11-07
+
 - Ensaio adversarial com seis ataques fictícios e três controles, em duas
   sessões por configuração, com isolamento conferido antes da exposição.
 - Resultados públicos de cinco configurações, incluindo tentativas bloqueadas,
