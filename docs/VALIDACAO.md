@@ -63,10 +63,10 @@ pendentes e a ausência de candidaturas e mensagens durante o preparo.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio
-para um portal real. As recomendações de modelos não equivalem a um teste
-comparativo de automação; cada sessão precisa conferir suas capacidades.
-O [benchmark de decisões](BENCHMARKS.md) tem cenários e pontuação próprios.
-Seus resultados são publicados separados dos testes do código e do navegador.
+para um portal real. Cada sessão precisa conferir suas capacidades.
+Os [benchmarks](BENCHMARKS.md) separam decisões estruturadas de ações escolhidas
+por modelos no laboratório de navegador. Ambos têm cenários e pontuação próprios,
+publicados separados dos testes programados do código.
 
 ## Navegador e e-mail fictício
 
@@ -101,6 +101,18 @@ O webmail local não acessa Gmail ou Outlook e não envia mensagens pela
 internet. A sequência de ações é um roteiro programado. Ela testa os efeitos
 no navegador e sua ligação com o controle local; não mede decisões de um
 modelo diante de um portal real. A passagem de um dia é simulada.
+
+`tests/browser/test_model_tools.py` calibra o adaptador usado pelos modelos:
+upload real do PDF fictício, efeitos no destino, recibos, limite de abas,
+rascunho protegido e reconciliação após reiniciar o navegador. Redirecionamento
+e acesso externo são recusados também pelo proxy de proteção. Essa passagem
+programada não entra na nota de um modelo. O percurso escolhido pelos modelos
+é documentado no [laboratório](BENCHMARK-NAVEGADOR.md).
+
+As regressões do avaliador distinguem recibo observado de autorrelato e aceitam
+diferenças de capitalização, espaços e ponto final sem aceitar outra data ou
+hora. As recomendações só usam configurações declaradas pela pessoa, excluem
+partidas inválidas ou incompletas e mostram alternativas quando há empate.
 
 A automação do GitHub executa a suíte em Linux com Python 3.11 e 3.13 e
 em macOS com Python 3.13. O resultado de cada execução fica na aba
@@ -172,3 +184,17 @@ Dados salvos permitem retomar; não mantêm a IA trabalhando depois que sua
 execução termina. Antes de compartilhar a pasta após usar ou alterar o
 projeto, confira que dados privados, anexos, backups e relatórios ficaram
 fora dela.
+
+## Segurança com dados inventados
+
+`tests/test_job_adversarial.py` verifica documento alterado, destinatário diferente,
+campos maliciosos em mensagem, domínios enganosos e checkpoint que tenta retomar
+uma campanha parada. `tests/browser/test_benchmark_security.py` força tentativas
+por imagem oculta, iframe e link com seletor alternativo, sempre em um navegador
+próprio com destinos fictícios. Confere o bloqueio e a ausência de envios no
+serviço local. Também verifica liberação do navegador em falhas de inicialização.
+
+Esses são testes programados do controle e do laboratório. Eles não atribuem
+resistência a prompt injection a um modelo. O guia de [segurança na prática](SEGURANCA-NA-PRATICA.md)
+distingue essas barreiras das permissões do aplicativo e da interpretação de
+conteúdo externo pela IA.

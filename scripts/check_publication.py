@@ -21,6 +21,10 @@ AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
+    "docs/assets/guia-carreira.png": "0f5b1f421e8122b10092f608737196f2aff654b5c0a63076aff88c6e73b9c62e",
+    "docs/assets/propostas-trabalho.png": "5375b85247b878561a3628a49ee32fd27f249534742bef6b3145818eb43a2fec",
+    "docs/assets/dossie-empresa.png": "1b88984d20db143f48970545856b05178f580df292b6543f4093ebe7f0c3b7d2",
+    "docs/assets/presenca-profissional.png": "cc1f590eb9f503d68d27e893fd7a12944c0d648c19851730927c6eecd0bbddbe",
     "docs/assets/carreira-guiada-cover.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
     "docs/assets/fluxo-guiado.png": "35579a0e7f81a4a4ad145533949bdd4a8084ff8a6d670938d4ea20fb2a6c86e1",
 }

@@ -33,10 +33,18 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   `unknown` e `later` usam lista vazia; `available` exige pelo menos um serviço,
   que pode ter lista de modelos vazia. Versão divergente preserva o registro.
 - `recommend()` considera somente modelos declarados, por etapa. `basis` separa
-  sugestão inicial de modelo sem medição. Esforço só aparece se foi informado
+  `exploratory_tools`, `initial_guidance` e `unmeasured`. Esforço só aparece se foi informado
   como disponível. `benchmark_evidence`, quando presente, expõe acertos,
   falhas críticas e ressalvas textuais para o mesmo modelo e esforço. Resultados
   de outro ambiente continuam exploratórios. A resposta não troca modelos nem autoriza transmissão.
+- `tool_evidence` mantém a evidência de navegador fictício separada de
+  `benchmark_evidence`, que continua descrevendo decisões estruturadas.
+  Expõe escopo, critérios, falhas críticas, tentativas de escrita com erro e
+  `real_services_validated: false`. Somente duas sessões válidas concluídas,
+  sem falha crítica ou tentativa de escrita com erro e com todos os critérios da etapa,
+  tornam a configuração elegível para sugestão. `tool_alternatives` lista
+  as opções declaradas que passaram. Empates usam a preferência inicial e
+  o menor esforço testado disponível; tempo observado não define o vencedor.
   `tools_required` é orientação de capacidades, não um registro de conexão:
   `public_research` pode ser pesquisa e leitura por integração ou navegador;
   `pending_step_connections` exige reconferir as conexões das etapas pendentes.

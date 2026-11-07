@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## 0.11.0 - 2026-11-07
+
+### Novidades
+
+- Benchmark reproduzível com nove configurações de modelos operando navegador,
+  portal e e-mail fictícios, incluindo parada e retomada em outra sessão.
+- Recomendações por etapa usam somente opções informadas pela pessoa e mostram
+  alternativas, evidências, falhas e limites da amostra exploratória.
+- README organizado por recurso, com quatro novas ilustrações para presença
+  profissional, dossiê de empresa, comparação de propostas e guia de carreira.
+- Guia de segurança com coleta mínima, conteúdo externo sem autoridade,
+  verificação do destinatário, retomada e resposta a incidentes.
+- Testes adversariais com dados inventados para saídas de rede, mensagens
+  maliciosas, documento alterado e autorizações antigas, sem contas reais.
+
+### Correções
+
+- Avaliador distingue confirmação antecipada de recibo inventado e inclui
+  tentativas de acesso externo bloqueadas, independentemente do seletor usado.
+- Laboratório preserva o estado vazio e libera o navegador em falhas de início.
+- Reprodução registra o prazo de cada fase, invalida operações tardias e gera
+  resultado para jornadas sem ferramentas. Encerramento usa pedido autenticado.
+
 ## 0.10.0 - 2026-11-06
 
 ### Novidades
