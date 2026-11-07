@@ -22,6 +22,9 @@
 - README, guias para iniciantes e protocolos do agente atualizados. Novas
   simulações cobrem resposta desconhecida, correção, pausa e retomada,
   evidências fictícias e ausência de efeitos externos.
+- A troca do guia de carreira para o currículo preserva o percurso escolhido.
+  Guias pausados mantêm visíveis as orientações de busca, e registros opcionais
+  inválidos geram aviso sem impedir o status ou a confirmação da retomada.
 
 ## 0.8.0 - 2026-11-06
 

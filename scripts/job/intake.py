@@ -1,5 +1,6 @@
 """Persist the CV conversation, including explicit skips, across chat restarts."""
 import json
+from datetime import datetime, timezone
 
 from .profile import Profile
 from .resumes import ResumeManager
@@ -28,12 +29,22 @@ class Intake:
         with self.profile._db() as db:
             return self._read(db)
 
-    def _save(self, change, obsolete_fact=None):
+    def _save(self, change, obsolete_fact=None, select_preparation=False):
         with self.profile._db(True) as db:
             state = self._read(db)
             change(state)
             db.execute('CREATE TABLE IF NOT EXISTS job_intake (id INTEGER PRIMARY KEY CHECK(id=1), value TEXT NOT NULL)')
             db.execute('INSERT OR REPLACE INTO job_intake VALUES (1, ?)', (json.dumps(state, ensure_ascii=False),))
+            if select_preparation:
+                exists = db.execute("SELECT 1 FROM sqlite_master WHERE name='job_checkpoint'").fetchone()
+                row = db.execute('SELECT value FROM job_checkpoint WHERE id=1').fetchone() if exists else None
+                point = json.loads(row[0]) if row else None
+                if not point or point['phase'] == 'career':
+                    point = {'phase': 'resume', 'summary': 'Você escolheu preparar seu currículo.',
+                             'next_action': 'Continuar a preparação do currículo.', 'needs_user': True,
+                             'saved_at': datetime.now(timezone.utc).isoformat(timespec='seconds')}
+                    db.execute('CREATE TABLE IF NOT EXISTS job_checkpoint (id INTEGER PRIMARY KEY CHECK(id=1), value TEXT NOT NULL)')
+                    db.execute('INSERT OR REPLACE INTO job_checkpoint VALUES (1, ?)', (json.dumps(point, ensure_ascii=False),))
             if obsolete_fact and db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_versions'").fetchone():
                 for resume_id, fact_ids in db.execute('SELECT id, fact_ids FROM resume_versions'):
                     if obsolete_fact in json.loads(fact_ids):
@@ -41,9 +52,10 @@ class Intake:
         return self.status()
 
     def choose(self, mode):
+        """Select CV preparation and atomically hand off any career checkpoint."""
         if mode not in ('create', 'import'):
             raise ValueError('Escolha criar o currículo ou anexar um arquivo.')
-        return self._save(lambda state: state.update(mode=mode))
+        return self._save(lambda state: state.update(mode=mode), select_preparation=True)
 
     def answer(self, field, text):
         if field not in {item[0] for item in QUESTIONS}:
