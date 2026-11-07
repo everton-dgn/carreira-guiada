@@ -1,6 +1,6 @@
 # Conheça a empresa antes de decidir
 
-![A empresa examinada por camadas de evidências e fontes.](assets/dossie-empresa.png)
+![Conheça a empresa. Decida com evidências. Reputação, salários e riscos em contexto.](assets/dossie-empresa.png)
 
 Peça: "quero investigar esta empresa antes de me candidatar" ou "recebi uma
 proposta e quero entender os riscos". Você pode começar pelo nome e país,

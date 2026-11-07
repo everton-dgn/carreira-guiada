@@ -80,7 +80,7 @@ candidatura, identifica prazos e prepara a próxima etapa. Formulários
 complementares, respostas e agendamentos seguem suas autorizações específicas.
 Um e-mail suspeito não muda as regras da campanha.
 
-![Um caminho conecta o e-mail recebido, a pausa, o progresso salvo e a retomada em outro dia.](docs/assets/retomada-email.png)
+![Pare quando precisar. Retome do ponto certo. Retornos e pendências com progresso salvo.](docs/assets/retomada-email.png)
 
 Diga **parar**. Quando voltar, diga **continuar**. O agente relê o progresso,
 confere as pendências e verifica envios incertos antes de tentar novamente.
@@ -109,7 +109,7 @@ experiência. Peça a revisão do LinkedIn: título, resumo, experiências e des
 Na área de tecnologia, inclua o README do GitHub e os projetos que demonstram
 suas habilidades.
 
-![Ilustração de currículo, apresentação profissional e projetos conectados por uma mesma trajetória.](docs/assets/presenca-profissional.png)
+![Mostre o valor da sua experiência. Perfis e projetos alinhados ao seu currículo.](docs/assets/presenca-profissional.png)
 
 A IA prepara um diagnóstico e textos concretos para você conferir. Publicar
 exige aprovar o conteúdo, a conta e o destino. Se um fato mudar, as sugestões
@@ -142,7 +142,7 @@ fontes com você, confere a identidade da empresa e reúne evidências com data.
 Pode incluir relatos de funcionários, notícias e Reclame Aqui, mantendo cada
 fonte no contexto que ela realmente esclarece.
 
-![Ilustração de investigação: empresa apoiada em camadas de documentos e uma amostra que permite examinar cada fonte.](docs/assets/dossie-empresa.png)
+![Conheça a empresa. Decida com evidências. Reputação, salários e riscos em contexto.](docs/assets/dossie-empresa.png)
 
 O resultado separa fatos, relatos e inferências. Mostra contradições e transforma
 lacunas em perguntas para o recrutador. Uma média salarial mantém cargo, região,
@@ -157,7 +157,7 @@ que você perderia. Compare CLT, PJ, MEI, cooperado ou contratação internacion
 com uma base anual: valores garantidos, benefícios, custos, impostos informados
 e reservas. Bônus possível e dinheiro com uso restrito aparecem separados.
 
-![Ilustração de propostas colocadas lado a lado, com remuneração, benefícios e custos em uma comparação equilibrada.](docs/assets/propostas-trabalho.png)
+![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](docs/assets/propostas-trabalho.png)
 
 A IA mostra premissas ausentes, calcula equivalências com os dados confirmados
 e ajuda a preparar a negociação. Você decide o que pesa na escolha.
@@ -170,7 +170,7 @@ experiência, prioridades e tempo disponível, sem exigir currículo pronto.
 Compara até três caminhos e ajuda a escolher um exercício pequeno para
 experimentar antes de investir mais tempo.
 
-![Ilustração de três caminhos de carreira e um primeiro trecho iluminado para experimentar o próximo passo.](docs/assets/guia-carreira.png)
+![Escolha um foco. Teste o próximo passo. Compare caminhos e avance com um plano possível.](docs/assets/guia-carreira.png)
 
 Depois do exercício, você conta o que funcionou e o que ficou difícil. A IA ajuda
 a ajustar o próximo passo, inclusive mudar de direção. As escolhas ficam privadas
@@ -183,7 +183,7 @@ O onboarding pergunta quais aplicativos e serviços de IA você já usa. Pode
 responder "não sei" ou deixar para depois. A recomendação considera os modelos
 e os esforços que você informou ter, sem exigir uma nova assinatura.
 
-![Modelos representados por formas distintas percorrem as mesmas etapas, com uma lupa sobre as evidências da comparação.](docs/assets/modelos-por-etapa.png)
+![Escolha a IA para cada etapa. Compare evidências. Use os modelos que você já tem.](docs/assets/modelos-por-etapa.png)
 
 Para organizar o perfil e o currículo, Astra e Opus continuam como sugestões
 iniciais. Para operar, o projeto compara modelos em um laboratório com navegador,

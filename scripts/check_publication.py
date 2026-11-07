@@ -21,14 +21,14 @@ AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
-    "docs/assets/guia-carreira.png": "0f5b1f421e8122b10092f608737196f2aff654b5c0a63076aff88c6e73b9c62e",
-    "docs/assets/propostas-trabalho.png": "5375b85247b878561a3628a49ee32fd27f249534742bef6b3145818eb43a2fec",
-    "docs/assets/dossie-empresa.png": "1b88984d20db143f48970545856b05178f580df292b6543f4093ebe7f0c3b7d2",
-    "docs/assets/presenca-profissional.png": "cc1f590eb9f503d68d27e893fd7a12944c0d648c19851730927c6eecd0bbddbe",
+    "docs/assets/guia-carreira.png": "fb46cf0e7a413d5c1aa6458e19def982ff5fae8c9b0165e5f5feda203bf77a3f",
+    "docs/assets/propostas-trabalho.png": "77d40645542afff6e242d0fd95d17befeda1e6c3006408b8bcb9202273d12f15",
+    "docs/assets/dossie-empresa.png": "0c3ef923cf2de01e42012aa3277532a5f9622c3818b6696b838b0ff27354032e",
+    "docs/assets/presenca-profissional.png": "d90280faa57c2301ccf184506bbde7409bdd039fe6f5a622246c15415b8d53e4",
     "docs/assets/carreira-guiada-cover.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
     "docs/assets/fluxo-guiado.png": "35579a0e7f81a4a4ad145533949bdd4a8084ff8a6d670938d4ea20fb2a6c86e1",
-    "docs/assets/retomada-email.png": "899aa720efeaaa86e6ca7932df8c72051ec074f4eefad05f1a5241339dab8950",
-    "docs/assets/modelos-por-etapa.png": "afaba221907ffcc978a6d0abdf9d4fb5a0f3860ec50028c4656f7b92b3986e81",
+    "docs/assets/retomada-email.png": "3088df330f62eebb2de1137781b6120af2f1c720568bfdbe88ff0e0c04ec3e9d",
+    "docs/assets/modelos-por-etapa.png": "fc9d7a29bc94014c2d122638bd25af48684820701a1dfe83f3608170154e94a0",
 }
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),
