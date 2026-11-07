@@ -1,5 +1,10 @@
 # Currículos
 
+Diga "quero revisar meu currículo" ou escolha currículo no `menu`. Pode
+criar, revisar e aprovar os arquivos sem responder sobre salários, fontes de
+vagas, permissões de candidatura ou contas de e-mail. Ao terminar, você escolhe
+se quer fazer outra tarefa. Aprovar o currículo não autoriza enviá-lo.
+
 ## Se você já tem um currículo
 
 Anexe o arquivo (PDF ou Word) aqui no chat, ou copie para a pasta do projeto e

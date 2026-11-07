@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## 0.14.0 - 2026-11-07
+
+- Menu com quatro caminhos diretos: currículo, entrevistas, guia de carreira e
+  busca de vagas. Aceita número ou nome e guarda a atividade escolhida para
+  continuar em outra sessão sem repetir o onboarding completo.
+- Currículo pode ser criado, revisado e aprovado sem configurar uma campanha.
+  A busca pública pede apenas filtros e fontes, com confirmação delimitada e
+  revalidação quando filtros, URLs ou geração da execução mudarem.
+- Troca de atividade preserva respostas, currículo, treino, parada e candidaturas
+  incertas. A escolha do preparo completo também persiste sem reimportar o currículo.
+  Pesquisa pública admite paginação e detalhes nos caminhos explicitamente
+  consentidos, preservando o alcance exato das permissões antigas.
+  Simulações cobrem iniciante sem cadastro, importação sem arquivo,
+  modalidade sem preferência e retomada no dia seguinte.
+- Oito banners com texto conferidos e referências atualizadas em todo o projeto,
+  com novos nomes de arquivo para não reutilizar os endereços das artes antigas.
+
 ## 0.13.0 - 2026-11-07
 
 - Executor Codex restrito para o laboratório adversarial, com provas de acesso

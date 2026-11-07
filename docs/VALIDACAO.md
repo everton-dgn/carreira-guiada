@@ -11,6 +11,14 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 
 ## Cenários cobertos
 
+- Menu: quatro entradas diretas, números e nomes com acentos, opção desconhecida,
+  consulta sem escrita e escolha salva sem conceder permissões. Currículo
+  concluído sem cadastro completo, importação ainda sem arquivo e troca de
+  atividade preservando treino, currículo e candidatura com resultado incerto.
+- Busca pública: filtros parciais, modalidade sem preferência, consentimento
+  vinculado aos filtros e URLs atuais, parada e retomada sem reutilizar escopo
+  antigo. Contatos e conexão de e-mail não são necessários para consultar vagas.
+
 - Onboarding: primeiro emprego sem currículo, importação de Word, PDF ilegível,
   correção de dados, resposta "não sei", tópicos pulados, parada e retomada,
   permissões individuais e conexão de e-mail adiada ou recusada.
@@ -60,6 +68,10 @@ CLI real em processos separados, bloqueio de rede e novos subprocessos, além
 de relógio simulado. A data avança um dia entre parada e retomada; não se trata
 de uma execução mantida durante 24 horas. Também confere reservas de abas
 pendentes e a ausência de candidaturas e mensagens durante o preparo.
+`tests/test_job_menu_journey.py` percorre as entradas diretas com respostas
+roteirizadas de uma pessoa iniciante, gera currículo e troca de atividade.
+Usa o mesmo bloqueio de rede e subprocessos e avança o relógio na retomada.
+`JOB_MENU_REPORT` pode apontar para uma pasta privada de evidências.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio

@@ -20,7 +20,8 @@ o recurso. Pode parar e retomar outro dia, com as respostas e o feedback salvos.
    A pasta aberta deve conter `README.md` e `AGENTS.md`.
    Só colar o link do GitHub em um chat comum não dá acesso aos arquivos locais.
 3. No chat desse projeto, escreva **iniciar**.
-4. A IA confere o ambiente e conduz uma pergunta por vez. Se faltar uma
+4. Escolha uma opção do menu ou diga o que quer fazer. A IA confere o ambiente
+   e conduz uma pergunta por vez. Se faltar uma
    ferramenta, ela explica a instalação e pede a autorização necessária.
 
 Se não encontrar como abrir a pasta, diga ao assistente qual aplicativo está
@@ -77,6 +78,11 @@ das integrações disponíveis na sessão; iniciar a CLI não conecta contas.
 
 ## A primeira conversa
 
+Digite `menu`, `opções` ou `ajuda` para ver os caminhos disponíveis. As quatro
+opções principais são currículo, entrevistas, guia de carreira e busca de vagas.
+Responda pelo número mostrado ou pelo nome da tarefa. Não precisa saber qual
+comando a IA usa por trás da conversa.
+
 Você pode dizer:
 
 > iniciar. Não tenho currículo e é meu primeiro emprego.
@@ -89,17 +95,25 @@ Se ainda está escolhendo um caminho, diga "não sei em que área focar".
 A IA começa pelo guia de carreira, sem pedir contatos ou currículo. Você
 também pode dizer "quero investigar esta empresa" e fazer só essa análise.
 
-A IA recebe o arquivo ou monta um rascunho com você. Depois confirma nome,
-e-mail, tipo de trabalho, salário e permissões. Não sabe um valor ou uma data?
-Diga "não sei". Nada deve ser inventado.
+A IA segue a tarefa que você escolheu. No currículo, recebe o arquivo ou
+monta um rascunho com você, conferindo os contatos e os fatos profissionais.
+O treino de entrevista e o guia de carreira podem começar sem currículo ou
+cadastro. Não sabe um valor ou uma data? Diga "não sei". Nada deve ser inventado.
 
-Ela também pergunta **onde procurar**. Copie os links que você escolheu da
+Para buscar vagas, ela combina o que procurar e pergunta **onde procurar**.
+Essa primeira pesquisa pode começar sem currículo, e-mail ou cadastro completo.
+Copie os links que você escolheu da
 barra do navegador e cole no chat. Se ainda não tiver os links, diga "deixe
 para depois". O currículo pode continuar; a pesquisa espera por essa escolha.
 [Ajuda para informar os links](FONTES.md).
 
-Você confere o resumo do perfil e aprova o currículo antes de qualquer envio.
+Ver vagas não autoriza candidaturas. Quando quiser enviar, a IA confere o que
+falta no perfil, no currículo e nas permissões, reaproveitando suas respostas.
 Detalhes das perguntas: [Onboarding](ONBOARDING.md).
+
+Se mudar de ideia, peça outra tarefa ou volte ao `menu`. As respostas anteriores
+continuam salvas. `Parar` interrompe a execução; `continuar` retoma após conferir
+o ponto salvo. Uma consulta ao menu não retoma uma campanha parada.
 
 ## Buscar por objetivo
 

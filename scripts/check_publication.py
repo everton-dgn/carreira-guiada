@@ -21,14 +21,14 @@ AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
-    "docs/assets/guia-carreira.png": "fb46cf0e7a413d5c1aa6458e19def982ff5fae8c9b0165e5f5feda203bf77a3f",
-    "docs/assets/propostas-trabalho.png": "77d40645542afff6e242d0fd95d17befeda1e6c3006408b8bcb9202273d12f15",
-    "docs/assets/dossie-empresa.png": "0c3ef923cf2de01e42012aa3277532a5f9622c3818b6696b838b0ff27354032e",
-    "docs/assets/presenca-profissional.png": "d90280faa57c2301ccf184506bbde7409bdd039fe6f5a622246c15415b8d53e4",
-    "docs/assets/carreira-guiada-cover.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
-    "docs/assets/fluxo-guiado.png": "35579a0e7f81a4a4ad145533949bdd4a8084ff8a6d670938d4ea20fb2a6c86e1",
-    "docs/assets/retomada-email.png": "3088df330f62eebb2de1137781b6120af2f1c720568bfdbe88ff0e0c04ec3e9d",
-    "docs/assets/modelos-por-etapa.png": "fc9d7a29bc94014c2d122638bd25af48684820701a1dfe83f3608170154e94a0",
+    "docs/assets/guia-carreira-banner.png": "fb46cf0e7a413d5c1aa6458e19def982ff5fae8c9b0165e5f5feda203bf77a3f",
+    "docs/assets/propostas-trabalho-banner.png": "77d40645542afff6e242d0fd95d17befeda1e6c3006408b8bcb9202273d12f15",
+    "docs/assets/dossie-empresa-banner.png": "0c3ef923cf2de01e42012aa3277532a5f9622c3818b6696b838b0ff27354032e",
+    "docs/assets/presenca-profissional-banner.png": "d90280faa57c2301ccf184506bbde7409bdd039fe6f5a622246c15415b8d53e4",
+    "docs/assets/carreira-guiada-cover-banner.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
+    "docs/assets/fluxo-guiado-banner.png": "35579a0e7f81a4a4ad145533949bdd4a8084ff8a6d670938d4ea20fb2a6c86e1",
+    "docs/assets/retomada-email-banner.png": "3088df330f62eebb2de1137781b6120af2f1c720568bfdbe88ff0e0c04ec3e9d",
+    "docs/assets/modelos-por-etapa-banner.png": "fc9d7a29bc94014c2d122638bd25af48684820701a1dfe83f3608170154e94a0",
 }
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),

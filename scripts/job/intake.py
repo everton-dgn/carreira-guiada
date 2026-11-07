@@ -51,11 +51,18 @@ class Intake:
                         db.execute("UPDATE resume_versions SET status='retired', approved_at=NULL WHERE id=?", (resume_id,))
         return self.status()
 
-    def choose(self, mode):
-        """Select CV preparation and atomically hand off any career checkpoint."""
+    def choose(self, mode, route=None):
+        """Select CV preparation; an explicit route preserves operational checkpoints."""
         if mode not in ('create', 'import'):
             raise ValueError('Escolha criar o currículo ou anexar um arquivo.')
-        return self._save(lambda state: state.update(mode=mode), select_preparation=True)
+        if route not in (None, 'curriculum', 'prepare'):
+            raise ValueError('Rota de preparação desconhecida.')
+        def change(state):
+            """Change the selected intake mode while preserving all saved answers."""
+            state['mode'] = mode
+            if route is not None:
+                state['route'] = route
+        return self._save(change, select_preparation=route != 'curriculum')
 
     def answer(self, field, text):
         if field not in {item[0] for item in QUESTIONS}:
@@ -70,6 +77,19 @@ class Intake:
         fact = ResumeManager(self.profile.root).add_fact(text, 'candidate:intake-' + field, True) if text is not None else None
         return self._save(lambda state: state['answers'].update({field: {'text': text, 'fact_id': fact['id'] if fact else None}}),
                           obsolete_fact=previous['fact_id'] if previous else None)
+
+    def select_existing_route(self, route):
+        """Switch an explicit direct route without changing operational checkpoints."""
+        if route not in ('career', 'practice'):
+            raise ValueError('Rota desconhecida.')
+        if self.get().get('route') in ('curriculum', 'career', 'practice', 'search', 'prepare'):
+            self.remember_route(route)
+
+    def remember_route(self, route):
+        """Persist an explicit menu choice without granting or resuming actions."""
+        if route not in ('curriculum', 'career', 'practice', 'search', 'prepare'):
+            raise ValueError('Escolha uma das atividades disponíveis no menu.')
+        return self._save(lambda state: state.update(route=route))
 
     def status(self):
         state = self.get()

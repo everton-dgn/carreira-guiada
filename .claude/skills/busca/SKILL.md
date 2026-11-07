@@ -9,7 +9,35 @@ Leia "Busca e cobertura", "Elegibilidade pelo perfil aprovado" e "Duplicidade
 e estados" em [AGENTS.md](../../../AGENTS.md), e as fontes escolhidas pela pessoa conforme
 [docs/FONTES.md](../../../docs/FONTES.md).
 
-## Gate
+## Busca pública pelo menu
+
+Quando a pessoa quiser apenas ver vagas, consulte `start --focus search`.
+Responda somente a pergunta devolvida: cargo, modalidade ou links. Salve os
+filtros em `profile answer preferences` e os links em `profile answer sources`,
+sem preencher identidade, permissões ou conexões e sem aprovar o perfil.
+
+Em `search_scope_confirmation`, mostre os filtros e endereços e aproveite a
+autorização já dada, se ela cobrir exatamente essa consulta. Use `scope_request`
+sem alterar o alvo nem a política. Explique que `url_policy: source_paths`
+cobre resultados, paginação e detalhes dentro dos mesmos domínios, portas e
+caminhos escolhidos. Confirmação restrita a uma página não cobre essa extensão;
+escopos antigos continuam limitados à URL exata. Acrescente a pergunta e a
+confirmação real da pessoa e grave com `research-scope grant`. Em `search_ready`, releia `start --focus
+search` antes de cada consulta e confira `research-scope check` com finalidade
+`job_search`, alvo atual, ID, versão e URL. Mudança de filtros ou fontes exige
+conferir o novo alcance. `search_paused` exige pedido de retomar; abrir o menu
+não retoma. O contrato está em [investigação](../../../docs/INVESTIGACAO-AGENTE.md).
+
+Apresente cargo, empresa, condições publicadas, URL e dúvidas em um lote curto.
+Não declare elegibilidade completa com filtros parciais, preencha formulários
+ou transmita currículo. Se quiser candidatar-se, conduza o preparo completo
+com `menu --choose prepare --remember`, depois consulte `start`. A troca
+fica salva sem mudar a forma de criar ou importar o currículo já existente.
+Mantenha todos os controles abaixo.
+Uma campanha já aprovada pode devolver `execution_readiness`; nesse caso,
+reutilize as permissões e o objetivo existentes, conforme o fluxo a seguir.
+
+## Gate da campanha
 
 Perfil `approved` e permissão `research` (`allow`, ou `ask` respondido com
 sim nesta rodada), `sources.urls` não vazio e alvo aprovado. Sem links, ajude
