@@ -6,6 +6,8 @@
 
 - Retomada identifica currículo e busca salvos e oferece continuar, revisar ou
   trocar de atividade sem repetir perguntas já respondidas.
+- Início preserva a atividade lida ao abrir, mesmo quando outra sessão troca
+  a escolha durante a consulta, sem misturar orientações nem interromper o comando.
 - Treino adiado preserva a resposta anterior e aguarda retomada; respostas
   que precisam de feedback não são apresentadas como perguntas novas.
 - Guias explicam como salvar uma troca, revisar somente a atividade escolhida

@@ -118,11 +118,11 @@ def parser():
     return main
 
 
-def onboarding(root, focus='prepare', resume_route=True):
+def onboarding(root, focus='prepare', resume_route=True, intake_state=None):
     """Read the requested route, or resume the explicit saved choice without writes."""
     from .career import CareerGuide, QUESTIONS as CAREER_QUESTIONS
     from .intake import Intake
-    selected_route = Intake(root).get().get('route')
+    selected_route = (Intake(root).get() if intake_state is None else intake_state).get('route')
     if focus == 'prepare' and selected_route == 'prepare':
         resume_route = False
     if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search'):
@@ -297,11 +297,11 @@ def dispatch(args):
         from .models import Models
         from .navigation import menu, resume_entry
         from .intake import Intake
-        result = onboarding(root, args.focus or 'prepare', resume_route=args.focus is None)
+        intake_state = Intake(root).get()
+        result = onboarding(root, args.focus or 'prepare', resume_route=args.focus is None, intake_state=intake_state)
         if args.focus:
             result['welcome_back'] = None
         else:
-            intake_state = Intake(root).get()
             if intake_state.get('route') not in ('curriculum', 'career', 'practice', 'search'):
                 result['model_setup'] = Models(root).guidance()
             result['menu'] = menu()
