@@ -9,7 +9,9 @@ Leia [AGENTS.md](../../../AGENTS.md), o [guia para a pessoa](../../../docs/CARRE
 e os [contratos locais](../../../docs/INVESTIGACAO-AGENTE.md). Conduza a conversa
 em linguagem comum. A pessoa não precisa ver comandos, IDs ou versões.
 
-1. Consulte `career status`. Se não houver sessão e o pedido for iniciar o guia,
+1. Ao escolher o guia, salve `menu --choose career --remember`; uma consulta
+   sobre as opções não muda a atividade. Consulte `career status`. Se não
+   houver sessão e o pedido for iniciar o guia,
    use `career start` com objeto vazio. Leitura de `start --focus career` não
    cria sessão. Para retomar, use o registro salvo; não comece outra sessão.
 2. Faça a pergunta retornada, uma por vez: objetivo, prioridades, experiências,
@@ -42,8 +44,10 @@ Salve `checkpoint` com fase `career`, progresso e próxima ação após mudança
 relevantes. Uma pausa do guia não remove a parada global nem inicia campanha.
 Respeite a pausa, a revogação de pesquisa e a prioridade de um pedido de busca.
 
-Quando a pessoa quiser procurar vagas no foco escolhido, siga a skill
-[perfil](../perfil/SKILL.md), apresente os filtros e obtenha a aprovação.
+Quando a pessoa quiser procurar vagas no foco escolhido, registre a mudança
+com `menu --choose search --remember` e siga a busca pública da skill
+[busca](../busca/SKILL.md). Combine filtros e fontes sem exigir cadastro
+completo. O preparo do perfil para candidatura só começa quando ela o pedir.
 O guia não altera perfil, currículo, permissões ou fontes de candidatura.
 O histórico fica na área privada; não escreva dados da pessoa nos documentos
 do projeto.

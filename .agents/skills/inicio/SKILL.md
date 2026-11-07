@@ -16,6 +16,10 @@ Use `menu --choose` com a escolha reconhecida e `--remember` para salvá-la
 entre sessões; a flag só é usada após a escolha explícita da pessoa.
 Consultar a rota sem essa flag permanece só leitura; uma opção desconhecida mostra
 o menu novamente, sem apagar dados. Pedido específico sempre entra direto.
+Quando o pedido escolher uma das quatro atividades, salve a escolha com
+`menu --choose <atividade> --remember`, mesmo que tenha vindo em uma frase.
+`start --focus` apenas consulta: usá-lo sozinho não muda a atividade da próxima
+sessão. Uma pergunta sobre as opções não autoriza salvar uma escolha.
 
 Se a pessoa escolher o preparo completo, salve com
 `menu --choose prepare --remember` e consulte `start`. Preserve o currículo
@@ -83,26 +87,34 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 ## Escolher a próxima etapa
 
 - Se `start` trouxer `welcome_back` e a pessoa disser só "iniciar", apresente
-  continuar ou revisar. Se ela já pediu "continuar", "retomar" ou uma tarefa
-  específica, siga esse pedido sem repetir o menu. Leia `status.checkpoint`,
+  continuar, revisar a atividade atual ou escolher outra no menu. Não acrescente
+  a pergunta da próxima etapa antes dessa escolha. Se ela já pediu "continuar",
+  "retomar" ou uma tarefa específica, siga esse pedido sem repetir o menu. Leia `status.checkpoint`,
   os registros atuais e `tabs status`; o ponto salvo não prova execução ativa.
-- Se escolher revisar, leia as respostas privadas por seção e mostre o resumo
-  existente, uma seção por vez. Pergunte o que deseja corrigir; use
-  `profile answer` apenas para as correções. Preserve histórico e arquivos.
-  Depois confira a nova versão do perfil, dos currículos e das sugestões de
-  LinkedIn/GitHub afetadas. Refaça apenas o conteúdo que depende da correção.
+- Se escolher revisar, mantenha a atividade atual. Currículo usa `intake show`,
+  fatos e versões salvos; entrevistas usam `practice show`; carreira usa
+  `career status` e a sessão atual; busca usa só preferências e fontes de
+  `profile show`. Mostre o resumo pertinente e salve apenas as correções
+  confirmadas pelo comando da própria atividade. Revisar um atalho não inicia
+  o perfil completo. No preparo de candidaturas, revise o perfil por seção
+  com `profile answer` e confira versões de currículos e perfis públicos
+  afetadas pela correção. Preserve histórico e arquivos.
   Fato de currículo importado usa `resume fact-replace` ou `resume fact-revoke`
   conforme a [skill de currículo](../curriculo/SKILL.md); acrescentar outra
   frase sem retirar o fato antigo não registra a correção.
 - Pedido apenas de andamento: responda com o estado observado e pare aí.
 - `next_step=career_guidance`: siga o guia de carreira e preserve as respostas
   já salvas. Uma sessão pausada só retoma quando a pessoa pedir. Se ela pedir
-  busca de vagas, mude para `--focus search`; carreira continua opcional.
+  busca de vagas, salve `menu --choose search --remember` e siga a skill de
+  busca pública; carreira continua opcional.
 - `next_step=company_dossier`: consulte os dossiês salvos e esclareça a empresa
   e a dúvida da pessoa. Não use o pedido como autorização de candidatura.
-- Parada registrada: "continuar" ou "retomar" já autoriza `resume-work`.
-  Se a pessoa disse apenas "iniciar", pergunte se quer retomar o objetivo
-  interrompido. Nunca remova a parada por conta própria.
+- Parada registrada: pedido de continuar a campanha autoriza `resume-work`.
+  Retomar somente currículo, treino ou guia de carreira preserva a parada
+  das ações externas. Treino adiado usa `practice choose` com `decision=now`;
+  guia pausado usa `career resume` na versão atual. Não crie outra sessão
+  nem peça novamente uma resposta já salva. Se a pessoa disse só "iniciar",
+  apresente o ponto salvo e aguarde a escolha, sem remover a parada.
 - `next_step=curriculum_input`: peça o currículo ou ofereça montá-lo a partir
   das respostas. Siga [curriculo](../curriculo/SKILL.md). Se ela já anexou um
   arquivo, localize e importe sem pedir para anexar novamente.

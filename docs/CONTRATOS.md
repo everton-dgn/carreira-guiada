@@ -123,7 +123,15 @@ autoriza preenchimento, candidatura ou leitura de e-mail.
 `start --focus prepare` consulta o preparo completo. Um pedido específico
 não traz a pergunta opcional de provedores nem o convite genérico de retomada.
 O início genérico inclui `menu`; as respostas e a última atividade gravada
-orientam a continuação, preservando o checkpoint operacional.
+orientam a continuação, preservando o checkpoint operacional. Nos atalhos de
+currículo e busca, `welcome_back` identifica a atividade salva e
+`resume_options` oferece `continue`, `review` e `menu`. `resume_hint` resume
+o próximo passo sem repetir a pergunta antes de a pessoa escolher continuar.
+`message` e `question` permanecem disponíveis para conduzir a etapa escolhida.
+Na entrada de entrevistas, se o treino está adiado ou a resposta aguarda
+devolutiva/avanço, `start.question` é `null`; a pergunta e a resposta anteriores
+continuam em `practice.question`.
+Consultar esses retornos não grava nem retoma ações.
 
 ## Perfil e elegibilidade
 
@@ -171,7 +179,7 @@ combina esse progresso com o perfil, sem repetir as perguntas respondidas.
 A primeira mantém a entrada direta e preserva o checkpoint operacional; a
 segunda volta ao preparo completo. Sem `route`, `choose` mantém o comportamento
 anterior. `remember_route(route)` guarda a escolha
-explícita do menu (`curriculum`, `practice`, `career` ou `search`) sem mudar
+explícita do menu (`curriculum`, `practice`, `career`, `search` ou `prepare`) sem mudar
 permissões, modo do currículo ou checkpoint.
 `get()` expõe a rota salva. Iniciar carreira ou treino após o atalho atualiza
 a atividade para a retomada, sem apagar as respostas do currículo.

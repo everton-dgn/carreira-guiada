@@ -6,8 +6,16 @@ description: Conduzir treino privado e opcional de entrevistas, com perguntas in
 # Treino de entrevistas
 
 Leia `docs/ENTREVISTAS.md`, o [contrato de treino](../../../docs/CONTRATOS.md#treinos-de-entrevistas) e `practice status` antes de perguntar. Use
-`start --focus practice` para entrada direta. Se não souber escolher, recomende
+`menu --choose practice --remember` quando a pessoa escolher esse caminho.
+`start --focus practice` apenas consulta, sem trocar a atividade salva.
+Se não souber escolher o tipo de treino, recomende
 uma apresentação curta com ajuda. Adapte tema, nível e idioma à pessoa.
+Se já houver treino adiado, mostre que ele está salvo. Um pedido explícito de
+continuar esse treino autoriza `practice choose` com `decision=now`, sem criar
+outra sessão ou retomar a campanha. Confira `practice.next_step`: uma resposta
+já salva pode aguardar devolutiva ou avanço, em vez de outra resposta.
+A pergunta principal de `start` fica vazia nesses casos; os detalhes anteriores
+continuam no estado do treino.
 
 Quando o aplicativo oferecer voz, recomende falar para aproximar o treino de
 uma entrevista. Confira o recurso atual antes de explicar botões. Texto e

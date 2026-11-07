@@ -115,6 +115,16 @@ Se mudar de ideia, peça outra tarefa ou volte ao `menu`. As respostas anteriore
 continuam salvas. `Parar` interrompe a execução; `continuar` retoma após conferir
 o ponto salvo. Uma consulta ao menu não retoma uma campanha parada.
 
+Por exemplo, você pode começar com "quero criar meu currículo", depois dizer
+"agora quero treinar entrevista" e, mais tarde, "quero só ver vagas". A IA
+guarda a atividade escolhida e preserva o que ficou nas outras. No outro dia,
+abra a mesma pasta e diga "continuar de onde parei". Se quiser voltar ao
+currículo, basta pedir "voltar ao currículo".
+
+"Revisar minhas respostas" se refere à atividade em que você está. No treino,
+a IA recupera suas respostas e o feedback; na busca, confere filtros e sites.
+Você não precisa preencher todo o cadastro para fazer essa revisão.
+
 ## Buscar por objetivo
 
 Com o perfil e o currículo aprovados, você pode dizer:

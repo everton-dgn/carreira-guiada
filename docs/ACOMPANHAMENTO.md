@@ -31,9 +31,15 @@ resultados já registrados ficam salvos. Uma tentativa sem confirmação precisa
 ser conferida no destino antes de qualquer repetição.
 
 No outro dia, abra a mesma pasta e escreva `iniciar`. A IA oferece continuar
-ou revisar a preparação. Se você já disser "continuar de onde parei", ela usa
-essa escolha. Revisar mostra suas respostas por partes e preserva o histórico;
-você muda apenas o que precisar.
+ou revisar a atividade salva, com a opção de escolher outra no menu. Se você
+já disser "continuar de onde parei", ela usa essa escolha. Revisar mostra
+as respostas daquela atividade e preserva o histórico; você muda apenas o
+que precisar.
+
+Pode dizer "continuar meu treino" ou "voltar ao guia de carreira" para retomar
+somente essa atividade. Isso não liga uma campanha de candidaturas parada.
+Um treino adiado mantém a pergunta e a resposta que você já deu; se falta
+feedback, a IA começa por ele, sem pedir a mesma resposta outra vez.
 
 O progresso salvo permite retomar, mas não mantém a IA executando depois de
 fechar o aplicativo. Campanhas longas dependem de uma sessão ativa e das

@@ -20,8 +20,9 @@ antes de montar os filtros. Se já tem uma empresa em vista, pode começar pelo
 [dossiê da empresa](EMPRESAS.md). Ambos são opcionais e dispensam cadastro completo.
 
 Se já houver progresso salvo, `iniciar` oferece continuar ou revisar a
-preparação. Revisar preserva o histórico e reaproveita as respostas que você
-não quiser mudar. [Como parar e retomar em outro dia](ACOMPANHAMENTO.md).
+atividade escolhida. Você também pode pedir outra atividade no menu.
+Revisar preserva o histórico e reaproveita as respostas que você não quiser
+mudar. [Como parar e retomar em outro dia](ACOMPANHAMENTO.md).
 
 O currículo passa por [revisão para ATS](ATS.md). Depois você pode escolher
 a [revisão opcional do LinkedIn e GitHub](PRESENCA-PROFISSIONAL.md), deixar

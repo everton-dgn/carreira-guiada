@@ -32,6 +32,101 @@ class MenuJourneyTests(unittest.TestCase):
         self.assertIn('Anexe', result['message'])
         self.assertNotIn('model_setup', result)
 
+    def test_next_day_curriculum_names_saved_activity_without_repeating_answers(self):
+        """Returning to a partial CV offers a choice without writing or resuming work."""
+        self.say(self.call('start')['message'], 'Quero criar meu currículo.')
+        self.call('menu', '--choose', 'CURRÍCULO', '--remember')
+        self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
+        self.call('intake', 'answer', data={'field': 'education', 'text': 'Ensino médio fictício concluído em 2024.'})
+        self.call('stop')
+        self.next_day()
+        db = self.root / '.job/control.sqlite3'
+        before = db.read_bytes()
+        state = self.call('start')
+        self.assertIn('Currículo', state.get('welcome_back') or '')
+        self.assertIn('menu', state['resume_options'])
+        self.assertEqual(state['question']['field'], 'experience')
+        plain = self.call('start', plain=True)
+        self.assertIn('Currículo', plain)
+        self.assertNotIn(state['question']['question'], plain)
+        self.assertEqual(db.read_bytes(), before)
+        self.say(plain, 'Continuar meu currículo, sem enviar nada.')
+        self.assertIsNone(self.call('start', '--focus', 'curriculum')['welcome_back'])
+        self.assertTrue(self.call('status')['control']['stopped'])
+        self.assertEqual(self.call('intake', 'status')['question']['field'], 'experience')
+
+    def test_next_day_search_and_invalid_choice_preserve_career_and_stop(self):
+        """A chosen search survives restart while invalid or preview choices do not switch it."""
+        self.call('menu', '--choose', '3', '--remember')
+        career = self.call('career', 'start', data={})
+        career = self.call('career', 'answer', data={'id': career['id'], 'expected_version': career['version'],
+            'field': 'goal', 'value': 'Quero comparar atendimento e administração.'})
+        self.say('Sua resposta no guia está salva.', 'Agora quero só ver vagas de atendimento.')
+        self.call('menu', '--choose', 'vagas', '--remember')
+        self.call('profile', 'answer', 'preferences', data={'field': 'roles', 'value': ['Atendimento']})
+        self.call('profile', 'answer', 'preferences', data={'field': 'modalities', 'value': []})
+        self.call('stop')
+        self.next_day()
+        self.assertIsNone(self.call('menu', '--choose', '99', '--remember')['selected'])
+        self.call('menu', '--choose', 'currículo')
+        db = self.root / '.job/control.sqlite3'
+        before = db.read_bytes()
+        state = self.call('start')
+        self.assertIn('Busca de vagas', state.get('welcome_back') or '')
+        self.assertEqual(state['next_step'], 'sources')
+        self.assertIn('menu', state['resume_options'])
+        self.assertEqual(db.read_bytes(), before)
+        self.assertEqual(self.call('career', 'status')['session'], career)
+        self.assertTrue(self.call('status')['control']['stopped'])
+        self.assertFalse(self.call('profile', 'show')['sections'].get('identity'))
+        self.assertEqual(self.call('status')['counts']['actions'], {})
+
+    def test_deferred_interview_returns_without_reasking_saved_answer(self):
+        """An unfinished interview retains its answer and waits for an explicit local resume."""
+        self.call('menu', '--choose', '2', '--remember')
+        session = self.call('practice', 'start', data={'track': 'rh', 'mode': 'coach', 'short': True})
+        answer = {'session_id': session['session_id'], 'question_id': session['question']['id'],
+                  'text': 'Ajudei a organizar pedidos em um projeto voluntário fictício.'}
+        self.call('practice', 'answer', data=answer)
+        self.call('practice', 'choose', data={'decision': 'later'})
+        self.call('menu', '--choose', 'carreira', '--remember')
+        self.call('stop')
+        self.next_day()
+        self.say('Seu treino e sua resposta ficaram salvos.', 'Quero voltar às entrevistas.')
+        before = self.call('practice', 'show')
+        result = self.call('menu', '--choose', 'entrevistas', '--remember')
+        self.assertIsNone(result['question'])
+        self.assertNotIn(session['question']['question'], result['message'])
+        self.assertEqual(self.call('practice', 'show'), before)
+        self.assertIsNone(self.call('start', '--focus', 'practice')['question'])
+        self.say(result['message'], 'Continuar o treino que deixei para depois.')
+        self.call('practice', 'choose', data={'decision': 'now'})
+        resumed = self.call('practice', 'status')
+        self.assertEqual(resumed['session_id'], session['session_id'])
+        self.assertEqual(resumed['next_step'], 'feedback')
+        self.assertEqual(resumed['question']['attempt']['text'], answer['text'])
+        self.assertNotIn(session['question']['question'], self.call('practice', 'status', plain=True))
+        self.assertIsNone(self.call('start', '--focus', 'practice')['question'])
+        self.assertTrue(self.call('status')['control']['stopped'])
+
+    def test_career_pause_survives_menu_switch_and_local_resume(self):
+        """Resuming a saved career guide preserves its answers and the global stop."""
+        self.call('menu', '--choose', 'carreira', '--remember')
+        career = self.call('career', 'start', data={})
+        career = self.call('career', 'answer', data={'id': career['id'], 'expected_version': career['version'],
+            'field': 'goal', 'value': 'Não sei ainda que área escolher.'})
+        career = self.call('career', 'pause', data={'id': career['id'], 'expected_version': career['version']})
+        self.call('menu', '--choose', '1', '--remember')
+        self.call('stop')
+        self.next_day()
+        selected = self.call('menu', '--choose', 'guia de carreira', '--remember')
+        self.assertIsNone(selected['question'])
+        self.assertIn('pausado', selected['message'])
+        self.say(selected['message'], 'Continuar meu guia de carreira.')
+        self.call('career', 'resume', data={'id': career['id'], 'expected_version': career['version']})
+        self.assertEqual(self.call('start')['question']['field'], 'priorities')
+        self.assertTrue(self.call('status')['control']['stopped'])
+
     def test_explicit_preparation_takes_priority_over_saved_career(self):
         """Read-only explicit preparation overrides a saved career route for this call."""
         self.call('career', 'start', data={})

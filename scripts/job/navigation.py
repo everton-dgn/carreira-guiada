@@ -9,6 +9,7 @@ def menu(selection=None):
     """Describe the available routes without persisting the selection."""
     choices = [{'number': n, 'focus': f, 'label': label} for n, f, label in CHOICES]
     message = 'O que você quer fazer?\n' + '\n'.join(f'{n}. {label}' for n, _, label in CHOICES)
+    message += '\nDiga o número ou o nome. Você pode mudar de atividade sem perder suas respostas.'
     if selection is None:
         return {'message': message, 'choices': choices, 'selected': None}
     key = ''.join(c for c in unicodedata.normalize('NFKD', selection.strip().casefold()) if not unicodedata.combining(c))
@@ -18,6 +19,27 @@ def menu(selection=None):
     focus = aliases.get(key) or next((f for n, f, _ in CHOICES if key in (n, f)), None)
     return {'message': message if focus else 'Opção desconhecida. Escolha um número ou nome.\n' + message,
             'choices': choices, 'selected': focus}
+
+
+def resume_entry(result, focus):
+    """Name a saved direct activity without starting it or repeating its question."""
+    labels = {'curriculum': 'Currículo', 'search': 'Busca de vagas'}
+    if focus not in labels:
+        return result
+    hints = {
+        'curriculum_input': 'Podemos continuar a criação ou a importação do currículo.',
+        'curriculum_intake': 'Suas respostas anteriores estão salvas; falta continuar as informações profissionais.',
+        'resume_approval': 'O próximo passo é revisar o currículo e aprovar uma versão.',
+        'curriculum_complete': 'Seu currículo aprovado continua disponível.',
+        'preferences': 'O próximo passo é combinar o tipo de trabalho e a modalidade.',
+        'sources': 'O próximo passo é escolher onde procurar vagas.',
+        'search_scope_confirmation': 'Antes de pesquisar, precisamos conferir os filtros, os links e a autorização.',
+        'search_ready': 'A consulta pública combinada está autorizada. Nenhuma candidatura foi iniciada.',
+        'search_paused': 'A pesquisa continua parada. Abrir o menu não a retoma.',
+        'execution_readiness': 'O próximo passo é conferir as conexões e as ações autorizadas da campanha.',
+    }
+    return {**result, 'welcome_back': f'Sua atividade salva é {labels[focus]}. Quer continuar, revisar suas respostas ou escolher outra atividade no menu?',
+            'resume_options': ['continue', 'review', 'menu'], 'resume_hint': hints[result['next_step']]}
 
 
 def search(root, sections):

@@ -11,7 +11,9 @@ pessoa: [docs/CURRICULOS.md](../../../docs/CURRICULOS.md).
 
 ## Entrada direta
 
-No pedido de currículo, use `start --focus curriculum`. Em toda chamada de
+Quando a pessoa escolher cuidar somente do currículo, use
+`menu --choose curriculum --remember` e consulte `start`. Para apenas conferir
+a rota, `start --focus curriculum` continua sendo só leitura. Em toda chamada de
 `intake choose`, acrescente `route: curriculum`. Para preparo completo já
 escolhido, use `route: prepare`. Não colete salário, sites, permissões de
 candidatura ou contas de e-mail só para gerar um documento. Contato no currículo

@@ -133,7 +133,10 @@ imprime a instrução para pedir a instalação à IA; o agente então conduz a
 instalação conforme a seção anterior.
 
 No primeiro acesso, `start` inclui o menu. `menu --choose` e `start --focus`
-consultam diretamente `curriculum`, `practice`, `career` ou `search`.
+consultam diretamente `curriculum`, `practice`, `career` ou `search`, sem
+trocar a atividade salva. Quando a pessoa pedir para mudar de tarefa, use
+`menu --choose <atividade> --remember` e prossiga com `start`. Não use apenas
+`start --focus search` para uma troca que precise sobreviver à próxima sessão.
 Currículo concluído devolve `curriculum_complete`, sem exigir cadastro completo.
 A busca pública pede cargo, modalidade e fontes e devolve
 `search_scope_confirmation`, `search_ready` ou `search_paused`. Confira a
@@ -343,8 +346,11 @@ Esse registro não comprova que um executor está ativo nem mantém o computador
 ou o aplicativo funcionando.
 
 Ao voltar em outro dia, escreva `iniciar`. A IA oferece continuar de onde parou
-ou revisar a preparação. Se já disser `continuar`, ela aproveita essa escolha.
-Revisar mostra as respostas existentes, uma seção por vez, sem apagar tudo.
+ou revisar a atividade salva; também pode escolher outra no menu. Se já disser
+`continuar`, ela aproveita essa escolha no contexto da atividade indicada.
+Revisar mostra as respostas pertinentes ao currículo, treino, guia ou busca,
+sem começar o cadastro completo nem apagar tudo. Retomar somente currículo,
+treino ou guia de carreira preserva a parada da campanha.
 Só as correções confirmadas são salvas, e mudanças materiais pedem a aprovação
 da nova versão. Uma autorização anterior não libera uma ação diferente.
 
