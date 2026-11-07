@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.10.0 - 2026-11-06
+
 ### Novidades
 
 - Escolha opcional dos serviços e modelos de IA no início, com "não sei" e
