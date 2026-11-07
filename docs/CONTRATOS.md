@@ -37,6 +37,9 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   como disponível. `benchmark_evidence`, quando presente, expõe acertos,
   falhas críticas e ressalvas textuais para o mesmo modelo e esforço. Resultados
   de outro ambiente continuam exploratórios. A resposta não troca modelos nem autoriza transmissão.
+  `tools_required` é orientação de capacidades, não um registro de conexão:
+  `public_research` pode ser pesquisa e leitura por integração ou navegador;
+  `pending_step_connections` exige reconferir as conexões das etapas pendentes.
 - `start.model_setup` oferece a pergunta opcional separada de `next_step`.
   Escolha já salva não pergunta novamente. Registro opcional inválido gera
   aviso de reparo e preserva a próxima etapa de preparação.

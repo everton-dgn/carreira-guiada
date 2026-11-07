@@ -16,6 +16,13 @@ STAGES = {
     'mail': 'Retornos por e-mail e próximas etapas',
     'continuity': 'Parar, conferir pendências e retomar',
 }
+TOOLS = {
+    'preparation': ['local_files'],
+    'screening': ['local_files', 'public_research'],
+    'application': ['local_files', 'browser'],
+    'mail': ['local_files', 'mail', 'browser'],
+    'continuity': ['local_files', 'pending_step_connections'],
+}
 ALIASES = {
     'gpt-6.1-terra': 'terra', 'gpt-6.1 terra': 'terra', 'terra 6.1': 'terra',
     'gpt-6-astra': 'astra', 'gpt-6 astra': 'astra',
@@ -143,7 +150,7 @@ class Models:
                            'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
                            'effort': effort, 'basis': 'initial_guidance' if choice and ALIASES.get(choice['name'].casefold()) else 'unmeasured',
                            'benchmark_evidence': measured,
-                           'tools_required': ['browser'] if stage == 'application' else ['mail', 'browser'] if stage == 'mail' else ['local_files'],
+                           'tools_required': TOOLS[stage],
                            'message': 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
         return {'decision': saved['decision'], 'stages': stages, 'automatic_switch': False,
                 'benchmark': 'docs/BENCHMARKS.md',
