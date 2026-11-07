@@ -95,6 +95,30 @@ O agente usa `./job models show --json`, `./job models recommend --json` e
 A pessoa responde em linguagem comum; não preenche esse JSON. A preferência
 não torna a coleta obrigatória para busca, carreira, dossiê ou treino.
 
+## Menu e entradas diretas
+
+`menu` retorna `message`, `choices` e `selected`. Cada opção tem `number`,
+`focus` e `label`. `--choose` aceita número, nome em português ou identificador
+de foco, ignorando maiúsculas e acentos. Uma escolha válida devolve a próxima
+etapa com `menu`; opção desconhecida mantém `selected: null` e reapresenta
+as opções. Listar ou consultar uma rota não cria `.job`, salva permissão
+nem retoma trabalho interrompido. `--remember` com uma escolha válida salva
+somente a atividade para continuar em outra sessão. Exige escolha explícita
+da pessoa; sem escolha, devolve orientação e não cria estado.
+
+`start --focus curriculum` prepara somente o documento e termina em
+`curriculum_complete`. `practice` e `career` dispensam perfil de candidatura.
+`search` combina filtros mínimos e fontes, com consentimento público separado.
+O retorno `scope_request` contém o alvo calculado a partir dos filtros e URLs
+atuais. `search_ready` informa o escopo ativo; antes de navegar, o agente
+reconsulta a rota e chama `research-scope check`. Nenhum desses retornos
+autoriza preenchimento, candidatura ou leitura de e-mail.
+
+`start --focus prepare` consulta o preparo completo. Um pedido específico
+não traz a pergunta opcional de provedores nem o convite genérico de retomada.
+O início genérico inclui `menu`; as respostas e a última atividade gravada
+orientam a continuação, preservando o checkpoint operacional.
+
 ## Perfil e elegibilidade
 
 `Profile(root)` em `scripts/job/profile.py`:
@@ -137,6 +161,14 @@ respostas profissionais e escolhas de pular. `status()` devolve a próxima
 pergunta e os IDs dos fatos atuais. Uma correção aposenta currículos que usavam
 o fato anterior; o original e as versões antigas são preservados. `start`
 combina esse progresso com o perfil, sem repetir as perguntas respondidas.
+`choose(mode, route=None)` aceita `route=curriculum` ou `route=prepare`.
+A primeira mantém a entrada direta e preserva o checkpoint operacional; a
+segunda volta ao preparo completo. Sem `route`, `choose` mantém o comportamento
+anterior. `remember_route(route)` guarda a escolha
+explícita do menu (`curriculum`, `practice`, `career` ou `search`) sem mudar
+permissões, modo do currículo ou checkpoint.
+`get()` expõe a rota salva. Iniciar carreira ou treino após o atalho atualiza
+a atividade para a retomada, sem apagar as respostas do currículo.
 
 `ResumeManager(root)` em `scripts/job/resumes.py`:
 

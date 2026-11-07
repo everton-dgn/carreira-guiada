@@ -5,9 +5,10 @@ check(data, *, db=None) accepts scope_id, expected_version, purpose, target,
 url and returns allowed/reason/scope_id/version. Pass the caller's write
 transaction as db to check revocation and workflow generation atomically.
 Targets: company_dossier/company, career_exploration/career,
-source_discovery/source. URLs are exact normalized public URLs without queries.
+source_discovery/source, job_search/search. URLs are exact normalized public URLs without queries.
 Historical reads do not require a currently active permission.
 """
+import hashlib
 import json
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -33,6 +34,16 @@ def text(value):
 
 def table_exists(db, name):
     return db is not None and bool(db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (name,)).fetchone())
+
+
+def job_search_target(preferences, urls):
+    """Bind a public job search to the saved filters and exact normalized URLs."""
+    urls = list(dict.fromkeys(_url(url) for url in urls))
+    if 'roles' not in preferences or 'modalities' not in preferences or not urls:
+        raise ValueError('Combine o tipo de trabalho, a modalidade e os sites antes de pesquisar.')
+    digest = hashlib.sha256(json.dumps({'preferences': preferences, 'urls': urls},
+        sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8')).hexdigest()
+    return {'kind': 'search', 'id': digest}
 
 
 class Revisions:
@@ -87,7 +98,7 @@ class Revisions:
 
 class ResearchScopes(Revisions):
     table = 'job_research_scopes'
-    purposes = {'company_dossier': 'company', 'career_exploration': 'career', 'source_discovery': 'source'}
+    purposes = {'company_dossier': 'company', 'career_exploration': 'career', 'source_discovery': 'source', 'job_search': 'search'}
 
     @classmethod
     def _target(cls, purpose, target):
@@ -122,7 +133,19 @@ class ResearchScopes(Revisions):
         with self.profile._db(True) as db:
             generation, stopped = self._control(db)
             if stopped: raise ValueError('Pesquisa parada; retome antes de autorizar.')
+            if data['purpose'] == 'job_search' and not self._current_search(db, data):
+                raise ValueError('Os filtros ou sites mudaram. Confira o alcance atual antes de autorizar.')
             return self._save(db, dict(data, id=str(uuid4()), version=1, generation=generation, revoked=False, urls=list(dict.fromkeys(_url(u) for u in data['urls'])), created_at=datetime.now(timezone.utc).isoformat()))
+
+    def _current_search(self, db, scope):
+        """Reject stale targets even when the caller reuses an old check payload."""
+        sections = self.profile._read(db)['sections']
+        try:
+            urls = list(dict.fromkeys(_url(url) for url in sections.get('sources', {}).get('urls', [])))
+            target = job_search_target(sections.get('preferences', {}), urls)
+            return scope['target'] == target and scope['urls'] == urls
+        except ValueError:
+            return False
 
     def check(self, data, *, db=None):
         fields(data, ('scope_id','expected_version','purpose','target','url'))
@@ -132,6 +155,8 @@ class ResearchScopes(Revisions):
             r = self._get(conn, data['scope_id'])
             generation, stopped = self._control(conn)
             reason = ('not_found' if r is None else 'stale_version' if r['version'] != data['expected_version'] else 'revoked' if r['revoked'] else 'stopped' if stopped else 'stale_generation' if generation != r['generation'] else 'purpose_mismatch' if r['purpose'] != data['purpose'] else 'target_mismatch' if r['target'] != data['target'] else 'url_mismatch' if url not in r['urls'] else 'allowed')
+            if reason == 'allowed' and r['purpose'] == 'job_search' and not self._current_search(conn, r):
+                reason = 'stale_search'
             return dict(allowed=reason == 'allowed', reason=reason, scope_id=data['scope_id'], version=r['version'] if r else None)
         if db is not None: return check_conn(db)
         with self.profile._db() as conn: return check_conn(conn)

@@ -4,6 +4,17 @@ A IA faz as perguntas uma por vez e salva cada resposta. Você pode parar quando
 quiser e voltar com `iniciar`. Este arquivo mostra o que esperar; não precisa
 preencher nada aqui.
 
+O cadastro completo é feito quando você quer preparar as candidaturas.
+Para começar por uma tarefa, diga `menu` e escolha currículo, entrevistas,
+carreira ou vagas. Também pode pedir diretamente: "quero só melhorar meu
+currículo". A IA mantém esse foco e deixa as perguntas de outras etapas para
+quando forem necessárias.
+
+Uma pesquisa inicial de vagas precisa do que procurar, das fontes escolhidas
+e da sua autorização para essa consulta pública. Ela não exige contatos,
+currículo nem acesso ao e-mail. Antes de uma candidatura, a IA completa com
+você os dados e consentimentos que ainda faltarem, sem repetir os já salvos.
+
 Ainda não sabe que trabalho procurar? Peça o [guia de carreira](CARREIRA.md)
 antes de montar os filtros. Se já tem uma empresa em vista, pode começar pelo
 [dossiê da empresa](EMPRESAS.md). Ambos são opcionais e dispensam cadastro completo.
@@ -28,11 +39,12 @@ para uma experiência mais próxima da entrevista. Escrever continua válido.
 
 ## Comece com a IA que você já tem
 
-No primeiro preparo, a IA pergunta quais aplicativos ou serviços você usa.
+No preparo completo, a IA pode perguntar quais aplicativos ou serviços você usa.
 Pode responder "uso Claude", "tenho quatro serviços", "uso um modelo local",
 "não sei" ou "depois". Ela guarda essa escolha para não perguntar a cada início.
 Se precisar comparar, ajuda a conferir os modelos disponíveis no seu aplicativo.
 Você não precisa saber o nome do provedor nem fornecer senha ou chave.
+Se você escolheu uma tarefa direta, essa conversa opcional fica para depois.
 
 A sugestão pode mudar entre preparar o currículo, pesquisar vagas e preencher
 formulários. Sua assinatura não garante acesso a todo modelo daquela empresa.
@@ -47,7 +59,7 @@ Você não precisa decidir tudo antes de começar, nem ler esta lista inteira.
 
 | Momento | Orientação que você deve receber |
 |---|---|
-| Primeiro acesso | Informe os serviços que já usa, ou deixe para depois. A IA considera as opções disponíveis antes de recomendar um modelo. |
+| Primeiro acesso | Escolha a tarefa no menu ou diga o que precisa. No preparo completo, você também pode informar os serviços que já usa ou deixar para depois. |
 | Currículo | Separe experiências, cursos e resultados que consegue confirmar. Trabalhos simultâneos podem ter datas sobrepostas; a IA não deve alterá-las para esconder isso. |
 | Primeiro emprego | Estudos, projetos e atividades voluntárias podem entrar quando forem reais. Experiência profissional anterior não é obrigatória. |
 | Cargos e filtros | Diferencie o que é obrigatório do que é uma preferência. A IA explica o efeito de cada filtro, sem ampliar a busca por conta própria. |

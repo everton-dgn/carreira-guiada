@@ -37,7 +37,7 @@ class CliTests(unittest.TestCase):
 
     def test_search_focus_prepares_sources_without_requiring_a_resume(self):
         from scripts.job.profile import Profile
-        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'identity')
+        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'preferences')
         self.assertFalse((self.root / '.job').exists())
         profile = Profile(self.root)
         sections = json.loads((PROJECT / 'templates/profile.json').read_text())['sections']
@@ -51,8 +51,7 @@ class CliTests(unittest.TestCase):
         profile.answer('sources', 'urls', ['https://carreiras.example/vagas'])
         profile.approve(profile.get()['version'])
         result = self.call('start', '--focus', 'search')
-        self.assertEqual(result['next_step'], 'execution_readiness')
-        self.assertEqual(result['approved_resumes'], [])
+        self.assertEqual(result['next_step'], 'search_scope_confirmation')
         self.assertFalse(result['automatic_execution_started'])
         self.assertEqual(self.call('start')['next_step'], 'resume_approval')
 

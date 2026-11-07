@@ -9,6 +9,14 @@ Leia "Currículo" em [AGENTS.md](../../../AGENTS.md) e a API de
 `ResumeManager` em [docs/CONTRATOS.md](../../../docs/CONTRATOS.md). Guia da
 pessoa: [docs/CURRICULOS.md](../../../docs/CURRICULOS.md).
 
+## Entrada direta
+
+No pedido de currículo, use `start --focus curriculum`. Em toda chamada de
+`intake choose`, acrescente `route: curriculum`. Para preparo completo já
+escolhido, use `route: prepare`. Não colete salário, sites, permissões de
+candidatura ou contas de e-mail só para gerar um documento. Contato no currículo
+é diferente de conexão à caixa de entrada.
+
 ## Receber o arquivo
 
 - Peça "anexe o currículo aqui no chat" ou "copie o arquivo para a pasta do
@@ -31,9 +39,11 @@ pessoa: [docs/CURRICULOS.md](../../../docs/CURRICULOS.md).
 
 Uma pergunta por vez, com exemplo, aceitando "não sei":
 
-Registre `intake choose` com `mode=create`. O comando `start` orienta primeiro
-nome e e-mail, depois devolve cada pergunta profissional em `question`. Faça
-somente essa pergunta. Para formação, experiência, habilidades, idiomas e
+Registre `intake choose` com `mode=create` e a rota escolhida. No atalho,
+`start` devolve cada pergunta profissional em `question`. Confirme nome e
+contato apenas para compor o documento, aproveitando o que já foi informado.
+O preparo completo continua orientando os campos do perfil. Faça uma pergunta
+por vez. Para formação, experiência, habilidades, idiomas e
 informações extras, grave com `intake answer`, usando `field` e `text`.
 O texto registra o fato dito pela pessoa; `null` registra uma escolha de pular.
 "Nunca trabalhei" é uma resposta válida, não falta de resposta. Não exija
@@ -90,6 +100,9 @@ e experiências depois; nunca preencha uma seção com experiência inventada.
   rascunho tem PDF, DOCX e Markdown gerados localmente.
 - Só após "está bom, pode aprovar" chame `./job resume approve <id>`. A versão vira
   `approved` com hash. Se o arquivo mudar depois, a aprovação deixa de valer.
+- No atalho, `curriculum_complete` encerra o preparo do documento. Entregue os
+  arquivos e pergunte apenas se a pessoa quer ajustar algo ou voltar ao menu.
+  Não inicie o cadastro de candidatura automaticamente.
 - Versões por especialidade são rascunhos separados, cada um com aprovação
   própria. Combine qual versão usar em cada área e guarde essa escolha como fato
   privado confirmado. Reaproveite a escolha nas vagas seguintes. Pergunte apenas

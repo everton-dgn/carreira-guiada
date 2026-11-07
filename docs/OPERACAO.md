@@ -73,6 +73,7 @@ O candidato encontra o pedido em linguagem comum no
 
 | Comando | Uso no fluxo |
 |---|---|
+| `menu` | Lista quatro atividades sem criar perfil ou retomar uma parada. `--choose` aceita número ou nome, como `1`, `currículo`, `entrevistas`, `carreira` e `vagas`; opção desconhecida reapresenta a lista. Acrescente `--remember` somente após escolha explícita para guardar a atividade entre sessões, sem retomar nem autorizar ações. |
 | `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `sources`, `profile_approval`, `resume_approval`, `professional_presence`, `interview_preparation`, `career_guidance`, `company_dossier`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
 | `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
@@ -91,7 +92,7 @@ O candidato encontra o pedido em linguagem comum no
 | `profile answer <seção>` | Recebe `field`, `value` e, para autorização explícita, `confirmed: true`. Mescla uma resposta sem apagar as anteriores. Aceita `salary.floors` e outros campos salariais. |
 | `profile save <seção>` | Grava uma seção (`identity`, `preferences`, `sources`, `permissions`, `limits`, `connections`), JSON por stdin. Mudança material invalida aprovação. |
 | `profile approve --version <n>` | Aprova a versão exibida com campos necessários preenchidos; só com "sim" explícito da pessoa. |
-| `intake choose` | Registra `mode: create` ou `mode: import`, conforme a escolha da pessoa. |
+| `intake choose` | Registra `mode: create` ou `mode: import`. `route: curriculum` mantém o atalho; `route: prepare` seleciona o preparo completo. A rota direta preserva o checkpoint operacional. |
 | `intake answer` | Registra `field` e `text` da pergunta profissional. `null` é uma escolha explícita de pular. Cria o fato confirmado uma única vez. |
 | `intake show` e `intake status` | Respostas privadas e próxima pergunta do currículo. `fact_ids` contém somente as respostas atuais para o rascunho. |
 | `evaluate` | Payload da vaga, direto ou dentro de `vacancy`. Usa as preferências do perfil salvo; devolve `eligible`, `blocked` ou `discarded` com motivos. |
@@ -131,9 +132,14 @@ e `scripts/job/resumes.py` para os demais. Se `uv` faltar, o atalho `./job`
 imprime a instrução para pedir a instalação à IA; o agente então conduz a
 instalação conforme a seção anterior.
 
-Em pedido apenas de busca, `start --focus search --json` prioriza perfil e
-fontes; currículo não é requisito de pesquisa. No preparo completo, use `start`
-sem essa opção. `connections.accounts` guarda as contas de e-mail autorizadas.
+No primeiro acesso, `start` inclui o menu. `menu --choose` e `start --focus`
+consultam diretamente `curriculum`, `practice`, `career` ou `search`.
+Currículo concluído devolve `curriculum_complete`, sem exigir cadastro completo.
+A busca pública pede cargo, modalidade e fontes e devolve
+`search_scope_confirmation`, `search_ready` ou `search_paused`. Confira a
+[autorização delimitada](INVESTIGACAO-AGENTE.md#busca-pública-pelo-menu) antes de
+consultar uma fonte. Uma campanha já autorizada preserva `execution_readiness`.
+Para o preparo completo explícito, use `start --focus prepare`. `connections.accounts` guarda as contas de e-mail autorizadas.
 O canal do navegador usa um alias de sessão observado em `capability`, inclusive
 `public` para páginas que não exigem login. Isso não concede permissões da ação.
 

@@ -23,8 +23,9 @@ revogar uma pesquisa, mas isso não permite uma nova consulta externa.
 ## Autorizar uma investigação específica
 
 Essas autorizações não alteram `profile`, `sources.urls`, objetivo ou permissões
-operacionais. O perfil continua obrigatório para a busca de vagas, preenchimento,
-candidatura e e-mail. `research-scope` limita uma consulta pública para uma
+operacionais. O perfil aprovado continua obrigatório para a campanha de
+candidaturas, preenchimento e e-mail. A consulta pública de vagas pelo menu
+pode usar filtros parciais e um escopo específico, como descrito abaixo. `research-scope` limita uma consulta pública para uma
 pergunta e alvo específicos, sem transmitir dados pessoais.
 
 `research-scope grant` recebe:
@@ -40,7 +41,7 @@ pergunta e alvo específicos, sem transmitir dados pessoais.
 ```
 
 Finalidades e alvos: `company_dossier` com `company`, `career_exploration` com
-`career`, `source_discovery` com `source`. Nos dois primeiros casos, use o ID
+`career`, `source_discovery` com `source` e `job_search` com `search`. Nos dois primeiros casos, use o ID
 do registro local. Descoberta de fontes pode ter um alvo textual específico.
 Aceitam-se URLs públicas HTTPS exatas, normalizadas e sem parâmetros. A página
 inicial de um domínio não autoriza todas as páginas dele. Agrupe endereços
@@ -69,6 +70,30 @@ O controle não navega nem intercepta a rede do aplicativo. A conferência deve
 acontecer imediatamente antes da ferramenta externa. Ela não comprova acesso,
 confiabilidade ou permissão de automação do serviço. Respeite bloqueios e
 registre indisponibilidade sem repetir tentativas em sequência.
+
+## Busca pública pelo menu
+
+`start --focus search` pede apenas `preferences.roles`,
+`preferences.modalities` e `sources.urls`. Use as demais preferências que a
+pessoa já informou; não complete o perfil por suposição.
+`search_scope_confirmation` devolve `filters`, `urls` e `scope_request`.
+O alvo `search` é um digest dos filtros e endereços normalizados. Copie
+`scope_request` para `research-scope grant` e acrescente `question` e
+`user_confirmation` com a autorização real para aquela pesquisa pública.
+
+Antes de cada leitura, consulte novamente `start --focus search`. Só prossiga
+com `search_ready` e `research-scope check` permitido para o alvo e URL atuais.
+Escopo antigo não cobre filtros ou endereços diferentes: o controle confere
+os valores salvos novamente em `grant` e `check`, inclusive quando recebe
+um payload antigo. `stale_search` indica que esse alcance mudou. Parar, retomar em nova
+geração ou revogar exige conferir e renovar o alcance autorizado. Esses
+comandos não abrem sites, não monitoram requisições e não enviam dados.
+
+Apresente resultados como opções para conhecer, com fatos e dúvidas. A
+avaliação completa de elegibilidade depende do perfil aprovado. Para enviar
+currículo, use o preparo completo e os controles operacionais de candidatura.
+Se uma campanha vigente já autorizar pesquisa nas fontes aprovadas, a rota
+devolve `execution_readiness` e preserva o fluxo de `action authorize/check`.
 
 ## Dossiê de empresa
 

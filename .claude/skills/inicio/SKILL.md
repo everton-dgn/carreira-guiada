@@ -9,7 +9,15 @@ Leia [AGENTS.md](../../../AGENTS.md). A pessoa não precisa entender arquivos,
 comandos nem configurações. Conduza a próxima etapa com uma pergunta curta e
 um exemplo. Evite apresentar uma lista de tarefas para ela executar sozinha.
 
-No primeiro preparo, ofereça `start.model_setup.question` se ela existir,
+Mostre `./job menu --json` quando a pessoa pedir "menu", "opções" ou "ajuda".
+Apresente os quatro nomes e aceite o número ou uma frase curta. Um número
+isolado só seleciona uma atividade quando responde ao menu recém-exibido.
+Use `menu --choose` com a escolha reconhecida e `--remember` para salvá-la
+entre sessões; a flag só é usada após a escolha explícita da pessoa.
+Consultar a rota sem essa flag permanece só leitura; uma opção desconhecida mostra
+o menu novamente, sem apagar dados. Pedido específico sempre entra direto.
+
+Depois de escolher o preparo completo, ofereça `start.model_setup.question` se ela existir,
 sozinha, e explique que a escolha é opcional. Pergunte pelos aplicativos ou
 serviços conhecidos, sem exigir nomes técnicos de provedores. Aceite qualquer
 fornecedor, inclusive modelos locais. Se a pessoa já informou, reaproveite.
@@ -54,8 +62,11 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
    opcional; não substitui `next_step`. Consultar a instalação
    vazia não deve criar perfil nem iniciar trabalho externo.
    Se o pedido for somente procurar ou mostrar vagas, use
-   `./job start --focus search --json`: esse caminho prepara o perfil e as
-   fontes sem exigir currículo. Preserve o foco nas consultas seguintes até
+   `./job start --focus search --json`: esse caminho coleta cargo, modalidade
+   e fontes para pesquisa pública sem exigir contatos, currículo ou e-mail.
+   Siga [busca](../busca/SKILL.md) para confirmar e conferir o escopo.
+   Para currículo, use `start --focus curriculum --json`; peça somente os
+   dados profissionais e contatos necessários ao documento. Preserve o foco nas consultas seguintes até
    a pessoa pedir preparo ou envio. A pessoa não precisa conhecer essa opção.
    Para treino de entrevista, use `start --focus practice --json` e siga
    [entrevista](../entrevista/SKILL.md), mesmo sem perfil ou currículo.
@@ -93,11 +104,19 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
   das respostas. Siga [curriculo](../curriculo/SKILL.md). Se ela já anexou um
   arquivo, localize e importe sem pedir para anexar novamente.
 - Registre a escolha com `intake choose`: `mode=create` para criar ou
-  `mode=import` para importar. Depois consulte `start` de novo. A escolha fica
+  `mode=import` para importar. Inclua `route=curriculum` no atalho de currículo
+  ou `route=prepare` quando a pessoa pedir o preparo completo. Depois consulte
+  `start` de novo. A escolha fica
   salva mesmo antes da primeira informação profissional.
 - `next_step=curriculum_intake`: faça somente a pergunta devolvida em
   `question`, registre a resposta com `intake answer` e siga a skill de currículo.
-- Uma seção do perfil está incompleta: siga [perfil](../perfil/SKILL.md).
+- `curriculum_complete`: entregue os arquivos aprovados e ofereça revisar,
+  criar outra versão ou escolher outra atividade. Não acrescente cadastro de
+  candidatura sem pedido.
+- `search_scope_confirmation`, `search_ready` ou `search_paused`: siga a
+  entrada pública da skill [busca](../busca/SKILL.md).
+- Uma seção do perfil está incompleta: siga [perfil](../perfil/SKILL.md),
+  limitada à pergunta da atividade atual; não complete todas as seções por rotina.
 - `next_step=sources` após o currículo aprovado: apresente a pergunta devolvida
   para os links adiados e siga [docs/FONTES.md](../../../docs/FONTES.md).
   Se pedir ajuda para descobrir sites, siga [fontes](../fontes/SKILL.md).

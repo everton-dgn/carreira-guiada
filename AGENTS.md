@@ -19,14 +19,18 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   a entrada técnica `./job`. O agente usa essas ferramentas; a pessoa nunca.
   Os comandos e payloads estão em `docs/OPERACAO.md`. Se um comando falhar,
   trate como erro a diagnosticar com `./job doctor`, não como regra ausente.
-- O perfil aprovado no banco é a única fonte de filtros, contatos, permissões e
-  limites. Não existe regra fixa de cargo, salário, idioma, contrato ou empresa
+- Para candidaturas, o perfil aprovado no banco é a fonte de filtros, contatos,
+  permissões e limites. O menu permite preparar currículo, treinar entrevistas,
+  explorar carreira e pesquisar vagas públicas antes desse cadastro completo. Não existe regra fixa de cargo, salário, idioma, contrato ou empresa
   neste repositório. Instalação nova começa vazia. Campo vazio não herda regra
   de nenhum outro projeto ou pessoa.
 - A instrução mais recente da pessoa prevalece. Consulte o perfil e o estado
   antes de perguntar algo já respondido.
 - `docs/FONTES.md` orienta a coleta dos links escolhidos pela pessoa.
-  Não há catálogo padrão. Use somente `sources.urls` do perfil aprovado.
+  Não há catálogo padrão. Na campanha, use `sources.urls` do perfil aprovado.
+  Na busca pública pelo menu, use as fontes escolhidas e a confirmação
+  delimitada por `research-scope` com finalidade `job_search`. Essa pesquisa
+  dispensa contatos, currículo e conta de e-mail; não autoriza candidaturas.
   Pedido ou aceite de ajuda para descobrir fontes permite pesquisa pública
   específica, sem dados pessoais, seguindo a skill [fontes](.agents/skills/fontes/SKILL.md).
   A pessoa escolhe as sugestões verificadas e aprova antes da busca de vagas.
@@ -98,12 +102,27 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    permissão necessária, executa o instalador oficial sem privilégios de
    administrador e confere de novo com `doctor`. Nunca termine o turno
    mandando a pessoa resolver sozinha ou procurar quem montou a pasta.
-2. Ler `start --json`: `next_step` e `message` são a fonte da próxima etapa
+2. Ler `start --json`. No primeiro acesso, apresente as quatro opções de
+   `menu`: currículo, entrevistas, carreira e busca de vagas. `menu`, "opções"
+   e "ajuda" mostram essas opções a qualquer momento, sem alterar o progresso.
+   Pedido específico entra direto: use `menu --choose` com o número ou nome
+   escolhido, ou `start --focus`. Não faça o onboarding inteiro por padrão
+   nem interrompa a escolha com a pergunta opcional sobre serviços de IA.
+   Após uma escolha explícita, acrescente `--remember` a `menu --choose`
+   para salvar a atividade entre sessões. Isso não concede permissões nem
+   retoma ações paradas; consultar o menu sem essa opção continua só leitura.
+   `next_step` e `message` são a fonte da próxima etapa
    de preparação (`curriculum_input`, `curriculum_intake`, uma seção do perfil,
    `profile_approval`, `resume_approval`, `professional_presence`, `interview_preparation`, `execution_readiness`). O currículo
    pode vir antes do perfil; siga a ordem devolvida.
    Em pedido explícito somente de busca, use `start --focus search --json`
-   para preparar filtros e fontes sem exigir currículo.
+   para combinar cargo, modalidade e fontes sem exigir perfil completo.
+   A confirmação cobre somente consulta pública. Siga a skill
+   [busca](.agents/skills/busca/SKILL.md) para conferir o escopo antes de navegar.
+   Para currículo, use `start --focus curriculum --json` e registre
+   `route: curriculum` em `intake choose`. Termine entregando a versão
+   aprovada, sem iniciar perguntas de candidatura. `--focus prepare`
+   mantém o preparo completo quando a pessoa o pedir.
    Para treinar entrevistas, `start --focus practice --json` dispensa perfil,
    currículo e contas. Siga [entrevista](.agents/skills/entrevista/SKILL.md).
    Para escolher um foco profissional, use `start --focus career --json` e
@@ -289,9 +308,12 @@ A skill [seguranca](.agents/skills/seguranca/SKILL.md) detalha a etapa.
 
 ## Busca e cobertura
 
-A skill [busca](.agents/skills/busca/SKILL.md) executa a pesquisa. Requer
-perfil aprovado e permissão `research` em `allow` ou resposta afirmativa a
-`ask`.
+A skill [busca](.agents/skills/busca/SKILL.md) executa a pesquisa. Na campanha
+de candidaturas, exige perfil aprovado e permissão `research` em `allow` ou
+resposta afirmativa a `ask`. Para apenas conhecer vagas antes do cadastro,
+use a entrada pública da mesma skill: filtros parciais, fontes escolhidas
+e `research-scope` específico, sem preenchimento ou envio. As regras abaixo
+descrevem a campanha com perfil aprovado.
 
 1. Inspecione as abas existentes, reutilize sessões autenticadas e preserve
    formulários não salvos. Feche apenas abas de trabalho sem pendências.
@@ -533,7 +555,7 @@ com `/inicio` como entrada explícita. Mantenha as duas cópias sincronizadas.
 
 | Skill | Quando |
 |---|---|
-| [inicio](.agents/skills/inicio/SKILL.md) | `iniciar`, continuar, "o que falta". Descobre estado e propõe a próxima etapa. |
+| [inicio](.agents/skills/inicio/SKILL.md) | `iniciar`, `menu`, "opções", "ajuda", continuar, "o que falta". Descobre estado e propõe a próxima etapa. |
 | [perfil](.agents/skills/perfil/SKILL.md) | Preencher, revisar ou aprovar o perfil, uma pergunta por vez. |
 | [curriculo](.agents/skills/curriculo/SKILL.md) | Anexar, criar, revisar e aprovar currículos. |
 | [presenca](.agents/skills/presenca/SKILL.md) | Revisar LinkedIn/GitHub e aplicar alterações especificamente autorizadas. |

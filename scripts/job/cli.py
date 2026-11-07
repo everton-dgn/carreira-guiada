@@ -33,7 +33,10 @@ def parser():
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
     start = command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
-    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company'), default='prepare', help='Escolher preparo, busca, treino, guia de carreira ou pesquisa de empresa')
+    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum'), default=None, help='Escolher preparo, busca, treino, guia de carreira ou pesquisa de empresa')
+    menu = command("menu", "Escolher uma atividade")
+    menu.add_argument("--choose", help="Número ou nome da atividade")
+    menu.add_argument("--remember", action="store_true", help="Salvar a atividade escolhida para continuar depois")
     command("status", "Conferir o progresso e as pendências")
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
@@ -114,15 +117,19 @@ def parser():
     return main
 
 
-def onboarding(root, focus='prepare'):
+def onboarding(root, focus='prepare', resume_route=True):
     from .career import CareerGuide, QUESTIONS as CAREER_QUESTIONS
+    from .intake import Intake
+    selected_route = Intake(root).get().get('route')
+    if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search'):
+        focus = selected_route
     from .checkpoint import checkpoint
     from .company import CompanyDossiers
     from .profile import Profile
     career = CareerGuide(root).status()
     point = checkpoint(root)
     saved_career = career['session'] is not None and career['phase'] != 'finished'
-    if focus == 'career' or (focus == 'prepare' and saved_career and (not point or point['phase'] == 'career')):
+    if focus == 'career' or (focus == 'prepare' and resume_route and saved_career and (not point or point['phase'] == 'career')):
         message = career['message']
         question = career['question']
         if career['session'] is None:
@@ -134,7 +141,7 @@ def onboarding(root, focus='prepare'):
                 'resume_hint': message, 'resume_options': ['continue', 'review'] if career['session'] else [],
                 'automatic_execution_started': False}
     dossiers = CompanyDossiers(root).list()
-    if focus == 'company' or (focus == 'prepare' and ((point and point['phase'] == 'company') or
+    if focus == 'company' or (focus == 'prepare' and resume_route and ((point and point['phase'] == 'company') or
                                                     (not point and dossiers and not Profile(root).get()['sections']))):
         message = ('Seus dossiês estão salvos. Diga qual empresa quer continuar analisando ou indique outra.' if dossiers else
                    'Qual empresa você quer conhecer e o que precisa esclarecer? Pode colar o site ou a vaga; se não tiver o link, diga o nome e o país.')
@@ -162,27 +169,46 @@ def onboarding(root, focus='prepare'):
                 approved.append(version["id"])
             except ValueError:
                 pass
-    if focus == 'practice' or (focus == 'prepare' and practice['decision'] == 'now' and practice['phase'] in ('idle', 'questions', 'feedback')):
+    if focus == 'practice' or (focus == 'prepare' and resume_route and practice['decision'] == 'now' and practice['phase'] in ('idle', 'questions', 'feedback')):
         next_step = 'interview_preparation'
         question = practice['question']
         message = practice['message']
         if question:
             message += '\n' + question['question']
     elif focus == 'search':
-        if not status['approved']:
-            next_step = status.get('next_section') or 'profile_approval'
-            question = status['questions'][0] if status['questions'] else None
-            message = question['question'] + ' ' + question['example'] if question else 'Confira o resumo dos filtros e permissões para aprovar a busca.'
-        elif not data['sections'].get('sources', {}).get('urls'):
-            from .profile import QUESTIONS
-            field, prompt, example = QUESTIONS['sources'][0]
-            example = 'Pode colar os endereços ou pedir ajuda para encontrar opções verificadas. Se preferir deixar a busca para depois, suas respostas ficam salvas.'
-            next_step = 'sources'
-            question = {'field': field, 'question': prompt, 'example': example}
-            message = prompt + ' ' + example
+        from .navigation import search
+        if status['approved'] and data['sections'].get('sources', {}).get('urls') and data['sections'].get('permissions', {}).get('research') == 'allow':
+            from .workflow import Workflow
+            workflow = Workflow(root)
+            try:
+                state = workflow.state()
+            finally:
+                workflow.close()
+            goal = state['goal']
+            if goal and 'research' in goal['criteria']['actions']:
+                if state['control']['stopped']:
+                    return {'next_step': 'search_paused', 'message': 'A pesquisa está parada. Retome explicitamente para continuar.', 'automatic_execution_started': False}
+                return {'next_step': 'execution_readiness', 'message': 'A rodada autorizada está pronta para conferir as ações de pesquisa.', 'automatic_execution_started': False}
+        return {**search(root, data.get('sections', {})), 'automatic_execution_started': False}
+    elif focus == 'curriculum':
+        if approved:
+            next_step = 'curriculum_complete'
+            message = 'Seu currículo aprovado está pronto. Você pode revisá-lo, criar outra versão ou escolher outra atividade no menu.'
+        elif intake['mode'] == 'create' and not intake['complete']:
+            next_step = 'curriculum_intake'
+            question = intake['question']
+            message = question['question'] + ' ' + question['example']
+        elif intake['mode'] == 'import' and not resumes.sources():
+            next_step = 'curriculum_input'
+            message = 'Anexe seu currículo em PDF ou Word, ou cole o texto.'
+        elif intake['complete'] or resumes.sources() or resumes.facts() or versions:
+            next_step = 'resume_approval'
+            message = 'Vamos preparar ou revisar o currículo e aprovar a versão quando estiver pronta.'
         else:
-            next_step = 'execution_readiness'
-            message = 'Seu perfil e suas fontes estão prontos para a busca. Vou conferir as ferramentas; o currículo pode ficar para depois. Nenhum envio foi autorizado por esta consulta.'
+            next_step = 'curriculum_input'
+            message = 'Você já tem um currículo? Anexe o arquivo ou diga que quer criar um.'
+        return {'message': message, 'next_step': next_step, 'question': question, 'intake': intake,
+                'approved_resumes': approved, 'automatic_execution_started': False}
     elif not data.get("sections") and not resumes.sources() and not resumes.facts() and not intake["mode"]:
         message = "Vamos preparar sua busca, uma etapa por vez. Você já tem um currículo? Anexe o arquivo no chat. Se ainda não tiver, diga 'quero criar meu currículo' e eu ajudo a montar."
         next_step = "curriculum_input"
@@ -249,9 +275,34 @@ def dispatch(args):
     root = getattr(args, "root", ROOT).resolve()
     if not root.is_dir():
         raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
+    if args.command == 'menu':
+        from .navigation import menu
+        result = menu(args.choose)
+        if args.remember and not args.choose:
+            raise ValueError('Escolha uma atividade antes de salvar o ponto de retomada.')
+        if result['selected']:
+            if args.remember:
+                from .intake import Intake
+                Intake(root).remember_route(result['selected'])
+            route = onboarding(root, result['selected'])
+            route['welcome_back'] = None
+            return {**route, 'menu': result}
+        return result
     if args.command == "start":
         from .models import Models
-        return {**onboarding(root, args.focus), 'model_setup': Models(root).guidance()}
+        from .navigation import menu
+        from .intake import Intake
+        result = onboarding(root, args.focus or 'prepare', resume_route=args.focus is None)
+        if args.focus:
+            result['welcome_back'] = None
+        else:
+            if Intake(root).get().get('route') not in ('curriculum', 'career', 'practice', 'search'):
+                result['model_setup'] = Models(root).guidance()
+            result['menu'] = menu()
+            intake_state = Intake(root).get()
+            if result['next_step'] == 'curriculum_input' and not result.get('welcome_back') and not intake_state.get('mode') and not intake_state.get('route'):
+                result['message'] = result['menu']['message']
+        return result
     if args.command == 'models':
         from .models import Models
         models = Models(root)
@@ -273,7 +324,11 @@ def dispatch(args):
             if result is None:
                 raise ValueError('Esse registro não foi encontrado. Vou conferir os registros salvos antes de continuar; nenhum dado foi alterado.')
             return result
-        return getattr(service, args.action)(data)
+        result = getattr(service, args.action)(data)
+        if args.command == 'career' and args.action in ('start', 'resume'):
+            from .intake import Intake
+            Intake(root).select_existing_route('career')
+        return result
     if args.command == 'checkpoint':
         from .checkpoint import checkpoint
         return checkpoint(root, payload() if args.action == 'save' else None)
@@ -323,7 +378,11 @@ def dispatch(args):
         required, optional = fields[args.action]
         if not required <= set(data) or set(data) - required - optional:
             raise ValueError('Confira os campos desta etapa do treino: ' + ', '.join(sorted(required)))
-        return getattr(practice, args.action.replace('-', '_'))(**data)
+        result = getattr(practice, args.action.replace('-', '_'))(**data)
+        if args.action == 'start' or (args.action == 'choose' and data['decision'] == 'now'):
+            from .intake import Intake
+            Intake(root).select_existing_route('practice')
+        return result
     if args.command == 'presence':
         from .presence import Presence
         presence = Presence(root)
@@ -376,7 +435,7 @@ def dispatch(args):
         if args.action in {'show', 'status'}:
             return intake.get() if args.action == 'show' else intake.status()
         data = payload()
-        return intake.choose(data.get('mode')) if args.action == 'choose' else intake.answer(data.get('field'), data.get('text'))
+        return intake.choose(data.get('mode'), data.get('route')) if args.action == 'choose' else intake.answer(data.get('field'), data.get('text'))
     if args.command == "evaluate":
         from .policy import evaluate
         from .profile import Profile

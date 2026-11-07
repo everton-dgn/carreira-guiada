@@ -109,7 +109,7 @@ class GuidanceJourneyTests(unittest.TestCase):
 
     def test_explicit_job_search_keeps_priority_over_optional_career(self):
         self.call('career', 'start', data={})
-        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'identity')
+        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'preferences')
         self.assertEqual(self.call('career', 'status')['phase'], 'questions')
 
     def test_stopped_state_stays_visible_and_research_needs_new_scope_after_resume(self):

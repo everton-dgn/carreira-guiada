@@ -80,7 +80,7 @@ class PublicationTests(unittest.TestCase):
 
     def test_unknown_png_metadata_is_blocked_and_reviewed_images_are_preserved(self):
         assets = Path(__file__).resolve().parents[1] / "docs/assets"
-        for name in ('carreira-guiada-cover.png', 'fluxo-guiado.png'):
+        for name in ('carreira-guiada-cover-banner.png', 'fluxo-guiado-banner.png'):
             with self.subTest(name=name):
                 original = (assets / name).read_bytes()
                 self.assertEqual(content_problems('docs/assets/' + name, original), [])
