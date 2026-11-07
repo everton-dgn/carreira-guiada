@@ -43,7 +43,7 @@ pergunta e alvo específicos, sem transmitir dados pessoais.
 Finalidades e alvos: `company_dossier` com `company`, `career_exploration` com
 `career`, `source_discovery` com `source` e `job_search` com `search`. Nos dois primeiros casos, use o ID
 do registro local. Descoberta de fontes pode ter um alvo textual específico.
-Aceitam-se URLs públicas HTTPS exatas, normalizadas e sem parâmetros. A página
+Por padrão, aceitam-se URLs públicas HTTPS exatas, normalizadas e sem parâmetros. A página
 inicial de um domínio não autoriza todas as páginas dele. Agrupe endereços
 necessários em uma única proposta de alcance; aproveite autorização já dada.
 Não registre concordância inventada nem peça novamente uma permissão válida.
@@ -80,6 +80,18 @@ pessoa já informou; não complete o perfil por suposição.
 O alvo `search` é um digest dos filtros e endereços normalizados. Copie
 `scope_request` para `research-scope grant` e acrescente `question` e
 `user_confirmation` com a autorização real para aquela pesquisa pública.
+O pedido inclui `url_policy: source_paths`: mostre que a consulta cobre resultados,
+paginação e detalhes dentro dos caminhos escolhidos, no mesmo domínio e porta.
+Por exemplo, `/vagas` cobre `/vagas/123` e `/vagas?page=2`, mas não `/vagas-falsas`
+nem outro domínio. São aceitos apenas os parâmetros públicos `q`, `query`,
+`search`, `keyword`, `keywords`, `location`, `page` e `sort`, com valores simples.
+Credenciais, tokens, fragmentos e atalhos de caminho são rejeitados. Confira
+cada destino, inclusive redirecionamentos; estar permitido não comprova confiança.
+
+Essa política só vale para `job_search` após confirmação que cubra esse alcance.
+Registros antigos sem `url_policy` preservam a autorização para URLs exatas;
+o menu propõe uma nova confirmação antes de navegar em resultados e detalhes.
+Outras finalidades não aceitam `source_paths`.
 
 Antes de cada leitura, consulte novamente `start --focus search`. Só prossiga
 com `search_ready` e `research-scope check` permitido para o alvo e URL atuais.

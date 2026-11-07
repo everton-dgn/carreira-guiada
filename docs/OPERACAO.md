@@ -139,7 +139,9 @@ A busca pública pede cargo, modalidade e fontes e devolve
 `search_scope_confirmation`, `search_ready` ou `search_paused`. Confira a
 [autorização delimitada](INVESTIGACAO-AGENTE.md#busca-pública-pelo-menu) antes de
 consultar uma fonte. Uma campanha já autorizada preserva `execution_readiness`.
-Para o preparo completo explícito, use `start --focus prepare`. `connections.accounts` guarda as contas de e-mail autorizadas.
+Para consultar o preparo completo, use `start --focus prepare`. Quando a pessoa
+escolher continuar nesse percurso, salve com `menu --choose prepare --remember`,
+sem pedir novamente a forma de importar ou criar um currículo já existente. `connections.accounts` guarda as contas de e-mail autorizadas.
 O canal do navegador usa um alias de sessão observado em `capability`, inclusive
 `public` para páginas que não exigem login. Isso não concede permissões da ação.
 

@@ -25,6 +25,7 @@ def payload():
 
 
 def parser():
+    """Define CLI commands and keep persistence options explicit."""
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument("--root", type=Path, default=argparse.SUPPRESS, help="Pasta do projeto; a área privada fica dentro dela")
     common.add_argument("--json", action="store_true", default=argparse.SUPPRESS, help="Resposta estruturada para o agente")
@@ -118,9 +119,12 @@ def parser():
 
 
 def onboarding(root, focus='prepare', resume_route=True):
+    """Read the requested route, or resume the explicit saved choice without writes."""
     from .career import CareerGuide, QUESTIONS as CAREER_QUESTIONS
     from .intake import Intake
     selected_route = Intake(root).get().get('route')
+    if focus == 'prepare' and selected_route == 'prepare':
+        resume_route = False
     if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search'):
         focus = selected_route
     from .checkpoint import checkpoint
@@ -272,19 +276,20 @@ def onboarding(root, focus='prepare', resume_route=True):
 
 
 def dispatch(args):
+    """Dispatch CLI commands; only explicit mutation commands persist state."""
     root = getattr(args, "root", ROOT).resolve()
     if not root.is_dir():
         raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
     if args.command == 'menu':
         from .navigation import menu
-        result = menu(args.choose)
         if args.remember and not args.choose:
             raise ValueError('Escolha uma atividade antes de salvar o ponto de retomada.')
+        result = menu(args.choose)
         if result['selected']:
             if args.remember:
                 from .intake import Intake
                 Intake(root).remember_route(result['selected'])
-            route = onboarding(root, result['selected'])
+            route = onboarding(root, result['selected'], resume_route=False)
             route['welcome_back'] = None
             return {**route, 'menu': result}
         return result

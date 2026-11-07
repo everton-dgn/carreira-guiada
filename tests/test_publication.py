@@ -79,6 +79,7 @@ class PublicationTests(unittest.TestCase):
         self.assertTrue(check(self.root)[1])
 
     def test_unknown_png_metadata_is_blocked_and_reviewed_images_are_preserved(self):
+        """Reject unknown image metadata while preserving reviewed banner assets."""
         assets = Path(__file__).resolve().parents[1] / "docs/assets"
         for name in ('carreira-guiada-cover-banner.png', 'fluxo-guiado-banner.png'):
             with self.subTest(name=name):

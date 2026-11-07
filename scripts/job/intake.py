@@ -58,6 +58,7 @@ class Intake:
         if route not in (None, 'curriculum', 'prepare'):
             raise ValueError('Rota de preparação desconhecida.')
         def change(state):
+            """Change the selected intake mode while preserving all saved answers."""
             state['mode'] = mode
             if route is not None:
                 state['route'] = route
@@ -81,12 +82,12 @@ class Intake:
         """Switch an explicit direct route without changing operational checkpoints."""
         if route not in ('career', 'practice'):
             raise ValueError('Rota desconhecida.')
-        if self.get().get('route') in ('curriculum', 'career', 'practice', 'search'):
+        if self.get().get('route') in ('curriculum', 'career', 'practice', 'search', 'prepare'):
             self.remember_route(route)
 
     def remember_route(self, route):
         """Persist an explicit menu choice without granting or resuming actions."""
-        if route not in ('curriculum', 'career', 'practice', 'search'):
+        if route not in ('curriculum', 'career', 'practice', 'search', 'prepare'):
             raise ValueError('Escolha uma das atividades disponíveis no menu.')
         return self._save(lambda state: state.update(route=route))
 

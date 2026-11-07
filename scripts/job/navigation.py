@@ -13,7 +13,8 @@ def menu(selection=None):
         return {'message': message, 'choices': choices, 'selected': None}
     key = ''.join(c for c in unicodedata.normalize('NFKD', selection.strip().casefold()) if not unicodedata.combining(c))
     aliases = {'curriculo': 'curriculum', 'entrevista': 'practice', 'entrevistas': 'practice',
-               'carreira': 'career', 'guia de carreira': 'career', 'busca': 'search', 'vagas': 'search', 'busca de vagas': 'search'}
+               'carreira': 'career', 'guia de carreira': 'career', 'busca': 'search', 'vagas': 'search', 'busca de vagas': 'search',
+               'prepare': 'prepare', 'preparo completo': 'prepare'}
     focus = aliases.get(key) or next((f for n, f, _ in CHOICES if key in (n, f)), None)
     return {'message': message if focus else 'Opção desconhecida. Escolha um número ou nome.\n' + message,
             'choices': choices, 'selected': focus}
@@ -27,7 +28,7 @@ def search(root, sections):
     """
     from .profile import QUESTIONS
     from .research_scope import ResearchScopes, job_search_target
-    from .due_diligence import _url
+    from .sources import normalize_sources
     prefs = sections.get('preferences', {})
     for field in ('roles', 'modalities'):
         if field not in prefs:
@@ -37,9 +38,9 @@ def search(root, sections):
     if not urls:
         return {'next_step': 'sources', 'question': None, 'message': 'Quais sites quer usar? Cole os links ou peça ajuda para encontrar opções verificadas.'}
     try:
-        urls = list(dict.fromkeys(_url(url) for url in urls))
+        urls = normalize_sources(urls)
     except ValueError:
-        return {'next_step': 'sources', 'question': None, 'message': 'Para a pesquisa pública, informe URLs de fontes sem parâmetros.'}
+        return {'next_step': 'sources', 'question': None, 'message': 'Informe links HTTPS públicos, sem credenciais ou parâmetros privados.'}
     target = job_search_target(prefs, urls)
     scopes = ResearchScopes(root)
     with scopes.profile._db() as db:
@@ -47,10 +48,10 @@ def search(root, sections):
     if stopped:
         return {'next_step': 'search_paused', 'question': None, 'message': 'A pesquisa está parada. Retome explicitamente antes de autorizar uma nova pesquisa.', 'filters': prefs, 'urls': urls}
     for scope in reversed(scopes.list()):
-        if scope['purpose'] == 'job_search' and scope['target'] == target and scope['urls'] == urls:
+        if scope['purpose'] == 'job_search' and scope['target'] == target and scope['urls'] == urls and scope.get('url_policy') == 'source_paths':
             checks = [scopes.check({'scope_id': scope['id'], 'expected_version': scope['version'], 'purpose': 'job_search', 'target': target, 'url': url}) for url in urls]
             if all(c['allowed'] for c in checks):
                 return {'next_step': 'search_ready', 'question': None, 'message': 'A pesquisa pública está autorizada para os filtros e sites combinados. Nenhuma candidatura foi autorizada.', 'scope': scope, 'filters': prefs, 'urls': urls}
     return {'next_step': 'search_scope_confirmation', 'question': None,
-            'message': 'Confira os filtros e os sites e confirme se posso pesquisar vagas públicas neles.',
-            'filters': prefs, 'urls': urls, 'scope_request': {'purpose': 'job_search', 'target': target, 'urls': urls}}
+            'message': 'Confira os filtros e os links. Posso consultar resultados, páginas seguintes e detalhes de vagas dentro desses mesmos endereços e caminhos?',
+            'filters': prefs, 'urls': urls, 'scope_request': {'purpose': 'job_search', 'target': target, 'urls': urls, 'url_policy': 'source_paths'}}

@@ -18,8 +18,11 @@ sem preencher identidade, permissões ou conexões e sem aprovar o perfil.
 
 Em `search_scope_confirmation`, mostre os filtros e endereços e aproveite a
 autorização já dada, se ela cobrir exatamente essa consulta. Use `scope_request`
-sem alterar o alvo, acrescente a pergunta e a confirmação real da pessoa e
-grave com `research-scope grant`. Em `search_ready`, releia `start --focus
+sem alterar o alvo nem a política. Explique que `url_policy: source_paths`
+cobre resultados, paginação e detalhes dentro dos mesmos domínios, portas e
+caminhos escolhidos. Confirmação restrita a uma página não cobre essa extensão;
+escopos antigos continuam limitados à URL exata. Acrescente a pergunta e a
+confirmação real da pessoa e grave com `research-scope grant`. Em `search_ready`, releia `start --focus
 search` antes de cada consulta e confira `research-scope check` com finalidade
 `job_search`, alvo atual, ID, versão e URL. Mudança de filtros ou fontes exige
 conferir o novo alcance. `search_paused` exige pedido de retomar; abrir o menu
@@ -28,7 +31,9 @@ não retoma. O contrato está em [investigação](../../../docs/INVESTIGACAO-AGE
 Apresente cargo, empresa, condições publicadas, URL e dúvidas em um lote curto.
 Não declare elegibilidade completa com filtros parciais, preencha formulários
 ou transmita currículo. Se quiser candidatar-se, conduza o preparo completo
-com `start --focus prepare` e mantenha todos os controles abaixo.
+com `menu --choose prepare --remember`, depois consulte `start`. A troca
+fica salva sem mudar a forma de criar ou importar o currículo já existente.
+Mantenha todos os controles abaixo.
 Uma campanha já aprovada pode devolver `execution_readiness`; nesse caso,
 reutilize as permissões e o objetivo existentes, conforme o fluxo a seguir.
 

@@ -10,6 +10,7 @@ class NavigationTests(unittest.TestCase):
     setUp = cli.CliTests.setUp
     call = cli.CliTests.call
     def test_menu_is_read_only_and_routes(self):
+        """Numbers and accented names select routes without creating private state."""
         result = self.call('menu')
         self.assertEqual(len(result['choices']), 4)
         for selection, step in [('1', 'curriculum_input'), ('CURRÍCULO', 'curriculum_input'),
@@ -20,7 +21,43 @@ class NavigationTests(unittest.TestCase):
         self.assertIn('1. Currículo', self.call('start')['message'])
         self.assertFalse((self.root / '.job').exists())
 
+    def test_missing_menu_choice_cannot_write_state(self):
+        """An incomplete persistence request leaves a fresh installation untouched."""
+        self.call('menu', '--remember', success=False)
+        self.assertFalse((self.root / '.job').exists())
+
+    def test_public_search_follows_only_explicitly_consented_source_paths(self):
+        """Pagination and details need scoped consent without widening old grants."""
+        from scripts.job.research_scope import ResearchScopes
+        self.call('profile', 'answer', 'preferences', data={'field': 'roles', 'value': ['Atendimento']})
+        self.call('profile', 'answer', 'preferences', data={'field': 'modalities', 'value': []})
+        self.call('profile', 'answer', 'sources', data={'field': 'urls', 'value': ['https://vagas.example.invalid/vagas']})
+        request = self.call('start', '--focus', 'search')['scope_request']
+        scopes = ResearchScopes(self.root)
+        legacy = scopes.grant({**{k: v for k, v in request.items() if k != 'url_policy'},
+            'question': 'Ler somente esta página?', 'user_confirmation': 'Sim, somente esta página.'})
+        check = {'scope_id': legacy['id'], 'expected_version': 1, 'purpose': 'job_search',
+                 'target': legacy['target'], 'url': 'https://vagas.example.invalid/vagas/123'}
+        self.assertFalse(scopes.check(check)['allowed'])
+        self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'search_scope_confirmation')
+        self.assertEqual(request['url_policy'], 'source_paths')
+        scope = scopes.grant({**request, 'question': 'Consultar resultados e detalhes dentro destes caminhos?',
+            'user_confirmation': 'Sim, inclua resultados, paginação e detalhes dentro dos caminhos indicados.'})
+        check['scope_id'] = scope['id']
+        for url in ('https://vagas.example.invalid/vagas/123', 'https://vagas.example.invalid/vagas?page=2&q=atendimento'):
+            self.assertTrue(scopes.check({**check, 'url': url})['allowed'])
+        for url in ('https://vagas.example.invalid/vagas-falsas', 'https://outro.example.invalid/vagas/123',
+                    'https://vagas.example.invalid:444/vagas/123', 'https://vagas.example.invalid/conta'):
+            self.assertFalse(scopes.check({**check, 'url': url})['allowed'])
+        for url in ('https://vagas.example.invalid/vagas?token=privado', 'https://pessoa:senha@vagas.example.invalid/vagas',
+                    'https://vagas.example.invalid/vagas/../conta', 'https://vagas.example.invalid/vagas/%2e%2e/conta'):
+            with self.assertRaises(ValueError):
+                scopes.check({**check, 'url': url})
+        scopes.revoke({'scope_id': scope['id'], 'expected_version': 1})
+        self.assertFalse(scopes.check(check)['allowed'])
+
     def test_remembered_choice_does_not_require_an_intake_answer(self):
+        """A saved activity survives restart without changing a stop or checkpoint."""
         self.call('menu', '--choose', '1', '--remember')
         self.assertIn('currículo?', self.call('start')['message'])
         self.call('stop')
@@ -32,6 +69,7 @@ class NavigationTests(unittest.TestCase):
         self.assertFalse(self.call('profile', 'show')['sections'].get('permissions'))
 
     def test_curriculum_resume_and_switch(self):
+        """Standalone CV preparation preserves saved work across activity changes."""
         self.call('checkpoint', 'save', data={'phase': 'company', 'summary': 'Análise guardada', 'next_action': 'Continuar análise', 'needs_user': True})
         before = self.call('checkpoint', 'show')
         self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
@@ -50,6 +88,7 @@ class NavigationTests(unittest.TestCase):
         self.assertNotEqual(self.call('start')['next_step'], 'curriculum_complete')
 
     def test_search_consent_generation_and_revocation(self):
+        """Filter changes, stopping and revocation invalidate public-search readiness."""
         self.call('profile', 'answer', 'preferences', data={'field': 'roles', 'value': ['Atendimento']})
         self.call('profile', 'answer', 'preferences', data={'field': 'modalities', 'value': ['remote']})
         self.call('profile', 'answer', 'sources', data={'field': 'urls', 'value': ['https://vagas.example.invalid/']})
@@ -73,6 +112,7 @@ class NavigationTests(unittest.TestCase):
         self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'search_scope_confirmation')
 
     def test_switch_from_curriculum_to_career_and_practice_preserves_checkpoint(self):
+        """Optional activity changes preserve operational checkpoints and stop state."""
         self.call('checkpoint', 'save', data={'phase': 'company', 'summary': 'Guardado', 'next_action': 'Continuar', 'needs_user': True})
         before = self.call('checkpoint', 'show')
         self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
@@ -86,6 +126,7 @@ class NavigationTests(unittest.TestCase):
         self.assertTrue(self.call('status')['control']['stopped'])
 
     def test_existing_authorized_campaign_search(self):
+        """An approved campaign retains its research permissions and stop controls."""
         sections = json.loads((PROJECT / 'templates/profile.json').read_text())['sections']
         sections['identity'] = {'name': 'Pessoa Exemplo', 'email': 'pessoa@example.invalid'}
         sections['preferences'].update(roles=['Atendimento'], modalities=['remote'], currencies=['BRL'])
@@ -102,6 +143,7 @@ class NavigationTests(unittest.TestCase):
         self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'search_paused')
 
     def test_switching_does_not_change_uncertain_application(self):
+        """Menu navigation must never clear an uncertain send or permit a duplicate."""
         from tests.test_job_workflow import WorkflowTests
         fixture = WorkflowTests()
         fixture.setUp()

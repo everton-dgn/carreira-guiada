@@ -14,6 +14,7 @@ class MenuJourneyTests(unittest.TestCase):
     next_day = preparation.PreparationJourneyTests.next_day
 
     def tearDown(self):
+        """Export optional fictional dialogue evidence outside the candidate workspace."""
         destination = os.environ.get('JOB_MENU_REPORT')
         if destination:
             folder = Path(destination) / self._testMethodName
@@ -24,6 +25,7 @@ class MenuJourneyTests(unittest.TestCase):
             }, ensure_ascii=False, indent=2), encoding='utf-8')
 
     def test_import_can_resume_without_uploaded_file(self):
+        """A pending import resumes by requesting the file without unrelated setup."""
         self.call('intake', 'choose', data={'mode': 'import', 'route': 'curriculum'})
         result = self.call('start')
         self.assertEqual(result['next_step'], 'curriculum_input')
@@ -31,11 +33,38 @@ class MenuJourneyTests(unittest.TestCase):
         self.assertNotIn('model_setup', result)
 
     def test_explicit_preparation_takes_priority_over_saved_career(self):
+        """Read-only explicit preparation overrides a saved career route for this call."""
         self.call('career', 'start', data={})
         self.assertEqual(self.call('start')['next_step'], 'career_guidance')
         self.assertNotEqual(self.call('start', '--focus', 'prepare')['next_step'], 'career_guidance')
 
+    def test_preparation_choice_survives_next_day_without_reimporting_cv(self):
+        """A novice can leave search for full preparation and resume existing work."""
+        self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
+        self.call('intake', 'answer', data={'field': 'experience', 'text': 'Experiência fictícia em atendimento.'})
+        draft = self.call('resume', 'draft', data={'label': 'Exemplo',
+            'markdown': preparation.CV, 'fact_ids': self.call('intake', 'status')['fact_ids']})
+        self.call('resume', 'approve', draft['id'])
+        self.call('career', 'start', data={})
+        self.call('menu', '--choose', 'busca', '--remember')
+        self.call('stop')
+        before = self.call('intake', 'status')
+        checkpoint = self.call('checkpoint', 'show')
+        self.say('A busca está salva.', 'Quero preparar tudo para me candidatar depois.')
+        preview = self.call('menu', '--choose', 'preparo completo')
+        self.assertEqual(preview['next_step'], 'identity')
+        self.assertEqual(self.call('start')['next_step'], 'preferences')
+        chosen = self.call('menu', '--choose', 'prepare', '--remember')
+        self.assertEqual(chosen['next_step'], 'identity')
+        self.next_day()
+        self.assertEqual(self.call('start')['next_step'], 'identity')
+        self.assertEqual(self.call('intake', 'status'), before)
+        self.assertEqual(self.call('checkpoint', 'show'), checkpoint)
+        self.assertEqual(self.call('resume', 'show', draft['id'])['status'], 'approved')
+        self.assertTrue(self.call('status')['control']['stopped'])
+
     def test_novice_curriculum_practice_career_and_next_day(self):
+        """Exercise fictional novice choices, optional training and next-day continuity."""
         self.say(self.call('menu', plain=True), 'Não sei usar isso. Quero só arrumar meu currículo.')
         entry = self.call('menu', '--choose', 'currículo')
         self.assertNotIn('model_setup', entry)
@@ -86,6 +115,7 @@ class MenuJourneyTests(unittest.TestCase):
         self.assertEqual(self.call('status')['counts']['actions'], {})
 
     def test_novice_public_search_without_contact_and_safe_resume(self):
+        """Search needs only minimal preferences and renewed consent after a stop."""
         self.say(self.call('menu')['message'], 'Quero só ver vagas, sem cadastrar meu e-mail.')
         state = self.call('menu', '--choose', 'vagas', '--remember')
         for field, value, words in [('roles', ['Atendimento'], 'Atendimento ao público.'),
@@ -99,10 +129,10 @@ class MenuJourneyTests(unittest.TestCase):
         self.call('profile', 'answer', 'sources', data={'field': 'urls', 'value': ['https://vagas.example.invalid/atendimento']})
         state = self.call('start', '--focus', 'search')
         self.assertEqual(state['next_step'], 'search_scope_confirmation')
-        self.say(state['message'], 'Pode consultar essa página pública para atendimento, sem preferência de modalidade.')
+        self.say(state['message'], 'Pode consultar resultados, paginação e detalhes dentro desse caminho para atendimento, sem preferência de modalidade.')
         scope = self.call('research-scope', 'grant', data={**state['scope_request'],
             'question': 'Quais vagas públicas de atendimento, sem preferência de modalidade aparecem nesta página?',
-            'user_confirmation': 'Pode consultar essa página pública para atendimento, sem preferência de modalidade.'})
+            'user_confirmation': 'Pode consultar resultados, paginação e detalhes dentro desse caminho para atendimento, sem preferência de modalidade.'})
         ready = self.call('start', '--focus', 'search')
         self.assertEqual(ready['next_step'], 'search_ready')
         check = {'scope_id': scope['id'], 'expected_version': scope['version'], 'purpose': scope['purpose'],

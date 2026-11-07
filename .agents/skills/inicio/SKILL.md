@@ -17,8 +17,11 @@ entre sessões; a flag só é usada após a escolha explícita da pessoa.
 Consultar a rota sem essa flag permanece só leitura; uma opção desconhecida mostra
 o menu novamente, sem apagar dados. Pedido específico sempre entra direto.
 
-Depois de escolher o preparo completo, ofereça `start.model_setup.question` se ela existir,
-sozinha, e explique que a escolha é opcional. Pergunte pelos aplicativos ou
+Se a pessoa escolher o preparo completo, salve com
+`menu --choose prepare --remember` e consulte `start`. Preserve o currículo
+já existente, sem repetir a escolha de criar ou importar.
+Se `start.model_setup.question` estiver presente, faça essa pergunta
+separadamente e explique que responder é opcional. Pergunte pelos aplicativos ou
 serviços conhecidos, sem exigir nomes técnicos de provedores. Aceite qualquer
 fornecedor, inclusive modelos locais. Se a pessoa já informou, reaproveite.
 Salve a escolha com `models save`, conforme

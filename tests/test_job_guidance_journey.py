@@ -108,6 +108,7 @@ class GuidanceJourneyTests(unittest.TestCase):
         self.assertEqual(state['counts']['messages'], 0)
 
     def test_explicit_job_search_keeps_priority_over_optional_career(self):
+        """An explicit search request takes priority over an unfinished optional guide."""
         self.call('career', 'start', data={})
         self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'preferences')
         self.assertEqual(self.call('career', 'status')['phase'], 'questions')

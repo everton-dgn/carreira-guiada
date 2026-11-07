@@ -5,7 +5,8 @@ check(data, *, db=None) accepts scope_id, expected_version, purpose, target,
 url and returns allowed/reason/scope_id/version. Pass the caller's write
 transaction as db to check revocation and workflow generation atomically.
 Targets: company_dossier/company, career_exploration/career,
-source_discovery/source, job_search/search. URLs are exact normalized public URLs without queries.
+source_discovery/source, job_search/search. URLs are exact normalized public URLs without queries,
+unless a job_search grant explicitly opts into source_paths (public source descendants).
 Historical reads do not require a currently active permission.
 """
 import hashlib
@@ -16,6 +17,7 @@ from .profile import Profile
 from .policy import obj
 from .due_diligence import _url, _date
 from .resumes import _text
+from .sources import normalize_url, normalize_sources, research_target
 
 
 def fields(data, required, optional=()):
@@ -37,8 +39,8 @@ def table_exists(db, name):
 
 
 def job_search_target(preferences, urls):
-    """Bind a public job search to the saved filters and exact normalized URLs."""
-    urls = list(dict.fromkeys(_url(url) for url in urls))
+    """Bind a public job search to the saved filters and normalized source URLs."""
+    urls = normalize_sources(urls)
     if 'roles' not in preferences or 'modalities' not in preferences or not urls:
         raise ValueError('Combine o tipo de trabalho, a modalidade e os sites antes de pesquisar.')
     digest = hashlib.sha256(json.dumps({'preferences': preferences, 'urls': urls},
@@ -117,44 +119,71 @@ class ResearchScopes(Revisions):
         return row[0], bool(row[1])
 
     def _validate(self, r):
-        fields(r, ('id','version','purpose','target','question','urls','user_confirmation','generation','revoked','created_at'))
+        """Validate persisted grants without upgrading legacy exact-URL consent."""
+        fields(r, ('id','version','purpose','target','question','urls','user_confirmation','generation','revoked','created_at'), ('url_policy',))
         text(r['id']); positive(r['version']); positive(r['generation'])
         self._target(r['purpose'], r['target'])
         text(r['question']); text(r['user_confirmation']); _date(r['created_at'])
         if type(r['revoked']) is not bool or not isinstance(r['urls'], list) or not r['urls']:
             raise ValueError('Escopo inválido.')
+        normalizer = self._normalizer(r)
         for url in r['urls']:
-            if _url(url) != url: raise ValueError('URL não normalizada.')
+            if normalizer(url) != url: raise ValueError('URL não normalizada.')
+
+    @staticmethod
+    def _normalizer(data):
+        """Accept broader source-path consent only for explicitly opted-in job searches."""
+        if 'url_policy' not in data:
+            return _url
+        if data['purpose'] != 'job_search' or data['url_policy'] != 'source_paths':
+            raise ValueError('Política de URLs incompatível com a finalidade.')
+        return normalize_url
+
+    @staticmethod
+    def _allows_url(scope, url):
+        """Confine opted-in navigation to each source's host, port and path boundary."""
+        if scope.get('url_policy') != 'source_paths':
+            return url in scope['urls']
+        try:
+            research_target(url, scope['urls'])
+            return True
+        except ValueError:
+            return False
 
     def grant(self, data):
-        fields(data, ('purpose','target','question','urls','user_confirmation'))
+        """Record a confirmed scope bound to the current workflow and search filters."""
+        fields(data, ('purpose','target','question','urls','user_confirmation'), ('url_policy',))
         self._target(data['purpose'], data['target'])
         if not isinstance(data['urls'], list): raise ValueError('URLs inválidas.')
+        normalizer = self._normalizer(data)
+        data = dict(data, urls=list(dict.fromkeys(normalizer(u) for u in data['urls'])))
         with self.profile._db(True) as db:
             generation, stopped = self._control(db)
             if stopped: raise ValueError('Pesquisa parada; retome antes de autorizar.')
             if data['purpose'] == 'job_search' and not self._current_search(db, data):
                 raise ValueError('Os filtros ou sites mudaram. Confira o alcance atual antes de autorizar.')
-            return self._save(db, dict(data, id=str(uuid4()), version=1, generation=generation, revoked=False, urls=list(dict.fromkeys(_url(u) for u in data['urls'])), created_at=datetime.now(timezone.utc).isoformat()))
+            return self._save(db, dict(data, id=str(uuid4()), version=1, generation=generation, revoked=False, created_at=datetime.now(timezone.utc).isoformat()))
 
     def _current_search(self, db, scope):
         """Reject stale targets even when the caller reuses an old check payload."""
         sections = self.profile._read(db)['sections']
         try:
-            urls = list(dict.fromkeys(_url(url) for url in sections.get('sources', {}).get('urls', [])))
+            urls = normalize_sources(sections.get('sources', {}).get('urls', []))
             target = job_search_target(sections.get('preferences', {}), urls)
             return scope['target'] == target and scope['urls'] == urls
         except ValueError:
             return False
 
     def check(self, data, *, db=None):
+        """Recheck version, purpose, URL boundary, revocation and current search state."""
         fields(data, ('scope_id','expected_version','purpose','target','url'))
         positive(data['expected_version']); self._target(data['purpose'], data['target'])
-        url = _url(data['url'])
+        url = (normalize_url if data['purpose'] == 'job_search' else _url)(data['url'])
         def check_conn(conn):
+            """Evaluate the latest grant against the same transaction as workflow state."""
             r = self._get(conn, data['scope_id'])
             generation, stopped = self._control(conn)
-            reason = ('not_found' if r is None else 'stale_version' if r['version'] != data['expected_version'] else 'revoked' if r['revoked'] else 'stopped' if stopped else 'stale_generation' if generation != r['generation'] else 'purpose_mismatch' if r['purpose'] != data['purpose'] else 'target_mismatch' if r['target'] != data['target'] else 'url_mismatch' if url not in r['urls'] else 'allowed')
+            reason = ('not_found' if r is None else 'stale_version' if r['version'] != data['expected_version'] else 'revoked' if r['revoked'] else 'stopped' if stopped else 'stale_generation' if generation != r['generation'] else 'purpose_mismatch' if r['purpose'] != data['purpose'] else 'target_mismatch' if r['target'] != data['target'] else 'url_mismatch' if not self._allows_url(r, url) else 'allowed')
             if reason == 'allowed' and r['purpose'] == 'job_search' and not self._current_search(conn, r):
                 reason = 'stale_search'
             return dict(allowed=reason == 'allowed', reason=reason, scope_id=data['scope_id'], version=r['version'] if r else None)

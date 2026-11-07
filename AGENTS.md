@@ -121,8 +121,9 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    [busca](.agents/skills/busca/SKILL.md) para conferir o escopo antes de navegar.
    Para currículo, use `start --focus curriculum --json` e registre
    `route: curriculum` em `intake choose`. Termine entregando a versão
-   aprovada, sem iniciar perguntas de candidatura. `--focus prepare`
-   mantém o preparo completo quando a pessoa o pedir.
+   aprovada, sem iniciar perguntas de candidatura. Se a pessoa pedir o preparo
+   completo, use `menu --choose prepare --remember` para guardar essa escolha.
+   `start --focus prepare` apenas consulta esse percurso, sem alterar a rota salva.
    Para treinar entrevistas, `start --focus practice --json` dispensa perfil,
    currículo e contas. Siga [entrevista](.agents/skills/entrevista/SKILL.md).
    Para escolher um foco profissional, use `start --focus career --json` e

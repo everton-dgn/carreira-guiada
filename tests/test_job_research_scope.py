@@ -42,6 +42,15 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(self.scopes.check(q)['reason'], 'stale_generation')
         self.assertTrue(self.scopes.check(self.query(self.grant()))['allowed'])
 
+    def test_source_path_policy_cannot_expand_other_purposes(self):
+        """A source-path option cannot widen company, career or discovery grants."""
+        for purpose, kind in (('company_dossier', 'company'), ('career_exploration', 'career'), ('source_discovery', 'source')):
+            with self.subTest(purpose=purpose), self.assertRaises(ValueError):
+                self.scopes.grant(dict(purpose=purpose, target={'kind': kind, 'id': 'fiction'},
+                    question='Consulta fictícia?', urls=['https://fiction.example/work'],
+                    user_confirmation='Autorizo.', url_policy='source_paths'))
+        self.assertFalse((self.root / '.job').exists())
+
     def test_revoke_history_and_stale_writer(self):
         r = self.grant(); payload = dict(scope_id=r['id'], expected_version=1)
         self.scopes.revoke(payload)

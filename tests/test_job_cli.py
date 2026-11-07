@@ -36,6 +36,7 @@ class CliTests(unittest.TestCase):
         self.assertFalse((self.root / ".job").exists())
 
     def test_search_focus_prepares_sources_without_requiring_a_resume(self):
+        """Public search asks for sources without imposing a resume or full campaign."""
         from scripts.job.profile import Profile
         self.assertEqual(self.call('start', '--focus', 'search')['next_step'], 'preferences')
         self.assertFalse((self.root / '.job').exists())
