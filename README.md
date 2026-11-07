@@ -47,10 +47,12 @@ exigem completar o cadastro de candidaturas. Para conhecer vagas, combine
 o que procurar e quais fontes consultar; currículo, e-mail e permissão de
 envio ficam para quando você quiser se candidatar.
 
-"Não sei" e "depois" também são respostas válidas. Ao voltar, `iniciar`
-reconhece o progresso salvo; `continuar` retoma o que você estava fazendo.
-Trocar de tarefa preserva suas respostas. Você conversa no chat, sem precisar
-aprender os comandos internos do projeto.
+Diga "agora quero treinar entrevista" para trocar ou "continuar de onde parei"
+ao voltar outro dia. A atividade escolhida e as respostas ficam salvas.
+[Como trocar, revisar e retomar](docs/GUIA.md#a-primeira-conversa).
+
+"Não sei" e "depois" também são respostas válidas. Você conversa no chat,
+sem precisar aprender os comandos internos do projeto.
 
 ![Onboarding fictício no terminal: a IA conduz a primeira conversa e a aprovação do perfil.](docs/assets/inicio-guiado.gif)
 

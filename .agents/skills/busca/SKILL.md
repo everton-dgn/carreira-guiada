@@ -11,7 +11,9 @@ e estados" em [AGENTS.md](../../../AGENTS.md), e as fontes escolhidas pela pesso
 
 ## Busca pública pelo menu
 
-Quando a pessoa quiser apenas ver vagas, consulte `start --focus search`.
+Quando a pessoa escolher apenas ver vagas, registre
+`menu --choose search --remember` e consulte `start`. Para só conferir a rota
+sem mudar a atividade salva, use `start --focus search`.
 Responda somente a pergunta devolvida: cargo, modalidade ou links. Salve os
 filtros em `profile answer preferences` e os links em `profile answer sources`,
 sem preencher identidade, permissões ou conexões e sem aprovar o perfil.

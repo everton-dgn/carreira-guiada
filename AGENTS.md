@@ -106,7 +106,9 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    `menu`: currículo, entrevistas, carreira e busca de vagas. `menu`, "opções"
    e "ajuda" mostram essas opções a qualquer momento, sem alterar o progresso.
    Pedido específico entra direto: use `menu --choose` com o número ou nome
-   escolhido, ou `start --focus`. Não faça o onboarding inteiro por padrão
+   escolhido e `--remember` para salvar essa atividade, inclusive quando o
+   pedido vier em uma frase. `start --focus` só consulta e não troca a rota
+   salva. Não faça o onboarding inteiro por padrão
    nem interrompa a escolha com a pergunta opcional sobre serviços de IA.
    Após uma escolha explícita, acrescente `--remember` a `menu --choose`
    para salvar a atividade entre sessões. Isso não concede permissões nem
@@ -143,9 +145,10 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    iniciar ou continuar uma rodada. Uma ação incerta bloqueia somente o
    reenvio daquela vaga; as demais vagas seguem, e a conferência da incerta
    entra como item da rodada, não como pré-condição.
-6. Se a pessoa já disse "continuar" ou "retomar", isso é a resposta: reutilize
-   o objetivo e as permissões existentes e siga, sem perguntar de novo se ela
-   quer continuar. Pergunte apenas o que ainda não foi respondido.
+6. Se a pessoa já disse "continuar" ou "retomar", siga a atividade indicada
+   sem pedir a mesma decisão de novo. Retomar somente currículo, treino ou guia
+   de carreira preserva uma campanha parada. Na retomada da campanha, reutilize
+   o objetivo e as permissões vigentes. Pergunte só o que ainda não foi respondido.
 
 Uma pergunta, uma contagem ou um pedido de revisão não inicia candidaturas nem
 cria objetivo.
@@ -166,7 +169,8 @@ pesquisa de reputação e salários segue [EMPRESAS.md](docs/EMPRESAS.md);
 comparação e negociação seguem [PROPOSTAS.md](docs/PROPOSTAS.md).
 O [guia de carreira](docs/CARREIRA.md) é opcional: não bloqueia uma campanha
 nem altera filtros, fatos profissionais ou permissões. Em pedido explícito
-de busca, preserve `--focus search` mesmo quando houver carreira em andamento.
+de busca, salve `menu --choose search --remember`, mesmo quando houver carreira
+em andamento. A busca pública continua sem exigir o perfil completo.
 
 ## Perfil, consentimento e permissões
 

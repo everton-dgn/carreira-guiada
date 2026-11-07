@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.14.1 - 2026-11-07
+
+- Retomada identifica currículo e busca salvos e oferece continuar, revisar ou
+  trocar de atividade sem repetir perguntas já respondidas.
+- Início preserva a atividade lida ao abrir, mesmo quando outra sessão troca
+  a escolha durante a consulta, sem misturar orientações nem interromper o comando.
+- Treino adiado preserva a resposta anterior e aguarda retomada; respostas
+  que precisam de feedback não são apresentadas como perguntas novas.
+- Guias explicam como salvar uma troca, revisar somente a atividade escolhida
+  e retomar treino ou carreira sem ligar uma campanha parada.
+
 ## 0.14.0 - 2026-11-07
 
 - Menu com quatro caminhos diretos: currículo, entrevistas, guia de carreira e

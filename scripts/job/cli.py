@@ -118,11 +118,11 @@ def parser():
     return main
 
 
-def onboarding(root, focus='prepare', resume_route=True):
+def onboarding(root, focus='prepare', resume_route=True, intake_state=None):
     """Read the requested route, or resume the explicit saved choice without writes."""
     from .career import CareerGuide, QUESTIONS as CAREER_QUESTIONS
     from .intake import Intake
-    selected_route = Intake(root).get().get('route')
+    selected_route = (Intake(root).get() if intake_state is None else intake_state).get('route')
     if focus == 'prepare' and selected_route == 'prepare':
         resume_route = False
     if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search'):
@@ -175,7 +175,7 @@ def onboarding(root, focus='prepare', resume_route=True):
                 pass
     if focus == 'practice' or (focus == 'prepare' and resume_route and practice['decision'] == 'now' and practice['phase'] in ('idle', 'questions', 'feedback')):
         next_step = 'interview_preparation'
-        question = practice['question']
+        question = practice['question'] if practice['decision'] not in ('later', 'skip') and practice['next_step'] == 'answer' else None
         message = practice['message']
         if question:
             message += '\n' + question['question']
@@ -259,7 +259,7 @@ def onboarding(root, focus='prepare', resume_route=True):
     additional_progress = bool(checkpoint(root) or Offers(root).status()['count'] or DueDiligence(root).list())
     saved = bool(data.get('sections') or intake['mode'] or versions or presence['decision'] or practice['decision'] or resumes.sources() or resumes.facts() or additional_progress)
     welcome = 'Encontrei seu progresso salvo. Quer continuar de onde parou ou revisar sua preparação? Revisar preserva as respostas e só muda o que você corrigir.' if saved else None
-    if practice['decision'] in ('later', 'skip') and practice['phase'] in ('questions', 'feedback'):
+    if focus != 'practice' and practice['decision'] in ('later', 'skip') and practice['phase'] in ('questions', 'feedback'):
         message += ' Seu treino adiado continua salvo e pode ser retomado quando quiser.'
         welcome += ' Há também um treino adiado com respostas salvas.'
     labels = {'curriculum_input': 'receber ou criar o currículo', 'curriculum_intake': 'continuar as informações profissionais',
@@ -295,16 +295,17 @@ def dispatch(args):
         return result
     if args.command == "start":
         from .models import Models
-        from .navigation import menu
+        from .navigation import menu, resume_entry
         from .intake import Intake
-        result = onboarding(root, args.focus or 'prepare', resume_route=args.focus is None)
+        intake_state = Intake(root).get()
+        result = onboarding(root, args.focus or 'prepare', resume_route=args.focus is None, intake_state=intake_state)
         if args.focus:
             result['welcome_back'] = None
         else:
-            if Intake(root).get().get('route') not in ('curriculum', 'career', 'practice', 'search'):
+            if intake_state.get('route') not in ('curriculum', 'career', 'practice', 'search'):
                 result['model_setup'] = Models(root).guidance()
             result['menu'] = menu()
-            intake_state = Intake(root).get()
+            result = resume_entry(result, intake_state.get('route'))
             if result['next_step'] == 'curriculum_input' and not result.get('welcome_back') and not intake_state.get('mode') and not intake_state.get('route'):
                 result['message'] = result['menu']['message']
         return result
@@ -527,12 +528,13 @@ def dispatch_workflow(workflow, root, args):
 
 
 def render(value):
+    """Show the current prompt without reasking a deferred or already saved answer."""
     if isinstance(value, dict) and value.get("message"):
         if value.get('example'):
             return value['message'] + '\n' + value['example']
         if value.get('welcome_back'):
             return value['welcome_back'] + '\n' + value['resume_hint']
-        if value.get('session_id') and value.get('decision') not in ('later', 'skip') and isinstance(value.get('question'), dict):
+        if value.get('session_id') and value.get('decision') not in ('later', 'skip') and value.get('next_step') == 'answer' and isinstance(value.get('question'), dict):
             return value['message'] + '\n' + value['question']['question']
         return value['message']
     return json.dumps(value, ensure_ascii=False, indent=2)

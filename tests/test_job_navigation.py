@@ -1,6 +1,7 @@
 """Direct routes through isolated CLI processes, with fictional data."""
 import unittest
 import json
+from unittest.mock import patch
 from tests import test_job_cli as cli
 
 PROJECT = cli.PROJECT
@@ -25,6 +26,40 @@ class NavigationTests(unittest.TestCase):
         """An incomplete persistence request leaves a fresh installation untouched."""
         self.call('menu', '--remember', success=False)
         self.assertFalse((self.root / '.job').exists())
+
+    def test_start_keeps_route_consistent_during_concurrent_switch(self):
+        """A switch after the first read cannot mix routes or overwrite the new choice."""
+        from scripts.job.cli import dispatch, parser
+        from scripts.job.intake import Intake
+        real_get = Intake.get
+        cases = [('career', 'curriculum', 'career_guidance', None),
+                 ('curriculum', 'search', 'curriculum_input', 'Currículo'),
+                 ('search', 'curriculum', 'preferences', 'Busca de vagas'),
+                 ('prepare', 'curriculum', 'curriculum_input', None)]
+        for saved, replacement, step, label in cases:
+            with self.subTest(saved=saved, replacement=replacement):
+                self.call('menu', '--choose', saved, '--remember')
+                switched = False
+
+                def switching_get(service):
+                    """Persist another session's choice just after the initial route read."""
+                    nonlocal switched
+                    snapshot = real_get(service)
+                    if not switched:
+                        switched = True
+                        Intake(self.root).remember_route(replacement)
+                    return snapshot
+
+                with patch.object(Intake, 'get', switching_get):
+                    result = dispatch(parser().parse_args(['start', '--root', str(self.root)]))
+                self.assertEqual(result['next_step'], step)
+                if label:
+                    self.assertIn(label, result['welcome_back'])
+                else:
+                    self.assertNotIn('Sua atividade salva é', result.get('welcome_back') or '')
+                self.assertEqual(Intake(self.root).get()['route'], replacement)
+                next_start = self.call('start')
+                self.assertIn('Busca de vagas' if replacement == 'search' else 'Currículo', next_start['welcome_back'])
 
     def test_public_search_follows_only_explicitly_consented_source_paths(self):
         """Pagination and details need scoped consent without widening old grants."""

@@ -71,6 +71,10 @@ pendentes e a ausência de candidaturas e mensagens durante o preparo.
 `tests/test_job_menu_journey.py` percorre as entradas diretas com respostas
 roteirizadas de uma pessoa iniciante, gera currículo e troca de atividade.
 Usa o mesmo bloqueio de rede e subprocessos e avança o relógio na retomada.
+Os cenários cobrem opções inválidas, consulta sem troca de atividade,
+identificação de currículo e busca salvos, treino adiado com resposta
+aguardando feedback e guia de carreira pausado. Conferem que consultas não
+mudam o banco e que retomar uma atividade privada não remove a parada global.
 `JOB_MENU_REPORT` pode apontar para uma pasta privada de evidências.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
