@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.15.1 - 2026-11-07
+
 - Banners usam textos mais diretos e ilustrações ligadas ao recurso: currículo,
   candidaturas, perfis, dossiê, plano de carreira, benchmarks e retornos.
   O diagrama mostra a continuidade da busca sem repetir o preparo inicial.
