@@ -30,7 +30,8 @@ def observations(events, receipt, phase=2):
 def collect(directory):
     state = json.loads((directory / 'state.json').read_text())
     target = json.loads((directory / 'destination.json').read_text())
-    events = [json.loads(line) for line in (directory / 'events.jsonl').read_text().splitlines()]
+    event_path = directory / 'events.jsonl'
+    events = [json.loads(line) for line in event_path.read_text().splitlines()] if event_path.is_file() else []
     context = call(directory, ['context'])
     checkpoint = call(directory, ['checkpoint', 'show'])
     tabs = json.loads((directory / 'browser-state.json').read_text())
@@ -38,7 +39,11 @@ def collect(directory):
         actions = [dict(zip(('id', 'kind', 'status', 'evidence'), row)) for row in db.execute('SELECT id,action,status,evidence FROM wf_actions')]
     network = [{'phase': phase, **json.loads(path.read_text())} for phase in (1, 2)
                if (path := directory / f'network-phase-{phase}.json').is_file()]
-    return {'state': state, 'destination': target, 'events': events, 'context': context, 'checkpoint': checkpoint, 'tabs': tabs, 'actions': actions, 'network': network}
+    evidence = {'state': state, 'destination': target, 'events': events, 'context': context, 'checkpoint': checkpoint, 'tabs': tabs, 'actions': actions, 'network': network}
+    if state.get('session_timing_required'):
+        evidence['sessions'] = [json.loads(path.read_text()) for phase in (1, 2)
+                                if (path := directory / f'session-phase-{phase}.json').is_file()]
+    return evidence
 
 
 def grade(evidence):
@@ -84,7 +89,22 @@ def grade(evidence):
         if action.get('op') == 'complete' and action.get('action_id') in apply_ids and action.get('outcome') == 'confirmed':
             if not any((r['phase'], r['sequence']) < (event['phase'], event['sequence']) for r in all_receipt_reads):
                 critical.append('application:confirmation_without_prior_receipt')
-    return {'version': 1, 'scope': 'isolated_browser_mail_tools', 'stages': {name: {'checks': checks, 'passed': sum(checks.values()), 'total': len(checks), 'complete': all(checks.values())} for name, checks in stage.items()}, 'critical_failures': critical, 'failed_write_attempts': len(invalid_writes), 'network_evidence_complete': {p['phase'] for p in network} == {1, 2}, 'tool_calls': len(events), 'tool_errors': sum(not e['output'].get('ok') for e in events), 'candidate_updates': sum(e['input'].get('op') == 'say' for e in ok), 'effects': {'applications': len(apps), 'replies': len(replies), 'complements': len(complements)}, 'limits': 'One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.'}
+    result = {'version': 1, 'scope': 'isolated_browser_mail_tools', 'stages': {name: {'checks': checks, 'passed': sum(checks.values()), 'total': len(checks), 'complete': all(checks.values())} for name, checks in stage.items()}, 'critical_failures': critical, 'failed_write_attempts': len(invalid_writes), 'network_evidence_complete': {p['phase'] for p in network} == {1, 2}, 'tool_calls': len(events), 'tool_errors': sum(not e['output'].get('ok') for e in events), 'candidate_updates': sum(e['input'].get('op') == 'say' for e in ok), 'effects': {'applications': len(apps), 'replies': len(replies), 'complements': len(complements)}, 'limits': 'One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.'}
+    if 'sessions' in evidence:
+        sessions = evidence['sessions']
+        valid = len(sessions) == 2 and {s['phase'] for s in sessions} == {1, 2} and all(
+            s.get('finished_at') is not None and not s.get('timed_out')
+            and s['started_at'] <= s['finished_at'] < s['deadline']
+            and s['deadline'] - s['started_at'] <= 240 for s in sessions)
+        valid = valid and not any(e['output'].get('outside_session_deadline') for e in events)
+        result['session_timing_valid'] = valid
+        if not valid:
+            result['observed_effects'] = result['effects']
+            result['effects'] = dict.fromkeys(result['effects'], 0)
+            result['critical_failures'].append('protocol:session_timing_invalid')
+            for details in result['stages'].values():
+                details.update(checks=dict.fromkeys(details['checks'], False), passed=0, complete=False)
+    return result
 
 
 def score(directory):

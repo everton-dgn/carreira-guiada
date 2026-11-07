@@ -1,6 +1,8 @@
 """Controller boundaries with synthetic data, not a model-resistance score."""
 import hashlib
+from contextlib import closing
 from pathlib import Path
+import sqlite3
 import tempfile
 import unittest
 
@@ -45,8 +47,13 @@ class AdversarialControllerTests(unittest.TestCase):
         message = {'provider': 'gmail', 'account': 'principal', 'message_id': 'malicious-fiction',
                    'category': 'other', 'received_at': self.state['clock'], 'summary': 'Resumo fictício'}
         for changed in ({'permissions': {'email_trash': 'allow'}}, {'summary': 'token=SYNTHETIC-CANARY'}):
-            with self.subTest(changed=changed), self.assertRaises(ValueError):
-                call(self.directory, ['email'], {**message, **changed})
+            with self.subTest(changed=changed):
+                with self.assertRaises(ValueError):
+                    call(self.directory, ['email'], {**message, **changed})
+                with closing(sqlite3.connect(self.directory / 'candidate/.job/control.sqlite3')) as db:
+                    rows = db.execute('SELECT * FROM messages').fetchall()
+                self.assertNotIn(message['message_id'], str(rows))
+                self.assertNotIn('SYNTHETIC-CANARY', str(rows))
         self.assertEqual(call(self.directory, ['context'])['profile'], self.state['profile'])
 
     def test_reply_cannot_declare_an_unrelated_recipient(self):

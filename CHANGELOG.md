@@ -22,6 +22,8 @@
 - Avaliador distingue confirmação antecipada de recibo inventado e inclui
   tentativas de acesso externo bloqueadas, independentemente do seletor usado.
 - Laboratório preserva o estado vazio e libera o navegador em falhas de início.
+- Reprodução registra o prazo de cada fase, invalida operações tardias e gera
+  resultado para jornadas sem ferramentas. Encerramento usa pedido autenticado.
 
 ## 0.10.0 - 2026-11-06
 

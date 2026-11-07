@@ -23,28 +23,33 @@ def serve(directory, lifetime):
     token = secrets.token_hex(24)
     try:
         browser = Browser(directory, site)
-        toolset = Tools(directory, browser)
+        toolset = Tools(directory, browser, require_session=True)
 
         class Handler(BaseHTTPRequestHandler):
             def log_message(self, *args):
                 pass
 
             def do_POST(self):
+                nonlocal stopping
                 size = int(self.headers.get('Content-Length', 0))
-                if self.path != '/call' or self.headers.get('X-Lab-Key') != token or not 0 < size <= 65536:
+                if self.path not in ('/call', '/shutdown') or self.headers.get('X-Lab-Key') != token or not 0 < size <= 65536:
                     self.send_error(403)
                     return
                 try:
                     data = json.loads(self.rfile.read(size))
-                    calls = data['calls'] if set(data) == {'calls'} else [data]
-                    if not isinstance(calls, list) or not 1 <= len(calls) <= 12:
-                        raise ValueError('Use no máximo 12 operações por chamada.')
-                    result = []
-                    for item in calls:
-                        result.append(toolset.invoke(item))
-                        if not result[-1]['ok']:
-                            break
-                    output = {'results': result}
+                    if self.path == '/shutdown':
+                        stopping = True
+                        output = {'stopping': True}
+                    else:
+                        calls = data['calls'] if set(data) == {'calls'} else [data]
+                        if not isinstance(calls, list) or not 1 <= len(calls) <= 12:
+                            raise ValueError('Use no máximo 12 operações por chamada.')
+                        result = []
+                        for item in calls:
+                            result.append(toolset.invoke(item))
+                            if not result[-1]['ok']:
+                                break
+                        output = {'results': result}
                 except (ValueError, TypeError, KeyError) as exc:
                     output = {'error': str(exc)}
                 raw = json.dumps(output, ensure_ascii=False).encode()
@@ -78,13 +83,13 @@ def serve(directory, lifetime):
         site.close()
 
 
-def request(connection, data):
+def request(connection, data, path='/call'):
     info = json.loads(connection.read_text())
     if type(info['port']) is not int or not 1 <= info['port'] <= 65535:
         raise ValueError('Porta local inválida.')
     conn = http.client.HTTPConnection('127.0.0.1', info['port'], timeout=40)
     try:
-        conn.request('POST', '/call', json.dumps(data), {'Content-Type': 'application/json', 'X-Lab-Key': info['key']})
+        conn.request('POST', path, json.dumps(data), {'Content-Type': 'application/json', 'X-Lab-Key': info['key']})
         response = conn.getresponse()
         if response.status != 200:
             raise ValueError(f'Laboratório recusou a chamada: HTTP {response.status}')
@@ -95,7 +100,7 @@ def request(connection, data):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('init', 'serve', 'call', 'advance', 'score'))
+    parser.add_argument('command', choices=('init', 'serve', 'call', 'start-session', 'finish-session', 'shutdown', 'advance', 'score'))
     parser.add_argument('--directory', type=Path, required=True)
     parser.add_argument('--data')
     parser.add_argument('--lifetime', type=int, default=600)
@@ -111,6 +116,12 @@ def main():
         serve(directory, args.lifetime)
     elif args.command == 'call':
         print(json.dumps(request(directory / 'connection.json', json.loads(args.data)), ensure_ascii=False))
+    elif args.command in ('start-session', 'finish-session'):
+        from .bench_tools import begin_session, finish_session
+        result = (begin_session if args.command == 'start-session' else finish_session)(directory)
+        print(json.dumps(result))
+    elif args.command == 'shutdown':
+        print(json.dumps(request(directory / 'connection.json', {}, '/shutdown')))
     elif args.command == 'advance':
         state = json.loads((directory / 'state.json').read_text())
         if state['phase'] != 1:

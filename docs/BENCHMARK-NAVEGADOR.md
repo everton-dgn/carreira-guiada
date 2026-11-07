@@ -66,41 +66,59 @@ bench_lab="$bench_parent/laboratory"
 bench_client="$bench_parent/client"
 uv run --locked --group browser python -m scripts.maintainers.browser_benchmark init --directory "$bench_lab"
 uv run --locked --group browser python -m scripts.maintainers.bench_client --laboratory "$bench_lab" --client "$bench_client"
-uv run --locked --group browser python -m scripts.maintainers.browser_benchmark serve --directory "$bench_lab" --lifetime 360 &
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark serve --directory "$bench_lab" --lifetime 600 &
 bench_pid=$!
 ```
 
 Espere a mensagem `ready`. Abra seu cliente de IA na pasta informada pelo
-comando, selecione modelo e esforço e cole o conteúdo de `fase-1.txt`, na pasta `executor_prompts` devolvida pelo
-preparador. Os prompts ficam fora da pasta entregue ao modelo.
+comando, selecione modelo e esforço e prepare o conteúdo de `fase-1.txt`, na
+pasta `executor_prompts` devolvida pelo preparador, sem enviar ainda.
+Os prompts ficam fora da pasta entregue ao modelo.
 O cliente só deve ler `GUIA.md` e chamar `./tools`. Não dê acesso ao gabarito,
 às respostas de outro modelo ou ao histórico de outra execução.
-Mantenha um temporizador externo de quatro minutos. Ao atingir o limite,
-interrompa essa sessão e registre o timeout, sem trocar por uma resposta melhor.
+Antes de entregar o prompt ao modelo, execute:
+
+```sh
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark start-session --directory "$bench_lab"
+```
+
+Cole o prompt assim que esse comando retornar. Ele inicia os quatro minutos
+e não permite reiniciar o prazo da fase.
+O servidor recusa ferramentas antes do início e depois do prazo. Mantenha também
+um temporizador externo: ao atingir o limite, interrompa o cliente de IA.
+Uma operação em andamento pode terminar depois do limite; seu efeito permanece
+registrado e invalida a pontuação da jornada. O restante do lote não executa.
 
 Depois que a sessão terminar, encerre somente o servidor iniciado acima,
 espere sua saída e avance o relógio:
 
 ```sh
-kill "$bench_pid"
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark finish-session --directory "$bench_lab"
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark shutdown --directory "$bench_lab"
 wait "$bench_pid"
 uv run --locked --group browser python -m scripts.maintainers.browser_benchmark advance --directory "$bench_lab"
-uv run --locked --group browser python -m scripts.maintainers.browser_benchmark serve --directory "$bench_lab" --lifetime 360 &
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark serve --directory "$bench_lab" --lifetime 600 &
 bench_pid=$!
 ```
 
-Abra outra sessão vazia do mesmo modelo e esforço, na mesma pasta de cliente.
-Cole `fase-2.txt` da mesma pasta do executor. Preserve apenas os arquivos e estados do laboratório, sem
+Espere novamente a mensagem `ready`. Abra outra sessão vazia do mesmo modelo
+e esforço, na mesma pasta de cliente.
+Execute novamente `start-session` antes de colar `fase-2.txt` da pasta do executor.
+Preserve apenas os arquivos e estados do laboratório, sem
 repassar o chat anterior. Ao terminar, encerre o servidor e calcule a pontuação:
 
 ```sh
-kill "$bench_pid"
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark finish-session --directory "$bench_lab"
+uv run --locked --group browser python -m scripts.maintainers.browser_benchmark shutdown --directory "$bench_lab"
 wait "$bench_pid"
 uv run --locked --group browser python -m scripts.maintainers.browser_benchmark score --directory "$bench_lab"
 ```
 
-Se o servidor já tiver encerrado pelo limite de tempo, registre esse fato;
-não reutilize um PID sem conferir sua identidade. Preserve evidências antes
+`finish-session` registra o primeiro encerramento, inclusive timeout. Execute-o
+assim que a sessão terminar. `shutdown` autentica o pedido com a chave privada
+do laboratório e não envia sinais a PIDs. Se o servidor já tiver encerrado pelo
+limite de tempo, registre a falha de conexão e confira sua saída com `wait`.
+Preserve evidências antes
 de remover a pasta temporária. Nenhum desses comandos inicia um modelo,
 instala um orquestrador ou acessa uma conta real.
 
@@ -120,6 +138,10 @@ Registre configuração exata, rota, esforço, duração observada, sessões,
 operações, erros recuperados, tentativas de escrita com erro, falhas críticas e efeitos.
 Indisponibilidade ou falha de infraestrutura ficam fora da pontuação, com o
 motivo preservado. Timeout e jornada incompleta não são sucesso.
+Quando falta início ou fim de uma fase, ou alguma operação ultrapassa o prazo,
+nenhum estágio recebe crédito. `observed_effects` preserva os efeitos brutos;
+`effects` fica zerado para a comparação. Uma jornada sem ferramentas também
+gera resultado, sem precisar criar um arquivo de eventos artificial.
 
 Os relatórios públicos usam somente dados fictícios. Remova caminhos locais,
 IDs do cliente de IA, chaves do laboratório e metadados de contas. A chave de
@@ -136,6 +158,12 @@ o teste deixou de fora. Variações novas devem ter uma versão própria; não
 mude o cenário só para um modelo. Custos e tokens exigem medição observada.
 
 ## Limites encontrados nesta coleta
+
+A coleta publicada usou o limite externo do executor, antes da inclusão de
+`start-session` e `finish-session`. As trilhas antigas preservam sua nota de
+efeitos; a recomendação exige separadamente duas sessões com resposta final.
+Fable e M3 tiveram uma sessão sem resposta final e não orientam recomendações.
+Não foram inventados horários internos para reclassificar a coleta antiga.
 
 O guia entregue aos modelos usa `job` para o ID público (`aurora`, `presencial`
 ou `taxa`) em `verdict` e `record_job`. O ID numérico devolvido pelo controle

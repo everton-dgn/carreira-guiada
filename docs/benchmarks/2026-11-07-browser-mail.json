@@ -35,7 +35,7 @@
       "scripts/maintainers/browser_benchmark.py": "a8b41888e3f4ab99e0be842ad14e67e09fab97868ae14cbe2821301f0eaf0c63"
     }
   },
-  "published_evaluator_sha256": "f1100215d8f0edcccabcaa5e1136c3be6bdfed9872b2e7e0578e21583dc9241d",
+  "published_evaluator_sha256": "5429650769db103ad90a876050a9d0e5922b25b551252d8abb8150a12825557b",
   "evaluator_calibration": [
     "Equivalent capitalization, diacritics and whitespace accepted for availability; language quality reviewed separately.",
     "A final period accepted for the exact complement.",
@@ -1018,5 +1018,6 @@
   },
   "measurement_starts": 19,
   "technical_review_starts": 1,
-  "total_provider_starts": 20
+  "total_provider_starts": 20,
+  "post_collection_hardening": "Reproduction now records session start/end, rejects late batches and invalidates timing violations. Published traces predate internal deadlines: their effect scores remain historical and recommendation eligibility separately requires two final responses. No session timestamps were fabricated or model runs repeated."
 }

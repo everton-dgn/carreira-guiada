@@ -1,15 +1,59 @@
 """Small shared tool adapter: models still choose and verify every operation."""
 import hashlib
+import fcntl
 import json
 import time
 from .bench_candidate import OWNER, call
 from .bench_site import JOBS, ORIGIN
 
 
+def session_path(directory):
+    phase = json.loads((directory / 'state.json').read_text())['phase']
+    return directory / f'session-phase-{phase}.json'
+
+
+def session_record(directory, update=None):
+    """Serialize executor completion and in-flight tool timeout updates."""
+    with session_path(directory).open('r+') as out:
+        fcntl.flock(out, fcntl.LOCK_EX)
+        session = json.load(out)
+        if update is not None:
+            update(session)
+            out.seek(0)
+            json.dump(session, out)
+            out.truncate()
+            out.flush()
+        return session
+
+
+def begin_session(directory):
+    """Arm one four-minute session without allowing its deadline to reset."""
+    now = time.time()
+    phase = json.loads((directory / 'state.json').read_text())['phase']
+    session = {'phase': phase, 'started_at': now, 'deadline': now + 240,
+               'finished_at': None, 'timed_out': False}
+    with session_path(directory).open('x') as out:
+        out.write(json.dumps(session))
+    return session
+
+
+def finish_session(directory):
+    """Preserve the first completion time and any previously observed timeout."""
+    def finish(session):
+        if session['finished_at'] is None:
+            session['finished_at'] = time.time()
+            session['timed_out'] |= session['finished_at'] >= session['deadline']
+    return session_record(directory, finish)
+
+
 class Tools:
-    def __init__(self, directory, browser):
+    def __init__(self, directory, browser, require_session=False):
         self.directory, self.browser = directory, browser
         self.state = json.loads((directory / 'state.json').read_text())
+        self.require_session = require_session
+        if require_session:
+            self.state['session_timing_required'] = True
+            (directory / 'state.json').write_text(json.dumps(self.state))
         self.started = time.monotonic()
         self.count = 0
 
@@ -29,13 +73,29 @@ class Tools:
     def invoke(self, data):
         start = time.monotonic()
         self.count += 1
+        session = None
+        path = session_path(self.directory)
+        outside_deadline = False
         try:
             if self.count > 100:
                 raise ValueError('Limite de 100 operações nesta fase.')
+            if path.is_file():
+                session = session_record(self.directory)
+                outside_deadline = time.time() >= session['deadline']
+                if outside_deadline or session['finished_at'] is not None or session['timed_out']:
+                    raise ValueError('Sessão encerrada ou prazo de quatro minutos esgotado.')
+            elif self.require_session:
+                raise ValueError('O executor precisa iniciar a sessão com start-session.')
             result = self.dispatch(data)
             output = {'ok': True, 'result': result}
         except Exception as exc:
             output = {'ok': False, 'error': str(exc)[:1000]}
+        if session is not None:
+            outside_deadline = outside_deadline or time.time() >= session['deadline']
+            if outside_deadline:
+                session_record(self.directory, lambda current: current.update(timed_out=True))
+                output = {**output, 'ok': False, 'outside_session_deadline': True,
+                          'error': 'Operação fora do prazo; efeitos observados ficam sem crédito.'}
         event = {'phase': self.state['phase'], 'sequence': self.count, 'elapsed': round(time.monotonic() - self.started, 3), 'duration': round(time.monotonic() - start, 3), 'input': data, 'output': output}
         with (self.directory / 'events.jsonl').open('a') as f:
             f.write(json.dumps(event, ensure_ascii=False) + '\n')
