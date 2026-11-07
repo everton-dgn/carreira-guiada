@@ -89,12 +89,15 @@ def thread_params(params, manifest, client, config):
 def validate_thread(result, manifest, client):
     if not isinstance(result, dict):
         raise ValueError('Missing thread result')
+    cwd = result.get('cwd')
+    if not isinstance(cwd, str) or not cwd or not Path(cwd).is_absolute():
+        raise ValueError('Missing or invalid thread working directory')
     if (result.get('activePermissionProfile', {}).get('id') != 'adversarial'
             or result.get('instructionSources') != []
             or result.get('approvalPolicy') != 'never'
             or result.get('model') != manifest['model']
             or result.get('reasoningEffort') != manifest['effort']
-            or Path(result.get('cwd', '')).resolve() != client):
+            or Path(cwd).resolve() != client):
         raise ValueError('Thread isolation or model identity mismatch')
 
 

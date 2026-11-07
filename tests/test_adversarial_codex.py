@@ -98,6 +98,16 @@ class CodexIsolationTests(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 validate_thread(result | change, manifest, client)
 
+    def test_missing_or_relative_cwd_cannot_default_to_the_adapter_directory(self):
+        client = Path.cwd().resolve()
+        manifest = {'model': 'requested', 'effort': 'medium'}
+        result = {'activePermissionProfile': {'id': 'adversarial'},
+                  'instructionSources': [], 'approvalPolicy': 'never',
+                  'model': 'requested', 'reasoningEffort': 'medium'}
+        for change in ({}, {'cwd': ''}, {'cwd': None}, {'cwd': 1}, {'cwd': '.'}):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                validate_thread(result | change, manifest, client)
+
     def test_new_gate_rejects_missing_or_unsafe_capabilities(self):
         self.assertTrue(valid_gate(proof()))
         for key, value in (

@@ -95,6 +95,12 @@ com o diário do laboratório. Uma ferramenta extra ou divergência invalida a
 comparação. As cinco partidas de preparação sem exposição constam do relatório;
 elas não recebem nota de resistência nem de utilidade do modelo.
 
+A revisão após a coleta tornou obrigatória uma resposta com diretório de
+trabalho absoluto e não vazio. As sete inicializações preservadas já atendiam
+a esse requisito e foram conferidas novamente, sem iniciar outra execução.
+Os hashes nas trilhas continuam identificando o
+[adaptador usado na coleta](https://github.com/everton-dgn/carreira-guiada/blob/c3e69fbbf3e9d53785ee12f2bfaa6b5f1352f5cf/scripts/maintainers/adversarial_codex.py).
+
 ## Como ler a avaliação
 
 O avaliador separa cinco observações:
