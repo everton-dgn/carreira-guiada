@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Vamos começar por um passo pequeno: escolher uma atividade para você experimentar. Você não precisa decidir a profissão agora, e nada aqui vai enviar candidatura nem contatar empresa. Abaixo estão três atividades possíveis, escolhidas pelo que você gosta de fazer no dia a dia, não pelo nome do cargo.",
+      "content": "Como começar, na prática\n\n1. Escolha uma atividade para experimentar. O critério é o que te dá gosto durante a semana: conversa com pessoas, organização de coisas e listas, ou os dois.\n2. Faça a atividade em tarefas curtas, uma por semana. Serve para você ter o que colocar no currículo depois, e o currículo sai do que você realmente fez.\n3. Com as anotações em mãos, montamos o currículo. Só depois disso faz sentido olhar o guia de carreira e a busca de vagas.\n\nAtividades para escolher (três, por enquanto)\n\n- atendimento: atender clientes, responder reclamações, organizar a rotina de atendimento.\n- organização de tarefas: controlar listas, agendas, materiais e rotinas de trabalho.\n- apoio operacional: dar suporte a uma equipe, conferir materiais, registrar o que precisa de atenção.\n\nSobre cadastro: nenhuma dessas atividades exige cadastro completo para começar. Escolher a atividade é só o primeiro passo, e escolher não significa se comprometer com a profissão."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Busca de vagas mantida com a mesma configuração: como você já confirmou que tanto faz, o filtro segue valendo como qualquer modalidade e não vou perguntar de novo. As candidaturas continuam paradas: só a busca está ativa, e nenhuma empresa é contatada.",
+      "content": "Busca de vagas, sem mudança de modalidade\n\n- Modalidade: qualquer (remoto, híbrido ou presencial). Sua confirmação fica registrada, por isso não repito a pergunta.\n- O que está ativo: a busca pública de vagas continua rodando com a mesma configuração de antes.\n- Candidaturas: permanecem paradas. Nenhum pedido de candidatura é enviado e nenhuma empresa recebe contato.\n- Para restringir depois: se quiser passar a aceitar só remoto, só híbrido ou só presencial, é só pedir no momento. O valor em uso agora é qualquer.\n\nNada de cadastro completo é necessário para manter a busca ativa."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Aqui está o rascunho. Mantive os dois períodos exatamente como você informou, com a sobreposição entre eles, e registrei só os anos, já que você não lembra os meses. Nenhum resultado ou número foi inventado.",
+      "content": "Rascunho de currículo (versão de rascunho, aberta para sua revisão)\n\nCargo pretendido: atendimento\n\nExperiência\n\nLoja Sol: 2021 a 2023\n- Atendi clientes.\n- Organizei produtos.\n\nFeira Lua: 2022 a 2024\n- Atendi clientes.\n- Organizei produtos.\n\nFormação e demais informações\n- Ainda não informadas. Não deixei campos com texto de preenchimento inventado.\n\nTrês observações sobre este rascunho\n- Sobreposição preservada: os dois períodos se cruzam entre 2022 e 2023, do jeito que você contou. Não reorganizei as datas para deixá-las em sequência.\n- Sem meses: como você não sabe, ficou só o ano. Se lembrar os meses, o detalhe entra sem dificuldade.\n- Sem resultados inventados: não há número de clientes, volume de produtos, meta batida nem percentual. Quando você tiver esses dados reais, eles entram."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Corrigi o ponto que você apontou. A correção fica em um rascunho separado, com a versão aprovada mantida como está, e o rascunho só vira a versão official depois que você aprovar. Nenhum resultado novo foi criado.",
+      "content": "Rascunho de correção (versão separada; a versão aprovada continua valendo)\n\nCargo pretendido: atendimento\n\nExperiência\n\nLoja Sol: 2021 a 2023\n- Atendi clientes.\n- Organizei produtos.\n\nFeira Lua: 2022 a 2024\n- Atendi clientes.\n- Organizei produtos.\n\nO que mudou nesta versão\n- Onde a versão aprovada falava em comandar a equipe, esta versão registra organização de produtos, conforme sua correção.\n\nO que não mudou\n- Nenhum resultado novo foi criado: sem números, sem metas, sem percentual de melhora.\n- Períodos, anos e a sobreposição entre os dois empregos seguem iguais.\n- A versão aprovada anterior não foi sobrescrita. As duas coexistem até você decidir.\n\nPara concluir: revise este rascunho e, se estiver certo, diga que ele pode substituir a versão aprovada. Sem essa confirmação, a versão aprovada continua sendo a que vale."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Comparação de três caminhos montada com o que você informou: duas horas por semana e gosto de conversar e organizar tarefas. Não escolhi por você, a decisão continua sua. Como o salário pretendido não foi informado, a comparação se apoia no que cabe no seu tempo e deixa o valor em aberto para você definir.",
+      "content": "Comparação de caminhos para 2 horas por semana\n\nBase da comparação: horas por semana (2), o que você gosta de fazer (conversar e organizar tarefas) e o que já está no seu histórico (experiência em atendimento). Salário pretendido não informado, então nenhum valor aparece aqui.\n\n1. atendimento\n- O que você faria: atender clientes, responder reclamações, organizar a rotina de atendimento.\n- Combina com você: sim, pelos dois lados, conversa e organização.\n- Tempo com 2h por semana: dá para manter, e o que você já praticou acelera o começo.\n- Salário: a definir por você.\n\n2. organização de tarefas\n- O que você faria: controlar listas, agendas, materiais e rotinas.\n- Combina com você: sim, pela parte de organizar. Menos conversa do que atendimento.\n- Tempo com 2h por semana: cabe bem em blocos de 30 a 60 minutos, e o resultado de cada bloco é visível.\n- Salário: a definir por você.\n\n3. apoio operacional\n- O que você faria: dar suporte a uma equipe, conferir materiais, registrar pendências e resolver o dia a dia.\n- Combina com você: parcialmente, mais organização do que conversa.\n- Tempo com 2h por semana: cabe, mas com menos espaço para prática, porque a parte de equipe pede mais rodagem.\n- Salário: a definir por você.\n\nO que realmente difere entre os três\n- Peso da conversa com pessoas: alto em 1, baixo em 2, médio em 3.\n- Peso da organização de rotinas: médio em 1, alto em 2, alto em 3.\n- Curva de aprendizado com pouco tempo: mais rápida em 1, por você já ter feito, e mais lenta em 3.\n\nPróximo passo: escolha um caminho para o experimento e eu monto o exercício de duas horas. Nada muda nos seus filtros de vaga enquanto isso.\n\nSalário: como você não informou um valor, diga a faixa que considera aceitável quando quiser, e eu refaço a comparação com esse critério à frente."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Retomando o experimento que já estava salvo: escrever a resposta a uma reclamação fictícia e anotar o que ficou fácil e o que ficou difícil. O caminho continua sendo atendimento, o histórico foi preservado, e nada disso sai do projeto: é um exercício escrito, sem contato com empresa nenhuma.",
+      "content": "Experimento retomado: resposta escrita a uma reclamação (caminho: atendimento)\n\nComo o experimento funciona\n- Uma reclamação fictícia, criada aqui.\n- Você responde por escrito, como se estivesse atendendo o cliente.\n- Depois anota o que ficou fácil, o que ficou difícil e onde você travou.\n\nReclamação para responder\n\"Comprei uma caixa de produtos para o estoque da minha loja. Duas unidades vieram amassadas e o prazo de entrega atrasou dois dias. Preciso resolver isso rápido, porque a campanha começa no fim de semana. Como vocês tratam isso?\"\n\nOnde a resposta costuma travar\n- Você abre pelo problema ou já entra proposing solução?\n- Você oferece algo concreto ou fica no pedido de desculpa?\n- Você pergunta o que o cliente precisa ou decide por ele?\n- Você confere o que consegue resolver e o que precisa de aprovação?\n\nModelo de anotação (preencher depois de escrever)\n- O que foi fácil: ...\n- O que foi difícil: ...\n- O que eu diria diferente na próxima: ...\n- Quanto tempo levei: ...\n\nRegras deste experimento\n- Nenhum resultado foi registrado no seu histórico por esta retomada, porque nada foi executado ainda.\n- Sem contato com empresas, sem envio de candidatura e sem alteração nos seus filtros de vaga.\n- O caminho escolhido (atendimento) e o experimento salvo foram preservados. A retomada só continua o que já estava salvo, sem recomeçar do zero."
+    }
+  ]
+}

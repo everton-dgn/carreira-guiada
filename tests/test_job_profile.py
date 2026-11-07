@@ -26,6 +26,16 @@ class ProfileTests(unittest.TestCase):
         self.assertEqual(self.profile.status()['next_section'], 'identity')
         self.assertFalse((self.root / '.job').exists())
 
+    def test_template_does_not_answer_modality_for_candidate(self):
+        template = Path(__file__).resolve().parents[1] / 'templates/profile.json'
+        preferences = json.loads(template.read_text(encoding='utf-8'))['sections']['preferences']
+        preferences.update(roles=['Atendimento'], currencies=['BRL'])
+        self.profile.save('identity', {'name': 'Pessoa fictícia', 'email': 'pessoa@example.invalid'})
+        self.profile.save('preferences', preferences)
+        self.assertIn('modalities', [q['field'] for q in self.profile.status()['questions']])
+        self.profile.answer('preferences', 'modalities', [])
+        self.assertNotIn('modalities', [q['field'] for q in self.profile.status()['questions']])
+
     def test_resume_approval_and_invalidation(self):
         self.profile.save('identity', {'name': 'Pessoa de Teste'})
         self.assertEqual(Profile(self.root).status()['next_section'], 'identity')
@@ -92,10 +102,12 @@ class ProfileTests(unittest.TestCase):
                     self.assertTrue(all(x.startswith('salary.') for x in fields))
                 else:
                     self.assertEqual(fields, [field])
-        for field in ('roles', 'modalities', 'currencies'):
+        for field in ('roles', 'currencies'):
             with self.subTest(empty=field):
                 self.profile.save('preferences', {**preferences, field: []})
                 self.assertEqual([q['field'] for q in Profile(self.root).status()['questions']], [field])
+        self.profile.save('preferences', {**preferences, 'modalities': []})
+        self.assertEqual(Profile(self.root).status()['questions'], [])
         self.profile.save('preferences', preferences)
         self.assertEqual(Profile(self.root).status()['questions'], [])
 

@@ -11,13 +11,17 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 
 ## Cenários cobertos
 
-- Menu: quatro entradas diretas, números e nomes com acentos, opção desconhecida,
+- Menu: quatro entradas diretas e Mais opções, números e nomes com acentos, opção desconhecida,
   consulta sem escrita e escolha salva sem conceder permissões. Currículo
   concluído sem cadastro completo, importação ainda sem arquivo e troca de
   atividade preservando treino, currículo e candidatura com resultado incerto.
+  Empresa, LinkedIn/GitHub, propostas e modelos mantêm a escolha na próxima
+  sessão; voltar delas para entrevista ou carreira também atualiza a rota.
 - Busca pública: filtros parciais, modalidade sem preferência, consentimento
   vinculado aos filtros e URLs atuais, parada e retomada sem reutilizar escopo
-  antigo. Contatos e conexão de e-mail não são necessários para consultar vagas.
+  antigo. A ausência de preferência continua válida no perfil completo, sem
+  tornar cargo ou moeda opcionais. Contatos e conexão de e-mail não são necessários
+  para consultar vagas.
 
 - Onboarding: primeiro emprego sem currículo, importação de Word, PDF ilegível,
   correção de dados, resposta "não sei", tópicos pulados, parada e retomada,
@@ -75,13 +79,20 @@ Os cenários cobrem opções inválidas, consulta sem troca de atividade,
 identificação de currículo e busca salvos, treino adiado com resposta
 aguardando feedback e guia de carreira pausado. Conferem que consultas não
 mudam o banco e que retomar uma atividade privada não remove a parada global.
+O roteiro auxiliar começa no currículo, abre Mais opções, salva um dossiê,
+recebe material fictício de LinkedIn/GitHub, guarda uma proposta com imposto
+desconhecido e adia a escolha de modelos. Cada retorno acontece em outro
+processo e com o relógio avançado. A campanha permanece parada e não há
+publicações, mensagens ou candidaturas.
 `JOB_MENU_REPORT` pode apontar para uma pasta privada de evidências.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio
 para um portal real. Cada sessão precisa conferir suas capacidades.
 Os [benchmarks](BENCHMARKS.md) separam decisões estruturadas de ações escolhidas
-por modelos no laboratório de navegador. Ambos têm cenários e pontuação próprios,
+por modelos no laboratório de navegador. A coleta de preparação acrescenta
+onboarding, currículo e carreira, com revisão do texto separada do acerto de
+campos. Cada ensaio tem cenários e pontuação próprios,
 publicados separados dos testes programados do código.
 
 O ensaio adversarial tem relatórios separados para o protocolo original e a

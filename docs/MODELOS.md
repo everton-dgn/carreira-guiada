@@ -10,7 +10,9 @@ si só, sites ou e-mail.
 
 ## Primeiro, o que você já usa
 
-No início, a IA pergunta quais aplicativos ou serviços você tem. Vale qualquer
+No preparo completo, a IA oferece uma pergunta sobre os aplicativos ou
+serviços que você tem. Também pode abrir **Mais opções** e escolher modelos.
+Os atalhos para outras atividades seguem sem essa pergunta. Vale qualquer
 fornecedor, inclusive modelos locais. "Não sei" e "depois" também ficam salvos.
 Para rever, diga "quero mudar a escolha de modelos". O perfil, o currículo e
 as permissões continuam como estavam.
@@ -24,7 +26,8 @@ e-mail ou execução contínua: essas capacidades precisam ser conferidas na ses
 
 | Etapa | Sugestão do projeto | Quando usar |
 |---|---|---|
-| Preparar perfil e currículo | GPT-6 Astra ou Claude Opus 5.5 | Organizar experiências, conferir fatos, definir filtros e permissões. |
+| Onboarding, currículo e carreira | GPT-6 Astra alto, Terra médio ou Sol médio, entre as opções que você tem | Configurações observadas sem ressalva material nos seis recortes de preparação. |
+| Preparo complexo fora dos recortes medidos | Astra ou Opus, como orientação inicial | Conferir documentos extensos e situações que ainda não foram medidas; validar o material com você. |
 | Buscar e operar candidaturas | GPT-6.1 Terra, esforço médio (`medium`) | Navegar, preencher e conferir o resultado das ações autorizadas. |
 | Resolver uma etapa difícil | Terra com esforço alto (`high`), ou voltar a Astra/Opus | Formulário incomum, regra ambígua ou divergência que exige análise. |
 | Organizar material já conferido | Modelo menor que você já usa, com esforço baixo ou médio quando disponível | Resumir vagas e classificar conteúdo, conferindo os resultados antes de agir. |
@@ -39,6 +42,26 @@ Terra 6.1 com `medium` é nossa recomendação inicial para automação. Suba pa
 apenas porque a tarefa parece repetitiva: é preciso conferir o destino, os
 campos e o resultado de cada envio. Haiku 5.5 não concluiu o percurso fictício e tentou uma ferramenta fora
 do protocolo; por isso esta rodada não o promove para operar candidaturas.
+
+## Recomendações para começar, escrever e escolher um foco
+
+O [benchmark de preparação](BENCHMARKS.md#onboarding-currículo-e-guia-de-carreira)
+separa as primeiras escolhas, o currículo e o guia de carreira. Terra
+médio/alto, Sol médio e Astra alto completaram os recortes sem ressalva material
+na revisão. A amostra não comprovou vantagem de subir o esforço do Terra.
+
+Há diferenças que a nota de campos não mostra. Fable e GLM acrescentaram ou
+inferiram detalhes no currículo; Haiku conduziu o início como exploração de
+profissões; M3 impôs etapas e declarou pesquisa ativa sem ferramentas. O Opus
+respondeu em um bloco Markdown quando a coleta exigia JSON. Consulte as
+ressalvas da tarefa antes de reutilizar o texto. Isso não exige trocar de
+assinatura: a IA deve ajudar a revisar o material com o modelo que você tem.
+
+A indicação por tarefa usa somente os modelos e esforços que você informou.
+Se houver empate, conserva a preferência inicial e o menor esforço medido
+válido daquele modelo. Um modelo pode ter evidência para carreira e precisar
+de revisão adicional no currículo. Nenhuma dessas notas autoriza ferramentas
+ou substitui a aprovação de fatos profissionais.
 
 ## O que sabemos sobre instruções maliciosas
 
@@ -62,8 +85,8 @@ dos dois protocolos permanecem separadas, sem ranking entre fornecedores.
 Terra médio continua como sugestão operacional inicial, apoiada no ensaio de
 navegador e nessa observação adversarial. Terra alto, Sol médio e Astra alto são alternativas
 completas nas duas medições. Não foi observada vantagem de resistência ao subir
-o esforço do Terra. A indicação de Astra/Opus para preparação continua sendo
-orientação inicial; este ensaio não avaliou a qualidade de currículos.
+o esforço do Terra. A coleta específica de preparação, descrita acima, trata de textos
+e decisões. O ensaio adversarial não avaliou currículos.
 
 Para retomadas, confira sempre os recibos e o registro final. Se usar M3 na
 triagem ou candidatura, a recomendação pede conferência humana antes de envio devido à ação
@@ -85,8 +108,8 @@ testado disponível desse modelo. O tempo de uma única rodada não decide o emp
 
 Isso recomenda um ponto de partida para aquela etapa, dentro da amostra.
 O laboratório não mede navegação por imagens, login, CAPTCHA, serviços reais
-ou campanhas por dias. Também não mede a qualidade de criar um currículo;
-as sugestões de preparo continuam iniciais. Confira as ferramentas e acompanhe
+ou campanhas por dias. A coleta de preparação avalia trechos de currículo e
+exercícios, sem provar uma conversa inteira ou leitura por ATS. Confira as ferramentas e acompanhe
 a primeira etapa no seu aplicativo. O protocolo aceita outros provedores,
 inclusive modelos locais, sem exigir um orquestrador específico.
 

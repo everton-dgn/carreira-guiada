@@ -74,7 +74,7 @@ As demonstrações abaixo representam conversas fictícias no terminal.
 O Carreira Guiada não instala uma tela própria. Navegação e e-mail dependem
 das integrações disponíveis na sessão; iniciar a CLI não conecta contas.
 
-![Exemplo ilustrativo de início no terminal do Claude Code.](assets/inicio-guiado.png)
+![Demonstração fictícia do menu, da escolha de atividade e da retomada.](assets/menu-guiado.png)
 
 ## A primeira conversa
 
@@ -82,6 +82,13 @@ Digite `menu`, `opções` ou `ajuda` para ver os caminhos disponíveis. As quatr
 opções principais são currículo, entrevistas, guia de carreira e busca de vagas.
 Responda pelo número mostrado ou pelo nome da tarefa. Não precisa saber qual
 comando a IA usa por trás da conversa.
+
+Em **Mais opções**, você encontra revisão de LinkedIn/GitHub, investigação
+de empresas, comparação de propostas, escolha de modelos e preparo completo
+para candidaturas. Abrir essa lista não troca sua atividade nem inicia ações.
+Você também pode pedir diretamente "quero analisar uma proposta" ou
+"vamos revisar meu LinkedIn". O projeto guarda a atividade escolhida para
+oferecer a retomada na próxima sessão.
 
 Você pode dizer:
 
@@ -103,12 +110,15 @@ cadastro. Não sabe um valor ou uma data? Diga "não sei". Nada deve ser inventa
 Para buscar vagas, ela combina o que procurar e pergunta **onde procurar**.
 Essa primeira pesquisa pode começar sem currículo, e-mail ou cadastro completo.
 Copie os links que você escolheu da
-barra do navegador e cole no chat. Se ainda não tiver os links, diga "deixe
-para depois". O currículo pode continuar; a pesquisa espera por essa escolha.
+barra do navegador e cole no chat. Se ainda não tiver os links, diga "me ajude
+a encontrar sites de vagas". A IA verifica opções e você escolhe quais usar.
+Também pode dizer "deixe para depois"; o currículo continua e a pesquisa espera.
 [Ajuda para informar os links](FONTES.md).
 
 Ver vagas não autoriza candidaturas. Quando quiser enviar, a IA confere o que
 falta no perfil, no currículo e nas permissões, reaproveitando suas respostas.
+"Não tenho preferência" de modalidade continua válido ao passar para essa
+etapa; você não precisa escolher entre remoto, presencial e híbrido novamente.
 Detalhes das perguntas: [Onboarding](ONBOARDING.md).
 
 Se mudar de ideia, peça outra tarefa ou volte ao `menu`. As respostas anteriores
@@ -171,7 +181,7 @@ versão aprovada.
    as suas escolhas. A candidatura só é contada após confirmação do destino.
 5. Você recebe o que foi confirmado, o que ficou em dúvida e a próxima ação.
 
-![Exemplo ilustrativo de busca e preenchimento no terminal do Codex CLI.](assets/candidatura-guiada.png)
+![Demonstração fictícia da busca com filtros salvos e conferência antes de retomar.](assets/busca-e-retomada.png)
 
 Uma vaga bloqueada por login não impede cuidar de outra. Um envio com resultado
 incerto exige conferência antes de tentar novamente.

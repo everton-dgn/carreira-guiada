@@ -199,7 +199,7 @@ class MenuJourneyTests(unittest.TestCase):
         self.call('menu')
         self.assertTrue(self.call('status')['control']['stopped'])
         self.say('Seu treino está salvo. Podemos continuar ou escolher outra atividade.', 'Continuar.')
-        self.call('resume-work')
+        self.assertTrue(self.call('status')['control']['stopped'])
         self.assertEqual(self.call('practice', 'status')['session_id'], session['session_id'])
         self.say('Retomamos a pergunta salva.', 'Antes quero entender que carreira seguir.')
         self.call('menu', '--choose', '3')
@@ -208,6 +208,53 @@ class MenuJourneyTests(unittest.TestCase):
         self.assertEqual(self.call('resume', 'show', draft['id'])['status'], 'approved')
         self.assertEqual(self.call('practice', 'status')['session_id'], session['session_id'])
         self.assertEqual(self.call('status')['counts']['actions'], {})
+
+    def test_novice_more_options_and_next_day_keep_each_activity(self):
+        """A fictional beginner switches auxiliary tasks without losing local work."""
+        from tests.test_job_offers import scenario
+        self.say(self.call('menu', plain=True), 'Quero criar meu currículo.')
+        self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
+        self.call('intake', 'answer', data={'field': 'education', 'text': 'Curso fictício de atendimento.'})
+        intake = self.call('intake', 'show')
+        self.say(self.call('menu', '--choose', '5', plain=True), 'Quero investigar a Empresa Aurora fictícia.')
+        self.call('menu', '--choose', 'empresa', '--remember')
+        company = self.call('company', 'create', data={
+            'entity': {'name': 'Empresa Aurora fictícia', 'country': 'BR', 'domain': None, 'relationship': 'employer'},
+            'question': 'Como é a jornada?', 'dimensions': ['workload']})
+        self.call('checkpoint', 'save', data={'phase': 'company', 'summary': 'Empresa identificada.',
+            'next_action': 'Combinar fontes públicas.', 'needs_user': True})
+        self.call('stop')
+        checkpoint = self.call('checkpoint', 'show')
+        self.next_day()
+        self.assertEqual(self.call('start')['next_step'], 'company_dossier')
+        self.assertEqual(self.call('company', 'get', data={'id': company['id']}), company)
+        self.say(self.call('start', plain=True), 'Antes quero revisar LinkedIn e GitHub, só o texto que vou colar.')
+        self.call('menu', '--choose', 'LinkedIn/GitHub', '--remember')
+        self.call('presence', 'choose', data={'decision': 'now', 'topics': ['linkedin', 'github'], 'confirmation': 'Revisar os textos, sem publicar.'})
+        for topic in ('linkedin', 'github'):
+            self.call('presence', 'source', data={'topic': topic, 'source': 'candidate_text',
+                'material': 'Material fictício: organizo pedidos em um projeto de estudo.'})
+        presence = self.call('presence', 'show')
+        self.next_day()
+        self.assertEqual(self.call('start')['next_step'], 'professional_presence')
+        self.say(self.call('start', plain=True), 'Agora quero comparar uma proposta. Não sei o imposto.')
+        self.call('menu', '--choose', 'propostas', '--remember')
+        offer = self.call('offers', 'save', data=scenario(label='Proposta fictícia', taxes_annual=None))
+        self.next_day()
+        self.assertEqual(self.call('start')['next_step'], 'offers')
+        self.assertIn('taxes_annual', self.call('offers', 'get', data={'offer_id': offer['offer']['id']})['calculation']['missing'])
+        self.say(self.call('start', plain=True), 'Quais modelos posso usar? Não sei dizer agora.')
+        self.call('menu', '--choose', 'modelos', '--remember')
+        self.call('models', 'save', data={'expected_version': 0, 'decision': 'unknown', 'providers': []})
+        self.next_day()
+        self.assertEqual(self.call('start')['next_step'], 'model_preferences')
+        self.assertIsNone(self.call('start')['model_setup']['question'])
+        self.assertEqual(self.call('presence', 'show'), presence)
+        self.assertEqual(self.call('intake', 'show')['answers'], intake['answers'])
+        self.assertEqual(self.call('checkpoint', 'show'), checkpoint)
+        self.assertTrue(self.call('status')['control']['stopped'])
+        self.assertEqual(self.call('status')['counts']['actions'], {})
+        self.assertEqual(self.call('status')['counts']['messages'], 0)
 
     def test_novice_public_search_without_contact_and_safe_resume(self):
         """Search needs only minimal preferences and renewed consent after a stop."""

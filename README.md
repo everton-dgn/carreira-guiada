@@ -42,6 +42,8 @@ continuidade quando a sessão da IA termina.
 | Encontrar oportunidades | "Quero ver vagas" |
 
 Escreva **menu** ou **opções** a qualquer momento para ver os caminhos.
+**Mais opções** reúne LinkedIn/GitHub, empresas, propostas, modelos e preparo
+completo para candidaturas. Também pode pedir uma dessas atividades pelo nome.
 Pode responder pelo número mostrado. Currículo, entrevistas e carreira não
 exigem completar o cadastro de candidaturas. Para conhecer vagas, combine
 o que procurar e quais fontes consultar; currículo, e-mail e permissão de
@@ -54,7 +56,7 @@ ao voltar outro dia. A atividade escolhida e as respostas ficam salvas.
 "Não sei" e "depois" também são respostas válidas. Você conversa no chat,
 sem precisar aprender os comandos internos do projeto.
 
-![Onboarding fictício no terminal: a IA conduz a primeira conversa e a aprovação do perfil.](docs/assets/inicio-guiado.gif)
+![Demonstração fictícia: escolher no menu, criar um currículo, mudar de atividade e retomar no dia seguinte.](docs/assets/menu-guiado.gif)
 
 ## O caminho da preparação à proposta
 
@@ -71,7 +73,7 @@ Diga o que procura e aprove as fontes. A IA aplica seus filtros, avalia cada vag
 preenche os dados confirmados, anexa a versão aprovada do currículo e confere o
 resultado. Uma vaga bloqueada fica pendente enquanto as demais avançam.
 
-![Conversa fictícia no Codex CLI: a IA pesquisa, aplica filtros e acompanha candidaturas.](docs/assets/candidatura-guiada.gif)
+![Demonstração fictícia: buscar sem repetir perguntas, preservar uma parada e conferir o resultado antes de retomar.](docs/assets/busca-e-retomada.gif)
 
 Com preenchimento e envio autorizados no perfil, a campanha segue sem pedir
 confirmação em cada vaga. Você também pode escolher "pergunte antes de enviar",
@@ -197,11 +199,13 @@ e os esforços que você informou ter, sem exigir uma nova assinatura.
 
 ![Escolha a IA para cada etapa. Compare evidências. Use os modelos que você já tem.](docs/assets/modelos-por-etapa-banner.png)
 
-Para organizar o perfil e o currículo, Astra e Opus continuam como sugestões
-iniciais. Para operar, o projeto compara modelos em um laboratório com navegador,
-e-mail fictício e retomada em outra sessão. Os resultados ficam separados por
-etapa, com erros e limitações visíveis. Quando há empate, as alternativas aparecem;
-uma amostra pequena não define um vencedor universal.
+O benchmark também compara onboarding, currículo e guia de carreira: o modelo
+precisa entregar a orientação e o material, além de acertar decisões. Você vê
+as ressalvas do texto e a recomendação para cada tarefa. Para operar, há um
+laboratório com navegador, e-mail fictício e retomada em outra sessão.
+Os resultados ficam separados por etapa, com erros e limitações visíveis.
+Quando há empate, as alternativas aparecem; uma amostra pequena não define
+um vencedor universal.
 
 Há também testes com instruções maliciosas em vagas, e-mails e anotações de
 retomada. O relatório distingue tentativa indevida, bloqueio da ferramenta e
@@ -256,6 +260,11 @@ vários dias nem compatibilidade com todas as interfaces de recrutamento.
 | Escolher os links de busca | [Fontes escolhidas por você](docs/FONTES.md) |
 | Escolher em que área focar | [Guia de carreira](docs/CARREIRA.md) |
 | Criar ou revisar um currículo | [Currículos](docs/CURRICULOS.md) |
+| Melhorar LinkedIn e GitHub | [Apresentação profissional](docs/PRESENCA-PROFISSIONAL.md) |
+| Ensaiar uma entrevista | [Treinos e feedback](docs/ENTREVISTAS.md) |
+| Investigar uma empresa | [Dossiê e evidências](docs/EMPRESAS.md) |
+| Comparar salários e propostas | [Comparação de propostas](docs/PROPOSTAS.md) |
+| Parar e voltar depois | [Acompanhamento](docs/ACOMPANHAMENTO.md) |
 | Entender permissões e dados | [Privacidade](docs/PRIVACIDADE.md) |
 | Resolver uma dúvida | [Perguntas frequentes](docs/FAQ.md) |
 | Melhorar o projeto | [Contribuição](CONTRIBUTING.md) e [arquitetura](docs/CONTRATOS.md) |

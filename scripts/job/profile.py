@@ -91,13 +91,13 @@ SALARY_QUESTIONS = [
 def pending_questions(section, data):
     """Seleciona campos não respondidos; listas opcionais vazias são respostas.
 
-    Preferências obrigatórias roles/modalities/currencies precisam ser não vazias.
+    Roles e currencies precisam ser não vazias; modalities pode ser vazia.
     Perguntas agrupadas são separadas para não repetir campos já persistidos.
     """
     questions = []
     for field, question, example in QUESTIONS.get(section, []):
         answered = field in data
-        if section == 'preferences' and field in ('roles', 'modalities', 'currencies'):
+        if section == 'preferences' and field in ('roles', 'currencies'):
             answered = bool(data.get(field))
         if not answered:
             questions.append({'field': field, 'question': question, 'example': example})

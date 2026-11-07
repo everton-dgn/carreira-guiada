@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar pela atividade que fizer mais sentido agora. Não precisa completar um cadastro para dar o primeiro passo.",
+      "content": "Escolha uma opção: criar um primeiro currículo com o que você já sabe sobre suas experiências; explorar possibilidades profissionais no guia de carreira; preparar-se para entrevistas; buscar vagas; ou conhecer as outras opções disponíveis."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Vamos continuar a busca pública considerando vagas remotas, híbridas e presenciais. A campanha de candidaturas continua parada.",
+      "content": "Na busca, considere as três modalidades. Nenhuma candidatura será enviada por causa dessa escolha."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Preparei um rascunho com as duas experiências no período informado. Os anos em comum foram preservados.",
+      "content": "Objetivo: atendimento\n\nExperiência profissional\n\nLoja Sol | 2021 a 2023\n- Atendimento a clientes e organização de produtos.\n\nFeira Lua | 2022 a 2024\n- Atendimento a clientes e organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "A correção fica em um rascunho separado para sua revisão. A versão aprovada continua preservada.",
+      "content": "Trecho corrigido do rascunho: Organização de produtos."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Você pode comparar estas possibilidades usando suas duas horas semanais. Como você ainda não informou quanto precisa ganhar, a comparação não usa salário como critério.",
+      "content": "1. Atendimento: pode ser uma forma de explorar seu gosto por conversar. Exercício: escreva uma resposta a uma reclamação fictícia e anote o que achou fácil ou difícil.\n2. Organização de tarefas: pode ajudar a explorar seu interesse por organizar. Exercício: monte uma lista de tarefas fictícias, defina uma ordem e observe como se sentiu ao organizá-las.\n\nDepois, compare o interesse que sentiu em cada exercício e escolha se quer continuar com algum deles."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o experimento de atendimento que você escolheu. O histórico permanece preservado.",
+      "content": "Dentro das suas duas horas semanais, escreva uma resposta a esta reclamação fictícia: \"Recebi um produto diferente do que pedi e preciso de ajuda.\" Depois, anote o que foi fácil e o que foi difícil na resposta. Você pode organizar essas observações em uma lista e compartilhá-las quando terminar."
+    }
+  ]
+}

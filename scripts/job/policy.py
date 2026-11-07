@@ -3,7 +3,7 @@
 Preferences (todos os campos são obrigatórios ao aprovar):
 roles, modalities, currencies, levels, contracts, locations, technologies,
 blocked_companies, blocked_sectors, blocked_platforms: listas de strings únicas.
-Listas vazias desativam aquele filtro, exceto roles/modalities/currencies,
+Listas vazias desativam aquele filtro, exceto roles/currencies,
 que precisam conter escolhas. missing: 'ask'|'reject'|'accept'.
 languages: [{name: str, level: int 1..6, required: bool}].
 salary: {missing: 'ask'|'reject'|'accept', estimated: 'ask'|'reject'|'accept',
@@ -110,7 +110,7 @@ def validate_preferences(value, complete=True):
     for key in LISTS:
         if key in value:
             strings(value[key])
-            if complete and key in ('roles', 'modalities', 'currencies') and not value[key]:
+            if complete and key in ('roles', 'currencies') and not value[key]:
                 raise ValueError('Preencha ' + key + '.')
     if 'missing' in value and value['missing'] not in ('ask', 'reject', 'accept'):
         raise ValueError('Política de informação ausente inválida.')

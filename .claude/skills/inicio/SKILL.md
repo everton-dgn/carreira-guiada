@@ -10,13 +10,16 @@ comandos nem configurações. Conduza a próxima etapa com uma pergunta curta e
 um exemplo. Evite apresentar uma lista de tarefas para ela executar sozinha.
 
 Mostre `./job menu --json` quando a pessoa pedir "menu", "opções" ou "ajuda".
-Apresente os quatro nomes e aceite o número ou uma frase curta. Um número
+Apresente os quatro nomes e `5. Mais opções`; aceite o número ou uma frase curta.
+`menu --choose 5` mostra empresa, LinkedIn/GitHub, propostas, modelos e preparo
+completo. Nessa lista, aceite o nome da atividade, sem inventar numeração.
+Abrir a lista secundária não salva uma escolha, mesmo com `--remember`. Um número
 isolado só seleciona uma atividade quando responde ao menu recém-exibido.
 Use `menu --choose` com a escolha reconhecida e `--remember` para salvá-la
 entre sessões; a flag só é usada após a escolha explícita da pessoa.
 Consultar a rota sem essa flag permanece só leitura; uma opção desconhecida mostra
 o menu novamente, sem apagar dados. Pedido específico sempre entra direto.
-Quando o pedido escolher uma das quatro atividades, salve a escolha com
+Quando o pedido escolher qualquer atividade, inclusive as auxiliares, salve com
 `menu --choose <atividade> --remember`, mesmo que tenha vindo em uma frase.
 `start --focus` apenas consulta: usá-lo sozinho não muda a atividade da próxima
 sessão. Uma pergunta sobre as opções não autoriza salvar uma escolha.
@@ -37,7 +40,15 @@ Leia também `tool_evidence` e `tool_alternatives` quando presentes. Explique
 que o escopo é navegador e e-mail fictícios, sem prova de serviços reais.
 `basis: exploratory_tools` indica evidência daquela etapa; alternativas
 empatadas não definem um vencedor universal. Não misture essa nota com a
-qualidade de preparar um currículo, que o laboratório não mede.
+qualidade de preparar um currículo. O ensaio de navegador não mede esse material;
+a evidência específica de preparação tem protocolo e limites próprios.
+
+Para onboarding, currículo ou carreira, leia `preparation_by_task` em
+`models recommend`. Apresente apenas a entrada pertinente, com suas ressalvas.
+`exploratory_preparation` descreve recortes de texto, não conversa completa,
+ATS ou execução de ferramentas. `review_required` pede conferência do material;
+não chame a opção de aprovada porque acertou campos. As recomendações gerais
+para outras tarefas continuam separadas. Não troque o modelo automaticamente.
 
 Leia `benchmark_evidence` quando presente. Se houver falha crítica na etapa,
 explique o problema observado, ofereça outra opção disponível ou conduza a etapa
@@ -94,7 +105,9 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 - Se escolher revisar, mantenha a atividade atual. Currículo usa `intake show`,
   fatos e versões salvos; entrevistas usam `practice show`; carreira usa
   `career status` e a sessão atual; busca usa só preferências e fontes de
-  `profile show`. Mostre o resumo pertinente e salve apenas as correções
+  `profile show`. Empresa usa `company list` e `get`; LinkedIn/GitHub usa
+  `presence show`; propostas usam `offers list` e `get`; modelos usam
+  `models show`. Mostre o resumo pertinente e salve apenas as correções
   confirmadas pelo comando da própria atividade. Revisar um atalho não inicia
   o perfil completo. No preparo de candidaturas, revise o perfil por seção
   com `profile answer` e confira versões de currículos e perfis públicos
@@ -110,7 +123,7 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 - `next_step=company_dossier`: consulte os dossiês salvos e esclareça a empresa
   e a dúvida da pessoa. Não use o pedido como autorização de candidatura.
 - Parada registrada: pedido de continuar a campanha autoriza `resume-work`.
-  Retomar somente currículo, treino ou guia de carreira preserva a parada
+  Retomar uma atividade auxiliar ou de preparação preserva a parada
   das ações externas. Treino adiado usa `practice choose` com `decision=now`;
   guia pausado usa `career resume` na versão atual. Não crie outra sessão
   nem peça novamente uma resposta já salva. Se a pessoa disse só "iniciar",
@@ -140,8 +153,13 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
 - `profile_approval`: apresente o resumo e peça a confirmação da versão.
 - `interview_preparation`: siga [entrevista](../entrevista/SKILL.md). Treino é
   opcional; continuar uma campanha preparada tem prioridade sem exigir recusa.
-- Pedido de analisar proposta: siga `docs/PROPOSTAS.md`; não altera filtros,
-  autoriza contraproposta nem depende de terminar o onboarding.
+- `next_step=offers` ou pedido de analisar proposta: leia `offers list`,
+  use `get` para retomar e siga `docs/PROPOSTAS.md` e o
+  [contrato de propostas](../../../docs/CONTRATOS.md#comparação-de-propostas).
+  Guardar a comparação preserva os filtros e não autoriza contraproposta.
+  Não exige completar o onboarding.
+- `next_step=model_preferences`: leia `models show` e conduza a escolha opcional
+  de serviços descrita acima. Reaproveite os já informados; não peça chave ou senha.
 - `resume_approval`: apresente o rascunho e conduza a revisão do currículo.
 - `professional_presence`: siga [presenca](../presenca/SKILL.md), com escolha
   explícita de revisar LinkedIn/GitHub, deixar para depois ou pular.

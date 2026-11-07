@@ -73,7 +73,7 @@ O candidato encontra o pedido em linguagem comum no
 
 | Comando | Uso no fluxo |
 |---|---|
-| `menu` | Lista quatro atividades sem criar perfil ou retomar uma parada. `--choose` aceita número ou nome, como `1`, `currículo`, `entrevistas`, `carreira` e `vagas`; opção desconhecida reapresenta a lista. Acrescente `--remember` somente após escolha explícita para guardar a atividade entre sessões, sem retomar nem autorizar ações. |
+| `menu` | Lista quatro atividades e `5. Mais opções` sem criar perfil ou retomar uma parada. A lista auxiliar oferece empresa, LinkedIn/GitHub, propostas, modelos e preparo completo, escolhidos pelo nome. `--choose` aceita número ou nome, como `1`, `currículo`, `entrevistas`, `carreira` e `vagas`; opção desconhecida reapresenta a lista. Acrescente `--remember` somente após escolha explícita para guardar a atividade entre sessões, sem retomar nem autorizar ações. |
 | `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `sources`, `profile_approval`, `resume_approval`, `professional_presence`, `interview_preparation`, `career_guidance`, `company_dossier`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
 | `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
@@ -86,7 +86,7 @@ O candidato encontra o pedido em linguagem comum no
 | `research-scope grant`, `get`, `list`, `check`, `revoke` | Autoriza e confere pesquisa pública para um alvo e pergunta. Não altera fontes de candidatura nem intercepta rede. [Contrato](INVESTIGACAO-AGENTE.md#autorizar-uma-investigação-específica). |
 | `company create`, `get`, `list`, `revise`, `summary` | Dossiê versionado de empresa, com evidências por tema, salários, contradições e perguntas. `start --focus company` dispensa cadastro. [Contrato](INVESTIGACAO-AGENTE.md#dossiê-de-empresa). |
 | `career start`, `get`, `status`, `answer`, `propose`, `choose`, `experiment`, `reflect`, `pause`, `resume` | Guia opcional, privado e versionado. `start --focus career` consulta sem criar sessão. [Contrato](INVESTIGACAO-AGENTE.md#guia-de-carreira). |
-| `offers save`, `list`, `get`, `status`, `compare`, `equivalent` | `get` recebe `offer_id`; `compare` recebe `ids`; `equivalent` recebe `base_id` e `target_id`. Comparações aceitam `base_currency` e `rates`; esquema completo em [PROPOSTAS.md](PROPOSTAS.md). |
+| `offers save`, `list`, `get`, `status`, `compare`, `equivalent` | `get` recebe `offer_id`; `compare` recebe `ids`; `equivalent` recebe `base_id` e `target_id`. Comparações aceitam `base_currency` e `rates`; esquema completo no [contrato de propostas](CONTRATOS.md#comparação-de-propostas). |
 | `profile show` | Perfil atual com versão e `approved_version`. |
 | `profile status` | `next_section`, `missing`, `approved`, `version`, `questions` com exemplos. Guia o onboarding. |
 | `profile answer <seção>` | Recebe `field`, `value` e, para autorização explícita, `confirmed: true`. Mescla uma resposta sem apagar as anteriores. Aceita `salary.floors` e outros campos salariais. |
@@ -133,12 +133,15 @@ imprime a instrução para pedir a instalação à IA; o agente então conduz a
 instalação conforme a seção anterior.
 
 No primeiro acesso, `start` inclui o menu. `menu --choose` e `start --focus`
-consultam diretamente `curriculum`, `practice`, `career` ou `search`, sem
+consultam diretamente `curriculum`, `practice`, `career`, `search`, `company`,
+`presence`, `offers`, `models` ou `prepare`, sem
 trocar a atividade salva. Quando a pessoa pedir para mudar de tarefa, use
 `menu --choose <atividade> --remember` e prossiga com `start`. Não use apenas
 `start --focus search` para uma troca que precise sobreviver à próxima sessão.
 Currículo concluído devolve `curriculum_complete`, sem exigir cadastro completo.
-A busca pública pede cargo, modalidade e fontes e devolve
+`company`, `presence`, `offers` e `models` também retomam a escolha salva,
+sem completar o perfil de candidaturas. Abrir `menu --choose 5` apenas lista
+esses caminhos; não os inicia. A busca pública pede cargo, modalidade e fontes e devolve
 `search_scope_confirmation`, `search_ready` ou `search_paused`. Confira a
 [autorização delimitada](INVESTIGACAO-AGENTE.md#busca-pública-pelo-menu) antes de
 consultar uma fonte. Uma campanha já autorizada preserva `execution_readiness`.
@@ -348,9 +351,10 @@ ou o aplicativo funcionando.
 Ao voltar em outro dia, escreva `iniciar`. A IA oferece continuar de onde parou
 ou revisar a atividade salva; também pode escolher outra no menu. Se já disser
 `continuar`, ela aproveita essa escolha no contexto da atividade indicada.
-Revisar mostra as respostas pertinentes ao currículo, treino, guia ou busca,
-sem começar o cadastro completo nem apagar tudo. Retomar somente currículo,
-treino ou guia de carreira preserva a parada da campanha.
+Revisar mostra as respostas pertinentes à atividade atual, incluindo empresa,
+LinkedIn/GitHub, propostas e modelos,
+sem começar o cadastro completo nem apagar tudo. Retomar uma atividade
+auxiliar ou de preparação preserva a parada da campanha.
 Só as correções confirmadas são salvas, e mudanças materiais pedem a aprovação
 da nova versão. Uma autorização anterior não libera uma ação diferente.
 

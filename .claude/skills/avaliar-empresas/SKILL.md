@@ -9,7 +9,11 @@ Leia [AGENTS.md](../../../AGENTS.md) e o
 [protocolo de investigação](../../../docs/INVESTIGACAO-AGENTE.md). O pedido
 pode começar sem perfil aprovado, currículo ou fontes de vagas. Pergunte a
 empresa e a dúvida da pessoa, uma coisa por vez, aproveitando o que ela já
-informou. Se houver perfil aprovado, suas preferências ajudam a contextualizar.
+informou. Quando a pessoa escolher essa atividade, salve
+`menu --choose company --remember`; assim a próxima sessão retoma a análise,
+mesmo que antes estivesse no currículo. Criar um dossiê durante a busca
+preserva a atividade escolhida. Se houver perfil aprovado, suas preferências
+ajudam a contextualizar.
 
 ## Descoberta e evidência
 

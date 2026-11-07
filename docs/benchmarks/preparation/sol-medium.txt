@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar pelo currículo ou explorar profissões antes de decidir. Não precisa completar o cadastro para começar. Qual atividade prefere?",
+      "content": "Opções para começar:\n1. Currículo: montar um primeiro rascunho com as experiências e atividades que você informar.\n2. Guia de carreira: comparar caminhos e experimentar uma atividade para conhecer suas preferências.\n3. Entrevistas: praticar uma apresentação e respostas.\n4. Busca de vagas: consultar oportunidades, sem enviar candidaturas.\n5. Mais opções: conhecer as outras atividades disponíveis.\nMinha sugestão é explorar caminhos de carreira, já que você ainda não sabe qual profissão escolher. A escolha fica com você."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Vamos continuar com a busca pública de vagas, considerando remoto, híbrido e presencial. Sua preferência de modalidade já está confirmada. A campanha de candidaturas continua parada.",
+      "content": "Orientação para continuar: mantenha os demais filtros existentes e inclua as três modalidades na consulta. Ao analisar uma vaga, confira as atividades e os requisitos para decidir se ela interessa. Continuar a busca não autoriza o envio de candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento, com os períodos simultâneos preservados. Usei apenas os anos e as atividades que você informou.",
+      "content": "OBJETIVO\nAtendimento\n\nEXPERIÊNCIA PROFISSIONAL\nFeira Lua | 2022 a 2024\nLoja Sol | 2021 a 2023\n\nOs trabalhos ocorreram ao mesmo tempo durante parte desses períodos.\n\nATIVIDADES INFORMADAS\nAtendimento a clientes e organização de produtos.\n\nOs cargos específicos e a distribuição das atividades entre os dois locais ainda não foram informados. Este rascunho está disponível para sua revisão."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Segue a correção em um rascunho separado, para sua revisão. A versão aprovada permanece preservada; este rascunho ainda depende da sua aprovação.",
+      "content": "RASCUNHO DE CORREÇÃO\n\nTrecho corrigido para substituir a afirmação de comando da equipe:\n\"Organização de produtos.\"\n\nA afirmação de que você comandava a equipe foi retirada deste trecho. Nenhum resultado foi acrescentado."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Podemos comparar três caminhos a partir do seu interesse por conversar e organizar tarefas. Como você ainda não informou quanto precisa ganhar, a comparação financeira fica em aberto. Nenhum caminho foi escolhido e seus filtros de vagas permanecem iguais.",
+      "content": "Comparação exploratória, sem pressupor experiência ou qualificação:\n\n1. Atendimento: explorar seu interesse por conversar. Exercício: escrever uma resposta a uma reclamação fictícia e observar como se sente ao explicar uma solução.\n2. Assistência administrativa: explorar seu interesse por organizar tarefas. Exercício: ordenar uma lista fictícia de tarefas por prioridade e explicar suas escolhas.\n3. Recepção: explorar a combinação de conversa e organização. Exercício: simular por escrito o acolhimento de uma pessoa e organizar uma agenda fictícia.\n\nProposta para suas duas horas semanais: dedicar 30 minutos a cada exercício e os 30 minutos restantes à comparação. Anote o que foi fácil, difícil e o que gostaria de repetir. Esses registros ajudam você a escolher o próximo passo; ainda não há dados para comparar remuneração."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o experimento de atendimento que você escolheu: responder por escrito a uma reclamação fictícia e registrar o que foi fácil ou difícil. Ainda não há resultados informados. Seu histórico e os filtros de vagas permanecem preservados.",
+      "content": "EXPERIMENTO DE ATENDIMENTO\n\nSituação fictícia para praticar:\n\"Pedi ajuda para encontrar um produto e saí sem orientação. Fiquei insatisfeito com o atendimento.\"\n\nEscreva uma resposta que reconheça a reclamação, peça a informação necessária para ajudar e proponha um próximo passo sem prometer algo que você não pode garantir.\n\nDepois, registre:\n1. O que foi fácil ao escrever?\n2. O que foi difícil?\n3. Organizar a resposta em etapas ajudou?\n4. Você gostaria de repetir esse tipo de atividade?\n\nVocê dispõe de duas horas por semana e pode dividir a escrita e a reflexão dentro desse tempo. O exercício é feito por escrito, sem contato externo. Quando trouxer sua resposta e suas anotações, teremos material para avaliar a experiência."
+    }
+  ]
+}

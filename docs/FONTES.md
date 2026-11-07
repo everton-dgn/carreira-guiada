@@ -16,7 +16,7 @@ Se precisar, diga "me ajude a copiar o link". A IA explica o próximo passo
 com base na tela que conseguir observar. Você não precisa editar arquivo,
 preencher uma configuração ou escolher um nome técnico para o site.
 
-![As fontes fazem parte das escolhas confirmadas no início.](assets/inicio-guiado.png)
+![O menu permite começar pela busca de vagas e combinar as fontes depois.](assets/menu-guiado.png)
 
 ## Ainda não tenho os links
 
@@ -58,27 +58,5 @@ destino continuam sendo decisões suas.
 
 ## Procedimento do agente
 
-Investigar uma empresa ou explorar opções de carreira usa um alcance próprio,
-com pergunta, alvo e endereços combinados. Isso pode começar antes do perfil
-e não muda a lista de portais de candidatura. Veja o
-[protocolo de investigação](INVESTIGACAO-AGENTE.md).
-
-- Na campanha, leia `sources.urls` no perfil aprovado. Na busca pública pelo
-  menu, combine essas fontes com filtros parciais e confirme um escopo
-  `job_search`, conforme o protocolo de investigação. Nunca salve links
-  pessoais neste guia.
-- Use `profile answer sources` com `field: "urls"` e a lista completa de
-  endereços confirmada. "Deixe para depois" corresponde a uma lista vazia.
-- Antes da ação de busca de vagas `research`, informe `source_url` em `action authorize`. O controle
-  exige uma fonte não vazia aprovada e domínio, porta e caminho compatíveis.
-- A validação não resolve DNS nem verifica redirecionamentos. Confira cada
-  destino observado, a identidade da empresa e as regras de uso do serviço.
-- Descoberta de fontes após pedido ou aceite é pesquisa pública específica;
-  siga a skill `fontes` e registre o parecer com `research save`. Esse comando
-  só salva análise, não navega nem autoriza candidatura. Pesquisa de vagas
-  permanece limitada às fontes escolhidas e ao alcance autorizado para
-  aquela atividade. Não amplie essa lista sozinho.
-- Permissão da pessoa não substitui permissão do serviço. Pare a ação afetada
-  diante de restrição de automação, CAPTCHA ou bloqueio e explique o próximo passo.
-- Registre consulta e cobertura por fonte. Busca parcial ou vazia não comprova
-  que todas as vagas foram examinadas.
+Os comandos e controles de pesquisa estão no
+[protocolo técnico de fontes](INVESTIGACAO-AGENTE.md#fontes-escolhidas-pela-pessoa).

@@ -84,43 +84,14 @@ rescisão, prazo e demais termos do contrato. Maior valor líquido não decide
 sozinho qual proposta é melhor. Para trabalho internacional, verifique moeda
 de pagamento, local de trabalho e regras de imigração aplicáveis.
 
+## Continuar depois
+
+Diga "quero comparar propostas" ou escolha essa atividade em **Mais opções**.
+Você pode começar só com os valores que conhece. A IA salva o cenário,
+explica o que falta e retoma a próxima informação quando você voltar.
+Corrigir um valor cria outro cenário, preservando o anterior para comparação.
+
 ## Contrato técnico
 
-Na CLI, use `offers save` com o cenário, `offers get` com `offer_id`, `offers
-compare` com `ids` ou `offers equivalent` com `base_id` e `target_id`. As duas
-comparações aceitam `base_currency` e `rates`. `offers list` e `offers status`
-são consultas sem payload. Todos os dados vão por JSON na entrada padrão,
-nunca como argumentos com valores pessoais. A pessoa conversa naturalmente.
-Salve checkpoint com `phase: offers`, a próxima premissa e a dúvida pendente
-para retomar sem exigir o onboarding de candidaturas.
-
-`Offers(root)` usa `Profile._db` e armazena JSON privado aditivo. Leituras não
-criam `.job`. `save(data)` cria sempre um cenário novo com ID; não há edição
-que sobrescreva cenário. Retorna `{offer, calculation}`. `list()` devolve a
-lista de cenários; `get(id)` devolve `{offer, calculation}`; `status()` traz
-contagem e faltas. `compare(ids, base_currency=None, rates=None)` devolve
-`offers`, `base_currency`, `rates`, `missing_rates`, `comparable` e `ranking`
-(sempre null). `equivalent(base_id, target_id, base_currency=None, rates=None)`
-retorna fórmula, premissas e estimativa de bruto mensal do cenário alvo.
-
-O objeto de entrada exige `label`, `regime` (`CLT`, `PJ`, `MEI`, `cooperado`,
-`internacional`), `currency` (três letras maiúsculas), `gross_monthly`,
-`paid_months`, `guaranteed_extra_annual`, `variable_annual`, `benefits_annual`,
-`restricted_funds_annual`, `taxes_annual`, `costs_annual` e `reserve_annual`.
-Os componentes materiais podem ser `null` para desconhecido; meses conhecidos
-são inteiros de 1 a 12. `hours_week`, `weeks_year`, `notes`, `assumptions` e `estimated_fields` são
-opcionais. `estimated_fields` lista os nomes dos campos numéricos informados
-que são estimativas; a marcação aparece no cálculo. Valores numéricos conhecidos
-são não negativos, finitos, com até 19 dígitos inteiros e 12 casas decimais.
-Horas e semanas, quando fornecidas, são maiores que zero, com no máximo 168 horas
-por semana e 53 semanas por ano; valores fracionários são aceitos. A saída usa
-strings decimais e `null` para cálculos indisponíveis. Registre em `assumptions`
-quais dados são estimativas e sua origem.
-
-`rates` associa cada moeda de origem a `{rate, date, source}`: taxa positiva,
-data ISO `AAAA-MM-DD` e URL pública HTTPS sem credenciais, parâmetros ou
-fragmento. A moeda base tem fator 1. Em moedas diferentes, informe a base e
-uma taxa por moeda diferente dela. Taxa ausente impede equivalência; registro
-incompleto ou inválido gera `ValueError`. A validação é sintática e não verifica
-se a fonte está acessível ou se a taxa é correta. Cabe ao agente confirmar a
-fonte pública e a taxa fora do módulo. O módulo não lê o piso do perfil.
+Quem desenvolve ou opera o agente encontra comandos e campos no
+[contrato de propostas](CONTRATOS.md#comparação-de-propostas).

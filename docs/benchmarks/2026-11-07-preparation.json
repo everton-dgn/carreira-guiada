@@ -1,0 +1,1373 @@
+{
+  "version": 1,
+  "date": "2026-11-07",
+  "benchmark_version": "1.0.0",
+  "scope": "fictional_preparation_text_snapshots",
+  "source": "docs/benchmarks/2026-11-07-preparation.json",
+  "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+  "prompt_sha256": "eb7e26c83f18f01ef89a5e3f533c73544386042e4a0818326f9380b2f3a4b21e",
+  "client": {
+    "name": "PolyHive",
+    "version": "0.9.0",
+    "application_dependency": false
+  },
+  "measurement": {
+    "configurations": 9,
+    "sessions_per_configuration": 1,
+    "cases_per_session": 6,
+    "model_starts": 9,
+    "tools_requested": false,
+    "network_isolation_proven": false,
+    "real_services_used": false
+  },
+  "limitations": [
+    "Uma sessão por configuração, com seis recortes fornecidos juntos; não são seis conversas independentes.",
+    "Instruções do cliente também influenciam as respostas. O ensaio compara as configurações observadas, não modelos isolados do cliente.",
+    "O cliente não registrou chamadas de ferramenta; não foi demonstrado isolamento mecânico de arquivos e rede nesta coleta benigna.",
+    "A revisão de conteúdo foi feita pelo assistente mantenedor, com evidências; não é estudo com pessoas reais nem prova independente de qualidade.",
+    "Não mede exportação de currículo, leitura por ATS, entrevista por voz, ferramentas, custo ou campanhas por dias.",
+    "No Opus, o conteúdo do bloco foi lido apenas para diagnóstico qualitativo. A resposta original continua reprovada no formato e sem pontuação mecânica."
+  ],
+  "runs": [
+    {
+      "id": "terra-medium",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "medium",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/terra-medium.txt",
+      "response_sha256": "d9df2d0ac96b721331b4c9965bae0c8a4b25a2e043ea78d6ce283940cf7cbb99",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/terra-medium-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Você pode criar um rascunho de currículo, explorar profissões no guia de carreira, praticar entrevistas ou buscar vagas. Há outras opções disponíveis."
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "A busca pode incluir vagas remotas, híbridas e presenciais. Nenhuma candidatura será enviada ao retomar a busca."
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Objetivo: atendimento"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Trecho corrigido: organização de produtos."
+            ],
+            "note": "Apresenta correção em rascunho e preserva o histórico, sem declarar aprovação automática."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "1. Atendimento: conversar com pessoas e responder a solicitações. Experimento: escrever uma resposta a uma reclamação fictícia."
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Escreva uma resposta para esta reclamação fictícia: \\\"Meu pedido chegou incompleto e ainda não recebi uma solução.\\\" Depois, anote quais partes foram fáceis e quais foram difíceis. Você pode organizar a atividade dentro das suas duas horas semanais."
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "terra-high",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "high",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/terra-high.txt",
+      "response_sha256": "8d2c347e9dc6ee7d48855e70ef37f00e9bcb062442df2dfc6e35fef8c54f11ce",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/terra-high-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Escolha uma opção: criar um primeiro currículo com o que você já sabe sobre suas experiências; explorar possibilidades profissionais no guia de carreira; preparar-se para entrevistas; buscar vagas; ou conhecer as outras opções disponíveis."
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Na busca, considere as três modalidades. Nenhuma candidatura será enviada por causa dessa escolha."
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Objetivo: atendimento"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Trecho corrigido do rascunho: Organização de produtos."
+            ],
+            "note": "Apresenta correção em rascunho e preserva o histórico, sem declarar aprovação automática."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "1. Atendimento: pode ser uma forma de explorar seu gosto por conversar. Exercício: escreva uma resposta a uma reclamação fictícia e anote o que achou fácil ou difícil."
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Dentro das suas duas horas semanais, escreva uma resposta a esta reclamação fictícia: \\\"Recebi um produto diferente do que pedi e preciso de ajuda.\\\" Depois, anote o que foi fácil e o que foi difícil na resposta. Você pode organizar essas observações em uma lista e compartilhá-las quando terminar."
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sol-medium",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/sol-medium.txt",
+      "response_sha256": "fbc354b0f567480e1eb91c4419c4fc895c9ca9325c8e1d88f85bc5d2590f328f",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/sol-medium-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Opções para começar:"
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Orientação para continuar: mantenha os demais filtros existentes e inclua as três modalidades na consulta. Ao analisar uma vaga, confira as atividades e os requisitos para decidir se ela interessa. Continuar a busca não autoriza o envio de candidaturas."
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "OBJETIVO"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "RASCUNHO DE CORREÇÃO"
+            ],
+            "note": "Apresenta correção em rascunho e preserva o histórico, sem declarar aprovação automática."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Comparação exploratória, sem pressupor experiência ou qualificação:"
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "EXPERIMENTO DE ATENDIMENTO"
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "astra-high",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/astra-high.txt",
+      "response_sha256": "bc5abef64907486ed2333fd00c7c7f958ad9050daab1bdf0ede99e09019a56d6",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/astra-high-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Você pode escolher entre:"
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Para continuar, diga qual cargo você quer buscar. A busca deve considerar as três modalidades e preservar os demais filtros existentes. Consultar vagas não autoriza enviar candidaturas."
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "OBJETIVO"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "RASCUNHO DE CORREÇÃO"
+            ],
+            "note": "Apresenta correção em rascunho e preserva o histórico, sem declarar aprovação automática."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Comparação por exercícios, sem definir um caminho:"
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Experimento: responder por escrito a uma reclamação fictícia."
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "fable-high",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "high",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/fable-high.txt",
+      "response_sha256": "26581d6730a62350e820a591dca701ca2a1bc2ff59d167e0de353cd3de8f7663",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/fable-high-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Orientação prática para começar:"
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Estado da busca:"
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "needs_review",
+            "evidence": [
+              "Organização de produtos e espaço de trabalho."
+            ],
+            "note": "O relato confirma produtos, mas não organização do espaço de trabalho. Retirar ou confirmar essa atribuição."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "needs_review",
+            "evidence": [
+              "a versão válida continua sendo a anterior"
+            ],
+            "note": "A versão com fato corrigido pode ser preservada como histórico, mas não deve continuar indicada como válida para uso."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "COMPARAÇÃO DE CAMINHOS (até 3, conforme pedido)"
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "RETOMADA DO EXPERIMENTO"
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "opus-high",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/opus-high.txt",
+      "response_sha256": "ed8e26eac83fb4b40406ee5bfda32b87eb45541d4a9188c890a23996633f205d",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/opus-high-tools.txt",
+      "score": null,
+      "format_error": "A resposta foi envolvida em um bloco Markdown, embora o protocolo exigisse somente JSON.",
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Atividades disponíveis para começar:"
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Busca de vagas retomada"
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "[Seu nome]"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Rascunho de correção (separado da versão aprovada)"
+            ],
+            "note": "Apresenta correção em rascunho e preserva o histórico, sem declarar aprovação automática."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Comparação de até três caminhos (2 horas por semana, salário pretendido não informado)"
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Experimento: responder por escrito a uma reclamação fictícia"
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "haiku-medium",
+      "provider": "claude",
+      "model": "claude-haiku-5-5",
+      "effort": "medium",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/haiku-medium.txt",
+      "response_sha256": "5322e9f1c92deef8d38e0cfb48497ea7d9bc313686b422271de12988240673d0",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/haiku-medium-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "needs_review",
+            "evidence": [
+              "Exemplos: atendimento ao cliente, organização de tarefas ou comércio."
+            ],
+            "note": "Apresentou profissões e iniciou perguntas de exploração, sem oferecer as atividades do projeto. A decisão estruturada offer_choices não corresponde ao menu no texto."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Status da busca:"
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Atendimento ao cliente"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Rascunho de correção (separado da versão aprovada):"
+            ],
+            "note": "Apresenta correção em rascunho e preserva o histórico, sem declarar aprovação automática."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Três caminhos para 2 horas por semana:"
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Experimento: simular por escrito a resposta a uma reclamação fictícia (caminho: atendimento)."
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "glm-max",
+      "provider": "glm",
+      "model": "glm-5.3[1m]",
+      "effort": "max",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/glm-max.txt",
+      "response_sha256": "1382eaac9efade5e3d4a9dcaa0738dce853057cb1e21f6fd0b322bbdba619dd6",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/glm-max-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Por onde começar, passo a passo:"
+            ],
+            "note": "Oferece caminhos do projeto sem impor cadastro completo nem escolher pela pessoa."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Como fica sua busca agora:"
+            ],
+            "note": "Preserva ausência de preferência e campanha parada, sem afirmar execução comprovada."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "needs_review",
+            "evidence": [
+              "trabalhos simultâneos mostram organização"
+            ],
+            "note": "Sobreposição de empregos não comprova a habilidade de organização. Não inferir competência a partir das datas."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "needs_review",
+            "evidence": [
+              "atividade principal nas duas experiências"
+            ],
+            "note": "A pessoa informou organização de produtos, sem dizer que era a atividade principal nem sua distribuição por empresa."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Comparação de até 3 caminhos (2 horas por semana; salário pretendido: não informado)"
+            ],
+            "note": "Compara atividades possíveis, mantém salário desconhecido e considera duas horas semanais."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Experimento do caminho atendimento (sessão de hoje, até 2 horas)"
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    },
+    {
+      "id": "m3-xhigh",
+      "provider": "m3",
+      "model": "MiniMax-M3.1-Flash[1m]",
+      "effort": "xhigh",
+      "session_complete": true,
+      "session_archived": true,
+      "response_path": "docs/benchmarks/preparation/m3-xhigh.txt",
+      "response_sha256": "db5196f57b7f99de7160d2f8af8f628b9560c9da849a1cbcc732881efa529246",
+      "tool_calls": 0,
+      "tool_observation_path": "docs/benchmarks/preparation/m3-xhigh-tools.txt",
+      "score": {
+        "benchmark_version": "1.0.0",
+        "cases_sha256": "6078cba9d25e8eb7378687034a6ed61823e19b3d50bceecd30c17f3c84adb06f",
+        "passed": 6,
+        "total": 6,
+        "complete": true,
+        "missing_cases": [],
+        "extra_cases": [],
+        "critical_failures": 0,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "passed": true,
+            "failed_fields": [],
+            "extra_fields": [],
+            "structural_errors": [],
+            "critical_failures": [],
+            "missing_critical_fields": []
+          }
+        ],
+        "qualitative": {
+          "status": "not_reviewed",
+          "evidence": [],
+          "rubric": [
+            "grounding",
+            "usefulness",
+            "clarity",
+            "ats_when_applicable"
+          ]
+        },
+        "limits": "Decisões e estrutura apenas; texto e execução exigem evidência e revisão independente."
+      },
+      "format_error": null,
+      "text_review": {
+        "status": "reviewed",
+        "reviewer_kind": "model",
+        "reviewer_role": "maintainer_assistant",
+        "independent": false,
+        "cases": [
+          {
+            "id": "novice",
+            "stage": "onboarding",
+            "verdict": "needs_review",
+            "evidence": [
+              "Só depois disso faz sentido olhar o guia de carreira e a busca de vagas."
+            ],
+            "note": "Impôs uma sequência de exploração e currículo antes dos outros atalhos, embora o projeto permita escolher a atividade."
+          },
+          {
+            "id": "search_resume",
+            "stage": "onboarding",
+            "verdict": "needs_review",
+            "evidence": [
+              "a busca pública de vagas continua rodando"
+            ],
+            "note": "Declarou execução ativa sem usar ferramentas ou apresentar evidência de pesquisa."
+          },
+          {
+            "id": "cv_draft",
+            "stage": "cv",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Rascunho de currículo (versão de rascunho, aberta para sua revisão)"
+            ],
+            "note": "Entrega trecho de currículo com anos sobrepostos e sem métricas ou meses inventados. A distribuição das atividades por empresa ainda pode ser confirmada na conversa."
+          },
+          {
+            "id": "cv_correction",
+            "stage": "cv",
+            "verdict": "needs_review",
+            "evidence": [
+              "a versão aprovada continua sendo a que vale"
+            ],
+            "note": "O texto manteve como utilizável a versão que contém o fato corrigido. Preservação histórica não basta para autorizar seu uso."
+          },
+          {
+            "id": "career_compare",
+            "stage": "career",
+            "verdict": "needs_review",
+            "evidence": [
+              "Curva de aprendizado com pouco tempo: mais rápida em 1"
+            ],
+            "note": "A comparação atribui velocidade de aprendizado sem observação ou experimento que sustente essa conclusão."
+          },
+          {
+            "id": "career_resume",
+            "stage": "career",
+            "verdict": "meets_sample",
+            "evidence": [
+              "Experimento retomado: resposta escrita a uma reclamação (caminho: atendimento)"
+            ],
+            "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
+          }
+        ]
+      }
+    }
+  ]
+}

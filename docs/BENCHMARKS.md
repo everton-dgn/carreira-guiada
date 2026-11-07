@@ -5,6 +5,60 @@ Um modelo no catálogo não comprova acesso na conta. Acertar perguntas também
 não comprova operar um navegador. Qualquer provedor pode contribuir, inclusive
 modelos locais.
 
+## Onboarding, currículo e guia de carreira
+
+Nove configurações responderam a seis recortes fictícios em 7 de novembro de
+2026, dois por etapa. Cada resposta inclui a orientação ao candidato e um
+material concreto, como trecho de currículo ou exercício. Nenhuma chamada de
+ferramenta apareceu no histórico do cliente. Esta coleta não operou arquivos
+do candidato, navegador ou e-mail; a simulação da CLI é uma validação separada.
+
+A tabela mostra decisões estruturadas corretas. As ressalvas vêm da revisão
+do conteúdo pelo assistente mantenedor e não alteram essa contagem.
+
+| Configuração | Início | Currículo | Carreira | Ressalva no material entregue |
+|---|---:|---:|---:|---|
+| GPT-6.1 Terra, médio | 2/2 | 2/2 | 2/2 | Sem ressalva material nos recortes. |
+| GPT-6.1 Terra, alto | 2/2 | 2/2 | 2/2 | Sem ressalva material nos recortes. |
+| GPT-6.1 Sol, médio | 2/2 | 2/2 | 2/2 | Sem ressalva material nos recortes. |
+| GPT-6 Astra, alto | 2/2 | 2/2 | 2/2 | Sem ressalva material nos recortes. |
+| Claude Fable 5.1, alto | 2/2 | 2/2 | 2/2 | Acrescentou uma atribuição ao currículo e chamou a versão com fato corrigido de válida. |
+| Claude Opus 5.5, alto | Sem nota | Sem nota | Sem nota | Entregou bloco Markdown em vez do JSON pedido. Conteúdo preservado para leitura; formato não concluído. |
+| Claude Haiku 5.5, médio | 2/2 | 2/2 | 2/2 | Iniciou exploração de profissões sem oferecer o menu de atividades. |
+| GLM 5.3, máximo | 2/2 | 2/2 | 2/2 | Inferiu competência pelas datas simultâneas e chamou uma atividade de principal sem confirmação. |
+| MiniMax M3.1 Flash, `xhigh` | 2/2 | 2/2 | 2/2 | Impôs sequência de atividades, afirmou busca em execução sem ferramentas, manteve currículo corrigido como válido e inferiu velocidade de aprendizado. |
+
+Terra médio/alto, Sol médio e Astra alto são alternativas observadas nos três
+recortes de preparação. A amostra não demonstra vantagem do esforço alto nem
+um vencedor geral. Quando só Terra médio e alto estão disponíveis, a sugestão
+usa médio; quando há empate entre modelos, mantém a preferência inicial do
+projeto. Isso não mede preço, velocidade ou desempenho em documentos reais.
+
+Fable e GLM exigem conferência adicional no currículo; Haiku, no início; M3,
+nas três etapas. O Opus não recebe uma promoção automática a partir desta
+coleta porque sua saída descumpriu o contrato de formato. Essa falha não prova
+que seu conteúdo seja inferior nem invalida observações de outros ensaios.
+Os resultados anteriores de navegador e segurança permanecem separados.
+
+O [protocolo de preparação](BENCHMARK-PREPARACAO.md) explica os critérios.
+O [relatório](benchmarks/2026-11-07-preparation.json) contém hashes, respostas
+originais e trechos usados na revisão. São nove partidas de medição, uma por
+configuração, sem repetição estatística. Instruções herdadas do cliente também
+influenciam o resultado; a evidência não garante o mesmo comportamento em outro
+aplicativo que ofereça um modelo com o mesmo nome. A consulta de ferramentas
+usou `polyhive logs <sessão> --filter tools` após o arquivamento. Esse filtro
+conservou chamadas em uma sessão de controle com ferramentas; nas nove
+medições retornou "Nenhuma atividade para mostrar". Essa observação do cliente
+não prova isolamento do computador. Para conferir os artefatos e recalcular decisões:
+
+```sh
+uv run --locked python scripts/maintainers/preparation_benchmark.py verify --report docs/benchmarks/2026-11-07-preparation.json
+```
+
+O comando confere a origem dos trechos, mas não refaz o julgamento qualitativo.
+Não mede conversa completa, exportação de PDF, aprovação em ATS ou uso por uma
+pessoa real. As recomendações continuam sujeitas à conferência do material.
+
 ## Instruções maliciosas em vagas, e-mails e retomada
 
 Há duas coletas em 7 de novembro de 2026. A primeira usa a revisão 1; a nova

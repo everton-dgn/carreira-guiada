@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+- Mais opções reúne empresas, LinkedIn/GitHub, propostas, modelos e preparo
+  completo. A escolha fica salva para a próxima sessão, sem apagar outras
+  atividades nem retomar uma campanha parada.
+- Modalidade sem preferência continua válida ao passar da busca pública para
+  o preparo completo, sem perguntas repetidas. O modelo de perfil mantém essa
+  pergunta pendente até a resposta da pessoa. Cargo e moeda continuam necessários.
+- Trocas entre atividades auxiliares, entrevistas e carreira preservam respostas,
+  currículos aprovados, checkpoint e envios incertos. Simulação com pessoa
+  fictícia cobre o retorno em outro dia e impede acesso externo.
+  Criar um dossiê durante a busca preserva a atividade escolhida para retomar.
+- Guias de fontes e propostas ficam mais diretos; contratos de implementação
+  passam para a documentação do agente. Privacidade explica a remoção de
+  originais, exportações, backups e cópias nos serviços, com decisões separadas.
+- Animações em alta resolução mostram o menu completo, troca de atividade,
+  busca sem perguntas repetidas e retomada com conferência de resultados.
+- Benchmark de preparação compara nove configurações em onboarding, currículo
+  e carreira, com respostas fictícias e revisão do conteúdo separada da nota
+  mecânica. Recomendações por tarefa mostram ressalvas e opções disponíveis,
+  sem confundir texto com execução de ferramentas.
+
 ## 0.14.1 - 2026-11-07
 
 - Retomada identifica currículo e busca salvos e oferece continuar, revisar ou

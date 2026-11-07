@@ -103,7 +103,9 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    administrador e confere de novo com `doctor`. Nunca termine o turno
    mandando a pessoa resolver sozinha ou procurar quem montou a pasta.
 2. Ler `start --json`. No primeiro acesso, apresente as quatro opções de
-   `menu`: currículo, entrevistas, carreira e busca de vagas. `menu`, "opções"
+   `menu`: currículo, entrevistas, carreira e busca de vagas, além de
+   `5. Mais opções` para empresa, LinkedIn/GitHub, propostas, modelos e preparo
+   completo. Abrir a lista secundária não troca a atividade. `menu`, "opções"
    e "ajuda" mostram essas opções a qualquer momento, sem alterar o progresso.
    Pedido específico entra direto: use `menu --choose` com o número ou nome
    escolhido e `--remember` para salvar essa atividade, inclusive quando o
@@ -130,9 +132,13 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    currículo e contas. Siga [entrevista](.agents/skills/entrevista/SKILL.md).
    Para escolher um foco profissional, use `start --focus career --json` e
    siga [carreira](.agents/skills/carreira/SKILL.md). Para investigar uma
-   empresa, use `start --focus company --json` e siga
+   empresa, salve `menu --choose company --remember`, consulte
+   `start --focus company --json` e siga
    [avaliar-empresas](.agents/skills/avaliar-empresas/SKILL.md). Os dois caminhos
-   dispensam cadastro completo. Consultar o início não cria uma sessão.
+   dispensam cadastro completo. Pedidos diretos de LinkedIn/GitHub, propostas
+   e modelos usam `menu --choose <atividade> --remember`, substituindo
+   `<atividade>` por `presence`, `offers` ou `models`. Os próximos passos são `professional_presence`,
+   `offers` e `model_preferences`. Consultar o início não cria uma sessão.
    Se houver `welcome_back`, ofereça continuar ou revisar quando a pessoa disser
    apenas `iniciar`. Um pedido explícito de continuar já escolhe a retomada.
    Revisar preserva o perfil, o histórico e o currículo; só altera respostas
@@ -146,8 +152,8 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    reenvio daquela vaga; as demais vagas seguem, e a conferência da incerta
    entra como item da rodada, não como pré-condição.
 6. Se a pessoa já disse "continuar" ou "retomar", siga a atividade indicada
-   sem pedir a mesma decisão de novo. Retomar somente currículo, treino ou guia
-   de carreira preserva uma campanha parada. Na retomada da campanha, reutilize
+   sem pedir a mesma decisão de novo. Retomar uma atividade de preparação,
+   pesquisa de empresa ou revisão de modelos preserva uma campanha parada. Na retomada da campanha, reutilize
    o objetivo e as permissões vigentes. Pergunte só o que ainda não foi respondido.
 
 Uma pergunta, uma contagem ou um pedido de revisão não inicia candidaturas nem
