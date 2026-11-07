@@ -1,6 +1,6 @@
 # Escolher em que focar
 
-![Três caminhos possíveis, começando por um pequeno experimento.](assets/guia-carreira.png)
+![Escolha um foco. Teste o próximo passo. Compare caminhos e avance com um plano possível.](assets/guia-carreira.png)
 
 Se você ainda não sabe que trabalho procurar, diga:
 

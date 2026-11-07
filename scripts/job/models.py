@@ -37,12 +37,22 @@ EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max', 'ultra')
 REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-decisions.json'
 TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-browser-mail.json'
 ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-adversarial.json'
+CODEX_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-codex-adversarial.json'
 
 
 def adversarial_evidence(model, effort, stage, report):
     """Expose attack observations without turning absence of failure into immunity."""
     if stage not in ('screening', 'application', 'mail', 'continuity') or effort is None:
         return None
+    if isinstance(report, list):
+        if not report:
+            return adversarial_evidence(model, effort, stage, {}) | {'previous_observations': []}
+        observations = [adversarial_evidence(model, effort, stage, item) for item in report]
+        measured = [item for item in observations if item['status'] != 'not_measured']
+        negative = [item for item in measured if item['status'] == 'unsafe_attempt_observed']
+        selected = (negative or measured or observations)[-1]
+        # Different protocol revisions are separate observations, never summed.
+        return {**selected, 'previous_observations': [item for item in measured if item is not selected]}
     measured_stage = 'screening' if stage == 'application' else stage
     key = ALIASES.get(model.casefold(), model.casefold())
     matches = lambda r: ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key and r['effort'] == effort
@@ -50,13 +60,16 @@ def adversarial_evidence(model, effort, stage, report):
     runs = [r for r in all_runs if r.get('included_in_comparison') is True]
     negative = [c for r in all_runs for c in r['score']['cases'] if c['stage'] == measured_stage and
                 (c['unsafe_attempts'] or c['resistance'] == 'failed')]
-    base = {'source': 'docs/benchmarks/2026-11-07-adversarial.json', 'scope': 'fictional_adversarial_tool_decisions',
+    base = {'source': report.get('source', 'docs/benchmarks/2026-11-07-adversarial.json'), 'scope': 'fictional_adversarial_tool_decisions',
             'measured_stage': measured_stage, 'immunity_proven': False, 'real_services_validated': False,
             'protocol_revision': report.get('measurement_protocol_revision'),
             'measurement_cautions': report.get('measurement_cautions', [])}
     if not runs and not negative:
         missing = next((r for r in report.get('unmeasured', []) if matches(r)), None)
-        return {**base, 'status': 'not_measured', 'reason': missing['reason'] if missing else 'Sem medição nesta configuração e etapa.'}
+        reason = (missing['reason'] if missing else
+                  'Há execuções preservadas, mas excluídas da comparação; confira o motivo no relatório.' if all_runs else
+                  'Sem medição nesta configuração e etapa.')
+        return {**base, 'status': 'not_measured', 'reason': reason}
     cases = [c for r in runs for c in r['score']['cases'] if c['stage'] == measured_stage]
     attacks = [c for c in cases if c['condition'] == 'attack']
     unsafe = sum(c['unsafe_attempts'] for c in cases)
@@ -195,7 +208,8 @@ class Models:
         saved = self.show()
         candidates = [{'provider': p['name'], **m} for p in saved['providers'] for m in p['models']]
         report = json.loads(TOOL_REPORT.read_text(encoding='utf-8')) if TOOL_REPORT.is_file() else {}
-        attacks = json.loads(ADVERSARIAL_REPORT.read_text(encoding='utf-8')) if ADVERSARIAL_REPORT.is_file() else {}
+        attacks = [json.loads(path.read_text(encoding='utf-8')) for path in
+                   (ADVERSARIAL_REPORT, CODEX_ADVERSARIAL_REPORT) if path.is_file()]
         stages = []
         for stage, label in STAGES.items():
             preferred = ('astra', 'opus', 'terra', 'm3') if stage == 'preparation' else ('terra', 'astra', 'opus', 'm3')

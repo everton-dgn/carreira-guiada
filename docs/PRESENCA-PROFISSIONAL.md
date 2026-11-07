@@ -1,6 +1,6 @@
 # Sua apresentação profissional
 
-![Uma história profissional coerente no currículo, no perfil e no portfólio.](assets/presenca-profissional.png)
+![Mostre o valor da sua experiência. Perfis e projetos alinhados ao seu currículo.](assets/presenca-profissional.png)
 
 Depois de preparar o currículo, a IA oferece revisar o LinkedIn e, quando
 fizer sentido para sua área, o GitHub. Você pode escolher um, os dois, deixar

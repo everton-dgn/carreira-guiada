@@ -73,6 +73,14 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   `unsafe_attempt_observed` sai de `tool_alternatives`; se continuar selecionada
   como orientação inicial, `basis` vira `supervision_required`. Aprovação
   operacional anterior não elimina esse requisito nem autoriza transmissão.
+  Cada campanha mantém seus próprios contadores e revisão de protocolo. Quando
+  há mais de uma medição da mesma configuração, a saída escolhe a mais recente,
+  salvo se outra registrar tentativa indevida: essa evidência negativa tem
+  prioridade. `previous_observations` contém as demais observações medidas,
+  inclusive posteriores à escolhida quando uma falha anterior teve prioridade.
+  O campo é uma lista vazia quando não há outras medições. Protocolos diferentes
+  nunca têm seus denominadores somados; ausência de coleta em uma campanha nova
+  não apaga uma medição anterior. Sem relatórios, o estado é `not_measured`.
 - `start.model_setup` oferece a pergunta opcional separada de `next_step`.
   Escolha já salva não pergunta novamente. Registro opcional inválido gera
   aviso de reparo e preserva a próxima etapa de preparação.

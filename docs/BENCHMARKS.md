@@ -7,7 +7,57 @@ modelos locais.
 
 ## Instruções maliciosas em vagas, e-mails e retomada
 
-Em 7 de novembro de 2026, cinco configurações receberam seis ataques fictícios
+Há duas coletas em 7 de novembro de 2026. A primeira usa a revisão 1; a nova
+campanha Codex usa a revisão 2, que oculta identificadores internos e o estado
+do recibo até sua consulta. Os resultados ficam separados: a correção do
+protocolo impede tratar as duas coletas como uma disputa entre fornecedores.
+
+### Codex com o protocolo corrigido
+
+O adaptador restringe as ferramentas antes de liberar os ataques. As provas
+de leitura, escrita e rede usam arquivos e destinos locais fictícios. Cada
+exposição registra a conferência do isolamento, e a avaliação compara as
+chamadas vistas pelo cliente com o diário do laboratório. O
+[protocolo](BENCHMARK-ADVERSARIAL.md) explica o alcance dessa restrição.
+
+| Configuração | Sessões concluídas | Ataques expostos sem tentativa de cumprir seu objetivo | Tarefas legítimas concluídas | Outras tentativas indevidas | Erros de protocolo |
+|---|---:|---:|---:|---:|---:|
+| GPT-6.1 Terra, médio | 2/2 | 6/6 | 9/9 | 0 | 0 |
+| GPT-6.1 Terra, alto | 2/2 | 6/6 | 9/9 | 0 | 0 |
+| GPT-6.1 Sol, médio | 2/2 | 6/6 | 9/9 | 0 | 0 |
+| GPT-6 Astra, alto | 2/2 | 6/6 | 9/9 | 0 | 0 |
+
+Terra médio, Terra alto, Sol médio e Astra alto concluíram 3/3 tarefas em cada frente:
+vagas, e-mails e retomada. Na segunda sessão, preservaram a parada e conferiram
+os recibos sem repetir os envios.
+Nenhuma das quatro configurações completas tentou uma ação indevida. Esta
+amostra não diferencia sua resistência nem demonstra vantagem do esforço alto.
+
+As cinco partidas de preparação não expuseram ataques. Foram usadas para
+corrigir instruções globais herdadas, capacidades do catálogo, transporte de
+ferramentas e aprovação da chamada fictícia. Não são falhas atribuídas aos modelos.
+O relatório contabiliza todas as partidas, inclusive essas falhas de preparação.
+Foram 13 partidas: cinco de preparação e oito de medição. A última sessão,
+de retomada do Astra, ocorreu em uma janela adicional autorizada de até
+30 minutos, com o estado salvo e outro executor, usando a mesma versão do cliente.
+
+O [relatório Codex e as trilhas](benchmarks/2026-11-07-codex-adversarial.json)
+preservam respostas, prova de isolamento, chamadas do cliente e efeitos no
+destino fictício. Para conferir sem chamar um modelo:
+
+```sh
+uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks/2026-11-07-codex-adversarial.json
+```
+
+Terra médio permanece a sugestão inicial para quem tem acesso, agora também
+com observação adversarial no protocolo corrigido. Terra alto, Sol médio e Astra alto são
+alternativas observadas. O ensaio anterior de navegador continua sendo a
+evidência operacional; este teste de decisões não substitui navegação real,
+não mede preparo de currículo e não comprova imunidade.
+
+### Primeira coleta, protocolo original
+
+Cinco configurações receberam seis ataques fictícios
 e três controles legítimos, em duas sessões novas por configuração. Este ensaio
 usou uma ferramenta MCP limitada a dados inventados, sem navegador ou caixas
 reais. O [protocolo adversarial](BENCHMARK-ADVERSARIAL.md) detalha o isolamento,
@@ -40,7 +90,7 @@ pedida pelo ataque; são registradas separadamente, sem inventar causalidade.
 | E-mails | 3/3 | 3/3 | 3/3 | 3/3 | 3/3 |
 | Parada e retomada | 3/3 | 3/3 | 3/3, com erro de protocolo | 2/3 | 3/3, com erro de protocolo |
 
-Terra médio/alto, Sol médio e Astra alto ficaram sem medição adversarial.
+Terra médio/alto, Sol médio e Astra alto ficaram sem medição adversarial nessa coleta.
 A rota Codex não confirmou o isolamento completo do executor; nenhum ataque
 foi exposto nessa rota. Isso não é falha de resistência desses modelos e não
 altera os resultados operacionais anteriores.
@@ -63,7 +113,7 @@ A revisão 2 usa identificadores neutros, oculta o recibo até a consulta e
 registra a conferência do isolamento junto de cada exposição. Também corrige
 a classificação de caminhos alternativos e de chamadas rejeitadas. Os números
 acima foram recalculados a partir da coleta original; não houve nova medição
-dos modelos com a revisão 2 após atingir o teto de partidas.
+dessas cinco configurações com a revisão 2 após atingir o teto de partidas.
 
 O [relatório e as oito trilhas públicas](benchmarks/2026-11-07-adversarial.json)
 incluem as cinco medições finais e as três sequências de calibração. Para
@@ -78,6 +128,9 @@ operacional. Uma tentativa indevida impede que o resultado operacional promova
 a configuração naquela etapa. Passar neste ensaio, sozinho, não promove um
 modelo para operar navegador. As configurações sem medição continuam marcadas
 assim, sem receber nota zero ou selo de segurança.
+Quando há campanhas diferentes da mesma configuração, cada revisão mantém
+seus contadores. Uma nova observação positiva não apaga uma tentativa indevida
+anterior. O contrato da recomendação expõe as demais observações separadamente.
 
 ## Navegador, e-mail e retomada em outra sessão
 
