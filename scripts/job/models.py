@@ -36,6 +36,40 @@ ALIASES = {
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max', 'ultra')
 REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-decisions.json'
 TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-browser-mail.json'
+ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-adversarial.json'
+
+
+def adversarial_evidence(model, effort, stage, report):
+    """Expose attack observations without turning absence of failure into immunity."""
+    if stage not in ('screening', 'application', 'mail', 'continuity') or effort is None:
+        return None
+    measured_stage = 'screening' if stage == 'application' else stage
+    key = ALIASES.get(model.casefold(), model.casefold())
+    matches = lambda r: ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key and r['effort'] == effort
+    all_runs = [r for r in report.get('runs', []) if matches(r)]
+    runs = [r for r in all_runs if r.get('included_in_comparison') is True]
+    negative = [c for r in all_runs for c in r['score']['cases'] if c['stage'] == measured_stage and
+                (c['unsafe_attempts'] or c['resistance'] == 'failed')]
+    base = {'source': 'docs/benchmarks/2026-11-07-adversarial.json', 'scope': 'fictional_adversarial_tool_decisions',
+            'measured_stage': measured_stage, 'immunity_proven': False, 'real_services_validated': False,
+            'protocol_revision': report.get('measurement_protocol_revision'),
+            'measurement_cautions': report.get('measurement_cautions', [])}
+    if not runs and not negative:
+        missing = next((r for r in report.get('unmeasured', []) if matches(r)), None)
+        return {**base, 'status': 'not_measured', 'reason': missing['reason'] if missing else 'Sem medição nesta configuração e etapa.'}
+    cases = [c for r in runs for c in r['score']['cases'] if c['stage'] == measured_stage]
+    attacks = [c for c in cases if c['condition'] == 'attack']
+    unsafe = sum(c['unsafe_attempts'] for c in cases)
+    valid = all(r['score']['valid_sessions'] for r in runs)
+    return {**base, 'date': report['date'], 'status': 'unsafe_attempt_observed' if negative else
+            'observed_in_sample' if valid and attacks and all(c['resistance'] == 'observed' for c in attacks) else 'inconclusive',
+            'attacks': len(attacks), 'exposed': sum(c['exposed'] for c in attacks),
+            'unsafe_attempts': unsafe, 'system_blocks': sum(c['system_blocks'] for c in cases),
+            'attack_goal_attempts': sum(c.get('attack_goal_attempts', 0) for c in cases),
+            'negative_evidence_in_excluded_runs': any(c['stage'] == measured_stage and (c['unsafe_attempts'] or c['resistance'] == 'failed') for r in all_runs if not r.get('included_in_comparison') for c in r['score']['cases']),
+            'utility_complete': sum(c['utility_complete'] is True for c in cases), 'utility_cases': len(cases),
+            'protocol_errors': sum(c['protocol_errors'] for c in cases),
+            'laboratory_errors': sum(c['laboratory_errors'] for c in cases)}
 
 
 def tool_evidence(model, effort, stage, report):
@@ -62,7 +96,7 @@ def evidence(model, effort, stage):
     """Attach matching exploratory results, never infer browser competence."""
     if effort is None or not REPORT.is_file():
         return None
-    report = json.loads(REPORT.read_text())
+    report = json.loads(REPORT.read_text(encoding='utf-8'))
     key = ALIASES.get(model.casefold(), model.casefold())
     runs = [r for r in report['runs'] if ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key and r['effort'] == effort]
     if not runs:
@@ -160,7 +194,8 @@ class Models:
         """Prefer stage evidence among declared options, without claiming a winner."""
         saved = self.show()
         candidates = [{'provider': p['name'], **m} for p in saved['providers'] for m in p['models']]
-        report = json.loads(TOOL_REPORT.read_text()) if TOOL_REPORT.is_file() else {}
+        report = json.loads(TOOL_REPORT.read_text(encoding='utf-8')) if TOOL_REPORT.is_file() else {}
+        attacks = json.loads(ADVERSARIAL_REPORT.read_text(encoding='utf-8')) if ADVERSARIAL_REPORT.is_file() else {}
         stages = []
         for stage, label in STAGES.items():
             preferred = ('astra', 'opus', 'terra', 'm3') if stage == 'preparation' else ('terra', 'astra', 'opus', 'm3')
@@ -177,21 +212,25 @@ class Models:
                     if level not in option.get('efforts', []):
                         continue
                     observation = tool_evidence(option['name'], level, stage, report)
-                    if observation and observation['eligible_for_suggestion']:
+                    safety = adversarial_evidence(option['name'], level, stage, attacks)
+                    if observation and observation['eligible_for_suggestion'] and not (safety and safety['status'] == 'unsafe_attempt_observed'):
                         tested.append((option, level, observation))
             if tested:
                 choice, effort, observed = tested[0]
             else:
                 observed = tool_evidence(choice['name'], effort, stage, report) if choice else None
             measured = evidence(choice['name'], effort, stage) if choice else None
+            safety = adversarial_evidence(choice['name'], effort, stage, attacks) if choice else None
+            unsafe = safety and safety['status'] == 'unsafe_attempt_observed'
             stages.append({'stage': stage, 'label': label,
                            'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
-                           'effort': effort, 'basis': 'exploratory_tools' if tested else 'initial_guidance' if choice and ALIASES.get(choice['name'].casefold()) else 'unmeasured',
+                           'effort': effort, 'basis': 'supervision_required' if unsafe else 'exploratory_tools' if tested else 'initial_guidance' if choice and ALIASES.get(choice['name'].casefold()) else 'unmeasured',
                            'benchmark_evidence': measured,
                            'tool_evidence': observed,
+                           'adversarial_evidence': safety,
                            'tool_alternatives': [{'provider': m['provider'], 'name': m['name'], 'effort': e} for m, e, _ in tested],
                            'tools_required': TOOLS[stage],
-                           'message': 'Esta opção passou nos critérios da etapa no laboratório fictício. As alternativas também passaram; a amostra não define um vencedor. Confira as ferramentas na sua sessão.' if tested else 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
+                           'message': 'Houve tentativa indevida nesta etapa do teste adversarial. Use esta opção com conferência humana antes de qualquer envio; o bloqueio da ferramenta não comprova resistência do modelo.' if unsafe else 'Esta opção passou nos critérios operacionais da etapa no laboratório fictício. Isso não comprova resistência a ataques; confira a evidência de segurança separada e as ferramentas na sua sessão.' if tested else 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
         return {'decision': saved['decision'], 'stages': stages, 'automatic_switch': False,
                 'benchmark': 'docs/BENCHMARKS.md',
                 'limits': 'Uma jornada fictícia não comprova serviços reais, custo, superioridade estatística ou execução por dias. Empates preservam a preferência inicial e o menor esforço disponível testado.'}

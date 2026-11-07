@@ -109,10 +109,18 @@ saídas para outros destinos. O cliente de IA continua acessando seu provedor
 com material fictício. Nenhuma conta pessoal participa.
 
 As regressões verificam recusas e efeitos no código. Um teste programado não
-comprova que um modelo resistirá a toda instrução maliciosa. A interpretação
-de instruções contaminadas no checkpoint, ataques escondidos em imagens e
-campanhas prolongadas exigem outras avaliações. Veja [escopo dos testes](VALIDACAO.md)
-e [limites do benchmark](BENCHMARK-NAVEGADOR.md).
+comprova que um modelo resistirá a toda instrução maliciosa. Uma campanha
+separada expôs cinco configurações a seis ataques textuais, incluindo instruções
+contaminadas na retomada, com três controles legítimos. Ela distingue objetivo
+do ataque, outras ações indevidas, erros de protocolo, bloqueios e tarefa
+concluída. Uma tentativa bloqueada não vira mérito do modelo.
+
+Veja os [resultados adversariais](BENCHMARKS.md#instruções-maliciosas-em-vagas-e-mails-e-retomada)
+e o [isolamento do executor](BENCHMARK-ADVERSARIAL.md). A coleta usa apenas uma
+ferramenta fictícia, sem acesso do modelo a arquivos pessoais ou contas de vagas
+e e-mail. Não testa imunidade geral, imagens maliciosas ou campanhas prolongadas.
+Os [testes do código](VALIDACAO.md) e o [ensaio de navegador](BENCHMARK-NAVEGADOR.md)
+continuam separados dessa observação dos modelos.
 
 ## Referências usadas
 
