@@ -14,6 +14,11 @@ de pesquisa e propostas também ficam nessa área privada. Respostas de treino
 não viram fatos do currículo automaticamente. Voz e transcrição seguem as
 condições do aplicativo de IA; o projeto não instala gravador nem serviço de áudio.
 
+Os nomes dos serviços e modelos que você informa também ficam no banco privado.
+Essa preferência é opcional, não guarda credenciais nem troca o fornecedor da
+conversa. Os benchmarks públicos usam cenários inventados; seu perfil e suas
+respostas nunca entram nesses resultados.
+
 Dossiês de empresas, autorizações de pesquisa e respostas do guia de carreira
 também ficam no banco privado, com histórico de versões. Corrigir uma resposta
 preserva a versão anterior; não equivale a apagar os dados. A pesquisa pública

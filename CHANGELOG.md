@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.10.0 - 2026-11-06
+
+### Novidades
+
+- Escolha opcional dos serviços e modelos de IA no início, com "não sei" e
+  "depois" salvos separadamente do perfil, dos filtros e das permissões.
+- Orientação por etapa limitada às opções informadas, com resultados e
+  ressalvas de um benchmark público de decisões fictícias.
+- Protocolo para contribuidores avaliarem outros provedores, preservando
+  respostas, falhas, configuração e os limites entre decisão e automação.
+
 ## 0.9.0 - 2026-11-06
 
 - Dossiês privados de empresas com evidências por tema, contexto de relatos,

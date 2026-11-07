@@ -26,6 +26,20 @@ para uma experiência mais próxima da entrevista. Escrever continua válido.
 - Nada é inventado por você ou pela IA. Se mudar de ideia, diga e ela corrige.
 - Senha, código de verificação e número de documento nunca entram na conversa.
 
+## Comece com a IA que você já tem
+
+No primeiro preparo, a IA pergunta quais aplicativos ou serviços você usa.
+Pode responder "uso Claude", "tenho quatro serviços", "uso um modelo local",
+"não sei" ou "depois". Ela guarda essa escolha para não perguntar a cada início.
+Se precisar comparar, ajuda a conferir os modelos disponíveis no seu aplicativo.
+Você não precisa saber o nome do provedor nem fornecer senha ou chave.
+
+A sugestão pode mudar entre preparar o currículo, pesquisar vagas e preencher
+formulários. Sua assinatura não garante acesso a todo modelo daquela empresa.
+Quando faltarem informações ou testes, a IA explica isso e continua com o que
+estiver disponível. Mudar essa preferência preserva o perfil e as permissões.
+[Como a escolha funciona](MODELOS.md).
+
 ## Dicas durante o preparo
 
 A IA oferece uma dica curta quando ela ajuda a responder a pergunta atual.
@@ -33,7 +47,7 @@ Você não precisa decidir tudo antes de começar, nem ler esta lista inteira.
 
 | Momento | Orientação que você deve receber |
 |---|---|
-| Primeiro acesso | Comece com um modelo capaz, como Astra ou Opus, se já tiver acesso. A IA explica as opções sem exigir outra assinatura. |
+| Primeiro acesso | Informe os serviços que já usa, ou deixe para depois. A IA considera as opções disponíveis antes de recomendar um modelo. |
 | Currículo | Separe experiências, cursos e resultados que consegue confirmar. Trabalhos simultâneos podem ter datas sobrepostas; a IA não deve alterá-las para esconder isso. |
 | Primeiro emprego | Estudos, projetos e atividades voluntárias podem entrar quando forem reais. Experiência profissional anterior não é obrigatória. |
 | Cargos e filtros | Diferencie o que é obrigatório do que é uma preferência. A IA explica o efeito de cada filtro, sem ampliar a busca por conta própria. |
@@ -46,7 +60,7 @@ Você não precisa decidir tudo antes de começar, nem ler esta lista inteira.
 | Propostas | Compare o ano completo e o pacote. Impostos desconhecidos ficam pendentes, sem líquido inventado. |
 | Permissões | Você pode autorizar a busca, o preenchimento e o envio durante a rodada para evitar perguntas repetidas. Também pode pedir confirmação por vaga. |
 | E-mail | Use uma conta que consiga acompanhar. A conexão é opcional; a IA explica como isso afeta os retornos. |
-| Antes da operação | Confira uma primeira candidatura com a IA. Depois do preparo, Terra 6.1 com esforço médio ou alto é a sugestão para operar. |
+| Antes da operação | Confira uma primeira candidatura com a IA e as ferramentas disponíveis. Terra 6.1 médio ou alto é uma sugestão inicial quando você tem acesso; testes de decisões não comprovam navegação. |
 | Continuidade | Defina o objetivo em linguagem comum. A IA usa o modo objetivo quando disponível, respeita seus limites e salva as pendências para retomar. |
 
 [Entenda as recomendações de modelos](MODELOS.md). Essas dicas não substituem

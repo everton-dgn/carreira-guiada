@@ -34,6 +34,13 @@ class ReleaseJourneyTests(unittest.TestCase):
             'evidence_source': 'destination_page', 'checked_at': self.time, **extra})
 
     def test_novice_from_start_to_offer_without_external_effects(self):
+        self.say(self.call('start')['model_setup']['question'], 'Uso quatro serviços. Não sei os modelos de todos.')
+        model_access = self.call('models', 'save', data={'expected_version': 0, 'decision': 'available', 'providers': [
+            {'name': 'OpenAI', 'models': [{'name': 'GPT-6.1 Terra', 'efforts': ['medium', 'high']}]},
+            {'name': 'Anthropic', 'models': []}, {'name': 'Google', 'models': []},
+            {'name': 'Serviço comunitário', 'models': [{'name': 'Modelo local'}]}]})
+        self.assertIsNone(self.call('start')['model_setup']['question'])
+        self.assertFalse(self.call('models', 'recommend')['automatic_switch'])
         resume = self.prepare()
         self.say('Seu currículo está pronto. Quer revisar LinkedIn e GitHub?', 'Sim, mas preciso de ajuda para escrever.')
         self.call('presence', 'choose', data={'decision': 'now', 'topics': ['linkedin', 'github'], 'confirmation': 'Quero revisar os dois.'})
@@ -80,6 +87,8 @@ class ReleaseJourneyTests(unittest.TestCase):
         self.assertTrue(self.call('start')['welcome_back'])
         self.say('Encontrei seu currículo, os perfis revisados e o treino de ontem.', 'Continue de onde parei.')
         self.call('resume-work')
+        self.assertEqual(self.call('models', 'show'), model_access)
+        self.assertIsNone(self.call('start')['model_setup']['question'])
         for kind, provider, account in [('browser', 'chrome', 'perfil-ficticio'), ('mail', 'gmail', 'principal')]:
             self.call('capability', data={'kind': kind, 'provider': provider, 'account': account,
                 'status': 'ready', 'checked_at': self.time, 'evidence': 'Sessão fictícia reconferida no dia seguinte.'})

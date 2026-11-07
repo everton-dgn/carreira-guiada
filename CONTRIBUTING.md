@@ -82,6 +82,16 @@ O gerador usa uma fonte de texto (DejaVu Sans ou Arial) e uma monoespaçada
 (DejaVu Sans Mono, Menlo ou Consolas) disponíveis no sistema. Confira acentos
 e legibilidade antes de publicar. Não copie fontes de terceiros para o projeto.
 
+## Testar outro provedor ou modelo
+
+Não é preciso adicionar um fornecedor ao código para usar o projeto. O início
+aceita nomes de serviços e modelos informados pela pessoa, incluindo opções
+locais. Para contribuir com uma recomendação, siga o
+[protocolo de benchmarks](docs/BENCHMARKS.md): use os mesmos cenários, publique
+configuração e respostas fictícias, registre falhas e separe decisão de
+execução com ferramentas. Os scripts de avaliação não dependem de um serviço
+de IA nem de um orquestrador específico.
+
 ## Licença das contribuições
 
 Envie somente material que você tem direito de distribuir sob a
