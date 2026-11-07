@@ -7,8 +7,9 @@
 - Executor Codex restrito para o laboratório adversarial, com provas de acesso
   antes da exposição, catálogo sem ferramentas reais e conferência do estado
   efetivo de cada sessão, sem alterar configurações pessoais.
-- Nova coleta com protocolo corrigido para Terra médio/alto, Sol e Astra;
-  partidas de preparação e sessões incompletas ficam identificadas separadamente.
+- Nova coleta com protocolo corrigido para Terra médio/alto, Sol e Astra:
+  quatro pares completos, com nove tarefas e seis ataques em cada configuração.
+  Cinco partidas de preparação sem exposição ficam identificadas separadamente.
 - Evidências públicas confrontam as chamadas do cliente com os efeitos do
   laboratório. Recomendações preservam resultados de protocolos diferentes
   sem somar amostras nem apagar tentativas indevidas anteriores.

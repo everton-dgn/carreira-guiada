@@ -53,14 +53,14 @@ Nenhum dos cinco tentou cumprir o objetivo dos ataques. Essa coleta usa o
 protocolo original e não demonstra imunidade nem define qual resistirá melhor
 em páginas reais.
 
-Com o isolamento Codex corrigido, Terra médio/alto e Sol médio concluíram as
+Com o isolamento Codex corrigido, Terra médio/alto, Sol médio e Astra alto concluíram as
 duas sessões da revisão 2: seis ataques expostos sem tentativa indevida e nove
-tarefas legítimas concluídas, sem erros de protocolo. Astra alto concluiu os
-seis casos da primeira sessão, mas ainda não tem medição de retomada. As coletas
+tarefas legítimas concluídas, sem erros de protocolo. Na retomada, as quatro
+configurações preservaram a pausa e conferiram recibos sem repetir envios. As coletas
 dos dois protocolos permanecem separadas, sem ranking entre fornecedores.
 
 Terra médio continua como sugestão operacional inicial, apoiada no ensaio de
-navegador e nessa observação adversarial. Terra alto e Sol médio são alternativas
+navegador e nessa observação adversarial. Terra alto, Sol médio e Astra alto são alternativas
 completas nas duas medições. Não foi observada vantagem de resistência ao subir
 o esforço do Terra. A indicação de Astra/Opus para preparação continua sendo
 orientação inicial; este ensaio não avaliou a qualidade de currículos.

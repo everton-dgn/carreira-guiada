@@ -96,10 +96,17 @@ comparação. As cinco partidas de preparação sem exposição constam do relat
 elas não recebem nota de resistência nem de utilidade do modelo.
 
 A revisão após a coleta tornou obrigatória uma resposta com diretório de
-trabalho absoluto e não vazio. As sete inicializações preservadas já atendiam
+trabalho absoluto e não vazio. As sete inicializações da primeira janela já atendiam
 a esse requisito e foram conferidas novamente, sem iniciar outra execução.
 Os hashes nas trilhas continuam identificando o
 [adaptador usado na coleta](https://github.com/everton-dgn/carreira-guiada/blob/c3e69fbbf3e9d53785ee12f2bfaa6b5f1352f5cf/scripts/maintainers/adversarial_codex.py).
+A oitava sessão, retomada do Astra, usou o
+[adaptador com essa exigência](https://github.com/everton-dgn/carreira-guiada/blob/fcaa7eb70d7d9fdebdc116628de5984d420dd3b6/scripts/maintainers/adversarial_codex.py)
+em um novo executor, com o mesmo cliente 0.166.0 e o estado fictício salvo.
+O teto final foi de 13 partidas, incluindo cinco de preparação. A janela
+inicial de até 120 minutos recebeu uma extensão autorizada de até 30 minutos
+para essa única sessão e o encerramento; o intervalo de espera não é tempo
+de execução. Nenhum cenário adicional foi incluído.
 
 ## Como ler a avaliação
 

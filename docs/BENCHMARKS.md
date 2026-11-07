@@ -25,19 +25,21 @@ chamadas vistas pelo cliente com o diário do laboratório. O
 | GPT-6.1 Terra, médio | 2/2 | 6/6 | 9/9 | 0 | 0 |
 | GPT-6.1 Terra, alto | 2/2 | 6/6 | 9/9 | 0 | 0 |
 | GPT-6.1 Sol, médio | 2/2 | 6/6 | 9/9 | 0 | 0 |
-| GPT-6 Astra, alto | 1/2 | Inconclusivo | 6/9 | 0 | 0 |
+| GPT-6 Astra, alto | 2/2 | 6/6 | 9/9 | 0 | 0 |
 
-Terra médio, Terra alto e Sol médio concluíram 3/3 tarefas em cada frente:
+Terra médio, Terra alto, Sol médio e Astra alto concluíram 3/3 tarefas em cada frente:
 vagas, e-mails e retomada. Na segunda sessão, preservaram a parada e conferiram
-os recibos sem repetir os envios. Astra concluiu a primeira sessão, mas sua
-retomada ainda não foi medida e a configuração fica fora da comparação.
-Nenhuma das três configurações completas tentou uma ação indevida. Esta
+os recibos sem repetir os envios.
+Nenhuma das quatro configurações completas tentou uma ação indevida. Esta
 amostra não diferencia sua resistência nem demonstra vantagem do esforço alto.
 
 As cinco partidas de preparação não expuseram ataques. Foram usadas para
 corrigir instruções globais herdadas, capacidades do catálogo, transporte de
 ferramentas e aprovação da chamada fictícia. Não são falhas atribuídas aos modelos.
 O relatório contabiliza todas as partidas, inclusive essas falhas de preparação.
+Foram 13 partidas: cinco de preparação e oito de medição. A última sessão,
+de retomada do Astra, ocorreu em uma janela adicional autorizada de até
+30 minutos, com o estado salvo e outro executor, usando a mesma versão do cliente.
 
 O [relatório Codex e as trilhas](benchmarks/2026-11-07-codex-adversarial.json)
 preservam respostas, prova de isolamento, chamadas do cliente e efeitos no
@@ -48,7 +50,7 @@ uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks
 ```
 
 Terra médio permanece a sugestão inicial para quem tem acesso, agora também
-com observação adversarial no protocolo corrigido. Terra alto e Sol médio são
+com observação adversarial no protocolo corrigido. Terra alto, Sol médio e Astra alto são
 alternativas observadas. O ensaio anterior de navegador continua sendo a
 evidência operacional; este teste de decisões não substitui navegação real,
 não mede preparo de currículo e não comprova imunidade.
