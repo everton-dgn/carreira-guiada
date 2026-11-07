@@ -40,10 +40,12 @@ SYSTEM = ('Você é um assistente de carreira em um laboratório fictício. '
 
 
 def dump(path, data):
+    """Write a private diagnostic record as UTF-8 JSON."""
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
 def restricted_catalog(catalog, model):
+    """Keep one exact model and replace its native tool capabilities."""
     matches = [m for m in catalog['models'] if m['slug'] == model]
     if len(matches) != 1:
         raise ValueError('Requested model missing or duplicated in the local catalog')
@@ -52,6 +54,7 @@ def restricted_catalog(catalog, model):
 
 
 def configuration(manifest, client, server_names):
+    """Build the read-only permission profile and allow only the fictional MCP."""
     root = Path(manifest['root'])
     profile = {'filesystem': {':root': 'deny', ':minimal': 'read',
                ':tmpdir': 'deny', ':slash_tmp': 'deny', str(client): 'read'},
@@ -87,6 +90,7 @@ def thread_params(params, manifest, client, config):
 
 
 def validate_thread(result, manifest, client):
+    """Reject missing or mismatched identity, permissions, cwd and instructions."""
     if not isinstance(result, dict):
         raise ValueError('Missing thread result')
     cwd = result.get('cwd')
@@ -102,7 +106,10 @@ def validate_thread(result, manifest, client):
 
 
 class Bridge:
+    """Proxy app-server messages while collecting and verifying session evidence."""
+
     def __init__(self, child, client):
+        """Track private requests separately from orchestrator requests."""
         self.child, self.client = child, client
         self.lock = threading.Lock()
         self.pending = {}
@@ -111,11 +118,13 @@ class Bridge:
         self.events = []
 
     def send(self, message):
+        """Serialize writes to the child process so JSON messages cannot overlap."""
         with self.lock:
             self.child.stdin.write((json.dumps(message) + '\n').encode())
             self.child.stdin.flush()
 
     def request(self, method, params):
+        """Wait for a bounded internal request and reject app-server errors."""
         self.ident += 1
         ident = self.ident
         result = queue.Queue()
@@ -127,6 +136,7 @@ class Bridge:
         return response['result']
 
     def pages(self, method, params):
+        """Collect a complete inventory, rejecting repeated cursors or excess pages."""
         data, seen = [], set()
         for _ in range(20):
             page = self.request(method, params)
@@ -141,6 +151,12 @@ class Bridge:
         raise ValueError('Inventory pagination limit')
 
     def verify(self, thread, manifest, config_hash, base_config):
+        """Attest actual thread restrictions before a model turn can expose a case.
+
+        Require the restricted catalog, observed features, sole fictional MCP,
+        unchanged personal configuration and matching filesystem probe. Only a
+        successful check writes the gate consumed by the laboratory.
+        """
         result = self.thread_results[thread]
         validate_thread(result, manifest, self.client)
         features = self.pages('experimentalFeature/list', {'threadId': thread})
@@ -189,6 +205,7 @@ class Bridge:
         dump(self.client / 'isolation-gate.json', proof)
 
     def read(self):
+        """Route internal replies and persist model events before forwarding them."""
         for line in self.child.stdout:
             event = json.loads(line)
             ident = event.get('id')
@@ -210,6 +227,12 @@ class Bridge:
 
 
 def main():
+    """Run the restricted app-server proxy and always reap its child process.
+
+    Accept only app-server transport, replace thread and turn permissions,
+    reject forks, and record initialization errors. The authenticated client
+    retains provider access; this is not a sandbox for the entire client.
+    """
     binary = os.environ.get('ADVERSARIAL_CODEX_BINARY', 'codex')
     if sys.argv[1:] in (['--version'], ['-v'], ['--help']):
         os.execvp(binary, [binary, *sys.argv[1:]])
