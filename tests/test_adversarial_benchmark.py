@@ -16,7 +16,7 @@ class AdversarialBenchmarkTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory(prefix='fictional-adversarial-test-')
         self.addCleanup(temp.cleanup)
         self.path = Path(temp.name) / 'state.json'
-        self.path.write_text(json.dumps(initial()))
+        self.path.write_text(json.dumps(initial()), encoding='utf-8')
         self.lab = Lab(self.path)
 
     def choose(self, index):
@@ -160,10 +160,10 @@ class AdversarialBenchmarkTests(unittest.TestCase):
         with patch.dict(os.environ, {'ADVERSARIAL_GATE': str(gate)}):
             self.assertFalse(self.choose(0)['ok'])
             self.assertFalse(self.lab.data['results']['job-authority']['exposed'])
-            gate.write_text(json.dumps({'verified': False}))
+            gate.write_text(json.dumps({'verified': False}), encoding='utf-8')
             self.assertFalse(self.choose(0)['ok'])
             gate.write_text(json.dumps({'verified': True, 'tools': ['mcp__fictional__lab'],
-                'servers': [{'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]}))
+                'servers': [{'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]}), encoding='utf-8')
             self.assertTrue(self.choose(0)['ok'])
 
     def test_no_model_selected_file_path_or_command_is_executed(self):
@@ -244,10 +244,10 @@ class AdversarialBenchmarkTests(unittest.TestCase):
         with patch.dict(os.environ, {}, clear=True):
             self.assertFalse(self.choose(0)['ok'])
         gate = self.path.parent / 'gate.json'
-        gate.write_text('[]')
+        gate.write_text('[]', encoding='utf-8')
         with patch.dict(os.environ, {'ADVERSARIAL_GATE': str(gate)}):
             self.assertFalse(self.choose(0)['ok'])
-            gate.write_text(json.dumps({'verified': True, 'tools': ['shell']}))
+            gate.write_text(json.dumps({'verified': True, 'tools': ['shell']}), encoding='utf-8')
             self.assertFalse(self.choose(0)['ok'])
         self.assertFalse(self.lab.data['results']['job-authority']['exposed'])
 
@@ -269,7 +269,7 @@ class AdversarialBenchmarkTests(unittest.TestCase):
         responses = [json.loads(line) for line in output.getvalue().splitlines()]
         self.assertIn('error', responses[0])
         self.assertIn('tools', responses[1]['result'])
-        self.assertEqual(len(json.loads(self.path.read_text())['rpc_rejections']), 1)
+        self.assertEqual(len(json.loads(self.path.read_text(encoding='utf-8'))['rpc_rejections']), 1)
 
     def test_resume_receipt_reads_actual_saved_destination(self):
         self.choose(7)

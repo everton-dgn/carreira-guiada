@@ -18,19 +18,19 @@ class AdversarialReportTests(unittest.TestCase):
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name)
         path = self.root / 'state.json'
-        path.write_text(json.dumps(initial()))
+        path.write_text(json.dumps(initial()), encoding='utf-8')
         self.gate = {'verified': True, 'tools': ['mcp__fictional__lab'],
                      'servers': [{'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]}
         gate_path = self.root / 'gate.json'
-        gate_path.write_text(json.dumps(self.gate))
+        gate_path.write_text(json.dumps(self.gate), encoding='utf-8')
         gate_env = patch.dict('os.environ', {'ADVERSARIAL_GATE': str(gate_path)})
         gate_env.start()
         self.addCleanup(gate_env.stop)
         for phase, indexes in ((1, range(6)), (2, range(6, 9))):
             if phase == 2:
-                data = json.loads(path.read_text())
+                data = json.loads(path.read_text(encoding='utf-8'))
                 data['phase'] = 2
-                path.write_text(json.dumps(data))
+                path.write_text(json.dumps(data), encoding='utf-8')
             lab = Lab(path)
             for index in indexes:
                 item = CASES[index]
@@ -45,7 +45,7 @@ class AdversarialReportTests(unittest.TestCase):
                 lab.call({'op': 'finish_case'})
             lab.call({'op': 'stop'})
         self.data = {'configuration': 'reference', 'model': 'reference', 'effort': 'medium',
-            'state': json.loads(path.read_text()), 'sessions': [
+            'state': json.loads(path.read_text(encoding='utf-8')), 'sessions': [
                 {'phase': p, 'session_key': str(p), 'completed': True, 'has_final': True,
                  'model': 'reference', 'effort': 'medium', 'isolation': {
                      'verified': True, 'tools': ['mcp__fictional__lab'],
@@ -87,13 +87,13 @@ class AdversarialReportTests(unittest.TestCase):
         run = {k: self.data[k] for k in ('configuration', 'model', 'effort')}
         run.update(evidence_file='evidence.json', evidence_sha256=hashlib.sha256(raw).hexdigest(), score=evaluate(self.data), included_in_comparison=True)
         path = self.root / 'report.json'
-        path.write_text(json.dumps({'runs': [run]}))
+        path.write_text(json.dumps({'runs': [run]}), encoding='utf-8')
         self.assertEqual(verify(path)['count'], 1)
         for field, value in [('evidence_file', '../outside.json'), ('model', 'different'),
                              ('evidence_sha256', '0' * 64), ('score', {})]:
             changed = deepcopy(run)
             changed[field] = value
-            path.write_text(json.dumps({'runs': [changed]}))
+            path.write_text(json.dumps({'runs': [changed]}), encoding='utf-8')
             with self.subTest(field=field), self.assertRaises(ValueError):
                 verify(path)
 
@@ -120,6 +120,6 @@ class AdversarialReportTests(unittest.TestCase):
         run.update(evidence_file='evidence.json', evidence_sha256=hashlib.sha256(raw).hexdigest(),
                    score=evaluate(self.data), included_in_comparison=False, exclusion_reason='Ocultar falha.')
         path = self.root / 'report.json'
-        path.write_text(json.dumps({'runs': [run]}))
+        path.write_text(json.dumps({'runs': [run]}), encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'Inclusão divergente'):
             verify(path)

@@ -66,8 +66,8 @@ class AdversarialRecommendationsTests(unittest.TestCase):
                 'model': 'gpt-6.1-terra', 'effort': 'medium', 'valid_for_comparison': True,
                 'completed_sessions': 2, 'score': {'network_evidence_complete': True,
                     'critical_failures': [], 'failed_write_attempts': 0,
-                    'stages': {'mail': {'complete': True, 'passed': 5, 'total': 5}}}}]}))
-            attack.write_text(json.dumps(report(unsafe=1)))
+                    'stages': {'mail': {'complete': True, 'passed': 5, 'total': 5}}}}]}), encoding='utf-8')
+            attack.write_text(json.dumps(report(unsafe=1)), encoding='utf-8')
             models = Models(root)
             models.save({'expected_version': 0, 'decision': 'available', 'providers': [
                 {'name': 'Serviço fictício', 'models': [{'name': 'GPT-6.1 Terra', 'efforts': ['medium']}]}]})
