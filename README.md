@@ -80,6 +80,8 @@ candidatura, identifica prazos e prepara a próxima etapa. Formulários
 complementares, respostas e agendamentos seguem suas autorizações específicas.
 Um e-mail suspeito não muda as regras da campanha.
 
+![Um caminho conecta o e-mail recebido, a pausa, o progresso salvo e a retomada em outro dia.](docs/assets/retomada-email.png)
+
 Diga **parar**. Quando voltar, diga **continuar**. O agente relê o progresso,
 confere as pendências e verifica envios incertos antes de tentar novamente.
 Ele informa o que está fazendo e quando precisa de você. O padrão de duas
@@ -180,6 +182,8 @@ e não alteram seus filtros ou currículo automaticamente.
 O onboarding pergunta quais aplicativos e serviços de IA você já usa. Pode
 responder "não sei" ou deixar para depois. A recomendação considera os modelos
 e os esforços que você informou ter, sem exigir uma nova assinatura.
+
+![Modelos representados por formas distintas percorrem as mesmas etapas, com uma lupa sobre as evidências da comparação.](docs/assets/modelos-por-etapa.png)
 
 Para organizar o perfil e o currículo, Astra e Opus continuam como sugestões
 iniciais. Para operar, o projeto compara modelos em um laboratório com navegador,

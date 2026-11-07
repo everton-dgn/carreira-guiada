@@ -13,6 +13,8 @@
 - Evidências públicas confrontam as chamadas do cliente com os efeitos do
   laboratório. Recomendações preservam resultados de protocolos diferentes
   sem somar amostras nem apagar tentativas indevidas anteriores.
+- README com novas ilustrações para acompanhamento de e-mails, pausa e retomada,
+  e escolha de modelos por etapa.
 
 ## 0.12.0 - 2026-11-07
 

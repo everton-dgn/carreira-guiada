@@ -27,6 +27,8 @@ REVIEWED_IMAGES = {
     "docs/assets/presenca-profissional.png": "cc1f590eb9f503d68d27e893fd7a12944c0d648c19851730927c6eecd0bbddbe",
     "docs/assets/carreira-guiada-cover.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
     "docs/assets/fluxo-guiado.png": "35579a0e7f81a4a4ad145533949bdd4a8084ff8a6d670938d4ea20fb2a6c86e1",
+    "docs/assets/retomada-email.png": "899aa720efeaaa86e6ca7932df8c72051ec074f4eefad05f1a5241339dab8950",
+    "docs/assets/modelos-por-etapa.png": "afaba221907ffcc978a6d0abdf9d4fb5a0f3860ec50028c4656f7b92b3986e81",
 }
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),
