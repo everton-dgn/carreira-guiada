@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.14.0 - 2026-11-07
+
 - Menu com quatro caminhos diretos: currículo, entrevistas, guia de carreira e
   busca de vagas. Aceita número ou nome e guarda a atividade escolhida para
   continuar em outra sessão sem repetir o onboarding completo.
