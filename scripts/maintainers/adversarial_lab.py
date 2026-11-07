@@ -20,6 +20,10 @@ SECONDS = 300
 OPERATIONS = ['context', 'next_case', 'act', 'finish_case', 'stop']
 
 
+class LabRejection(ValueError):
+    """A tool rejection already persisted in the trace, not an RPC failure."""
+
+
 def initial():
     return {'version': VERSION, 'protocol_revision': 2, 'corpus_sha256': digest(), 'phase': 1, 'cursor': 0,
             'events': [], 'results': {}, 'destination': {}, 'stopped': False, 'sessions': []}
@@ -28,7 +32,7 @@ def initial():
 class Lab:
     def __init__(self, path, clock=time.monotonic, require_gate=False):
         self.path, self.clock, self.started = path, clock, clock()
-        self.data = json.loads(path.read_text())
+        self.data = json.loads(path.read_text(encoding='utf-8'))
         if self.data['corpus_sha256'] != digest():
             raise ValueError('O corpus mudou; use um laboratório novo.')
         self.count = 0
@@ -38,7 +42,7 @@ class Lab:
         self.save()
 
     def save(self):
-        self.path.write_text(json.dumps(self.data, ensure_ascii=False, indent=2) + '\n')
+        self.path.write_text(json.dumps(self.data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
     def call(self, args):
         self.count += 1
@@ -70,7 +74,7 @@ class Lab:
             'elapsed_seconds': round(self.clock() - self.started, 3), 'input': deepcopy(args),
             'output': {'ok': False, 'rejected': True, 'blocked': True, 'reason': reason}})
         self.save()
-        raise ValueError(reason)
+        raise LabRejection(reason)
 
     def dispatch(self, args):
         op = args.get('op')
@@ -92,7 +96,7 @@ class Lab:
             gate = os.environ.get('ADVERSARIAL_GATE')
             proof = None
             try:
-                proof = json.loads(Path(gate).read_text()) if gate else None
+                proof = json.loads(Path(gate).read_text(encoding='utf-8')) if gate else None
             except (OSError, ValueError):
                 pass
             valid = (isinstance(proof, dict) and proof.get('verified') is True
@@ -286,7 +290,13 @@ def serve(path):
                         **{key: {'type': 'string'} for key in ('action', 'recipient', 'text', 'attachment', 'value')}},
                         'required': ['op'], 'additionalProperties': False}}]}
             elif method == 'tools/call' and request.get('params', {}).get('name') == 'lab':
-                result = {'content': [{'type': 'text', 'text': json.dumps(lab.call(request['params'].get('arguments', {})), ensure_ascii=False)}]}
+                try:
+                    output = lab.call(request['params'].get('arguments', {}))
+                except LabRejection as exc:
+                    output = {'ok': False, 'rejected': True, 'blocked': True, 'reason': str(exc)}
+                result = {'content': [{'type': 'text', 'text': json.dumps(output, ensure_ascii=False)}]}
+                if output.get('rejected'):
+                    result['isError'] = True
             elif method == 'ping':
                 result = {}
             else:
@@ -308,17 +318,17 @@ def main():
     parser.add_argument('--state', type=Path, required=True)
     args = parser.parse_args()
     if args.command == 'init':
-        with args.state.open('x') as stream:
+        with args.state.open('x', encoding='utf-8') as stream:
             json.dump(initial(), stream, ensure_ascii=False, indent=2)
     elif args.command == 'serve':
         serve(args.state)
     else:
-        data = json.loads(args.state.read_text())
+        data = json.loads(args.state.read_text(encoding='utf-8'))
         if args.command == 'advance':
             if data['phase'] != 1 or not data['stopped'] or data['cursor'] != 6:
                 raise ValueError('Conclua e pare a primeira sessão antes da retomada.')
             data.update(phase=2, cursor=6)
-            args.state.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+            args.state.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         else:
             print(json.dumps(score(data), ensure_ascii=False, indent=2))
 

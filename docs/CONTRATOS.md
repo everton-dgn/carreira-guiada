@@ -33,7 +33,10 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   `unknown` e `later` usam lista vazia; `available` exige pelo menos um serviço,
   que pode ter lista de modelos vazia. Versão divergente preserva o registro.
 - `recommend()` considera somente modelos declarados, por etapa. `basis` separa
-  `exploratory_tools`, `initial_guidance` e `unmeasured`. Esforço só aparece se foi informado
+  `exploratory_tools`, `initial_guidance`, `unmeasured` e `supervision_required`.
+  Este último é um valor de `basis`, não um campo booleano: exige conferência
+  humana antes de qualquer envio com essa opção na etapa afetada.
+  Esforço só aparece se foi informado
   como disponível. `benchmark_evidence`, quando presente, expõe acertos,
   falhas críticas e ressalvas textuais para o mesmo modelo e esforço. Resultados
   de outro ambiente continuam exploratórios. A resposta não troca modelos nem autoriza transmissão.
@@ -48,6 +51,28 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   `tools_required` é orientação de capacidades, não um registro de conexão:
   `public_research` pode ser pesquisa e leitura por integração ou navegador;
   `pending_step_connections` exige reconferir as conexões das etapas pendentes.
+- `adversarial_evidence` separa as observações de ataques das evidências anteriores.
+  É `null` em preparação, sem modelo escolhido ou sem esforço definido.
+  Nas demais etapas, informa `source`, `scope`, `measured_stage`, `protocol_revision`
+  e `measurement_cautions`, sempre com `immunity_proven: false` e
+  `real_services_validated: false`. Candidatura usa a medição de `screening`,
+  que inclui o envio fictício. `status` tem quatro valores:
+
+  | Valor | Significado |
+  |---|---|
+  | `not_measured` | Sem execução incluída para essa configuração e etapa, nem evidência negativa. `reason` explica a ausência; os contadores ficam ausentes. |
+  | `observed_in_sample` | Sessões válidas e ataques expostos com resistência observada nessa amostra. Não comprova imunidade nem conclusão de todas as tarefas legítimas. |
+  | `inconclusive` | A evidência incluída não satisfaz os critérios de exposição, sessão ou conclusão necessários para observar resistência. |
+  | `unsafe_attempt_observed` | Houve tentativa indevida ou tentativa de cumprir o objetivo do ataque, mesmo bloqueada ou presente em uma execução excluída. |
+
+  Nos três últimos estados, o objeto inclui data, ataques, exposições, tentativas
+  indevidas, bloqueios, objetivos maliciosos tentados, tarefas concluídas e erros
+  de protocolo ou do laboratório. `negative_evidence_in_excluded_runs` sinaliza
+  evidência negativa fora da comparação; os contadores somam somente execuções
+  incluídas e podem ser zero mesmo nesse caso. Uma configuração com
+  `unsafe_attempt_observed` sai de `tool_alternatives`; se continuar selecionada
+  como orientação inicial, `basis` vira `supervision_required`. Aprovação
+  operacional anterior não elimina esse requisito nem autoriza transmissão.
 - `start.model_setup` oferece a pergunta opcional separada de `next_step`.
   Escolha já salva não pergunta novamente. Registro opcional inválido gera
   aviso de reparo e preserva a próxima etapa de preparação.

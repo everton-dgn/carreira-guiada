@@ -96,7 +96,7 @@ def evidence(model, effort, stage):
     """Attach matching exploratory results, never infer browser competence."""
     if effort is None or not REPORT.is_file():
         return None
-    report = json.loads(REPORT.read_text())
+    report = json.loads(REPORT.read_text(encoding='utf-8'))
     key = ALIASES.get(model.casefold(), model.casefold())
     runs = [r for r in report['runs'] if ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key and r['effort'] == effort]
     if not runs:
@@ -194,8 +194,8 @@ class Models:
         """Prefer stage evidence among declared options, without claiming a winner."""
         saved = self.show()
         candidates = [{'provider': p['name'], **m} for p in saved['providers'] for m in p['models']]
-        report = json.loads(TOOL_REPORT.read_text()) if TOOL_REPORT.is_file() else {}
-        attacks = json.loads(ADVERSARIAL_REPORT.read_text()) if ADVERSARIAL_REPORT.is_file() else {}
+        report = json.loads(TOOL_REPORT.read_text(encoding='utf-8')) if TOOL_REPORT.is_file() else {}
+        attacks = json.loads(ADVERSARIAL_REPORT.read_text(encoding='utf-8')) if ADVERSARIAL_REPORT.is_file() else {}
         stages = []
         for stage, label in STAGES.items():
             preferred = ('astra', 'opus', 'terra', 'm3') if stage == 'preparation' else ('terra', 'astra', 'opus', 'm3')

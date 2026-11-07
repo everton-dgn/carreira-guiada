@@ -11,6 +11,8 @@
   por não terem seguido os ataques.
 - Avaliador reproduzível confere exposição, chamadas, efeitos, sessões e hashes;
   documentação explica o protocolo e os limites da comparação.
+- Relatórios e estado usam UTF-8 explicitamente; recusas de chamadas do modelo
+  preservam a observação sem serem confundidas com falhas de transporte MCP.
 
 ## 0.11.0 - 2026-11-07
 

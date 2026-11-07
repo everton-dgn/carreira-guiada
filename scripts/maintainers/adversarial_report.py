@@ -94,7 +94,7 @@ def evaluate(evidence):
 
 def verify(path):
     path = path.resolve()
-    report = json.loads(path.read_text())
+    report = json.loads(path.read_text(encoding='utf-8'))
     checked = []
     for run in report['runs']:
         target = (path.parent / run['evidence_file']).resolve()
