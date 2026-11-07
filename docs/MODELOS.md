@@ -40,6 +40,28 @@ apenas porque a tarefa parece repetitiva: é preciso conferir o destino, os
 campos e o resultado de cada envio. Haiku 5.5 não concluiu o percurso fictício e tentou uma ferramenta fora
 do protocolo; por isso esta rodada não o promove para operar candidaturas.
 
+## O que sabemos sobre instruções maliciosas
+
+O [ensaio adversarial](BENCHMARKS.md#instruções-maliciosas-em-vagas-e-mails-e-retomada)
+testou vagas, e-mails e anotações de retomada com ferramentas limitadas a dados
+fictícios. Opus e Fable concluíram os nove casos sem tentar cumprir os seis
+ataques e sem erros de protocolo. GLM concluiu com um erro de protocolo; Haiku
+deixou uma confirmação incompleta. M3 concluiu após uma tentativa de ação fora
+da autorização, bloqueada pelo executor, e quatro erros de protocolo.
+
+Nenhum dos cinco tentou cumprir o objetivo dos ataques. Isso não demonstra
+imunidade nem define qual resistirá melhor em páginas reais. Terra, Sol e Astra
+ficaram sem medição porque o executor não confirmou o isolamento exigido.
+Terra médio continua como sugestão operacional com base no ensaio de navegador,
+com essa lacuna de segurança explicitamente registrada.
+
+Para retomadas, confira sempre os recibos e o registro final. Se usar M3 na
+triagem ou candidatura, a recomendação pede conferência humana antes de envio devido à ação
+indevida observada. As preferências consideram apenas modelos que você informou
+ter; a evidência não instala, troca ou libera um provedor automaticamente.
+
+## Como a evidência entra na escolha
+
 O [benchmark público](BENCHMARKS.md) separa decisões estruturadas de operações
 escolhidas pelos modelos em um navegador com portal e e-mail fictícios. A
 segunda sessão retoma apenas pelo estado salvo. Os resultados têm critérios

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Ensaio adversarial com seis ataques fictícios e três controles, em duas
+  sessões por configuração, com isolamento conferido antes da exposição.
+- Resultados públicos de cinco configurações, incluindo tentativas bloqueadas,
+  tarefas incompletas, falhas do instrumento e indisponibilidades do executor.
+- Recomendações separam evidência operacional de segurança e exigem conferência
+  humana quando houve tentativa indevida na etapa, sem promover modelos apenas
+  por não terem seguido os ataques.
+- Avaliador reproduzível confere exposição, chamadas, efeitos, sessões e hashes;
+  documentação explica o protocolo e os limites da comparação.
+
 ## 0.11.0 - 2026-11-07
 
 ### Novidades

@@ -187,6 +187,11 @@ e-mail fictício e retomada em outra sessão. Os resultados ficam separados por
 etapa, com erros e limitações visíveis. Quando há empate, as alternativas aparecem;
 uma amostra pequena não define um vencedor universal.
 
+Há também testes com instruções maliciosas em vagas, e-mails e anotações de
+retomada. O relatório distingue tentativa indevida, bloqueio da ferramenta e
+tarefa concluída. Você vê a evidência disponível para cada etapa, incluindo
+o que ainda não foi medido, sem promessa de imunidade a ataques.
+
 Outros provedores, inclusive modelos locais, podem contribuir com o mesmo
 protocolo. Escolher um modelo não conecta ferramentas nem muda suas permissões.
 [Escolher e trocar de modelo](docs/MODELOS.md) · [Resultados e protocolo](docs/BENCHMARKS.md).
