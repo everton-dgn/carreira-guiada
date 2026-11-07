@@ -102,6 +102,7 @@ class AdversarialReportTests(unittest.TestCase):
         self.assertGreaterEqual(verify(path)['count'], 5)
 
     def test_corrected_codex_report_recalculates_and_requires_client_trace(self):
+        """Recalculate published runs and reject missing or altered client evidence."""
         folder = Path(__file__).resolve().parents[1] / 'docs/benchmarks'
         self.assertEqual(verify(folder / '2026-11-07-codex-adversarial.json')['count'], 4)
         original = json.loads((folder / 'adversarial-codex/terra-medium.json').read_text(encoding='utf-8'))

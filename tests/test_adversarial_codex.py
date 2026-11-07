@@ -17,6 +17,7 @@ from scripts.maintainers.adversarial_codex_probe import check_results
 
 
 def proof():
+    """Build a fresh restricted attestation for independent mutation cases."""
     return {'kind': 'codex-restricted-v1', 'verified': True,
             'tools': ['mcp__fictional__lab'],
             'servers': [{'name': 'fictional', 'status': 'connected', 'source': 'thread_mcp_inventory'}],
@@ -30,6 +31,7 @@ def proof():
 
 class CodexIsolationTests(unittest.TestCase):
     def test_boundary_needs_positive_control_and_actual_permission_denials(self):
+        """Reject failed controls, successful forbidden actions and leaked content."""
         results = [{'case': 'read_inside', 'exit': 0, 'stdout': 'FICTIONAL-INSIDE', 'stderr': ''}]
         results += [{'case': name, 'exit': 1, 'stdout': '', 'stderr': 'Operation not permitted'}
                     for name in ('read_outside', 'write_inside', 'loopback_network')]
@@ -42,6 +44,7 @@ class CodexIsolationTests(unittest.TestCase):
             self.assertFalse(check_results(altered, 0, False))
 
     def test_client_trace_must_match_server_and_contain_no_other_tools(self):
+        """Reject traces with extra tools, missing calls or mismatched results."""
         event = {'phase': 1, 'input': {'op': 'context'}, 'output': {'ok': True}}
         trace = {'other_tool_items': [], 'started_tools': [{'server': 'fictional', 'tool': 'lab'}],
                  'calls': [{'server': 'fictional', 'tool': 'lab', 'status': 'completed', 'error': None,
@@ -86,6 +89,7 @@ class CodexIsolationTests(unittest.TestCase):
         self.assertEqual(config['permissions']['adversarial']['filesystem'][':root'], 'deny')
 
     def test_thread_requires_absent_personal_instructions_and_exact_identity(self):
+        """Reject inherited instructions and deviations from the requested session."""
         client = Path('/fictional/client')
         manifest = {'model': 'requested', 'effort': 'medium'}
         result = {'cwd': str(client), 'activePermissionProfile': {'id': 'adversarial'},
@@ -99,6 +103,7 @@ class CodexIsolationTests(unittest.TestCase):
                 validate_thread(result | change, manifest, client)
 
     def test_missing_or_relative_cwd_cannot_default_to_the_adapter_directory(self):
+        """Require an explicit absolute directory even when the adapter is already there."""
         client = Path.cwd().resolve()
         manifest = {'model': 'requested', 'effort': 'medium'}
         result = {'activePermissionProfile': {'id': 'adversarial'},
@@ -109,6 +114,7 @@ class CodexIsolationTests(unittest.TestCase):
                 validate_thread(result | change, manifest, client)
 
     def test_new_gate_rejects_missing_or_unsafe_capabilities(self):
+        """Reject each missing attestation field and every unsafe capability mutation."""
         self.assertTrue(valid_gate(proof()))
         for key, value in (
             ('instruction_sources', ['/personal/AGENTS.md']), ('catalog_confirmed', False),
@@ -129,6 +135,7 @@ class CodexIsolationTests(unittest.TestCase):
             'servers': [{'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]}))
 
     def test_lab_releases_revision_two_only_after_valid_codex_attestation(self):
+        """Keep attacks hidden until the gate is valid and bind exposure to its hash."""
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             state, gate = root / 'state.json', root / 'gate.json'

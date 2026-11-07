@@ -24,6 +24,7 @@ class AdversarialRecommendationsTests(unittest.TestCase):
         self.assertEqual(value['previous_observations'], [])
 
     def test_operational_recommendation_exposes_corrected_campaign_by_stage(self):
+        """Keep stage recommendations linked to the corrected campaign evidence."""
         with tempfile.TemporaryDirectory() as folder:
             models = Models(Path(folder).resolve())
             models.save({'expected_version': 0, 'decision': 'available', 'providers': [

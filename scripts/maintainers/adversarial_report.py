@@ -77,6 +77,7 @@ def reconstruct(data):
 
 
 def evaluate(evidence):
+    """Score reconstructed events only with matching isolation and continuity proof."""
     data = evidence['state']
     stops = reconstruct(data)
     sessions = evidence['sessions']

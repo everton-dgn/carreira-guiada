@@ -15,12 +15,14 @@ from .adversarial_codex import configuration, dump, restricted_catalog
 
 
 def toml(value):
+    """Serialize the nested permission profile as an inline TOML override."""
     if isinstance(value, dict):
         return '{' + ','.join(json.dumps(k) + '=' + toml(v) for k, v in value.items()) + '}'
     return json.dumps(value)
 
 
 def check_results(results, control_exit, write_exists):
+    """Require a working control and explicit denials without leaked content."""
     return (control_exit == 0 and not write_exists
             and [r['case'] for r in results] == ['read_inside', 'read_outside', 'write_inside', 'loopback_network']
             and results[0]['exit'] == 0 and results[0]['stdout'] == 'FICTIONAL-INSIDE'
@@ -29,6 +31,7 @@ def check_results(results, control_exit, write_exists):
 
 
 def prepare(root, state, model, effort, catalog, binary='codex'):
+    """Create a private macOS client and retain boundary evidence on failure."""
     if sys.platform != 'darwin':
         raise ValueError('This executor has only been verified on macOS')
     restricted = restricted_catalog(catalog, model)
@@ -73,6 +76,7 @@ def prepare(root, state, model, effort, catalog, binary='codex'):
 
 
 def main():
+    """Validate the fictional state and print the prepared client directory."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument('--state', type=Path, required=True)

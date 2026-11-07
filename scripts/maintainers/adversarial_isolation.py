@@ -3,6 +3,7 @@ from .adversarial_codex import CATALOG_RESTRICTIONS, DISABLED, ENABLED
 
 
 def valid_gate(proof):
+    """Check legacy or restricted Codex attestations without inferring missing proof."""
     if not isinstance(proof, dict) or proof.get('verified') is not True:
         return False
     if proof.get('tools') != ['mcp__fictional__lab']:

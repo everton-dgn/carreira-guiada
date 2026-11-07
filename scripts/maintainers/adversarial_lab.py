@@ -78,6 +78,7 @@ class Lab:
         raise LabRejection(reason)
 
     def dispatch(self, args):
+        """Gate exposure, record attempts and apply only permitted fictional effects."""
         op = args.get('op')
         if op == 'context':
             return {'ok': True, 'profile': POLICY, 'phase': self.data['phase'],
