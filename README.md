@@ -9,6 +9,9 @@ aprovado e acompanha os retornos por e-mail, dentro das permissões que você de
 Você deixa de repetir os mesmos dados em cada portal e ganha tempo para se
 preparar para as entrevistas. A IA também ajuda com currículo para ATS,
 LinkedIn e GitHub, treinos com feedback e comparação de propostas.
+Ainda não sabe em que focar? O guia de carreira ajuda a comparar caminhos e
+escolher um exercício para experimentá-los. Antes de uma decisão, investigue a
+empresa com fontes, referências salariais e perguntas para a entrevista.
 Durante a campanha, informa o andamento e salva o progresso para retomar depois.
 
 Use o modelo de sua escolha em uma ferramenta de IA com acesso a arquivos,
@@ -45,6 +48,8 @@ Você também pode começar por uma necessidade específica:
 | "Quero só ver vagas por enquanto" | A IA prepara filtros e fontes; o currículo pode ficar para depois. |
 | "Não tenho currículo" | Ela monta um rascunho com você, sem inventar experiências. |
 | "Quero treinar uma entrevista" | O treino começa sem exigir cadastro, currículo ou conta de e-mail. |
+| "Não sei em que área focar" | A IA explora sua experiência e suas prioridades, compara até três caminhos e combina um próximo passo. |
+| "Quero conhecer melhor esta empresa" | Ela monta um dossiê com evidências, dúvidas e condições que precisam ser esclarecidas. |
 | "Continue de onde parei" | Ela confere o progresso salvo e segue pelas próximas ações autorizadas. |
 
 ![Simulação em terminal do Claude Code: iniciar, criar currículo, escolher fontes e aprovar o perfil.](docs/assets/inicio-guiado.gif)
@@ -154,15 +159,28 @@ conferência própria, mesmo quando o site é conhecido.
 
 ## Entenda a empresa e compare propostas
 
-Peça uma [análise da empresa](docs/EMPRESAS.md): reputação, relatos de
+Peça um [dossiê da empresa](docs/EMPRESAS.md): gestão, jornada, relatos de
 funcionários, condições da vaga e referências salariais com fonte e data.
-A IA separa fatos, relatos e dúvidas, sem tratar popularidade como segurança.
+Ele separa fatos, relatos e inferências, mostra contradições e transforma
+lacunas em perguntas para a entrevista. Reclamações de consumidores ficam
+no seu contexto; popularidade não vira selo de segurança.
 
 Recebeu uma oferta? [Compare CLT, PJ, MEI, cooperado ou internacional](docs/PROPOSTAS.md)
 com valores anuais, benefícios, custos, reservas e impostos informados.
 Premissas ausentes ficam visíveis; a IA ajuda a negociar e você decide.
 Para trabalhar fora ou para outro país, veja [a preparação internacional](docs/INTERNACIONAL.md).
 [Como informar e alterar os links](docs/FONTES.md).
+
+## Escolha um foco que faça sentido para você
+
+O [guia de carreira](docs/CARREIRA.md) começa pela sua situação, sem exigir um
+cargo definido ou currículo pronto. A IA considera o que você já fez, o que
+gostaria de experimentar e quanto tempo tem disponível. Compara até três
+caminhos e ajuda a planejar um exercício pequeno antes de investir mais tempo.
+
+Você pode responder "não sei", corrigir uma resposta e continuar em outro dia.
+As escolhas ficam privadas. Mudar de direção não muda seus filtros de vagas
+nem transforma uma habilidade em fato confirmado no currículo.
 
 ## Coloque a busca para trabalhar
 
@@ -227,6 +245,7 @@ vários dias nem compatibilidade com todas as interfaces de recrutamento.
 | Entender as perguntas | [Onboarding](docs/ONBOARDING.md) |
 | Escolher modelo e esforço | [Modelos e ferramentas](docs/MODELOS.md) |
 | Escolher os links de busca | [Fontes escolhidas por você](docs/FONTES.md) |
+| Escolher em que área focar | [Guia de carreira](docs/CARREIRA.md) |
 | Criar ou revisar um currículo | [Currículos](docs/CURRICULOS.md) |
 | Entender permissões e dados | [Privacidade](docs/PRIVACIDADE.md) |
 | Resolver uma dúvida | [Perguntas frequentes](docs/FAQ.md) |

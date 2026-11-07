@@ -58,6 +58,11 @@ destino continuam sendo decisões suas.
 
 ## Procedimento do agente
 
+Investigar uma empresa ou explorar opções de carreira usa um alcance próprio,
+com pergunta, alvo e endereços combinados. Isso pode começar antes do perfil
+e não muda a lista de portais de candidatura. Veja o
+[protocolo de investigação](INVESTIGACAO-AGENTE.md).
+
 - Leia `sources.urls` no perfil aprovado. Nunca salve links pessoais neste guia.
 - Use `profile answer sources` com `field: "urls"` e a lista completa de
   endereços confirmada. "Deixe para depois" corresponde a uma lista vazia.

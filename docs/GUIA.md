@@ -7,6 +7,7 @@ durante o uso, a própria IA explica o próximo passo.
 Além das candidaturas, você pode pedir [revisão de LinkedIn e GitHub](PRESENCA-PROFISSIONAL.md),
 [treino de entrevistas](ENTREVISTAS.md), [ajuda para encontrar sites](FONTES.md),
 [pesquisa da empresa](EMPRESAS.md) ou [comparação de propostas](PROPOSTAS.md).
+Se ainda não sabe em que área focar, comece pelo [guia de carreira](CARREIRA.md).
 São caminhos opcionais. No treino, experimente voz se seu aplicativo oferecer
 o recurso. Pode parar e retomar outro dia, com as respostas e o feedback salvos.
 
@@ -83,6 +84,10 @@ Você pode dizer:
 Ou:
 
 > iniciar. Anexei meu currículo e quero revisar antes de procurar vagas.
+
+Se ainda está escolhendo um caminho, diga "não sei em que área focar".
+A IA começa pelo guia de carreira, sem pedir contatos ou currículo. Você
+também pode dizer "quero investigar esta empresa" e fazer só essa análise.
 
 A IA recebe o arquivo ou monta um rascunho com você. Depois confirma nome,
 e-mail, tipo de trabalho, salário e permissões. Não sabe um valor ou uma data?

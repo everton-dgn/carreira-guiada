@@ -73,7 +73,7 @@ O candidato encontra o pedido em linguagem comum no
 
 | Comando | Uso no fluxo |
 |---|---|
-| `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `sources`, `profile_approval`, `resume_approval`, `professional_presence`, `interview_preparation`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
+| `start` | Descoberta de estado para `iniciar`: `message`, `question`, `next_step` (`curriculum_input`, `curriculum_intake`, seção do perfil, `sources`, `profile_approval`, `resume_approval`, `professional_presence`, `interview_preparation`, `career_guidance`, `company_dossier`, `execution_readiness`), `approved_resumes`, `welcome_back` e `resume_options`. Nunca inicia envios. |
 | `status` | Estado privado: objetivo, contagens, pendências, notas de retomada e abas. Pode conter nomes e detalhes das vagas; compartilhe somente no chat confiável da pessoa. |
 | `context` | Contexto privado para o agente responsável conduzir a etapa. Não repetir na conversa além do necessário. |
 | `doctor` | Diagnóstico do ambiente. |
@@ -81,7 +81,10 @@ O candidato encontra o pedido em linguagem comum no
 | `tabs status`, `reserve`, `update`, `release` | Reserva compartilhada antes da abertura, proteção de formulários e encerramento com evidência. Padrão de duas abas; veja [progresso e abas](#progresso-e-abas). |
 | `presence status`, `show`, `choose`, `source`, `draft`, `finish` | Revisão opcional de LinkedIn/GitHub. `source` recebe `topic`, `source` e, opcionalmente, `material` para salvar texto recebido antes da análise. Material e sugestões ficam separados e privados. Não autoriza publicação; veja a [skill](../.agents/skills/presenca/SKILL.md). |
 | `practice catalog`, `show`, `status`, `choose`, `start`, `hint`, `answer`, `skip`, `feedback`, `advance`, `end-questions`, `finish` | Treino privado e opcional. `start --focus practice` entra direto; no onboarding aparece `interview_preparation`. Contratos e pausa em [treinos de entrevistas](CONTRATOS.md#treinos-de-entrevistas). |
-| `research save`, `list`, `get`, `suggestions` | Registra pareceres observados; não navega. `get` recebe `record_id`; `save` segue [EMPRESAS.md](EMPRESAS.md). Não confundir com a ação externa `research` em `action authorize`. |
+| `research save`, `list`, `get`, `suggestions` | Mantém os pareceres anteriores; não navega. `get` recebe `record_id`; contrato em [investigação](INVESTIGACAO-AGENTE.md#pareceres-anteriores). Não confundir com a ação externa `research` em `action authorize`. |
+| `research-scope grant`, `get`, `list`, `check`, `revoke` | Autoriza e confere pesquisa pública para um alvo e pergunta. Não altera fontes de candidatura nem intercepta rede. [Contrato](INVESTIGACAO-AGENTE.md#autorizar-uma-investigação-específica). |
+| `company create`, `get`, `list`, `revise`, `summary` | Dossiê versionado de empresa, com evidências por tema, salários, contradições e perguntas. `start --focus company` dispensa cadastro. [Contrato](INVESTIGACAO-AGENTE.md#dossiê-de-empresa). |
+| `career start`, `get`, `status`, `answer`, `propose`, `choose`, `experiment`, `reflect`, `pause`, `resume` | Guia opcional, privado e versionado. `start --focus career` consulta sem criar sessão. [Contrato](INVESTIGACAO-AGENTE.md#guia-de-carreira). |
 | `offers save`, `list`, `get`, `status`, `compare`, `equivalent` | `get` recebe `offer_id`; `compare` recebe `ids`; `equivalent` recebe `base_id` e `target_id`. Comparações aceitam `base_currency` e `rates`; esquema completo em [PROPOSTAS.md](PROPOSTAS.md). |
 | `profile show` | Perfil atual com versão e `approved_version`. |
 | `profile status` | `next_section`, `missing`, `approved`, `version`, `questions` com exemplos. Guia o onboarding. |
@@ -326,7 +329,7 @@ o registro de uma autorização, candidatura, mensagem ou resultado incerto.
 O checkpoint tem `phase`, `summary`, `next_action` e `needs_user`; o controle
 acrescenta `saved_at`. `status` mostra o último ponto salvo, com sua data.
 As fases aceitas são `onboarding`, `resume`, `presence`, `practice`, `offers`,
-`research`, `fill`, `email`, `followup`, `waiting` e `stopped`. Traduza esses valores na conversa;
+`career`, `company`, `research`, `fill`, `email`, `followup`, `waiting` e `stopped`. Traduza esses valores na conversa;
 nunca peça que a pessoa escolha um identificador técnico.
 Esse registro não comprova que um executor está ativo nem mantém o computador
 ou o aplicativo funcionando.

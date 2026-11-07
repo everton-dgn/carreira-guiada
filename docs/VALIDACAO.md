@@ -127,6 +127,20 @@ rede e subprocessos externos permanecem bloqueados nesses processos de teste.
 
 ## Alcance e limites
 
+`tests/test_job_guidance_journey.py` percorre os caminhos opcionais de carreira
+e dossiê em processos reais da CLI, com dados fictícios, rede e subprocessos
+externos bloqueados. Cobre entrada sem perfil, resposta desconhecida, pausa e
+retomada com data simulada, escolha, exercício e reflexão. Também confere a
+prioridade da busca explícita e a invalidação de escopos após parada e retomada.
+Use `JOB_GUIDANCE_REPORT` com uma pasta externa nova para guardar as chamadas
+e os diálogos roteirizados. Nenhuma fonte pública ou empresa real é consultada.
+
+As regressões dos módulos verificam versões concorrentes, revogação, finalidade
+e alvo da pesquisa, evidência por contexto, salários e preservação de histórico.
+O controle recusa consultas fora do escopo pelo protocolo; isso não constitui
+isolamento de rede do aplicativo de IA. Fontes, interpretação e decisões do
+modelo ainda precisam de conferência durante o uso real.
+
 `tests/test_job_release_journey.py` reúne uma pessoa fictícia do primeiro início
 até a comparação de propostas: currículo, LinkedIn/GitHub, autorização e
 confirmação simulada de publicação, treino técnico, pausa só do treino, parada

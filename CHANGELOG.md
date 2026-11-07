@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+## 0.9.0 - 2026-11-06
+
+- Dossiês privados de empresas com evidências por tema, contexto de relatos,
+  contradições e perguntas para entrevistas. A identidade fica visível desde
+  o início, e os temas podem ser ampliados em revisões posteriores.
+- Referências salariais preservam faixas, médias e medianas separadamente,
+  com amostra e contexto desconhecidos explícitos. Relatos de consumidores
+  não comprovam condições de trabalho.
+- Guia de carreira opcional, sem exigir cadastro ou currículo: respostas
+  graduais, até três alternativas, escolha de um exercício e reflexão.
+  Correções invalidam decisões dependentes e preservam o histórico.
+- Pesquisa pública delimitada por pergunta, alvo e endereços, separada das
+  fontes de candidatura. Parada, revogação e retomada são conferidas antes
+  de novas consultas, sem impedir a leitura das evidências históricas.
+- Entrada e retomada reconhecem os novos percursos, com prioridade para um
+  pedido explícito de busca. Perfil, currículo e permissões permanecem
+  separados das escolhas de carreira e dos dossiês.
+- README, guias para iniciantes e protocolos do agente atualizados. Novas
+  simulações cobrem resposta desconhecida, correção, pausa e retomada,
+  evidências fictícias e ausência de efeitos externos.
+- A troca do guia de carreira para o currículo preserva o percurso escolhido.
+  Guias pausados mantêm visíveis as orientações de busca, e registros opcionais
+  inválidos geram aviso sem impedir o status ou a confirmação da retomada.
+
 ## 0.8.0 - 2026-11-06
 
 - Início do README mais direto, com exemplos para pesquisar vagas, criar um

@@ -510,7 +510,9 @@ class Workflow:
         Retorna ``{initialized, control: {generation, stopped, ...}, goal, progress,
         profile: {available, approved, version, next_section, missing, questions},
         counts, ledger (Store.summary), pending: [...], capabilities: [...],
-        mail_coverage, runner, checkpoint, browser, next_steps: [str], message}``.
+        mail_coverage, runner, checkpoint, browser, next_steps: [str], message,
+        optional_data_issues: [{area, message}]}``. Dados opcionais inválidos
+        preservam o status central e aparecem como avisos, sem apagar registros.
         Notas livres e pendências podem conter dados privados da pessoa ou da vaga.
         """
         now = self._now()
@@ -578,10 +580,23 @@ class Workflow:
         from .checkpoint import checkpoint
         from .tabs import Tabs
         from .practice import Practice
+        from .career import CareerGuide
+        from .company import CompanyDossiers
         result['checkpoint'] = checkpoint(self.root)
         result['browser'] = Tabs(self.root).status()
         result['practice'] = Practice(self.root).status()
+        result.update(career=None, companies=[], optional_data_issues=[])
+        for area, reader, label in (
+            ('career', CareerGuide(self.root).status, 'do guia de carreira'),
+            ('companies', CompanyDossiers(self.root).list, 'dos dossiês de empresas'),
+        ):
+            try:
+                result[area] = reader()
+            except ValueError:
+                result['optional_data_issues'].append({'area': area, 'message':
+                    f'Os dados {label} precisam de reparo. Os registros foram preservados; as demais informações continuam disponíveis.'})
         result["next_steps"] = self._next_steps(result)
+        result['next_steps'].extend(issue['message'] for issue in result['optional_data_issues'])
         result["message"] = "\n".join(["Situação do Carreira Guiada:"] + [f"- {step}" for step in result["next_steps"]])
         if result['checkpoint']:
             note = result['checkpoint']
@@ -604,7 +619,13 @@ class Workflow:
         practice = s.get('practice') or {}
         training = practice.get('decision') == 'now' and practice.get('phase') in {'idle', 'questions', 'feedback'}
         comparing = (s.get('checkpoint') or {}).get('phase') == 'offers'
-        if not s["profile"].get("approved") and not training and not comparing:
+        career = s.get('career') or {}
+        point_phase = (s.get('checkpoint') or {}).get('phase')
+        guiding = (career.get('session') is not None and career.get('phase') != 'finished'
+                   and not career.get('paused') and point_phase in {None, 'career'})
+        investigating = ((s.get('checkpoint') or {}).get('phase') == 'company' or
+                         bool(s.get('companies') and not s.get('goal') and s['profile'].get('version') == 0))
+        if not s["profile"].get("approved") and not training and not comparing and not guiding and not investigating:
             section = s["profile"].get("next_section")
             labels = {'identity': 'seus dados de contato', 'preferences': 'o tipo de vaga que procura', 'sources': 'os endereços dos sites onde quer procurar vagas', 'permissions': 'o que posso fazer por você', 'connections': 'as contas que quer usar', 'limits': 'o funcionamento no chat'}
             steps.append(f"Vamos completar {labels.get(section, 'seu perfil')}." if section else "Confira o resumo do perfil e diga se está correto.")
@@ -614,7 +635,11 @@ class Workflow:
             steps.append('Seu treino adiado continua salvo. Você pode pedir para retomá-lo quando quiser.')
         if comparing:
             steps.append('A comparação de propostas está salva. Vamos continuar pelas premissas que faltam.')
-        preparing = training or comparing or (s.get('checkpoint') or {}).get('phase') in {'onboarding', 'resume', 'presence', 'practice'}
+        if guiding or career.get('paused'):
+            steps.append(career['message'])
+        if investigating:
+            steps.append('A pesquisa da empresa está salva. Vamos conferir as fontes e as dúvidas pendentes antes de concluir.')
+        preparing = training or comparing or guiding or investigating or point_phase in {'onboarding', 'resume', 'presence', 'practice', 'company'}
         if s['goal'] is None and (preparing or not s['profile'].get('approved')):
             return steps
         if s["goal"] is None:

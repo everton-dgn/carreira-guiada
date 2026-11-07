@@ -36,6 +36,10 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
    a pessoa pedir preparo ou envio. A pessoa não precisa conhecer essa opção.
    Para treino de entrevista, use `start --focus practice --json` e siga
    [entrevista](../entrevista/SKILL.md), mesmo sem perfil ou currículo.
+   Para ajuda sobre carreira, use `start --focus career --json` e siga
+   [carreira](../carreira/SKILL.md). Para analisar uma empresa, use
+   `start --focus company --json` e siga [avaliar-empresas](../avaliar-empresas/SKILL.md).
+   Nenhum desses caminhos exige currículo, contatos ou fontes de vagas.
 3. Consulte `./job context --json` apenas quando precisar das respostas salvas.
    Não repita contatos e valores privados sem necessidade.
 
@@ -54,6 +58,11 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
   conforme a [skill de currículo](../curriculo/SKILL.md); acrescentar outra
   frase sem retirar o fato antigo não registra a correção.
 - Pedido apenas de andamento: responda com o estado observado e pare aí.
+- `next_step=career_guidance`: siga o guia de carreira e preserve as respostas
+  já salvas. Uma sessão pausada só retoma quando a pessoa pedir. Se ela pedir
+  busca de vagas, mude para `--focus search`; carreira continua opcional.
+- `next_step=company_dossier`: consulte os dossiês salvos e esclareça a empresa
+  e a dúvida da pessoa. Não use o pedido como autorização de candidatura.
 - Parada registrada: "continuar" ou "retomar" já autoriza `resume-work`.
   Se a pessoa disse apenas "iniciar", pergunte se quer retomar o objetivo
   interrompido. Nunca remova a parada por conta própria.

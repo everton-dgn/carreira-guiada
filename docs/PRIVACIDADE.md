@@ -14,6 +14,12 @@ de pesquisa e propostas também ficam nessa área privada. Respostas de treino
 não viram fatos do currículo automaticamente. Voz e transcrição seguem as
 condições do aplicativo de IA; o projeto não instala gravador nem serviço de áudio.
 
+Dossiês de empresas, autorizações de pesquisa e respostas do guia de carreira
+também ficam no banco privado, com histórico de versões. Corrigir uma resposta
+preserva a versão anterior; não equivale a apagar os dados. A pesquisa pública
+usa apenas o tema e os endereços combinados, sem enviar currículo ou contatos.
+Conclusões sobre carreira não se tornam fatos confirmados do currículo.
+
 O aplicativo de IA que você escolheu processa as informações que você fornece
 no chat e os arquivos que ele lê. Os dados necessários também são enviados aos
 portais quando você autoriza uma candidatura. A pasta privada protege a

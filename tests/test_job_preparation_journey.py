@@ -26,7 +26,10 @@ class SimulationDateTime(datetime):
 import scripts.job.workflow as workflow
 import scripts.job.checkpoint as checkpoint
 import scripts.job.resumes as resumes
+import scripts.job.due_diligence as due_diligence
+import scripts.job.research_scope as research_scope
 workflow.datetime = checkpoint.datetime = resumes.datetime = SimulationDateTime
+due_diligence.datetime = research_scope.datetime = SimulationDateTime
 from scripts.job.cli import main
 if sys.argv[1:] == ["guard"]:
     for action in (lambda: socket.create_connection(("example.invalid", 443)),
