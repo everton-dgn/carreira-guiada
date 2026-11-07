@@ -14,6 +14,9 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 - Onboarding: primeiro emprego sem currículo, importação de Word, PDF ilegível,
   correção de dados, resposta "não sei", tópicos pulados, parada e retomada,
   permissões individuais e conexão de e-mail adiada ou recusada.
+- Modelos: preferência opcional, provedores desconhecidos, escolha adiada,
+  acesso declarado sem inferir modelos pela assinatura, versão concorrente e
+  preservação de currículo e aprovação do perfil.
 - Currículos: extração, fatos confirmados, versões por especialidade, geração
   de PDF e Word, aprovação, integridade e preservação dos arquivos originais.
 - Presença profissional: revisão de LinkedIn e GitHub, texto recebido antes
@@ -62,6 +65,8 @@ As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio
 para um portal real. As recomendações de modelos não equivalem a um teste
 comparativo de automação; cada sessão precisa conferir suas capacidades.
+O [benchmark de decisões](BENCHMARKS.md) tem cenários e pontuação próprios.
+Seus resultados são publicados separados dos testes do código e do navegador.
 
 ## Navegador e e-mail fictício
 

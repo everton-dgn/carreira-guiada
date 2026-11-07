@@ -9,11 +9,27 @@ Leia [AGENTS.md](../../../AGENTS.md). A pessoa não precisa entender arquivos,
 comandos nem configurações. Conduza a próxima etapa com uma pergunta curta e
 um exemplo. Evite apresentar uma lista de tarefas para ela executar sozinha.
 
-No primeiro uso, ofereça uma orientação breve de
-[modelos](../../../docs/MODELOS.md) antes da pergunta atual: um modelo mais
-capaz ajuda a preparar perfil e currículo; a operação pode usar Terra 6.1 em
-esforço médio ou alto. Não faça a pessoa escolher um modelo para conseguir
-começar. Use o que estiver disponível e ofereça ajuda se ela pedir a troca.
+No primeiro preparo, ofereça `start.model_setup.question` se ela existir,
+sozinha, e explique que a escolha é opcional. Pergunte pelos aplicativos ou
+serviços conhecidos, sem exigir nomes técnicos de provedores. Aceite qualquer
+fornecedor, inclusive modelos locais. Se a pessoa já informou, reaproveite.
+Salve a escolha com `models save`, conforme
+[o contrato](../../../docs/CONTRATOS.md#preferências-de-modelos), e consulte
+`models recommend`. "Não sei" e "depois" ficam salvos e não reabrem a pergunta.
+Não invente opções que a conta oferece: só registre modelos e esforços vistos
+no aplicativo ou informados pela pessoa. Lista de modelos vazia é válida.
+Leia `benchmark_evidence` quando presente. Se houver falha crítica na etapa,
+explique o problema observado, ofereça outra opção disponível ou conduza a etapa
+com conferência dos fatos e campos antes de salvar. Ressalva no texto também
+exige cuidado, mesmo com pontuação máxima. Ausência de evidência não vira nota.
+Explique uma recomendação por vez, seu motivo e o alcance dos testes em
+[modelos](../../../docs/MODELOS.md). Não chame uma sugestão inicial de vencedor
+de benchmark nem um teste de texto de prova de automação. Continue com o modelo
+atual quando faltarem dados; não peça senha, chave, compra ou instalação.
+Pedido específico, início de treino/carreira/empresa e retomada de campanha
+têm prioridade. Não interrompa esses percursos para coletar preferências de IA.
+Se a pessoa quiser rever a escolha depois, leia `models show` e atualize somente
+essa preferência. Isso não invalida perfil ou currículo nem autoriza troca.
 Ao longo do preparo, use as [dicas do onboarding](../../../docs/ONBOARDING.md#dicas-durante-o-preparo)
 quando forem pertinentes, uma por vez. Preserve a pergunta indicada pelo
 controle, sem adicionar questionário técnico ou repetir dicas já dadas.
@@ -28,7 +44,8 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
    JSON. Reconheça esse diagnóstico do inicializador, conduza a instalação
    autorizada e repita `doctor` depois. Não trate a ausência de JSON como
    corrupção do perfil nem peça para a pessoa resolver sozinha.
-2. Leia `./job start --json` e `./job status --json`. Consultar a instalação
+2. Leia `./job start --json` e `./job status --json`. `model_setup` é uma oferta
+   opcional; não substitui `next_step`. Consultar a instalação
    vazia não deve criar perfil nem iniciar trabalho externo.
    Se o pedido for somente procurar ou mostrar vagas, use
    `./job start --focus search --json`: esse caminho prepara o perfil e as

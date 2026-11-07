@@ -19,6 +19,38 @@ original. Dados privados e anexos pessoais devem ficar fora da pasta
 distribuída. Confira esses arquivos antes de compartilhar.
 O ambiente Python em `.venv/` é regenerável a partir de `uv.lock`.
 
+## Preferências de modelos
+
+`Models(root)` em `scripts/job/models.py` guarda uma preferência opcional na
+tabela privada `job_model_access`. Não altera versão ou aprovação do perfil,
+currículos, filtros, permissões, conexões ou modelo da sessão.
+
+- `show()` retorna `version`, `decision` e `providers`. Instalação vazia usa
+  versão 0 e decisão `unasked`, sem criar arquivos.
+- `save(data)` exige `expected_version`, `decision` (`available`, `unknown`
+  ou `later`) e `providers`. Cada provedor tem `name` e `models`; cada modelo
+  tem `name` e, opcionalmente, `efforts`. Os nomes são livres. Não são credenciais.
+  `unknown` e `later` usam lista vazia; `available` exige pelo menos um serviço,
+  que pode ter lista de modelos vazia. Versão divergente preserva o registro.
+- `recommend()` considera somente modelos declarados, por etapa. `basis` separa
+  sugestão inicial de modelo sem medição. Esforço só aparece se foi informado
+  como disponível. `benchmark_evidence`, quando presente, expõe acertos,
+  falhas críticas e ressalvas textuais para o mesmo modelo e esforço. Resultados
+  de outro ambiente continuam exploratórios. A resposta não troca modelos nem autoriza transmissão.
+- `start.model_setup` oferece a pergunta opcional separada de `next_step`.
+  Escolha já salva não pergunta novamente. Registro opcional inválido gera
+  aviso de reparo e preserva a próxima etapa de preparação.
+
+O agente usa `./job models show --json`, `./job models recommend --json` e
+`./job models save --json` com JSON por stdin, por exemplo:
+
+```json
+{"expected_version":0,"decision":"available","providers":[{"name":"Meu aplicativo","models":[{"name":"Modelo disponível","efforts":["medium"]}]}]}
+```
+
+A pessoa responde em linguagem comum; não preenche esse JSON. A preferência
+não torna a coleta obrigatória para busca, carreira, dossiê ou treino.
+
 ## Perfil e elegibilidade
 
 `Profile(root)` em `scripts/job/profile.py`:

@@ -8,7 +8,19 @@ O modelo é a IA que interpreta e decide. O aplicativo é onde ela conversa com
 você, lê os arquivos e acessa o navegador. Escolher um modelo não conecta, por
 si só, sites ou e-mail.
 
-## Uma sugestão para começar
+## Primeiro, o que você já usa
+
+No início, a IA pergunta quais aplicativos ou serviços você tem. Vale qualquer
+fornecedor, inclusive modelos locais. "Não sei" e "depois" também ficam salvos.
+Para rever, diga "quero mudar a escolha de modelos". O perfil, o currículo e
+as permissões continuam como estavam.
+
+Se você souber apenas o nome do aplicativo, isso basta. A IA ajuda a conferir
+quais modelos aparecem na sua conta, sem pedir credenciais. Ter assinatura de
+um serviço não comprova acesso a todos os modelos. Também não garante navegador,
+e-mail ou execução contínua: essas capacidades precisam ser conferidas na sessão.
+
+## Sugestões iniciais por etapa
 
 | Etapa | Sugestão do projeto | Quando usar |
 |---|---|---|
@@ -28,9 +40,13 @@ apenas porque a tarefa parece repetitiva: é preciso conferir o destino, os
 campos e o resultado de cada envio. Haiku 5.5 não foi validado pelo projeto
 para operar candidaturas; por isso não é nossa sugestão para essa função.
 
-Estas recomendações combinam as capacidades declaradas pelos fornecedores
-com a orientação de uso do projeto. Não são um teste comparativo de modelos
-em uma campanha real. A documentação oficial descreve o
+Estas são sugestões iniciais de uso, condicionadas ao acesso da pessoa.
+O [benchmark público](BENCHMARKS.md) separa decisões sobre situações fictícias,
+clareza da resposta e execução da aplicação. Um resultado alto em perguntas
+estruturadas não comprova automação de navegador nem define o melhor modelo
+para todas as etapas. O protocolo aceita contribuições com outros provedores.
+
+As referências oficiais usadas na orientação original descrevem o
 [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)
 para raciocínio complexo e criação de documentos, e o
 [GPT-6.1 Terra](https://developers.openai.com/api/docs/models/gpt-6.1-terra)
@@ -39,7 +55,8 @@ médio e alto. A Anthropic apresenta o
 [Opus 5.5](https://www.anthropic.com/claude-opus-5-5)
 para trabalho com agentes, uso do computador e tarefas complexas.
 Fontes consultadas em 5 de novembro de 2026. Nomes e disponibilidade variam;
-confira o catálogo da sua conta quando for escolher.
+confira o catálogo da sua conta quando for escolher. Essas referências não
+substituem os resultados e limites do benchmark.
 
 ## Usar outra ferramenta ou outro LLM
 

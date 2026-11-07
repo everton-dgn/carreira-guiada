@@ -76,14 +76,15 @@ executada nas demonstrações.
 
 ## Escolha o modelo por etapa
 
-Para configurar o perfil e revisar o currículo, recomendamos começar com um
-modelo mais capaz, como **GPT-6 Astra ou Claude Opus 5.5**. Depois, **GPT-6.1
-Terra com esforço médio (`medium`)** é a sugestão do projeto para a operação;
-use alto (`high`) nos formulários e decisões mais difíceis.
+A IA pergunta quais serviços você já usa e ajuda a escolher entre os modelos
+disponíveis na sua conta. Pode deixar para depois e começar com o atual.
+Qualquer provedor pode participar, inclusive modelos locais.
 
-Essas são recomendações, sem bloquear outros modelos. A IA explica as opções
-disponíveis na sua ferramenta e ajuda a começar com o que você já tem.
-[Como escolher e trocar de modelo](docs/MODELOS.md).
+Astra ou Opus são sugestões iniciais para preparar o perfil e o currículo;
+Terra 6.1 com esforço médio ou alto, para operar. A indicação considera a etapa,
+as ferramentas da sessão e os limites dos testes. Não há um vencedor universal.
+[Escolher e trocar de modelo](docs/MODELOS.md) ·
+[Benchmarks e contribuições de outros provedores](docs/BENCHMARKS.md).
 
 ## Trabalhe por objetivo
 

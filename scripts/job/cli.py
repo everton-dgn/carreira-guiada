@@ -37,6 +37,8 @@ def parser():
     command("status", "Conferir o progresso e as pendências")
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
+    models = command('models', 'Guardar os serviços de IA disponíveis e orientar a escolha por etapa')
+    models.add_argument('action', choices=('show', 'save', 'recommend'))
     presence = command('presence', 'Preparar a revisão opcional do LinkedIn e GitHub')
     presence.add_argument('action', choices=('show', 'status', 'choose', 'source', 'draft', 'finish'))
     practice = command('practice', 'Treinar entrevistas em particular, sem candidaturas ou contas reais')
@@ -248,7 +250,12 @@ def dispatch(args):
     if not root.is_dir():
         raise ValueError("A pasta do projeto não foi encontrada. Abra a pasta Carreira Guiada no seu aplicativo de IA.")
     if args.command == "start":
-        return onboarding(root, args.focus)
+        from .models import Models
+        return {**onboarding(root, args.focus), 'model_setup': Models(root).guidance()}
+    if args.command == 'models':
+        from .models import Models
+        models = Models(root)
+        return models.save(payload()) if args.action == 'save' else getattr(models, args.action)()
     if args.command in ('career', 'company', 'research-scope'):
         from .career import CareerGuide
         from .company import CompanyDossiers

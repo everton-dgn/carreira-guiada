@@ -53,10 +53,12 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   repita confirmações já salvas.
 - Ofereça uma dica curta de [docs/ONBOARDING.md](docs/ONBOARDING.md#dicas-durante-o-preparo)
   quando ajudar a pergunta atual. Não apresente toda a lista, crie perguntas
-  extras nem trate conselho como consentimento. No início, explique a escolha
-  de modelo em uma frase conforme [docs/MODELOS.md](docs/MODELOS.md): Astra ou
-  Opus para preparar, Terra 6.1 com esforço médio ou alto para operar. Essas
-  opções são sugestões; continue com o modelo disponível e não exija troca.
+  extras nem trate conselho como consentimento. No primeiro preparo, ofereça
+  a pergunta opcional de `start.model_setup` sobre os serviços de IA que a pessoa
+  já usa. Siga [docs/MODELOS.md](docs/MODELOS.md), salve a resposta com `models save`
+  e continue com o modelo disponível. Não infira acesso a um modelo pela assinatura,
+  exija troca nem repita a pergunta após "não sei" ou "depois". Um pedido específico
+  e uma retomada operacional têm prioridade sobre essa oferta.
 - Diante de erro, explique em uma frase o que aconteceu e qual é a próxima ação
   concreta da pessoa ou do agente. Sem jargão, sem traceback.
 - Login é sempre feito pela pessoa, no navegador dela ou na integração
