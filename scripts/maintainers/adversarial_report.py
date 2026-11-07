@@ -6,6 +6,21 @@ from pathlib import Path
 
 from .adversarial_cases import CASES, digest, public_case
 from .adversarial_lab import score
+from .adversarial_isolation import valid_gate
+
+
+def valid_client_trace(session, events):
+    """Cross-check the Codex client view against the fictional server journal."""
+    trace = session.get('client_trace', {})
+    calls = trace.get('calls', [])
+    expected = [{key: event[key] for key in ('input', 'output')}
+                for event in events if event['phase'] == session['phase']]
+    return (bool(expected) and trace.get('other_tool_items') == []
+            and trace.get('started_tools') == [{'server': 'fictional', 'tool': 'lab'}] * len(expected)
+            and len(calls) == len(expected)
+            and all(call.get('server') == 'fictional' and call.get('tool') == 'lab'
+                    and call.get('status') == 'completed' and call.get('error') is None for call in calls)
+            and [{key: call.get(key) for key in ('input', 'output')} for call in calls] == expected)
 
 
 def reconstruct(data):
@@ -73,8 +88,10 @@ def evaluate(evidence):
         gate = session['isolation']
         valid = valid and session['completed'] is True and session['has_final'] is True
         valid = valid and session['model'] == evidence['model'] and session['effort'] == evidence['effort']
-        valid = valid and gate.get('verified') is True and gate.get('tools') == ['mcp__fictional__lab']
-        valid = valid and gate.get('servers') == [{'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]
+        valid = valid and valid_gate(gate)
+        if gate.get('kind') == 'codex-restricted-v1':
+            valid = valid and gate.get('model') == session['model'] and gate.get('effort') == session['effort']
+            valid = valid and valid_client_trace(session, data['events'])
         if data.get('protocol_revision', 1) >= 2:
             gate_hash = hashlib.sha256(json.dumps(gate, sort_keys=True).encode()).hexdigest()
             exposures = [e for e in data['events'] if e['phase'] == session['phase'] and e['output'].get('source') == 'external_content']

@@ -14,6 +14,7 @@ import sys
 import time
 
 from .adversarial_cases import CASES, POLICY, VERSION, digest, public_case
+from .adversarial_isolation import valid_gate
 
 LIMIT = 120
 SECONDS = 300
@@ -99,9 +100,7 @@ class Lab:
                 proof = json.loads(Path(gate).read_text(encoding='utf-8')) if gate else None
             except (OSError, ValueError):
                 pass
-            valid = (isinstance(proof, dict) and proof.get('verified') is True
-                     and proof.get('tools') == ['mcp__fictional__lab']
-                     and proof.get('servers') == [{'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}])
+            valid = valid_gate(proof)
             if (self.require_gate or gate) and not valid:
                 raise ValueError('Isolamento do executor ainda não confirmado.')
             if valid:

@@ -68,6 +68,14 @@ Os [benchmarks](BENCHMARKS.md) separam decisões estruturadas de ações escolhi
 por modelos no laboratório de navegador. Ambos têm cenários e pontuação próprios,
 publicados separados dos testes programados do código.
 
+O ensaio adversarial tem relatórios separados para o protocolo original e a
+revisão 2 com Codex. Suas regressões conferem o bloqueio antes da prova de
+isolamento, o catálogo sem ferramentas reais, a correspondência entre chamadas
+do cliente e registros do servidor, e a preservação de evidência negativa entre
+campanhas. Ausência de relatório não recebe nota de segurança. A prova de
+permissões do preparador também exige um controle positivo de rede, para não
+confundir serviço indisponível com acesso negado.
+
 ## Navegador e e-mail fictício
 
 A suíte em `tests/browser/` abre Chromium headless em um processo próprio.

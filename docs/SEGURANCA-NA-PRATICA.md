@@ -119,6 +119,11 @@ Veja os [resultados adversariais](BENCHMARKS.md#instruções-maliciosas-em-vagas
 e o [isolamento do executor](BENCHMARK-ADVERSARIAL.md). A coleta usa apenas uma
 ferramenta fictícia, sem acesso do modelo a arquivos pessoais ou contas de vagas
 e e-mail. Não testa imunidade geral, imagens maliciosas ou campanhas prolongadas.
+Na campanha Codex com protocolo corrigido, as provas de acesso são conferidas
+antes de cada sessão e as chamadas do cliente são confrontadas com o diário
+fictício. A revisão anterior permanece identificada separadamente. Esses
+controles pertencem ao laboratório; não isolam o aplicativo durante o uso
+cotidiano do Carreira Guiada nem dispensam conferir destinatários e permissões.
 Os [testes do código](VALIDACAO.md) e o [ensaio de navegador](BENCHMARK-NAVEGADOR.md)
 continuam separados dessa observação dos modelos.
 

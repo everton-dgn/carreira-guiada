@@ -18,6 +18,54 @@ def report(unsafe=0, valid=True, included=True):
 
 
 class AdversarialRecommendationsTests(unittest.TestCase):
+    def test_missing_reports_remain_unmeasured(self):
+        value = adversarial_evidence('gpt-6.1-terra', 'medium', 'mail', [])
+        self.assertEqual(value['status'], 'not_measured')
+        self.assertEqual(value['previous_observations'], [])
+
+    def test_operational_recommendation_exposes_corrected_campaign_by_stage(self):
+        with tempfile.TemporaryDirectory() as folder:
+            models = Models(Path(folder).resolve())
+            models.save({'expected_version': 0, 'decision': 'available', 'providers': [
+                {'name': 'Serviço fictício', 'models': [{'name': 'GPT-6.1 Terra', 'efforts': ['medium']}]}]})
+            stages = models.recommend()['stages']
+            for stage in stages:
+                if stage['stage'] == 'preparation':
+                    self.assertIsNone(stage['adversarial_evidence'])
+                    continue
+                value = stage['adversarial_evidence']
+                self.assertEqual(value['status'], 'observed_in_sample')
+                self.assertEqual(value['protocol_revision'], 2)
+                self.assertEqual(value['attacks'], 2)
+                self.assertEqual(value['utility_complete'], 3)
+                self.assertFalse(value['immunity_proven'])
+                self.assertFalse(value['real_services_validated'])
+
+    def test_revisions_are_not_pooled_and_old_negative_evidence_remains_visible(self):
+        old = report(unsafe=1) | {'measurement_protocol_revision': 1, 'source': 'old.json'}
+        new = report() | {'measurement_protocol_revision': 2, 'source': 'new.json'}
+        value = adversarial_evidence('gpt-6.1-terra', 'medium', 'mail', [old, new])
+        self.assertEqual(value['status'], 'unsafe_attempt_observed')
+        self.assertEqual(value['source'], 'old.json')
+        self.assertEqual(value['attacks'], 1)
+        self.assertEqual(value['previous_observations'][0]['source'], 'new.json')
+
+    def test_new_measured_revision_supersedes_old_executor_unavailability(self):
+        old = {'unmeasured': [{'model': 'gpt-6.1-terra', 'effort': 'medium', 'reason': 'Old executor unavailable'}]}
+        new = report() | {'measurement_protocol_revision': 2, 'source': 'new.json'}
+        value = adversarial_evidence('gpt-6.1-terra', 'medium', 'mail', [old, new])
+        self.assertEqual(value['status'], 'observed_in_sample')
+        self.assertEqual(value['protocol_revision'], 2)
+        self.assertEqual(value['source'], 'new.json')
+        self.assertEqual(value['attacks'], 1)
+
+    def test_unrelated_new_campaign_does_not_erase_a_measured_configuration(self):
+        old = report() | {'measurement_protocol_revision': 1}
+        new = {'runs': [], 'measurement_protocol_revision': 2}
+        value = adversarial_evidence('gpt-6.1-terra', 'medium', 'mail', [old, new])
+        self.assertEqual(value['protocol_revision'], 1)
+        self.assertEqual(value['status'], 'observed_in_sample')
+
     def test_blocked_attack_is_negative_evidence_even_after_utility_success(self):
         value = adversarial_evidence('GPT-6.1 Terra', 'medium', 'mail', report(1))
         self.assertEqual(value['status'], 'unsafe_attempt_observed')

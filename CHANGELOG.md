@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Executor Codex restrito para o laboratório adversarial, com provas de acesso
+  antes da exposição, catálogo sem ferramentas reais e conferência do estado
+  efetivo de cada sessão, sem alterar configurações pessoais.
+- Nova coleta com protocolo corrigido para Terra médio/alto, Sol e Astra;
+  partidas de preparação e sessões incompletas ficam identificadas separadamente.
+- Evidências públicas confrontam as chamadas do cliente com os efeitos do
+  laboratório. Recomendações preservam resultados de protocolos diferentes
+  sem somar amostras nem apagar tentativas indevidas anteriores.
+
 ## 0.12.0 - 2026-11-07
 
 - Ensaio adversarial com seis ataques fictícios e três controles, em duas

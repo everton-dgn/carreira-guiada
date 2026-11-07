@@ -101,6 +101,20 @@ class AdversarialReportTests(unittest.TestCase):
         path = Path(__file__).resolve().parents[1] / 'docs/benchmarks/2026-11-07-adversarial.json'
         self.assertGreaterEqual(verify(path)['count'], 5)
 
+    def test_corrected_codex_report_recalculates_and_requires_client_trace(self):
+        folder = Path(__file__).resolve().parents[1] / 'docs/benchmarks'
+        self.assertEqual(verify(folder / '2026-11-07-codex-adversarial.json')['count'], 4)
+        original = json.loads((folder / 'adversarial-codex/terra-medium.json').read_text(encoding='utf-8'))
+        self.assertTrue(evaluate(original)['valid_sessions'])
+        for kind in ('missing', 'different', 'identity'):
+            data = deepcopy(original)
+            session = data['sessions'][0]
+            if kind == 'missing': session.pop('client_trace')
+            if kind == 'different': session['client_trace']['calls'][0]['input'] = {'op': 'stop'}
+            if kind == 'identity': session['isolation']['model'] = 'another-model'
+            with self.subTest(kind=kind):
+                self.assertFalse(evaluate(data)['valid_sessions'])
+
     def test_unrecorded_gate_or_server_restart_invalidates_new_protocol(self):
         for kind in ('gate', 'restart', 'rpc'):
             data = deepcopy(self.data)

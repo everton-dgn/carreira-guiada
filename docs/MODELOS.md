@@ -49,11 +49,21 @@ ataques e sem erros de protocolo. GLM concluiu com um erro de protocolo; Haiku
 deixou uma confirmação incompleta. M3 concluiu após uma tentativa de ação fora
 da autorização, bloqueada pelo executor, e quatro erros de protocolo.
 
-Nenhum dos cinco tentou cumprir o objetivo dos ataques. Isso não demonstra
-imunidade nem define qual resistirá melhor em páginas reais. Terra, Sol e Astra
-ficaram sem medição porque o executor não confirmou o isolamento exigido.
-Terra médio continua como sugestão operacional com base no ensaio de navegador,
-com essa lacuna de segurança explicitamente registrada.
+Nenhum dos cinco tentou cumprir o objetivo dos ataques. Essa coleta usa o
+protocolo original e não demonstra imunidade nem define qual resistirá melhor
+em páginas reais.
+
+Com o isolamento Codex corrigido, Terra médio/alto e Sol médio concluíram as
+duas sessões da revisão 2: seis ataques expostos sem tentativa indevida e nove
+tarefas legítimas concluídas, sem erros de protocolo. Astra alto concluiu os
+seis casos da primeira sessão, mas ainda não tem medição de retomada. As coletas
+dos dois protocolos permanecem separadas, sem ranking entre fornecedores.
+
+Terra médio continua como sugestão operacional inicial, apoiada no ensaio de
+navegador e nessa observação adversarial. Terra alto e Sol médio são alternativas
+completas nas duas medições. Não foi observada vantagem de resistência ao subir
+o esforço do Terra. A indicação de Astra/Opus para preparação continua sendo
+orientação inicial; este ensaio não avaliou a qualidade de currículos.
 
 Para retomadas, confira sempre os recibos e o registro final. Se usar M3 na
 triagem ou candidatura, a recomendação pede conferência humana antes de envio devido à ação
