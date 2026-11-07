@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.11.0 - 2026-11-07
+
 ### Novidades
 
 - Benchmark reproduzível com nove configurações de modelos operando navegador,
