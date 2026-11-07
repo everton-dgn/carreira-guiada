@@ -74,6 +74,8 @@ uma seleção específica. Veja também [internacional](INTERNACIONAL.md) e
 
 ## Feedback para ensaiar e estudar
 
+![Exemplo fictício de treino: a IA ajuda a explicar como a correção de um erro foi verificada.](assets/entrevista-ensaio.png)
+
 A devolutiva traz um acerto observável, uma ou duas lacunas prioritárias, uma
 forma de reorganizar os fatos informados e um exercício pequeno com critério
 de melhora. Em vez de apenas dizer "falta clareza", aponta o trecho que deixou

@@ -3,7 +3,7 @@
 from PIL import Image
 
 from render_docs import OUT, SIZE, SCALE, INK, MUTED, TEXT, ACCENT
-from render_docs import coords, font, text, wrap, backdrop, progress_track, BLUE, LINE, PALE, DIM
+from render_docs import coords, font, text, wrap, backdrop, progress_track, BLUE, LINE, DIM
 
 
 def box(draw, bounds, fill, outline=None, radius=12):
@@ -11,12 +11,19 @@ def box(draw, bounds, fill, outline=None, radius=12):
                            fill=fill, outline=outline, width=2 * SCALE)
 
 
-def paragraph(draw, position, value, width, size=19, fill=TEXT):
+def paragraph(draw, position, value, width, size=19, fill=TEXT, *, cursor=False, bottom=None):
     x, y = position
+    last = ""
     for part in value.split('\n'):
         for line in wrap(draw, part, width=width, size=size):
+            if bottom is not None and y + size + 6 > bottom:
+                raise ValueError("O parágrafo ultrapassou a área de leitura.")
             text(draw, (x, y), line, size, fill, True)
+            last = line
             y += size + 8
+    if cursor:
+        caret = x + draw.textlength(last, font=font(size, True)) / SCALE + 2
+        draw.line(coords((caret, y - size - 3, caret, y - 3)), fill=fill, width=2 * SCALE)
     return y
 
 
@@ -29,81 +36,72 @@ def pointer(draw, position, clicking=False):
                          x + 22, y + 14)), fill=INK, outline="#ffffff", width=2 * SCALE)
 
 
-def base(title, number, message, progress, note):
+def base(title, subtitle, number, message, progress, note):
     image, draw = backdrop(dark=True)
-    text(draw, (40, 78), title, 35, TEXT, bold=True)
-    text(draw, (40, 132), "Do que você conta ao próximo passo concreto.", 20, DIM)
+    text(draw, (40, 78), title, 38, TEXT, bold=True)
+    text(draw, (40, 134), subtitle, 23, DIM)
     text(draw, (40, 206), ">_ conversa com sua IA", 19, ACCENT, True)
     draw.line(coords((40, 244, 407, 244)), fill="#28426a", width=SCALE)
     visible = message[:max(1, int(len(message) * min(1, progress * 2)))]
-    end = paragraph(draw, (40, 266), visible, 374, 20)
+    end = paragraph(draw, (40, 266), visible, 374, 23)
     if end > 550:
         raise ValueError("A conversa ultrapassou a área de leitura.")
     text(draw, (40, 556), f"0{number + 1}", 32, ACCENT, bold=True)
     text(draw, (96, 568), "DE 05 ETAPAS", 14, DIM)
-    for index, line in enumerate(wrap(draw, note, 1030, 18, mono=False)):
-        text(draw, (40, 635 + index * 23), line, 18, TEXT)
+    for index, line in enumerate(wrap(draw, note, 1030, 20, mono=False)):
+        text(draw, (40, 632 + index * 25), line, 20, TEXT)
     progress_track(draw, number, progress, dark=True)
     return image, draw
 
 
 def paper(draw, label):
     """A document on the stage, not a second application window."""
-    text(draw, (480, 177), label, 14, DIM)
-    box(draw, (492, 221, 1076, 606), "#14366a", radius=8)
-    box(draw, (480, 210, 1064, 594), "#ffffff", radius=8)
-    draw.rectangle(coords((480, 226, 486, 280)), fill=BLUE)
-    draw.polygon(coords((1026, 210, 1064, 248, 1064, 210)), fill="#a9c8fb")
-    draw.polygon(coords((1026, 210, 1026, 248, 1064, 248)), fill=PALE)
+    text(draw, (480, 176), label, 15, DIM)
+    box(draw, (468, 204, 1080, 610), "#ffffff", radius=8)
+    draw.rectangle(coords((468, 226, 474, 280)), fill=BLUE)
 
 
 RESUME_SCENES = [
-    ("Você: Atendia clientes e organizava pedidos. Empresa Exemplo, de 2023 a 2025.\n\nIA: Vou usar esses fatos que você confirmou.",
-     "A IA começa pelo que você contou. Não inventa experiência ou resultados."),
+    ("Você: Atendia clientes e organizava pedidos. Empresa Exemplo, 2023 a 2025.\n\nIA: Vou usar esses fatos.",
+     "O currículo começa pela sua experiência, com fatos que você confirmou."),
     ("IA: Vou separar contato, resumo, experiência e formação.\n\nVocê: Pode organizar o texto.",
-     "Seções claras ajudam a ler o currículo e conferir o que ainda falta."),
-    ("IA: Sugestão: atendimento a clientes e organização de pedidos.\n\nVocê: Está correto. Fiz também um curso de atendimento.",
-     "A redação melhora sem acrescentar habilidades ou números não confirmados."),
+     "Uma coluna e seções claras facilitam a leitura por pessoas e sistemas de seleção."),
+    ("IA: Atendimento a clientes e organização de pedidos.\n\nVocê: Correto. Também fiz um curso de atendimento.",
+     "A redação fica mais clara e mantém a sua experiência real."),
     ("IA: Confira os fatos e as datas desta versão.\n\nVocê: Conferi. Aprovo o currículo.",
      "A pessoa confere os arquivos e aprova o conteúdo antes de qualquer envio."),
-    ("IA: PDF, Word e texto conferidos. Versão aprovada.\n\nVou conferir esta versão antes de anexar a uma candidatura.",
+    ("IA: PDF, Word e texto conferidos.\n\nVou usar a versão aprovada na candidatura.",
      "O original é preservado. Cada versão tem sua própria aprovação."),
 ]
 
 
 def resume_frame(stage, progress, blink=False):
-    image, draw = base("Sua história. Um currículo pronto para enviar.", stage,
+    image, draw = base("Seu currículo, claro e pronto para a vaga.",
+                       "Organize sua experiência e revise o conteúdo antes de enviar.", stage,
                        RESUME_SCENES[stage][0], progress, RESUME_SCENES[stage][1])
     paper(draw, "PRÉVIA DO CURRÍCULO FICTÍCIO")
     if stage == 0:
         text(draw, (506, 236), "Fatos confirmados", 27, INK)
         raw = "Pessoa Exemplo\npessoa@example.invalid\nEmpresa Exemplo | 2023 a 2025\nAtendia clientes e organizava pedidos."
         shown = raw[:int(len(raw) * progress)]
-        y = 292
-        for line in shown.split("\n"):
-            y = paragraph(draw, (506, y), line, 516, 18, INK) + 12
-        if blink:
-            x = 506 + draw.textlength(shown.split('\n')[-1], font=font(18, True)) / SCALE
-            text(draw, (x, min(y - 38, 535)), "|", 18, INK, True)
+        paragraph(draw, (506, 300), shown, 538, 21, INK, cursor=blink, bottom=580)
     else:
-        text(draw, (506, 232), "Pessoa Exemplo", 28, INK)
-        text(draw, (506, 272), "pessoa@example.invalid", 17, MUTED)
-        headings = [("RESUMO", 318), ("EXPERIÊNCIA", 383), ("FORMAÇÃO", 470)]
+        text(draw, (506, 224), "Pessoa Exemplo", 30, INK)
+        text(draw, (506, 266), "pessoa@example.invalid", 18, MUTED)
+        headings = [("RESUMO", 310), ("EXPERIÊNCIA", 402), ("FORMAÇÃO", 494)]
         for index, (label, y) in enumerate(headings):
             if stage > 1 or progress >= index / 3:
-                text(draw, (506, y), label, 14, MUTED)
-                draw.line(coords((506, y + 24, 1030, y + 24)), fill="#c4d7f5", width=SCALE)
+                text(draw, (506, y), label, 15, MUTED)
+                draw.line(coords((506, y + 22, 1040, y + 22)), fill="#c4d7f5", width=SCALE)
         if stage >= 2:
-            summary = "Atendimento a clientes e organização de pedidos."
+            summary = "Atendimento a clientes.\nOrganização de pedidos."
             summary = summary[:int(len(summary) * progress)] if stage == 2 else summary
-            paragraph(draw, (506, 346), summary, 520, 16, INK)
-            text(draw, (506, 411), "Empresa Exemplo | 2023 a 2025", 18, INK)
-            text(draw, (506, 438), "Atendimento e organização de pedidos", 17, INK)
+            paragraph(draw, (506, 338), summary, 534, 20, INK,
+                      cursor=stage == 2 and blink, bottom=396)
+            text(draw, (506, 428), "Empresa Exemplo | 2023 a 2025", 20, INK)
+            text(draw, (506, 457), "Atendimento e organização de pedidos", 20, INK)
             if stage > 2 or progress > 0.65:
-                text(draw, (506, 502), "Curso de atendimento ao público", 18, INK)
-            if stage == 2 and blink:
-                x = 506 + draw.textlength(summary, font=font(16, True)) / SCALE
-                text(draw, (x, 346), "|", 16, INK, True)
+                text(draw, (506, 523), "Curso de atendimento ao público", 20, INK)
         if stage == 3:
             box(draw, (875, 229, 1038, 265), "#e6f0ff")
             text(draw, (892, 237), "EM REVISÃO", 15, INK)
@@ -112,36 +110,37 @@ def resume_frame(stage, progress, blink=False):
             text(draw, (903, 237), "APROVADO", 15, INK)
             for index, label in enumerate(("PDF", "WORD", "TEXTO")):
                 if progress >= index / 3:
-                    box(draw, (506 + index * 170, 538, 662 + index * 170, 565), "#dceaff")
-                    text(draw, (549 + index * 170, 543), label, 13, INK)
+                    box(draw, (506 + index * 180, 566, 672 + index * 180, 599), "#dceaff")
+                    text(draw, (550 + index * 180, 574), label, 16, INK)
     return image
 
 
 PORTAL_SCENES = [
-    ("IA: Encontrei uma vaga nas fontes aprovadas. Vou conferir a empresa e seus filtros antes de preencher.",
+    ("IA: Encontrei uma vaga. Vou conferir a empresa e seus filtros antes de preencher.",
      "Perfil e currículo aprovados. Navegador conectado e pesquisa autorizada."),
-    ("IA: Preenchimento autorizado. Vou digitar os contatos que você confirmou e reler os campos.",
+    ("IA: Vou preencher os contatos que você confirmou e conferir os campos.",
      "Nome e contato são reaproveitados. Você não precisa digitá-los a cada vaga."),
-    ("IA: Vou usar sua apresentação confirmada e anexar a versão aprovada do currículo.",
+    ("IA: Vou usar sua apresentação e anexar o currículo que você aprovou.",
      "O anexo é conferido antes do envio. A apresentação usa apenas fatos confirmados."),
     ("IA: Campos e currículo conferidos. Posso enviar?\n\nVocê: Pode enviar esta candidatura.",
      "Neste exemplo, a pessoa escolheu perguntar antes de cada envio."),
-    ("IA: O portal confirmou o recebimento nesta simulação. Vou registrar o resultado e seguir para a próxima vaga.",
+    ("IA: O portal confirmou o recebimento.\n\nVou registrar e seguir para a próxima vaga.",
      "Só a confirmação conta como envio. Resultado incerto exige conferência."),
 ]
 
 
 def field(draw, y, label, value, active=False, blink=False):
-    text(draw, (482, y), label, 16, MUTED)
+    text(draw, (482, y), label, 18, MUTED)
     box(draw, (482, y + 25, 1058, y + 65), "#ffffff", INK if active else "#bdd1ef", radius=6)
-    text(draw, (494, y + 33), value, 18, INK)
+    text(draw, (494, y + 33), value, 20, INK)
     if active and blink:
-        x = 497 + draw.textlength(value, font=font(18)) / SCALE
+        x = 497 + draw.textlength(value, font=font(20)) / SCALE
         draw.line(coords((x, y + 33, x, y + 56)), fill=INK, width=2 * SCALE)
 
 
 def portal_frame(stage, progress, blink=False):
-    image, draw = base("Chega de preencher os mesmos dados.", stage,
+    image, draw = base("Chega de repetir formulários.",
+                       "A IA preenche o portal com os dados e o currículo aprovados.", stage,
                        PORTAL_SCENES[stage][0], progress, PORTAL_SCENES[stage][1])
     box(draw, (456, 160, 1084, 596), "#ffffff", "#bdd1ef")
     box(draw, (470, 174, 1070, 213), "#e9f1ff", radius=7)
@@ -149,8 +148,8 @@ def portal_frame(stage, progress, blink=False):
     if stage == 0:
         text(draw, (482, 241), "Empresa Exemplo", 26, INK)
         text(draw, (482, 285), "Atendimento ao cliente", 24, INK)
-        text(draw, (482, 325), "Remoto | Requisitos compatíveis com o perfil", 18, MUTED)
-        paragraph(draw, (482, 369), "Atender clientes e organizar pedidos. Confira a descrição antes da candidatura.", 550, 18, INK)
+        text(draw, (482, 325), "Remoto | Requisitos compatíveis", 20, MUTED)
+        paragraph(draw, (482, 369), "Atender clientes e organizar pedidos. Confira a descrição antes de se candidatar.", 550, 20, INK, bottom=480)
         box(draw, (482, 485, 752, 536), INK)
         text(draw, (507, 499), "Abrir candidatura", 21)
         pointer(draw, (992 - 300 * progress, 442 + 70 * progress), blink and progress == 1)
@@ -185,24 +184,24 @@ def portal_frame(stage, progress, blink=False):
 
 
 PRACTICE_SCENES = [
-    ("Você: Quero treinar uma entrevista.\n\nIA: Vamos começar com uma pergunta e ajuda a cada resposta?", "O treino é opcional. Você pode começar sem currículo ou conta em um portal.", "Treinar do seu jeito", "RH e apresentação\nTécnica e arquitetura\nInternacional e negociação\n\nVoz, se seu app oferecer.\nTexto também funciona."),
-    ("IA: Conte um erro e o que fez depois.\n\nVocê: Alterei a validação do formulário. Deu erro e eu corrigi.", "Uma pergunta por vez. A resposta fica salva antes da análise.", "Primeira tentativa", "Contexto: formulário\nAção: corrigir a validação\n\nAinda falta explicar como\nvocê verificou o resultado."),
-    ("IA: Você assumiu o erro. Como conferiu a correção?\n\nNão precisamos inventar números para contar o resultado.", "Feedback sobre a resposta, com evidências e um próximo passo concreto.", "Um exercício pequeno", "Descreva a verificação\nem uma frase.\n\nUse somente fatos que\nvocê consegue confirmar.\nPode pedir uma dica."),
-    ("Você: Fiquei cansada. Continuo amanhã.\n\nIA: Salvei sua resposta e o exercício. Podemos parar aqui.", "Pausa preserva a pergunta, a resposta e o feedback. Não há trabalho de fundo.", "Progresso salvo", "Treino: comportamento\nPergunta: erro e aprendizado\nTentativa: 1\nPróximo passo: ensaiar\na verificação da correção."),
-    ("Você: Continuar meu treino.\n\nIA: Vamos retomar a verificação do formulário, de onde paramos.", "Ao refazer, compare o que ficou mais claro e escolha o próximo exercício.", "No dia seguinte", "Você: Testei campos vazios\ne preenchidos e conferi\no envio.\n\nIA: Agora a verificação\nestá concreta. Próximo:\ncomo prevenir esse erro?"),
+    ("Você: Quero treinar uma entrevista.\n\nIA: Vamos ensaiar uma pergunta de cada vez.", "Comece pelo tipo de entrevista. Use voz se o seu aplicativo oferecer essa opção.", "Escolha seu treino", "RH e apresentação\nTécnica e system design\nInternacional e negociação\n\nUse voz, se o app permitir."),
+    ("IA: Conte um erro e o que fez depois.\n\nVocê: Mudei a validação. Deu erro e eu corrigi.", "O feedback aponta o que ficou claro e o que você pode explicar melhor.", "O que já ficou claro", "Você explicou o erro\ne a correção.\n\nFalta contar como\nverificou o resultado."),
+    ("IA: Você explicou a correção. Como testou o resultado?\n\nPode pedir uma dica.", "Um exercício de cada vez, com exemplos reais da sua experiência.", "Ensaie o que faltou", "Como você testou\na correção?\n\nResponda em uma frase,\ncom fatos que viveu."),
+    ("Você: Preciso parar. Continuo amanhã.\n\nIA: Tudo bem. Seu treino está salvo.", "A pausa preserva sua pergunta, sua resposta e o feedback.", "Seu treino está salvo", "Pergunta e resposta salvas.\nFeedback preservado.\n\nPróximo passo:\nexplicar a verificação."),
+    ("Você: Continuar meu treino.\n\nIA: Vamos retomar a verificação do formulário.", "Compare as tentativas e escolha o próximo exercício com a IA.", "Uma resposta mais clara", "Testei campos vazios\ne preenchidos e conferi\no envio.\n\nAgora temos uma ação\nconcreta de verificação."),
 ]
 
 
 def practice_frame(stage, progress, blink=False):
     message, note, title, content = PRACTICE_SCENES[stage]
-    image, draw = base('Ensaie hoje. Chegue mais preparado.', stage, message, progress, note)
+    image, draw = base('Ensaie a entrevista, uma resposta por vez.',
+                       'Receba feedback e pratique o que ainda precisa melhorar.',
+                       stage, message, progress, note)
     paper(draw, 'CADERNO DE TREINO FICTÍCIO')
     text(draw, (506, 245), title, 26, BLUE, bold=True)
     draw.line(coords((506, 287, 1028, 287)), fill=LINE, width=SCALE)
     shown = content[:int(len(content) * progress)]
-    paragraph(draw, (506, 308), shown, 520, 21, INK)
-    if blink:
-        text(draw, (1018, 538), '|', 20, INK, True)
+    paragraph(draw, (506, 308), shown, 534, 22, INK, cursor=blink, bottom=586)
     return image
 
 
@@ -216,8 +215,8 @@ def render(name, draw_frame, poster):
     frames, durations = [], []
     for stage in range(5):
         timeline = [(i / 32, 100, True) for i in range(33)]
-        timeline += [(1, 450, blink) for _ in range(3) for blink in (False, True)]
-        timeline += [(1, 1000, False)]
+        timeline += [(1, 450, blink) for _ in range(4) for blink in (False, True)]
+        timeline += [(1, 2000, False)]
         for progress, duration, blink in timeline:
             frames.append(draw_frame(stage, progress, blink).quantize(palette=palette, dither=Image.Dither.NONE))
             durations.append(duration)
@@ -228,6 +227,6 @@ def render(name, draw_frame, poster):
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    render("curriculo-guiado", resume_frame, 4)
-    render("portal-guiado", portal_frame, 3)
-    render("entrevista-guiada", practice_frame, 2)
+    render("curriculo-revisado", resume_frame, 4)
+    render("candidatura-preenchida", portal_frame, 3)
+    render("entrevista-ensaio", practice_frame, 2)

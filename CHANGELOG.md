@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Banners usam textos mais diretos e ilustrações ligadas ao recurso: currículo,
+  candidaturas, perfis, dossiê, plano de carreira, benchmarks e retornos.
+  O diagrama mostra a continuidade da busca sem repetir o preparo inicial.
+- Cinco GIFs em 2240 × 1400 têm letras maiores, fundo azul uniforme, digitação
+  visível e mais tempo para ler cada cena. O cursor acompanha o texto e as
+  prévias de currículo e treino deixam de usar sombras deslocadas.
+- A demonstração de busca mostra autorização por rodada; a de formulário
+  exemplifica confirmação por candidatura. README e guias apontam para os
+  novos arquivos, evitando reutilizar imagens anteriores do cache.
+
 ## 0.15.0 - 2026-11-07
 
 - Mais opções reúne empresas, LinkedIn/GitHub, propostas, modelos e preparo

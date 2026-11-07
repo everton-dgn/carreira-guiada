@@ -74,7 +74,7 @@ As demonstrações abaixo representam conversas fictícias no terminal.
 O Carreira Guiada não instala uma tela própria. Navegação e e-mail dependem
 das integrações disponíveis na sessão; iniciar a CLI não conecta contas.
 
-![Demonstração fictícia do menu, da escolha de atividade e da retomada.](assets/menu-guiado.png)
+![Demonstração fictícia do menu, da escolha de atividade e da retomada.](assets/escolher-atividade.png)
 
 ## A primeira conversa
 
@@ -181,14 +181,14 @@ versão aprovada.
    as suas escolhas. A candidatura só é contada após confirmação do destino.
 5. Você recebe o que foi confirmado, o que ficou em dúvida e a próxima ação.
 
-![Demonstração fictícia da busca com filtros salvos e conferência antes de retomar.](assets/busca-e-retomada.png)
+![Demonstração fictícia da busca com filtros salvos e conferência antes de retomar.](assets/busca-acompanhada.png)
 
 Uma vaga bloqueada por login não impede cuidar de outra. Um envio com resultado
 incerto exige conferência antes de tentar novamente.
 
 ## Exemplo de preenchimento no portal
 
-![Portal fictício com campos de candidatura preenchidos pela IA.](assets/portal-guiado.png)
+![Portal fictício com campos de candidatura preenchidos pela IA.](assets/candidatura-preenchida.png)
 
 O GIF do README mostra um cenário ilustrativo com perfil, fontes e currículo
 já aprovados e uma ferramenta de navegador conectada:

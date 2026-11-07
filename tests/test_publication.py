@@ -81,7 +81,7 @@ class PublicationTests(unittest.TestCase):
     def test_unknown_png_metadata_is_blocked_and_reviewed_images_are_preserved(self):
         """Reject unknown image metadata while preserving reviewed banner assets."""
         assets = Path(__file__).resolve().parents[1] / "docs/assets"
-        for name in ('carreira-guiada-cover-banner.png', 'fluxo-guiado-banner.png'):
+        for name in ('carreira-guiada-automacao-banner.png', 'jornada-candidaturas-banner.png'):
             with self.subTest(name=name):
                 original = (assets / name).read_bytes()
                 self.assertEqual(content_problems('docs/assets/' + name, original), [])
@@ -93,12 +93,12 @@ class PublicationTests(unittest.TestCase):
 
     def test_gif_loop_extension_cannot_carry_extra_metadata(self):
         assets = Path(__file__).resolve().parents[1] / "docs/assets"
-        original = (assets / "menu-guiado.gif").read_bytes()
+        original = (assets / "escolher-atividade.gif").read_bytes()
         expected = b"\x0bNETSCAPE2.0\x03\x01\x00\x00\x00"
         self.assertIn(expected, original)
-        self.assertEqual(content_problems("docs/assets/menu-guiado.gif", original), [])
+        self.assertEqual(content_problems("docs/assets/escolher-atividade.gif", original), [])
         injected = b"\x0bNETSCAPE2.0\x03\x01\x00\x00\x05hello\x00"
-        self.assertTrue(content_problems("docs/assets/menu-guiado.gif", original.replace(expected, injected, 1)))
+        self.assertTrue(content_problems("docs/assets/escolher-atividade.gif", original.replace(expected, injected, 1)))
 
 
 if __name__ == "__main__":
