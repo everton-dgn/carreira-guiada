@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.14.1 - 2026-11-07
+
 - Retomada identifica currículo e busca salvos e oferece continuar, revisar ou
   trocar de atividade sem repetir perguntas já respondidas.
 - Treino adiado preserva a resposta anterior e aguarda retomada; respostas
