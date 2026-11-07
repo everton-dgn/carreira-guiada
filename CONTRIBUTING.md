@@ -92,6 +92,13 @@ configuração e respostas fictícias, registre falhas e separe decisão de
 execução com ferramentas. Os scripts de avaliação não dependem de um serviço
 de IA nem de um orquestrador específico.
 
+O [laboratório de navegador e e-mail](docs/BENCHMARK-NAVEGADOR.md) fornece portal,
+caixa postal, cliente de ferramentas e duas sessões reproduzíveis com dados
+fictícios. A segunda sessão continua pelo estado salvo, sem histórico do chat.
+Resultados publicados podem ser recalculados pelas evidências, sem chamar um
+modelo. Guarde falhas e indisponibilidades; não publique chaves do laboratório,
+caminhos do computador ou IDs de sessões do cliente.
+
 ## Licença das contribuições
 
 Envie somente material que você tem direito de distribuir sob a

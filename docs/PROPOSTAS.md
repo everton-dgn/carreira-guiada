@@ -1,5 +1,7 @@
 # Comparar propostas de trabalho
 
+![Pacotes diferentes comparados pela mesma base.](assets/propostas-trabalho.png)
+
 Esta comparação usa valores que você informa ou confirma. Ela ajuda a organizar
 as diferenças entre CLT, PJ, MEI, cooperado e trabalho internacional. Não é
 assessoria tributária ou jurídica, nem escolhe uma proposta por você. Antes de

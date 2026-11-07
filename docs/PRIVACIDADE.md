@@ -1,5 +1,10 @@
 # Privacidade
 
+Para reconhecer pedidos suspeitos e limitar o que é compartilhado em cada
+etapa, consulte [segurança na prática](SEGURANCA-NA-PRATICA.md). A pesquisa de
+empresas e salários pode usar termos públicos, sem anexar seu currículo ou
+copiar contatos para a consulta.
+
 ## Onde seus dados ficam
 
 O Carreira Guiada grava seus dados na pasta privada `.job/` dentro do projeto, no seu

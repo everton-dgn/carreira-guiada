@@ -1,5 +1,7 @@
 # Escolher em que focar
 
+![Três caminhos possíveis, começando por um pequeno experimento.](assets/guia-carreira.png)
+
 Se você ainda não sabe que trabalho procurar, diga:
 
 > Quero ajuda para escolher em que focar. Não sei por onde começar.

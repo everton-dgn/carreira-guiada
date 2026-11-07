@@ -60,7 +60,7 @@ Você não precisa decidir tudo antes de começar, nem ler esta lista inteira.
 | Propostas | Compare o ano completo e o pacote. Impostos desconhecidos ficam pendentes, sem líquido inventado. |
 | Permissões | Você pode autorizar a busca, o preenchimento e o envio durante a rodada para evitar perguntas repetidas. Também pode pedir confirmação por vaga. |
 | E-mail | Use uma conta que consiga acompanhar. A conexão é opcional; a IA explica como isso afeta os retornos. |
-| Antes da operação | Confira uma primeira candidatura com a IA e as ferramentas disponíveis. Terra 6.1 médio ou alto é uma sugestão inicial quando você tem acesso; testes de decisões não comprovam navegação. |
+| Antes da operação | Confira a recomendação por etapa entre os modelos que você tem e acompanhe uma primeira candidatura. Resultados do laboratório fictício não comprovam funcionamento em todos os sites. |
 | Continuidade | Defina o objetivo em linguagem comum. A IA usa o modo objetivo quando disponível, respeita seus limites e salva as pendências para retomar. |
 
 [Entenda as recomendações de modelos](MODELOS.md). Essas dicas não substituem

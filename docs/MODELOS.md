@@ -37,14 +37,26 @@ escolha no aplicativo sem pedir que você edite configurações técnicas.
 Terra 6.1 com `medium` é nossa recomendação inicial para automação. Suba para
 `high` se a etapa exigir mais análise. Não recomendamos reduzir o esforço
 apenas porque a tarefa parece repetitiva: é preciso conferir o destino, os
-campos e o resultado de cada envio. Haiku 5.5 não foi validado pelo projeto
-para operar candidaturas; por isso não é nossa sugestão para essa função.
+campos e o resultado de cada envio. Haiku 5.5 não concluiu o percurso fictício e tentou uma ferramenta fora
+do protocolo; por isso esta rodada não o promove para operar candidaturas.
 
-Estas são sugestões iniciais de uso, condicionadas ao acesso da pessoa.
-O [benchmark público](BENCHMARKS.md) separa decisões sobre situações fictícias,
-clareza da resposta e execução da aplicação. Um resultado alto em perguntas
-estruturadas não comprova automação de navegador nem define o melhor modelo
-para todas as etapas. O protocolo aceita contribuições com outros provedores.
+O [benchmark público](BENCHMARKS.md) separa decisões estruturadas de operações
+escolhidas pelos modelos em um navegador com portal e e-mail fictícios. A
+segunda sessão retoma apenas pelo estado salvo. Os resultados têm critérios
+por etapa e registram falhas, tentativas de escrita com erro e indisponibilidades.
+
+Quando uma configuração informada por você passa nos critérios da etapa,
+sem falha crítica ou tentativa de escrita com erro e com duas sessões válidas concluídas,
+ela ganha preferência sobre a sugestão inicial. Se houver empate, a orientação
+mostra as alternativas, preserva a preferência inicial e escolhe o menor esforço
+testado disponível desse modelo. O tempo de uma única rodada não decide o empate.
+
+Isso recomenda um ponto de partida para aquela etapa, dentro da amostra.
+O laboratório não mede navegação por imagens, login, CAPTCHA, serviços reais
+ou campanhas por dias. Também não mede a qualidade de criar um currículo;
+as sugestões de preparo continuam iniciais. Confira as ferramentas e acompanhe
+a primeira etapa no seu aplicativo. O protocolo aceita outros provedores,
+inclusive modelos locais, sem exigir um orquestrador específico.
 
 As referências oficiais usadas na orientação original descrevem o
 [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)

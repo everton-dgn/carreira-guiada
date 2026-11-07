@@ -5,6 +5,7 @@ returned to Chromium and rechecked, never followed by the Python adapter.
 A denying loopback proxy is the backstop for unrouted browser HTTP traffic.
 """
 from datetime import datetime, timedelta, timezone
+from contextlib import closing
 from email.parser import BytesParser
 from email.policy import default
 import hashlib
@@ -247,7 +248,7 @@ class BrowserFlowTests(unittest.TestCase):
             persisted = fx.call('action', 'show', action['action_id'])
             self.assertEqual(persisted['status'], 'confirmed')
             self.assertEqual(persisted['checked_at'], clock.isoformat())
-            with sqlite3.connect(fx.root / '.job' / 'control.sqlite3') as database:
+            with closing(sqlite3.connect(fx.root / '.job' / 'control.sqlite3')) as database:
                 evidence = database.execute('SELECT evidence FROM wf_actions WHERE id=?', (action['action_id'],)).fetchone()[0]
             self.assertEqual(evidence, 'application-1')
             self.assertEqual(self.services.replies, [text])

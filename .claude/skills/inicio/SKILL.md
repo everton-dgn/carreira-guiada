@@ -18,6 +18,12 @@ Salve a escolha com `models save`, conforme
 `models recommend`. "Não sei" e "depois" ficam salvos e não reabrem a pergunta.
 Não invente opções que a conta oferece: só registre modelos e esforços vistos
 no aplicativo ou informados pela pessoa. Lista de modelos vazia é válida.
+Leia também `tool_evidence` e `tool_alternatives` quando presentes. Explique
+que o escopo é navegador e e-mail fictícios, sem prova de serviços reais.
+`basis: exploratory_tools` indica evidência daquela etapa; alternativas
+empatadas não definem um vencedor universal. Não misture essa nota com a
+qualidade de preparar um currículo, que o laboratório não mede.
+
 Leia `benchmark_evidence` quando presente. Se houver falha crítica na etapa,
 explique o problema observado, ofereça outra opção disponível ou conduza a etapa
 com conferência dos fatos e campos antes de salvar. Ressalva no texto também

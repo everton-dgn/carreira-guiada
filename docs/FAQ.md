@@ -20,6 +20,21 @@ a pasta e executar os comandos locais; navegador e e-mail precisam das
 conexões correspondentes. Um LLM sem ferramentas não opera os sites por conta
 própria. [Veja os requisitos e as recomendações](MODELOS.md).
 
+## Como a IA recomenda um modelo?
+
+Ela considera as opções que você informou ter e os testes disponíveis para
+cada etapa. O [benchmark](BENCHMARKS.md) separa perguntas de decisão de ações
+em navegador e e-mail fictícios, incluindo parar e retomar em outra sessão.
+Resultados empatados aparecem como alternativas. Uma jornada de laboratório
+não prova funcionamento em todos os sites nem exige contratar outro serviço.
+
+## Ainda não sei que carreira seguir. Posso começar?
+
+Sim. Diga "não sei em que área focar". O [guia de carreira](CARREIRA.md)
+considera sua experiência e suas prioridades, compara até três caminhos e
+propõe um exercício pequeno. Depois, ajuda a avaliar o aprendizado e ajustar
+o foco. Você pode parar e retomar sem precisar montar um currículo primeiro.
+
 ## Onde estão os sites de vagas?
 
 Você escolhe os links no início. O projeto começa sem catálogo de portais.

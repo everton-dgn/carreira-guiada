@@ -28,9 +28,34 @@ ALIASES = {
     'gpt-6-astra': 'astra', 'gpt-6 astra': 'astra',
     'claude-opus-5-5': 'opus', 'claude opus 5.5': 'opus', 'opus 5.5': 'opus',
     'minimax-m3.1-flash[1m]': 'm3', 'minimax m3.1 flash': 'm3',
+    'gpt-6.1-sol': 'sol', 'gpt-6.1 sol': 'sol',
+    'claude-fable-5-1': 'fable', 'claude fable 5.1': 'fable',
+    'claude-haiku-5-5': 'haiku', 'claude haiku 5.5': 'haiku',
+    'glm-5.3[1m]': 'glm', 'glm 5.3': 'glm',
 }
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max', 'ultra')
 REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-decisions.json'
+TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-browser-mail.json'
+
+
+def tool_evidence(model, effort, stage, report):
+    """Keep fictional browser evidence distinct from decisions and live services."""
+    key = ALIASES.get(model.casefold(), model.casefold())
+    runs = [r for r in report.get('runs', []) if ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key
+            and r['effort'] == effort and stage in r['score']['stages']]
+    if not runs:
+        return None
+    checks = [r['score']['stages'][stage] for r in runs]
+    eligible = all(r['valid_for_comparison'] and r['completed_sessions'] == 2
+                   and r['score'].get('network_evidence_complete', False)
+                   and not r['score']['critical_failures'] and not r['score']['failed_write_attempts']
+                   and r['score']['stages'][stage]['complete'] for r in runs)
+    return {'source': 'docs/benchmarks/2026-11-07-browser-mail.json', 'date': report['date'],
+            'scope': 'isolated_browser_mail_tools', 'runs': len(runs),
+            'passed': sum(c['passed'] for c in checks), 'total': sum(c['total'] for c in checks),
+            'eligible_for_suggestion': eligible, 'real_services_validated': False,
+            'critical_failures': [f for r in runs for f in r['score']['critical_failures']],
+            'failed_write_attempts': sum(r['score']['failed_write_attempts'] for r in runs)}
 
 
 def evidence(model, effort, stage):
@@ -132,9 +157,10 @@ class Models:
                 'message': 'Essa escolha é opcional. Podemos começar com o modelo atual; não precisa contratar outro serviço.'}
 
     def recommend(self):
-        """Suggest only declared models; defaults are guidance, not a benchmark ranking."""
+        """Prefer stage evidence among declared options, without claiming a winner."""
         saved = self.show()
         candidates = [{'provider': p['name'], **m} for p in saved['providers'] for m in p['models']]
+        report = json.loads(TOOL_REPORT.read_text()) if TOOL_REPORT.is_file() else {}
         stages = []
         for stage, label in STAGES.items():
             preferred = ('astra', 'opus', 'terra', 'm3') if stage == 'preparation' else ('terra', 'astra', 'opus', 'm3')
@@ -143,15 +169,29 @@ class Models:
             effort = None
             if choice:
                 known = ALIASES.get(choice['name'].casefold())
-                desired = ('xhigh',) if known == 'm3' else ('high', 'medium') if stage == 'preparation' else ('medium', 'high')
+                desired = ('xhigh',) if known == 'm3' else ('max',) if known == 'glm' else ('high', 'medium') if stage == 'preparation' else ('medium', 'high')
                 effort = next((e for e in desired if e in choice.get('efforts', [])), None) if known else None
+            tested = []
+            for option in ordered:
+                for level in EFFORTS:
+                    if level not in option.get('efforts', []):
+                        continue
+                    observation = tool_evidence(option['name'], level, stage, report)
+                    if observation and observation['eligible_for_suggestion']:
+                        tested.append((option, level, observation))
+            if tested:
+                choice, effort, observed = tested[0]
+            else:
+                observed = tool_evidence(choice['name'], effort, stage, report) if choice else None
             measured = evidence(choice['name'], effort, stage) if choice else None
             stages.append({'stage': stage, 'label': label,
                            'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
-                           'effort': effort, 'basis': 'initial_guidance' if choice and ALIASES.get(choice['name'].casefold()) else 'unmeasured',
+                           'effort': effort, 'basis': 'exploratory_tools' if tested else 'initial_guidance' if choice and ALIASES.get(choice['name'].casefold()) else 'unmeasured',
                            'benchmark_evidence': measured,
+                           'tool_evidence': observed,
+                           'tool_alternatives': [{'provider': m['provider'], 'name': m['name'], 'effort': e} for m, e, _ in tested],
                            'tools_required': TOOLS[stage],
-                           'message': 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
+                           'message': 'Esta opção passou nos critérios da etapa no laboratório fictício. As alternativas também passaram; a amostra não define um vencedor. Confira as ferramentas na sua sessão.' if tested else 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
         return {'decision': saved['decision'], 'stages': stages, 'automatic_switch': False,
                 'benchmark': 'docs/BENCHMARKS.md',
-                'limits': 'As sugestões iniciais não são um ranking. Testes de decisões não comprovam navegação, custo ou execução contínua.'}
+                'limits': 'Uma jornada fictícia não comprova serviços reais, custo, superioridade estatística ou execução por dias. Empates preservam a preferência inicial e o menor esforço disponível testado.'}

@@ -24,6 +24,13 @@ O Carreira Guiada é um guia operado por uma IA com controle local. Ele não iso
 ferramentas do aplicativo e não impede tecnicamente o agente de agir fora do
 procedimento. Use as permissões e confirmações oferecidas pelo aplicativo.
 
+O controle valida os registros fornecidos pelo agente; não autentica a origem
+humana de uma confirmação nem observa os parâmetros enviados pelo navegador.
+A integração executora precisa conferir aprovação, destino e conteúdo reais.
+O laboratório fictício tem isolamento próprio, que não se transfere para o
+aplicativo usado no dia a dia. O [guia de segurança](docs/SEGURANCA-NA-PRATICA.md)
+explica coleta mínima, conteúdo externo, retomada e resposta a incidentes.
+
 O banco é local, com permissões restritas, mas não é criptografado. O provedor
 da IA processa o conteúdo recebido. O usuário controla sessões, logins e dados.
 

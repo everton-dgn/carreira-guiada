@@ -1,5 +1,7 @@
 # Conheça a empresa antes de decidir
 
+![A empresa examinada por camadas de evidências e fontes.](assets/dossie-empresa.png)
+
 Peça: "quero investigar esta empresa antes de me candidatar" ou "recebi uma
 proposta e quero entender os riscos". Você pode começar pelo nome e país,
 por um site ou pelo anúncio. Não precisa terminar o cadastro nem ter currículo.

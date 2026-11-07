@@ -1,113 +1,95 @@
-![Carreira Guiada. Sua próxima vaga. Sem a busca manual interminável. Automatize buscas e candidaturas com sua IA.](docs/assets/carreira-guiada-cover.png)
+![Carreira Guiada. Sua próxima vaga. Automatize buscas e candidaturas com sua IA.](docs/assets/carreira-guiada-cover.png)
 
 # Carreira Guiada
 
-Automatize a busca de emprego e as candidaturas com sua IA. Ela encontra vagas
-compatíveis, preenche os formulários com seus dados confirmados, envia o currículo
-aprovado e acompanha os retornos por e-mail, dentro das permissões que você definir.
+Automatize a busca de emprego, o preenchimento de formulários e o envio do
+currículo com sua IA. O Carreira Guiada orienta o agente para encontrar vagas
+compatíveis, candidatar-se com os dados aprovados e acompanhar os próximos
+passos por e-mail, dentro das permissões que você definir.
 
-Você deixa de repetir os mesmos dados em cada portal e ganha tempo para se
-preparar para as entrevistas. A IA também ajuda com currículo para ATS,
-LinkedIn e GitHub, treinos com feedback e comparação de propostas.
-Ainda não sabe em que focar? O guia de carreira ajuda a comparar caminhos e
-escolher um exercício para experimentá-los. Antes de uma decisão, investigue a
-empresa com fontes, referências salariais e perguntas para a entrevista.
-Durante a campanha, informa o andamento e salva o progresso para retomar depois.
+Use o tempo que gastaria repetindo cadastros para chegar mais preparado:
+currículo para ATS, LinkedIn e GitHub bem apresentados, entrevistas ensaiadas,
+empresas investigadas e propostas comparadas. Se ainda não sabe em que focar,
+o guia de carreira ajuda a escolher um caminho e experimentá-lo.
 
-Use o modelo de sua escolha em uma ferramenta de IA com acesso a arquivos,
-comandos locais e às integrações necessárias. O projeto é independente de
-fornecedor de LLM. Claude Code e Codex CLI são exemplos de ferramentas, não
-requisitos. A conversa acontece no aplicativo escolhido; o Carreira Guiada
-não tem uma interface gráfica própria.
+Você conversa no aplicativo de IA que já usa. O projeto funciona com diferentes
+provedores e modelos, desde que a ferramenta tenha acesso aos arquivos,
+comandos locais e às conexões necessárias. Claude Code e Codex CLI são exemplos.
+O Carreira Guiada não tem uma interface gráfica própria.
 
-[Começar](docs/GUIA.md) · [Privacidade](docs/PRIVACIDADE.md) ·
-[Dúvidas comuns](docs/FAQ.md) · [Última versão](https://github.com/everton-dgn/carreira-guiada/releases/latest) ·
-[Contribuir](CONTRIBUTING.md) · [Licença MIT](LICENSE)
+[Começar](docs/GUIA.md) · [Recursos](#o-caminho-da-preparação-à-proposta) ·
+[Modelos e benchmarks](docs/BENCHMARKS.md) ·
+[Última versão](https://github.com/everton-dgn/carreira-guiada/releases/latest) ·
+[Contribuir](CONTRIBUTING.md)
 
-**Versão experimental.** As ações dependem das ferramentas do aplicativo,
-das permissões que você deu e das regras de cada serviço. O Carreira Guiada não garante
-contratação nem execução contínua quando a sessão da IA termina.
+**Versão experimental.** A automação depende das ferramentas, das suas permissões
+e das regras dos serviços acessados. O projeto não garante contratação nem
+continuidade quando a sessão da IA termina.
 
 ## Comece com "iniciar"
 
-1. Baixe o projeto e abra a pasta `carreira-guiada` no seu aplicativo de IA.
-   Ele precisa conseguir ler a pasta e executar ferramentas
-   locais. [Veja o passo a passo](docs/GUIA.md#primeira-vez).
+1. Baixe o projeto e abra a pasta `carreira-guiada` no aplicativo de IA.
+   [O guia mostra como fazer, inclusive no terminal](docs/GUIA.md#primeira-vez).
 2. Escreva **iniciar** no chat.
-3. A IA pergunta uma coisa por vez. Anexe seu currículo ou diga que quer
-   criar um. Se não souber responder, diga "não sei".
+3. Responda uma pergunta por vez. Anexe seu currículo ou diga que quer criar um.
+   "Não sei" e "depois" também são respostas válidas.
 
-Depois de abrir a ferramenta, você conversa em linguagem comum. A IA conduz
-os comandos locais. O guia explica como abrir uma sessão no terminal; se
-faltar uma ferramenta, o assistente orienta a instalação autorizada.
+A IA conduz a preparação: objetivo, experiência, filtros, salário, fontes e
+permissões. Ela pergunta quais serviços de IA você tem, ajuda a conferir as
+ferramentas disponíveis e orienta os comandos locais. Você não precisa
+aprender a CLI do projeto para conversar com ela.
 
-Você também pode começar por uma necessidade específica:
+Pode começar só pelas vagas, por um treino de entrevista ou pelo guia de
+carreira. Ao voltar, `iniciar` oferece continuar o progresso ou revisar a
+preparação, sem pedir tudo novamente.
 
-| Diga no chat | O que acontece |
-|---|---|
-| "Quero só ver vagas por enquanto" | A IA prepara filtros e fontes; o currículo pode ficar para depois. |
-| "Não tenho currículo" | Ela monta um rascunho com você, sem inventar experiências. |
-| "Quero treinar uma entrevista" | O treino começa sem exigir cadastro, currículo ou conta de e-mail. |
-| "Não sei em que área focar" | A IA explora sua experiência e suas prioridades, compara até três caminhos e combina um próximo passo. |
-| "Quero conhecer melhor esta empresa" | Ela monta um dossiê com evidências, dúvidas e condições que precisam ser esclarecidas. |
-| "Continue de onde parei" | Ela confere o progresso salvo e segue pelas próximas ações autorizadas. |
+![Onboarding fictício no terminal: a IA conduz a primeira conversa e a aprovação do perfil.](docs/assets/inicio-guiado.gif)
 
-![Simulação em terminal do Claude Code: iniciar, criar currículo, escolher fontes e aprovar o perfil.](docs/assets/inicio-guiado.gif)
+## O caminho da preparação à proposta
 
-*Exemplo no Claude Code. A aparência real depende da versão e do tema.*
+![Jornada ilustrada: preparar perfil e currículo, automatizar candidaturas, acompanhar e-mails e avançar nas entrevistas. É possível pausar, retomar e encerrar o ciclo.](docs/assets/fluxo-guiado.png)
 
-## Uma jornada para chegar preparado
+Novas buscas continuam enquanto os retornos chegam. Currículo, perfis e treinos
+podem ser preparados antes; a análise de propostas entra quando você precisar.
+As demonstrações usam dados fictícios. Terminais e portais representam
+ferramentas externas, sem instalar essas telas nem executar ações reais.
 
-![Jornada ilustrada em azul: prepare perfil, filtros e currículo; automatize busca e candidaturas; avance com e-mails, entrevistas e propostas. Novas buscas continuam enquanto os retornos chegam. É possível pausar e retomar ou encerrar o ciclo.](docs/assets/fluxo-guiado.png)
+## Automatize a busca e os formulários
 
-A ordem da imagem ajuda a entender o percurso. Durante a execução, a IA
-intercala novas buscas com os retornos dos processos em andamento: você não
-precisa esperar a resposta de uma empresa para buscar outra vaga.
-Ela executa as ações permitidas pelo perfil aprovado; login, decisões pessoais
-e testes que não permitem auxílio ficam com você. O fim de uma rodada dá início
-à próxima. O ciclo encerra quando o objetivo combinado é atingido ou você pede
-para parar, respeitando a duração da sessão e os limites que definiu.
-LinkedIn, GitHub e treino de entrevistas são opcionais e podem acontecer antes
-da busca. Comparação de propostas entra quando você quiser analisar uma oferta.
+Diga o que procura e aprove as fontes. A IA aplica seus filtros, avalia cada vaga,
+preenche os dados confirmados, anexa a versão aprovada do currículo e confere o
+resultado. Uma vaga bloqueada fica pendente enquanto as demais avançam.
 
-As demonstrações desta página usam dados fictícios. Os terminais e o portal ilustram
-ferramentas externas; o projeto não instala essas telas. Nenhuma ação real é
-executada nas demonstrações.
+![Conversa fictícia no Codex CLI: a IA pesquisa, aplica filtros e acompanha candidaturas.](docs/assets/candidatura-guiada.gif)
 
-## Escolha o modelo por etapa
+Com preenchimento e envio autorizados no perfil, a campanha segue sem pedir
+confirmação em cada vaga. Você também pode escolher "pergunte antes de enviar",
+como na demonstração abaixo.
 
-A IA pergunta quais serviços você já usa e ajuda a escolher entre os modelos
-disponíveis na sua conta. Pode deixar para depois e começar com o atual.
-Qualquer provedor pode participar, inclusive modelos locais.
+![Portal fictício: a IA digita os campos, anexa o currículo e confere o recibo após autorização.](docs/assets/portal-guiado.gif)
 
-Astra ou Opus são sugestões iniciais para preparar o perfil e o currículo;
-Terra 6.1 com esforço médio ou alto, para operar. A indicação considera a etapa,
-as ferramentas da sessão e os limites dos testes. Não há um vencedor universal.
-[Escolher e trocar de modelo](docs/MODELOS.md) ·
-[Benchmarks e contribuições de outros provedores](docs/BENCHMARKS.md).
+O projeto começa sem lista de sites. Cole os links que quer usar ou peça ajuda
+para encontrar fontes verificadas. A IA confere tanto o site quanto a vaga;
+um portal conhecido também pode conter um anúncio suspeito.
+[Escolher fontes](docs/FONTES.md) · [Buscar por objetivo](docs/GUIA.md#buscar-por-objetivo).
 
-## Trabalhe por objetivo
+## Acompanhe os retornos e continue de onde parou
 
-Depois do preparo, você pode dizer:
+A resposta da empresa entra no mesmo processo: a IA vincula a mensagem à
+candidatura, identifica prazos e prepara a próxima etapa. Formulários
+complementares, respostas e agendamentos seguem suas autorizações específicas.
+Um e-mail suspeito não muda as regras da campanha.
 
-> Procure vagas compatíveis nas fontes que aprovei e envie as candidaturas
-> permitidas pelo meu perfil. Continue pelas próximas vagas sem me perguntar
-> a cada lote. Use o modo objetivo, se estiver disponível, e me chame quando
-> precisar de uma decisão minha.
+Diga **parar**. Quando voltar, diga **continuar**. O agente relê o progresso,
+confere as pendências e verifica envios incertos antes de tentar novamente.
+Ele informa o que está fazendo e quando precisa de você. O padrão de duas
+abas de trabalho ajuda a conter o uso do computador; formulários pendentes
+são preservados.
 
-A IA confirma o alcance das permissões e usa o modo objetivo (`goal`) quando
-o aplicativo oferece esse recurso. Com pesquisa, preenchimento e envio
-autorizados, a rodada segue sem confirmação por vaga. Em "pergunte antes",
-o envio continua dependendo da sua resposta.
-
-O objetivo é sustentar campanhas longas, inclusive por dias em ambientes que
-mantenham a execução ativa. Limites de uso, autenticação e ações exclusivas da
-pessoa ainda podem exigir intervenção. Um bloqueio isolado fica pendente e
-as outras vagas seguem. [Como funciona a continuidade](docs/GUIA.md#buscar-por-objetivo).
-
-Se quiser acrescentar outra atividade depois, diga, por exemplo: "inclua o
-acompanhamento dos e-mails nesta campanha". A IA amplia o objetivo com sua
-confirmação, preserva o histórico e confere as permissões necessárias.
+Para campanhas longas, use o modo objetivo (`goal`) se seu aplicativo oferecer.
+O fim de um lote dá início ao próximo enquanto houver trabalho autorizado.
+Execução por dias exige um ambiente que mantenha a sessão e as conexões ativas.
+[Progresso, abas e retomada](docs/ACOMPANHAMENTO.md).
 
 ## Transforme sua experiência em um currículo claro
 
@@ -120,11 +102,17 @@ Você revisa e aprova cada versão antes do envio.
 
 ## Faça seu perfil contar a mesma história
 
-Você pode pedir uma [revisão da sua apresentação profissional](docs/PRESENCA-PROFISSIONAL.md):
-título, resumo e experiências do LinkedIn; para tecnologia, README do GitHub,
-projetos em destaque e apresentação dos repositórios. A IA prepara os textos
-e você decide o que publicar. O objetivo é deixar claro o que você faz,
-quais problemas já resolveu e por que sua experiência importa para a vaga.
+Seu currículo pode estar pronto e seus perfis ainda esconderem o melhor da sua
+experiência. Peça a revisão do LinkedIn: título, resumo, experiências e destaques.
+Na área de tecnologia, inclua o README do GitHub e os projetos que demonstram
+suas habilidades.
+
+![Ilustração de currículo, apresentação profissional e projetos conectados por uma mesma trajetória.](docs/assets/presenca-profissional.png)
+
+A IA prepara um diagnóstico e textos concretos para você conferir. Publicar
+exige aprovar o conteúdo, a conta e o destino. Se um fato mudar, as sugestões
+que dependem dele voltam para revisão.
+[Melhorar LinkedIn e GitHub](docs/PRESENCA-PROFISSIONAL.md).
 
 ## Treine para conquistar a vaga
 
@@ -145,72 +133,66 @@ realista. Também há preparação internacional e negociação salarial.
 
 ![Conversa fictícia de treino: pergunta sobre um erro, resposta, feedback específico, pausa e retomada no dia seguinte.](docs/assets/entrevista-guiada.gif)
 
-*Treino fictício em texto. Para ensaiar falando, use voz se seu aplicativo oferecer.*
+## Investigue a empresa antes de decidir
 
-## Você escolhe onde procurar
+Peça um dossiê sobre gestão, jornada, estabilidade e salários. A IA combina as
+fontes com você, confere a identidade da empresa e reúne evidências com data.
+Pode incluir relatos de funcionários, notícias e Reclame Aqui, mantendo cada
+fonte no contexto que ela realmente esclarece.
 
-O projeto começa **sem lista de sites de vagas**. No onboarding, a IA pede
-os links que você quer usar. Basta copiar o endereço da barra do navegador
-e colar no chat. A escolha fica no seu perfil privado.
+![Ilustração de investigação: empresa apoiada em camadas de documentos e uma amostra que permite examinar cada fonte.](docs/assets/dossie-empresa.png)
 
-Não conhece nenhum site ainda? Peça ajuda para encontrar opções verificadas.
-A IA pesquisa identidade, origem e sinais de risco antes de sugerir; você
-escolhe os links. Pode também deixar a busca para depois. Cada vaga passa por
-conferência própria, mesmo quando o site é conhecido.
+O resultado separa fatos, relatos e inferências. Mostra contradições e transforma
+lacunas em perguntas para o recrutador. Uma média salarial mantém cargo, região,
+regime e tamanho da amostra, quando conhecido. Popularidade não vira selo de
+segurança.
+[Montar um dossiê de empresa](docs/EMPRESAS.md).
 
-## Entenda a empresa e compare propostas
+## Compare o pacote inteiro da proposta
 
-Peça um [dossiê da empresa](docs/EMPRESAS.md): gestão, jornada, relatos de
-funcionários, condições da vaga e referências salariais com fonte e data.
-Ele separa fatos, relatos e inferências, mostra contradições e transforma
-lacunas em perguntas para a entrevista. Reclamações de consumidores ficam
-no seu contexto; popularidade não vira selo de segurança.
+Um salário mensal maior pode esconder custos, períodos sem receita ou benefícios
+que você perderia. Compare CLT, PJ, MEI, cooperado ou contratação internacional
+com uma base anual: valores garantidos, benefícios, custos, impostos informados
+e reservas. Bônus possível e dinheiro com uso restrito aparecem separados.
 
-Recebeu uma oferta? [Compare CLT, PJ, MEI, cooperado ou internacional](docs/PROPOSTAS.md)
-com valores anuais, benefícios, custos, reservas e impostos informados.
-Premissas ausentes ficam visíveis; a IA ajuda a negociar e você decide.
-Para trabalhar fora ou para outro país, veja [a preparação internacional](docs/INTERNACIONAL.md).
-[Como informar e alterar os links](docs/FONTES.md).
+![Ilustração de propostas colocadas lado a lado, com remuneração, benefícios e custos em uma comparação equilibrada.](docs/assets/propostas-trabalho.png)
+
+A IA mostra premissas ausentes, calcula equivalências com os dados confirmados
+e ajuda a preparar a negociação. Você decide o que pesa na escolha.
+[Comparar propostas](docs/PROPOSTAS.md) · [Preparar uma busca internacional](docs/INTERNACIONAL.md).
 
 ## Escolha um foco que faça sentido para você
 
-O [guia de carreira](docs/CARREIRA.md) começa pela sua situação, sem exigir um
-cargo definido ou currículo pronto. A IA considera o que você já fez, o que
-gostaria de experimentar e quanto tempo tem disponível. Compara até três
-caminhos e ajuda a planejar um exercício pequeno antes de investir mais tempo.
+Diga "não sei em que área focar". O guia de carreira começa pela sua situação,
+experiência, prioridades e tempo disponível, sem exigir currículo pronto.
+Compara até três caminhos e ajuda a escolher um exercício pequeno para
+experimentar antes de investir mais tempo.
 
-Você pode responder "não sei", corrigir uma resposta e continuar em outro dia.
-As escolhas ficam privadas. Mudar de direção não muda seus filtros de vagas
-nem transforma uma habilidade em fato confirmado no currículo.
+![Ilustração de três caminhos de carreira e um primeiro trecho iluminado para experimentar o próximo passo.](docs/assets/guia-carreira.png)
 
-## Coloque a busca para trabalhar
+Depois do exercício, você conta o que funcionou e o que ficou difícil. A IA ajuda
+a ajustar o próximo passo, inclusive mudar de direção. As escolhas ficam privadas
+e não alteram seus filtros ou currículo automaticamente.
+[Começar o guia de carreira](docs/CARREIRA.md).
 
-A IA aplica seus filtros, avalia as oportunidades e segue pelas vagas
-processáveis. Uma pendência em um portal fica registrada enquanto as outras
-avançam. Os retornos por e-mail entram na mesma rotina, com prazos e próxima
-ação ligados à candidatura certa.
+## Escolha o modelo pela tarefa e pelo que você tem
 
-![Simulação em terminal do Codex CLI: buscar vagas e preencher formulários com os dados já confirmados.](docs/assets/candidatura-guiada.gif)
+O onboarding pergunta quais aplicativos e serviços de IA você já usa. Pode
+responder "não sei" ou deixar para depois. A recomendação considera os modelos
+e os esforços que você informou ter, sem exigir uma nova assinatura.
 
-*Exemplo no Codex CLI, com perfil aprovado e ferramentas conectadas.*
+Para organizar o perfil e o currículo, Astra e Opus continuam como sugestões
+iniciais. Para operar, o projeto compara modelos em um laboratório com navegador,
+e-mail fictício e retomada em outra sessão. Os resultados ficam separados por
+etapa, com erros e limitações visíveis. Quando há empate, as alternativas aparecem;
+uma amostra pequena não define um vencedor universal.
 
-## Um formulário a menos para preencher à mão
-
-Com navegador conectado, a IA abre a vaga, preenche os dados confirmados,
-anexa o currículo aprovado e confere o resultado do envio autorizado.
-
-![Simulação da IA abrindo um portal fictício, digitando nos campos, anexando o currículo e conferindo o recebimento.](docs/assets/portal-guiado.gif)
-
-*Neste exemplo, a pessoa escolheu "pergunte antes de enviar".*
+Outros provedores, inclusive modelos locais, podem contribuir com o mesmo
+protocolo. Escolher um modelo não conecta ferramentas nem muda suas permissões.
+[Escolher e trocar de modelo](docs/MODELOS.md) · [Resultados e protocolo](docs/BENCHMARKS.md).
 
 ## Você continua no controle
 
-- A IA informa o andamento da busca, do preenchimento e dos retornos, e diz
-  quando precisa de uma ação sua. O padrão é de duas abas de trabalho.
-- O progresso fica salvo. Ao voltar com `iniciar`, escolha continuar ou revisar
-  a preparação, sem refazer tudo. [Feedback, abas e retomada](docs/ACOMPANHAMENTO.md).
-- Diga **parar** para interromper novas ações. Diga **continuar** para retomar
-  o progresso salvo durante uma sessão ativa.
 - Login, senha, códigos, entrevistas e respostas pessoais ficam com você.
   A IA não deve se passar por você em avaliações pessoais.
 - Respostas de e-mail e agendamentos exigem aprovação específica. A limpeza
@@ -222,6 +204,11 @@ anexa o currículo aprovado e confere o resultado do envio autorizado.
 Os registros ficam numa subpasta privada do projeto, no seu computador. O aplicativo de IA
 também processa o conteúdo que recebe; o banco local não é criptografado.
 [Leia o guia de privacidade](docs/PRIVACIDADE.md).
+
+Vagas, páginas e e-mails também podem esconder instruções maliciosas. A IA deve
+tratar esse conteúdo como informação externa, conferir o destino e usar somente
+os dados necessários. As permissões do aplicativo continuam essenciais.
+[Segurança na prática](docs/SEGURANCA-NA-PRATICA.md).
 
 ## O que é necessário
 
