@@ -8,6 +8,11 @@ description: Conduzir a revisão opcional de LinkedIn e GitHub, com posicionamen
 Leia [PRESENCA-PROFISSIONAL.md](../../../docs/PRESENCA-PROFISSIONAL.md) e as
 regras de dados e navegador em [AGENTS.md](../../../AGENTS.md).
 
+Em pedido direto de revisar LinkedIn ou GitHub, salve
+`menu --choose presence --remember` para retomar essa atividade depois.
+Quando a revisão for apenas uma etapa opcional do preparo completo, mantenha
+a rota `prepare`. Consultar opções não troca a rota nem autoriza publicação.
+
 1. Reaproveite o objetivo de carreira e os fatos confirmados. Ofereça LinkedIn,
    GitHub quando pertinente, ambos, depois ou pular. Salve a escolha explícita
    com `presence choose`: `decision` (`now`, `later`, `skip`), `topics`

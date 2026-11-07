@@ -28,6 +28,14 @@ em navegador e e-mail fictícios, incluindo parar e retomar em outra sessão.
 Resultados empatados aparecem como alternativas. Uma jornada de laboratório
 não prova funcionamento em todos os sites nem exige contratar outro serviço.
 
+## Posso ir direto a uma atividade?
+
+Sim. Escreva `menu` ou peça o que quer: currículo, entrevista, carreira ou
+busca de vagas. Em **Mais opções** há LinkedIn/GitHub, empresas, propostas,
+modelos e preparo completo. Só as informações necessárias à atividade são
+pedidas. No outro dia, abra a mesma pasta e diga `iniciar`: a IA oferece
+continuar, revisar ou mudar de atividade, preservando suas respostas.
+
 ## Ainda não sei que carreira seguir. Posso começar?
 
 Sim. Diga "não sei em que área focar". O [guia de carreira](CARREIRA.md)

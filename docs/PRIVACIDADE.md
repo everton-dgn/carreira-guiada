@@ -101,5 +101,30 @@ oficial da vaga.
 
 ## Se quiser apagar tudo
 
-Peça à IA para listar o que existe em `.job/`. A remoção é sua decisão; a IA
-mostra o que será apagado e só remove com o seu "sim".
+Diga "quero apagar meus dados deste projeto". Primeiro, a IA para a execução
+e confere se outra sessão ainda usa a instalação. Se houver outra sessão ativa
+ou dúvida sobre gravações em andamento, a remoção aguarda até confirmar que
+essas gravações pararam. Parar a campanha não impede que outro chat salve dados
+de novo. A IA orienta você a interromper esse uso, sem encerrar sessões alheias
+por conta própria. Ela apresenta os locais
+encontrados sem expor o conteúdo dos documentos e pergunta quais você quer
+remover. Você não precisa localizar pastas ocultas sozinho.
+
+Existem cópias com alcances diferentes:
+
+| Local | O que precisa ser conferido |
+|---|---|
+| Área privada da instalação | Perfil, currículos, entrevistas, dossiês, propostas e registros dentro de `.job/`. |
+| Originais e exportações | Arquivos que você anexou, copiou para a raiz ou salvou em outra pasta. Apagar `.job/` não apaga esses arquivos. |
+| Cópias de segurança | Pastas antigas e backups locais que você escolheu manter. Cada cópia precisa de uma decisão própria. |
+| Aplicativo de IA e serviços externos | Conversas, anexos e dados já enviados a portais seguem os controles de cada serviço. A remoção local não os elimina. |
+
+A IA mostra os caminhos exatos e o que será afetado antes de pedir sua
+confirmação. Não procura no computador inteiro, apaga backups ou encerra
+sessões de outras pessoas sem autorização. Quando houver lixeira, explica
+que a remoção ainda é restaurável; não a esvazia automaticamente.
+
+Ao terminar, informa o que foi removido, o que permaneceu e quais ações
+dependem de você no aplicativo ou nos serviços. Só declara a exclusão
+externa quando houver confirmação do próprio destino. Se quiser preservar
+parte do histórico ou uma versão do currículo, diga isso antes da remoção.

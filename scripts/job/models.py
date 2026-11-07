@@ -38,6 +38,55 @@ REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-decis
 TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-browser-mail.json'
 ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-adversarial.json'
 CODEX_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-codex-adversarial.json'
+PREPARATION_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-preparation.json'
+
+
+def preparation_recommendations(candidates, report):
+    """Use actual text review per task; never promote a self-reported decision alone."""
+    preferred = ('astra', 'opus', 'terra', 'sol', 'fable', 'glm', 'haiku', 'm3')
+    ordered = sorted(candidates, key=lambda m: preferred.index(ALIASES.get(m['name'].casefold()))
+                     if ALIASES.get(m['name'].casefold()) in preferred else len(preferred))
+    results = []
+    for task, label in (('onboarding', 'Primeiras escolhas'), ('cv', 'Currículo'), ('career', 'Guia de carreira')):
+        observations, eligible = [], []
+        for option in ordered:
+            key = ALIASES.get(option['name'].casefold(), option['name'].casefold())
+            for level in EFFORTS:
+                if level not in option.get('efforts', []):
+                    continue
+                runs = [r for r in report.get('runs', [])
+                        if ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key and r['effort'] == level]
+                if not runs:
+                    continue
+                decisions = [c for r in runs if r['score'] for c in r['score']['cases'] if c['stage'] == task]
+                reviews = [c for r in runs for c in r['text_review'].get('cases', []) if c['stage'] == task]
+                qualified = all(r['session_complete'] and r['tool_calls'] == 0 and not r['format_error']
+                                and r['text_review']['status'] == 'reviewed' for r in runs)
+                qualified = (qualified and len(decisions) == len(runs) * 2 and all(c['passed'] for c in decisions)
+                             and len(reviews) == len(runs) * 2 and all(c['verdict'] == 'meets_sample' for c in reviews))
+                observation = {'source': report['source'], 'date': report['date'], 'scope': report['scope'],
+                    'task': task, 'runs': len(runs), 'passed': sum(c['passed'] for c in decisions),
+                    'total': len(runs) * 2, 'eligible_for_suggestion': bool(qualified),
+                    'text_cautions': [c['note'] for c in reviews if c['verdict'] == 'needs_review'],
+                    'format_errors': [r['format_error'] for r in runs if r['format_error']],
+                    'reviewer_kind': 'model', 'real_services_validated': False, 'tools_validated': False}
+                observations.append((option, level, observation))
+                if qualified:
+                    eligible.append((option, level, observation))
+        choices = eligible or observations
+        if choices:
+            choice, effort, observation = choices[0]
+        else:
+            choice, effort, observation = (ordered[0] if ordered else None), None, None
+        results.append({'task': task, 'label': label,
+            'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
+            'effort': effort, 'basis': 'exploratory_preparation' if eligible else 'review_required' if observations else 'unmeasured',
+            'preparation_evidence': observation,
+            'alternatives': [{'provider': m['provider'], 'name': m['name'], 'effort': e} for m, e, _ in eligible],
+            'message': 'Esta configuração entregou os dois recortes da tarefa sem ressalva na revisão de conteúdo. É uma amostra curta de texto, sem prova de ferramentas ou superioridade.' if eligible else
+                       'Há ressalvas ou formato não concluído nesta tarefa. Confira a evidência e revise o material antes de usá-lo.' if observations else
+                       'Sem medição desta tarefa nas opções informadas. Podemos continuar com o modelo atual, conferindo o material.'})
+    return results
 
 
 def adversarial_evidence(model, effort, stage, report):
@@ -246,5 +295,6 @@ class Models:
                            'tools_required': TOOLS[stage],
                            'message': 'Houve tentativa indevida nesta etapa do teste adversarial. Use esta opção com conferência humana antes de qualquer envio; o bloqueio da ferramenta não comprova resistência do modelo.' if unsafe else 'Esta opção passou nos critérios operacionais da etapa no laboratório fictício. Isso não comprova resistência a ataques; confira a evidência de segurança separada e as ferramentas na sua sessão.' if tested else 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
         return {'decision': saved['decision'], 'stages': stages, 'automatic_switch': False,
+                'preparation_by_task': preparation_recommendations(candidates, json.loads(PREPARATION_REPORT.read_text(encoding='utf-8')) if PREPARATION_REPORT.is_file() else {}),
                 'benchmark': 'docs/BENCHMARKS.md',
                 'limits': 'Uma jornada fictícia não comprova serviços reais, custo, superioridade estatística ou execução por dias. Empates preservam a preferência inicial e o menor esforço disponível testado.'}

@@ -90,7 +90,8 @@ Nome e e-mail de contato. Opcionais: telefone, cidade, fuso horário e links
 
 - Cargos: exemplos, "assistente administrativo", "designer", "analista de
   suporte", "vendedor". Pode listar mais de um.
-- Modalidade: remoto, presencial, híbrido, ou qualquer uma.
+- Modalidade: remoto, presencial, híbrido, ou qualquer uma. A escolha "sem
+  preferência" fica salva e vale também quando você decidir se candidatar.
 - Moeda em que aceita receber.
 - O que fazer quando a vaga não informa algo (salário, contrato, modalidade):
   perguntar a você, aceitar e seguir, ou descartar.

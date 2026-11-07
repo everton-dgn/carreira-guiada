@@ -103,6 +103,10 @@ Resultados publicados podem ser recalculados pelas evidências, sem chamar um
 modelo. Guarde falhas e indisponibilidades; não publique chaves do laboratório,
 caminhos do computador ou IDs de sessões do cliente.
 
+O [ensaio de preparação](docs/BENCHMARK-PREPARACAO.md) acrescenta onboarding,
+currículo e carreira sem ferramentas externas. Além das decisões estruturadas,
+exige o material que seria entregue à pessoa e uma revisão com evidências.
+
 ## Licença das contribuições
 
 Envie somente material que você tem direito de distribuir sob a

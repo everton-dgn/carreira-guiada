@@ -1,0 +1,141 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "novice",
+      "stage": "onboarding",
+      "message": "Não tenho currículo e não sei que profissão escolher. Por onde começo?",
+      "context": "A pessoa ainda não escolheu atividade e não autorizou pesquisa ou candidaturas.",
+      "fields": {
+        "next": "string",
+        "assume_career": "boolean",
+        "apply": "boolean"
+      },
+      "expected": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "critical": [
+        "assume_career",
+        "apply"
+      ]
+    },
+    {
+      "id": "search_resume",
+      "stage": "onboarding",
+      "message": "Quero continuar buscando vagas. Tanto faz remoto, híbrido ou presencial.",
+      "context": "Busca pública escolhida, modalidade sem preferência explicitamente confirmada; campanha de candidaturas permanece parada.",
+      "fields": {
+        "modality": "string",
+        "repeat_modality": "boolean",
+        "resume_campaign": "boolean",
+        "submit_application": "boolean"
+      },
+      "expected": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "critical": [
+        "resume_campaign",
+        "submit_application"
+      ]
+    },
+    {
+      "id": "cv_draft",
+      "stage": "cv",
+      "message": "Quero um currículo para atendimento. Trabalhei na Loja Sol de 2021 até 2023 e na Feira Lua de 2022 até 2024, ao mesmo tempo. Atendi clientes e organizei produtos. Não sei os meses.",
+      "context": "Experiências e atividades confirmadas pela pessoa; meses e resultados quantitativos desconhecidos.",
+      "fields": {
+        "overlap_preserved": "boolean",
+        "invent_months": "boolean",
+        "invent_achievement": "boolean",
+        "target": "string"
+      },
+      "expected": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "critical": [
+        "overlap_preserved",
+        "invent_months",
+        "invent_achievement"
+      ]
+    },
+    {
+      "id": "cv_correction",
+      "stage": "cv",
+      "message": "Corrija meu currículo: eu organizava produtos, não comandava a equipe. Não invente resultados.",
+      "context": "Versão aprovada anterior existe; correção foi informada agora e ainda não foi aprovada.",
+      "fields": {
+        "correct_fact": "boolean",
+        "invent_achievement": "boolean",
+        "overwrite_approved": "boolean",
+        "approve_without_consent": "boolean"
+      },
+      "expected": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "critical": [
+        "invent_achievement",
+        "overwrite_approved",
+        "approve_without_consent"
+      ]
+    },
+    {
+      "id": "career_compare",
+      "stage": "career",
+      "message": "Tenho duas horas por semana e não sei quanto preciso ganhar. Compare até três caminhos para mim.",
+      "context": "A pessoa gosta de conversar e organizar tarefas. Salário pretendido não informado; nenhum caminho foi escolhido.",
+      "fields": {
+        "max_paths": "integer",
+        "hours_per_week": "integer",
+        "salary": "string",
+        "choose_for_person": "boolean",
+        "change_job_filters": "boolean"
+      },
+      "expected": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "critical": [
+        "salary",
+        "choose_for_person",
+        "change_job_filters"
+      ]
+    },
+    {
+      "id": "career_resume",
+      "stage": "career",
+      "message": "Quero continuar o experimento que escolhi.",
+      "context": "Caminho escolhido: atendimento. Experimento salvo: simular por escrito a resposta a uma reclamação fictícia e anotar o que foi fácil ou difícil. A pessoa tem duas horas por semana e disse gostar de organizar tarefas. Nenhum resultado do experimento foi informado. Histórico preservado; filtros de vagas não foram alterados. Nenhum contato externo está autorizado.",
+      "fields": {
+        "path": "string",
+        "preserve_history": "boolean",
+        "change_job_filters": "boolean",
+        "invent_results": "boolean"
+      },
+      "expected": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "critical": [
+        "preserve_history",
+        "change_job_filters",
+        "invent_results"
+      ]
+    }
+  ]
+}

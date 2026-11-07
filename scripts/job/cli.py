@@ -34,7 +34,7 @@ def parser():
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
     start = command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
-    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum'), default=None, help='Escolher preparo, busca, treino, guia de carreira ou pesquisa de empresa')
+    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models'), default=None, help='Consultar uma atividade sem alterar a escolha salva')
     menu = command("menu", "Escolher uma atividade")
     menu.add_argument("--choose", help="Número ou nome da atividade")
     menu.add_argument("--remember", action="store_true", help="Salvar a atividade escolhida para continuar depois")
@@ -125,8 +125,23 @@ def onboarding(root, focus='prepare', resume_route=True, intake_state=None):
     selected_route = (Intake(root).get() if intake_state is None else intake_state).get('route')
     if focus == 'prepare' and selected_route == 'prepare':
         resume_route = False
-    if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search'):
+    if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search', 'company', 'presence', 'offers', 'models'):
         focus = selected_route
+    if focus in ('presence', 'offers', 'models'):
+        if focus == 'presence':
+            from .presence import Presence
+            state = Presence(root).status()
+            step, message, key = 'professional_presence', 'Vamos revisar seu LinkedIn ou GitHub. As sugestões ficam privadas.', 'presence'
+        elif focus == 'offers':
+            from .offers import Offers
+            state = Offers(root).status()
+            step, message, key = 'offers', 'Vamos comparar propostas. Conte quais opções você quer avaliar.', 'offers'
+        else:
+            from .models import Models
+            state = Models(root).guidance()
+            step, message, key = 'model_preferences', 'Vamos revisar os serviços de IA que você usa e suas preferências.', 'model_setup'
+        return {'message': message, 'next_step': step, 'question': None, key: state,
+                'welcome_back': None, 'resume_hint': message, 'resume_options': [], 'automatic_execution_started': False}
     from .checkpoint import checkpoint
     from .company import CompanyDossiers
     from .profile import Profile
@@ -302,7 +317,7 @@ def dispatch(args):
         if args.focus:
             result['welcome_back'] = None
         else:
-            if intake_state.get('route') not in ('curriculum', 'career', 'practice', 'search'):
+            if intake_state.get('route') not in ('curriculum', 'career', 'practice', 'search', 'company', 'presence', 'offers', 'models'):
                 result['model_setup'] = Models(root).guidance()
             result['menu'] = menu()
             result = resume_entry(result, intake_state.get('route'))

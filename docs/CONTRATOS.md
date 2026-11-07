@@ -85,6 +85,27 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   Escolha já salva não pergunta novamente. Registro opcional inválido gera
   aviso de reparo e preserva a próxima etapa de preparação.
 
+`recommend()` também devolve `preparation_by_task`, com três entradas:
+`onboarding`, `cv` e `career`. Cada uma contém `task`, `label`, `model`,
+`effort`, `basis`, `preparation_evidence`, `alternatives` e `message`.
+`basis` é `exploratory_preparation`, `review_required` ou `unmeasured`.
+A seleção elegível (`basis: exploratory_preparation`) usa somente modelos e
+esforços declarados, com dois casos da tarefa completos, formato aceito, nenhuma
+chamada de ferramenta e revisão do conteúdo sem ressalva material. Uma nota
+mecânica máxima sozinha não promove a opção. Sem configuração elegível, a saída
+pode indicar uma opção de reserva: `review_required` quando há medição com
+ressalvas, ou `unmeasured` quando falta medição compatível. Essas opções não
+passaram pelos critérios de elegibilidade; sem opções declaradas, `model` é `null`.
+
+`preparation_evidence` informa fonte, data, escopo, tarefa, partidas,
+`passed`, `total`, `eligible_for_suggestion`, `text_cautions`, `format_errors`
+e `reviewer_kind`. `tools_validated` e `real_services_validated` são falsos.
+Relatório ausente, esforço diferente ou opção desconhecida ficam sem medição.
+As entradas gerais de `stages` e os resultados operacionais anteriores são
+preservados; a comparação de texto não estende evidência a entrevista por voz,
+ATS, navegador ou e-mail. O material público pode ser conferido com o comando
+`verify` do [protocolo de preparação](BENCHMARK-PREPARACAO.md).
+
 O agente usa `./job models show --json`, `./job models recommend --json` e
 `./job models save --json` com JSON por stdin, por exemplo:
 
@@ -98,7 +119,12 @@ não torna a coleta obrigatória para busca, carreira, dossiê ou treino.
 ## Menu e entradas diretas
 
 `menu` retorna `message`, `choices` e `selected`. Cada opção tem `number`,
-`focus` e `label`. `--choose` aceita número, nome em português ou identificador
+`focus` e `label`. As quatro escolhas principais são numeradas de 1 a 4;
+`message` também oferece `5. Mais opções`. `--choose 5` ou `mais opções`
+devolve `selected: null` e cinco escolhas auxiliares por nome: `empresa`,
+`presença`, `propostas`, `modelos` e `preparo`. Nessa lista, `number` contém
+o nome aceito, não um novo índice numérico. Abrir a lista não grava, mesmo
+com `--remember`. `--choose` aceita número, nome em português ou identificador
 de foco, ignorando maiúsculas e acentos. Uma escolha válida devolve a próxima
 etapa com `menu`; opção desconhecida mantém `selected: null` e reapresenta
 as opções. Listar ou consultar uma rota não cria `.job`, salva permissão
@@ -124,7 +150,8 @@ autoriza preenchimento, candidatura ou leitura de e-mail.
 não traz a pergunta opcional de provedores nem o convite genérico de retomada.
 O início genérico inclui `menu`; as respostas e a última atividade gravada
 orientam a continuação, preservando o checkpoint operacional. Nos atalhos de
-currículo e busca, `welcome_back` identifica a atividade salva e
+currículo, busca, empresa, presença, propostas e modelos, `welcome_back`
+identifica a atividade salva e
 `resume_options` oferece `continue`, `review` e `menu`. `resume_hint` resume
 o próximo passo sem repetir a pergunta antes de a pessoa escolher continuar.
 `message` e `question` permanecem disponíveis para conduzir a etapa escolhida.
@@ -148,6 +175,9 @@ Consultar esses retornos não grava nem retoma ações.
 
 As seis seções são `identity`, `preferences`, `sources`, `permissions`, `limits` e
 `connections`. [O modelo neutro](../templates/profile.json) documenta o esquema.
+`preferences.modalities: []` registra explicitamente ausência de preferência,
+tanto na busca pública quanto no perfil completo. Chave ausente ainda gera
+pergunta; `roles` e `currencies` continuam obrigatórios e não vazios.
 Cada permissão precisa de uma resposta; uma resposta não encerra as demais.
 "Pergunte antes para tudo" permite salvar todas como `ask`. `allow` exige
 confirmação explícita da pessoa. `limits.mode=chat` é preenchido internamente.
@@ -179,9 +209,15 @@ combina esse progresso com o perfil, sem repetir as perguntas respondidas.
 A primeira mantém a entrada direta e preserva o checkpoint operacional; a
 segunda volta ao preparo completo. Sem `route`, `choose` mantém o comportamento
 anterior. `remember_route(route)` guarda a escolha
-explícita do menu (`curriculum`, `practice`, `career`, `search` ou `prepare`) sem mudar
+explícita do menu (`curriculum`, `practice`, `career`, `search`, `prepare`,
+`company`, `presence`, `offers` ou `models`) sem mudar
 permissões, modo do currículo ou checkpoint.
-`get()` expõe a rota salva. Iniciar carreira ou treino após o atalho atualiza
+`get()` expõe a rota salva. Criar um dossiê preserva a atividade escolhida;
+entrar diretamente em empresas exige `menu --choose company --remember`.
+A escolha explícita prevalece sobre o checkpoint, sem apagar seu conteúdo.
+`presence`, `offers` e `models` devolvem, respectivamente,
+`professional_presence`, `offers` e `model_preferences`, com o estado salvo
+da atividade. Iniciar carreira ou treino após o atalho atualiza
 a atividade para a retomada, sem apagar as respostas do currículo.
 
 `ResumeManager(root)` em `scripts/job/resumes.py`:
@@ -285,7 +321,7 @@ as demais finalidades continuam limitadas às URLs exatas.
 `Offers(root)` salva cenários imutáveis, calcula com Decimal e compara somente
 com premissas explícitas. `save`, `list`, `get`, `status`, `compare` e
 `equivalent` ficam sob `offers`. Não aplica alíquotas nem escolhe propostas.
-Veja [PROPOSTAS.md](PROPOSTAS.md). Leituras dos três módulos não criam `.job`.
+Veja o [contrato de propostas](#comparação-de-propostas). Leituras dos três módulos não criam `.job`.
 
 `Presence(root)` em `scripts/job/presence.py` guarda a escolha opcional de
 LinkedIn/GitHub e sugestões privadas no mesmo banco. `choose` registra agora,
@@ -406,3 +442,47 @@ de execução são preservados no banco, mas não iniciam nem autorizam processo
 observação e prontidão. Nenhum diagnóstico abre conta ou instala integração.
 Execução por dias depende do computador, do ambiente da IA e das sessões.
 Validação e limites observados ficam em [VALIDACAO.md](VALIDACAO.md).
+
+## Comparação de propostas
+
+Na CLI, use `offers save` com o cenário, `offers get` com `offer_id`, `offers
+compare` com `ids` ou `offers equivalent` com `base_id` e `target_id`. As duas
+comparações aceitam `base_currency` e `rates`. `offers list` e `offers status`
+são consultas sem payload. Todos os dados vão por JSON na entrada padrão,
+nunca como argumentos com valores pessoais. A pessoa conversa naturalmente.
+Salve checkpoint com `phase: offers`, a próxima premissa e a dúvida pendente
+para retomar sem exigir o onboarding de candidaturas.
+
+`Offers(root)` usa `Profile._db` e armazena JSON privado aditivo. Leituras não
+criam `.job`. `save(data)` cria sempre um cenário novo com ID; não há edição
+que sobrescreva cenário. Retorna `{offer, calculation}`. `list()` devolve a
+lista de cenários; `get(id)` devolve `{offer, calculation}`; `status()` traz
+contagem e faltas. `compare(ids, base_currency=None, rates=None)` devolve
+`offers`, `base_currency`, `rates`, `missing_rates`, `comparable` e `ranking`
+(sempre null). `equivalent(base_id, target_id, base_currency=None, rates=None)`
+retorna fórmula, premissas e estimativa de bruto mensal do cenário alvo.
+
+O objeto de entrada exige `label`, `regime` (`CLT`, `PJ`, `MEI`, `cooperado`,
+`internacional`), `currency` (três letras maiúsculas), `gross_monthly`,
+`paid_months`, `guaranteed_extra_annual`, `variable_annual`, `benefits_annual`,
+`restricted_funds_annual`, `taxes_annual`, `costs_annual` e `reserve_annual`.
+Os componentes materiais podem ser `null` para desconhecido; meses conhecidos
+são inteiros de 1 a 12. `hours_week`, `weeks_year`, `notes`, `assumptions` e `estimated_fields` são
+opcionais. `estimated_fields` lista os nomes dos campos numéricos informados
+que são estimativas; a marcação aparece no cálculo. Valores numéricos conhecidos
+são não negativos, finitos, com até 19 dígitos inteiros e 12 casas decimais.
+Horas e semanas, quando fornecidas, são maiores que zero, com no máximo 168 horas
+por semana e 53 semanas por ano; valores fracionários são aceitos. A saída usa
+strings decimais e `null` para cálculos indisponíveis. Registre em `assumptions`
+quais dados são estimativas e sua origem.
+
+`rates` associa cada moeda de origem a `{rate, date, source}`. `rate` é o número
+de unidades da moeda base por unidade da moeda de origem: o cálculo multiplica
+o valor original por essa taxa. Por exemplo, com BRL como base, uma taxa
+fictícia de 5 para USD converte USD 100 em BRL 500. A taxa deve ser positiva.
+O registro também exige data ISO `AAAA-MM-DD` e URL pública HTTPS sem
+credenciais, parâmetros ou fragmento. A moeda base tem fator 1. Em moedas diferentes, informe a base e
+uma taxa por moeda diferente dela. Taxa ausente impede equivalência; registro
+incompleto ou inválido gera `ValueError`. A validação é sintática e não verifica
+se a fonte está acessível ou se a taxa é correta. Cabe ao agente confirmar a
+fonte pública e a taxa fora do módulo. O módulo não lê o piso do perfil.

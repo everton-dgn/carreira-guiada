@@ -234,3 +234,29 @@ O parecer devolve `avoid`, `pending` ou `consider`. Não o converta em selo gera
 do novo dossiê nem em `alta_confianca` automática. `get` recebe `record_id`.
 Sugestões de fontes usam a consulta mais recente por URL, não a ordem de importação.
 Nenhum registro antigo é migrado, descartado ou reescrito pelos novos módulos.
+
+## Fontes escolhidas pela pessoa
+
+Investigar uma empresa ou explorar opções de carreira usa um alcance próprio,
+com pergunta, alvo e endereços combinados. Isso pode começar antes do perfil
+e não muda a lista de portais de candidatura. Siga os controles de escopo descritos neste documento.
+
+- Na campanha, leia `sources.urls` no perfil aprovado. Na busca pública pelo
+  menu, combine essas fontes com filtros parciais e confirme um escopo
+  `job_search`, conforme o protocolo de investigação. Nunca salve links
+  pessoais neste guia.
+- Use `profile answer sources` com `field: "urls"` e a lista completa de
+  endereços confirmada. "Deixe para depois" corresponde a uma lista vazia.
+- Antes da ação de busca de vagas `research`, informe `source_url` em `action authorize`. O controle
+  exige uma fonte não vazia aprovada e domínio, porta e caminho compatíveis.
+- A validação não resolve DNS nem verifica redirecionamentos. Confira cada
+  destino observado, a identidade da empresa e as regras de uso do serviço.
+- Descoberta de fontes após pedido ou aceite é pesquisa pública específica;
+  siga a skill `fontes` e registre o parecer com `research save`. Esse comando
+  só salva análise, não navega nem autoriza candidatura. Pesquisa de vagas
+  permanece limitada às fontes escolhidas e ao alcance autorizado para
+  aquela atividade. Não amplie essa lista sozinho.
+- Permissão da pessoa não substitui permissão do serviço. Pare a ação afetada
+  diante de restrição de automação, CAPTCHA ou bloqueio e explique o próximo passo.
+- Registre consulta e cobertura por fonte. Busca parcial ou vazia não comprova
+  que todas as vagas foram examinadas.
