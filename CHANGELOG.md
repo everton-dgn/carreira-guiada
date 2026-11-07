@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.15.0 - 2026-11-07
+
 - Mais opções reúne empresas, LinkedIn/GitHub, propostas, modelos e preparo
   completo. A escolha fica salva para a próxima sessão, sem apagar outras
   atividades nem retomar uma campanha parada.
