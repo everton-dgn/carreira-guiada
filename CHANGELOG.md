@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.13.0 - 2026-11-07
+
 - Executor Codex restrito para o laboratório adversarial, com provas de acesso
   antes da exposição, catálogo sem ferramentas reais e conferência do estado
   efetivo de cada sessão, sem alterar configurações pessoais.
