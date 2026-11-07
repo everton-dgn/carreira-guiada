@@ -102,7 +102,11 @@ oficial da vaga.
 ## Se quiser apagar tudo
 
 Diga "quero apagar meus dados deste projeto". Primeiro, a IA para a execução
-e confere se outra sessão ainda usa a instalação. Ela apresenta os locais
+e confere se outra sessão ainda usa a instalação. Se houver outra sessão ativa
+ou dúvida sobre gravações em andamento, a remoção aguarda até confirmar que
+essas gravações pararam. Parar a campanha não impede que outro chat salve dados
+de novo. A IA orienta você a interromper esse uso, sem encerrar sessões alheias
+por conta própria. Ela apresenta os locais
 encontrados sem expor o conteúdo dos documentos e pergunta quais você quer
 remover. Você não precisa localizar pastas ocultas sozinho.
 

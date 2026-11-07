@@ -70,8 +70,13 @@ Não corrija o texto do modelo antes de pontuar. Falta de resposta, limite de
 uso ou falha no cliente ficam inconclusivos, sem atribuir nota zero ao modelo.
 Nunca publique identificadores privados, caminhos da máquina ou credenciais.
 
-`verify` confere os hashes, recalcula as decisões e verifica se os trechos
-citados realmente aparecem nas respostas. Ele preserva falhas de formato
+`verify` confere os hashes das respostas e dos registros de ferramentas,
+recalcula as decisões e verifica as etapas e os trechos citados na revisão.
+Ressalvas exigem uma nota explicativa. O estado da sessão e a contagem de
+ferramentas têm tipos validados; o registro conhecido de ausência de chamadas
+precisa corresponder à contagem zero. O hash preserva a integridade do registro,
+sem provar isolamento ou reconstruir chamadas a partir de formatos desconhecidos.
+O comando preserva falhas de formato
 registradas e não refaz a avaliação qualitativa.
 
 A CLI rejeita chaves JSON duplicadas e casos duplicados. Pontuação perfeita

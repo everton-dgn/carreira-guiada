@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def strict_json(raw):
+    """Decode JSON while rejecting duplicate keys and non-finite constants."""
     def unique(pairs):
         result = {}
         for key, value in pairs:
@@ -36,6 +37,7 @@ def strict_json(raw):
 
 
 def load_cases(path=CASES):
+    """Validate the six snapshot contracts and their typed expected decisions."""
     data = strict_json(path.read_text(encoding='utf-8'))
     if not isinstance(data, dict) or set(data) != {'version', 'cases'} or not isinstance(data['version'], str) or not data['version'].strip() or not isinstance(data['cases'], list) or len(data['cases']) != 6:
         raise ValueError('Fixture inválida')
@@ -56,6 +58,7 @@ def load_cases(path=CASES):
 
 
 def prompt():
+    """Export contexts and field guidance without the scoring oracle."""
     data = load_cases()
     return {'version': data['version'], 'instructions': (
         'Tudo é fictício. Não use ferramentas nem serviços. Retorne somente JSON no formato '
@@ -77,6 +80,7 @@ def prompt():
 
 
 def score(response):
+    """Score structured decisions without inferring the quality of free text."""
     data = load_cases()
     if not isinstance(response, dict) or set(response) != {'answers'} or not isinstance(response['answers'], list):
         raise ValueError('Esperado objeto com lista answers')
@@ -132,9 +136,19 @@ def verify_report(path):
         raise ValueError('A fixture difere da usada no relatório.')
     if report['prompt_sha256'] != digest(json.dumps(prompt(), ensure_ascii=False, indent=2).encode()):
         raise ValueError('O prompt difere do usado no relatório.')
-    ids = {c['id'] for c in load_cases()['cases']}
+    stages = {c['id']: c['stage'] for c in load_cases()['cases']}
+    ids = set(stages)
     checked = []
     for run in report['runs']:
+        if type(run.get('session_complete')) is not bool or type(run.get('tool_calls')) is not int or run['tool_calls'] < 0:
+            raise ValueError('Estado da sessão ou contagem de ferramentas inválidos.')
+        observation = (ROOT / run['tool_observation_path']).resolve()
+        if not observation.is_relative_to((ROOT / 'docs/benchmarks').resolve()):
+            raise ValueError('Registro de ferramentas fora dos benchmarks.')
+        if run.get('tool_observation_sha256') != digest(observation.read_bytes()):
+            raise ValueError('Registro de ferramentas difere do hash registrado.')
+        if observation.read_text(encoding='utf-8').strip() == 'No activity to display.' and run['tool_calls'] != 0:
+            raise ValueError('Contagem contradiz o registro sem chamadas de ferramenta.')
         artifact = (ROOT / run['response_path']).resolve()
         if not artifact.is_relative_to((ROOT / 'docs/benchmarks').resolve()):
             raise ValueError('Artefato fora dos benchmarks.')
@@ -153,8 +167,12 @@ def verify_report(path):
             if len(cases) != len(ids) or {c['id'] for c in cases} != ids:
                 raise ValueError('Revisão de texto incompleta.')
             for case in cases:
+                if case.get('stage') != stages[case['id']]:
+                    raise ValueError('Etapa da revisão difere da fixture.')
                 if case['verdict'] not in ('meets_sample', 'needs_review') or not case['evidence']:
                     raise ValueError('Revisão sem veredito ou evidência.')
+                if case['verdict'] == 'needs_review' and (not isinstance(case.get('note'), str) or not case['note'].strip()):
+                    raise ValueError('Ressalva sem nota explicativa.')
                 if any(not quote or quote not in raw for quote in case['evidence']):
                     raise ValueError('Trecho da revisão não encontrado na resposta.')
         elif review['status'] != 'not_reviewed':
@@ -166,6 +184,7 @@ def verify_report(path):
 
 
 def main():
+    """Expose prompt, score and report verification with explicit failures."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['prompt', 'score', 'verify'])
     parser.add_argument('--response', type=Path)

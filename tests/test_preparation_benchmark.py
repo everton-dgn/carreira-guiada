@@ -81,7 +81,9 @@ class PreparationBenchmarkTests(unittest.TestCase):
         original = json.loads((PATH.parents[2] / 'docs/benchmarks/2026-11-07-preparation.json').read_text(encoding='utf-8'))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'report.json'
-            for change in ('hash', 'score', 'quote', 'coverage', 'traversal'):
+            for change in ('hash', 'score', 'quote', 'coverage', 'traversal', 'stage',
+                           'note', 'tool_hash', 'tool_traversal', 'tool_count',
+                           'tool_count_type', 'session_type'):
                 with self.subTest(change=change):
                     report = copy.deepcopy(original)
                     run = report['runs'][0]
@@ -90,6 +92,16 @@ class PreparationBenchmarkTests(unittest.TestCase):
                     if change == 'quote': run['text_review']['cases'][0]['evidence'] = ['trecho ausente fictício']
                     if change == 'coverage': run['text_review']['cases'].pop()
                     if change == 'traversal': run['response_path'] = '../../outside.txt'
+                    if change == 'stage': run['text_review']['cases'][0]['stage'] = 'cv'
+                    if change == 'note':
+                        case = run['text_review']['cases'][0]
+                        case['verdict'] = 'needs_review'
+                        case.pop('note', None)
+                    if change == 'tool_hash': run['tool_observation_sha256'] = '0' * 64
+                    if change == 'tool_traversal': run['tool_observation_path'] = '../../outside.txt'
+                    if change == 'tool_count': run['tool_calls'] = 1
+                    if change == 'tool_count_type': run['tool_calls'] = True
+                    if change == 'session_type': run['session_complete'] = 'true'
                     path.write_text(json.dumps(report), encoding='utf-8')
                     with self.assertRaises(ValueError):
                         bench.verify_report(path)

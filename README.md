@@ -170,7 +170,7 @@ que você perderia. Compare CLT, PJ, MEI, cooperado ou contratação internacion
 com uma base anual: valores garantidos, benefícios, custos, impostos informados
 e reservas. Bônus possível e dinheiro com uso restrito aparecem separados.
 
-![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](docs/assets/propostas-trabalho-banner.png)
+![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](docs/assets/propostas-comparacao-banner.png)
 
 A IA mostra premissas ausentes, calcula equivalências com os dados confirmados
 e ajuda a preparar a negociação. Você decide o que pesa na escolha.

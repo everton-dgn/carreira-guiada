@@ -89,9 +89,13 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
 `onboarding`, `cv` e `career`. Cada uma contém `task`, `label`, `model`,
 `effort`, `basis`, `preparation_evidence`, `alternatives` e `message`.
 `basis` é `exploratory_preparation`, `review_required` ou `unmeasured`.
-A seleção só usa modelos e esforços declarados, com dois casos da tarefa
-completos, formato aceito, nenhuma chamada de ferramenta e revisão do conteúdo
-sem ressalva material. Uma nota mecânica máxima sozinha não promove a opção.
+A seleção elegível (`basis: exploratory_preparation`) usa somente modelos e
+esforços declarados, com dois casos da tarefa completos, formato aceito, nenhuma
+chamada de ferramenta e revisão do conteúdo sem ressalva material. Uma nota
+mecânica máxima sozinha não promove a opção. Sem configuração elegível, a saída
+pode indicar uma opção de reserva: `review_required` quando há medição com
+ressalvas, ou `unmeasured` quando falta medição compatível. Essas opções não
+passaram pelos critérios de elegibilidade; sem opções declaradas, `model` é `null`.
 
 `preparation_evidence` informa fonte, data, escopo, tarefa, partidas,
 `passed`, `total`, `eligible_for_suggestion`, `text_cautions`, `format_errors`
@@ -472,9 +476,12 @@ por semana e 53 semanas por ano; valores fracionários são aceitos. A saída us
 strings decimais e `null` para cálculos indisponíveis. Registre em `assumptions`
 quais dados são estimativas e sua origem.
 
-`rates` associa cada moeda de origem a `{rate, date, source}`: taxa positiva,
-data ISO `AAAA-MM-DD` e URL pública HTTPS sem credenciais, parâmetros ou
-fragmento. A moeda base tem fator 1. Em moedas diferentes, informe a base e
+`rates` associa cada moeda de origem a `{rate, date, source}`. `rate` é o número
+de unidades da moeda base por unidade da moeda de origem: o cálculo multiplica
+o valor original por essa taxa. Por exemplo, com BRL como base, uma taxa
+fictícia de 5 para USD converte USD 100 em BRL 500. A taxa deve ser positiva.
+O registro também exige data ISO `AAAA-MM-DD` e URL pública HTTPS sem
+credenciais, parâmetros ou fragmento. A moeda base tem fator 1. Em moedas diferentes, informe a base e
 uma taxa por moeda diferente dela. Taxa ausente impede equivalência; registro
 incompleto ou inválido gera `ValueError`. A validação é sintática e não verifica
 se a fonte está acessível ou se a taxa é correta. Cabe ao agente confirmar a

@@ -185,7 +185,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "terra-high",
@@ -343,7 +344,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "sol-medium",
@@ -501,7 +503,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "astra-high",
@@ -659,7 +662,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "fable-high",
@@ -817,7 +821,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "opus-high",
@@ -893,7 +898,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "haiku-medium",
@@ -1051,7 +1057,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "glm-max",
@@ -1209,7 +1216,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     },
     {
       "id": "m3-xhigh",
@@ -1367,7 +1375,8 @@
             "note": "Traz reclamação fictícia e exercício escrito, sem inventar resultado ou exigir contato externo."
           }
         ]
-      }
+      },
+      "tool_observation_sha256": "0cf784aa0c9078ed2bab0953ef62b85ca71a2df7ceed0835211f2a6906d3bd7e"
     }
   ]
 }

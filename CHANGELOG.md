@@ -23,6 +23,11 @@
   e carreira, com respostas fictícias e revisão do conteúdo separada da nota
   mecânica. Recomendações por tarefa mostram ressalvas e opções disponíveis,
   sem confundir texto com execução de ferramentas.
+- Verificação do benchmark confere etapas, justificativas das ressalvas e
+  registros de ferramentas antes de aceitar o relatório publicado.
+- Banner de propostas apresenta uma comparação de ofertas com tipografia
+  limpa. Os contratos esclarecem taxas de câmbio e alternativas sem medição;
+  a orientação de privacidade exige interromper gravações antes da remoção.
 
 ## 0.14.1 - 2026-11-07
 

@@ -48,7 +48,8 @@ influenciam o resultado; a evidência não garante o mesmo comportamento em outr
 aplicativo que ofereça um modelo com o mesmo nome. A consulta de ferramentas
 usou `polyhive logs <sessão> --filter tools` após o arquivamento. Esse filtro
 conservou chamadas em uma sessão de controle com ferramentas; nas nove
-medições retornou "Nenhuma atividade para mostrar". Essa observação do cliente
+medições retornou "Nenhuma atividade para mostrar" (tradução de
+`No activity to display.`). Essa observação do cliente
 não prova isolamento do computador. Para conferir os artefatos e recalcular decisões:
 
 ```sh

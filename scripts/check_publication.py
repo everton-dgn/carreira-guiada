@@ -22,7 +22,7 @@ RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
     "docs/assets/guia-carreira-banner.png": "fb46cf0e7a413d5c1aa6458e19def982ff5fae8c9b0165e5f5feda203bf77a3f",
-    "docs/assets/propostas-trabalho-banner.png": "77d40645542afff6e242d0fd95d17befeda1e6c3006408b8bcb9202273d12f15",
+    "docs/assets/propostas-comparacao-banner.png": "1bdce581389023f22447c4a60ad7b8b835f473da2afebd817f3d8cd439a11ba2",
     "docs/assets/dossie-empresa-banner.png": "0c3ef923cf2de01e42012aa3277532a5f9622c3818b6696b838b0ff27354032e",
     "docs/assets/presenca-profissional-banner.png": "d90280faa57c2301ccf184506bbde7409bdd039fe6f5a622246c15415b8d53e4",
     "docs/assets/carreira-guiada-cover-banner.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
