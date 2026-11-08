@@ -15,6 +15,11 @@ BLUE, LINE, PALE = "#2864ed", "#c4d7f5", "#e4eeff"
 
 @lru_cache
 def font(size, mono=False, bold=False):
+    """Load a cached font at the scaled size, trying platform-specific paths.
+
+    Monospaced text takes precedence over bold. Raise RuntimeError when none
+    of the supported fonts can be loaded.
+    """
     candidates = (
         ("DejaVuSansMono.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
          "/System/Library/Fonts/Menlo.ttc", "C:/Windows/Fonts/consola.ttf") if mono else
@@ -32,14 +37,24 @@ def font(size, mono=False, bold=False):
 
 
 def coords(values):
+    """Convert logical coordinates to integer pixels at the rendering scale."""
     return tuple(int(value * SCALE) for value in values)
 
 
 def text(draw, position, value, size=20, fill=TEXT, mono=False, bold=False):
-    draw.text(coords(position), value, font=font(size, mono, bold), fill=fill)
+    """Draw flat text in logical coordinates, rejecting canvas overflow."""
+    face = font(size, mono, bold)
+    bounds = draw.textbbox(coords(position), value, font=face)
+    if bounds[0] < 0 or bounds[1] < 0 or bounds[2] > SIZE[0] or bounds[3] > SIZE[1]:
+        raise ValueError(f"Texto fora da imagem: {value!r}")
+    draw.text(coords(position), value, font=face, fill=fill)
 
 
 def wrap(draw, value, width=942, size=21, mono=True):
+    """Wrap words to a logical width using the selected font's measured size.
+
+    Individual words are never split; an empty value produces one empty line.
+    """
     lines, line = [], ""
     for word in value.split():
         trial = (line + " " + word).strip()
@@ -53,19 +68,18 @@ def wrap(draw, value, width=942, size=21, mono=True):
 
 
 def backdrop(dark=False):
-    """A restrained orbital motif shared by all five native animations."""
+    """Flat typography and a quiet background keep the demonstration readable."""
     image = Image.new("RGB", SIZE, TERMINAL if dark else PAPER)
     draw = ImageDraw.Draw(image)
-    for offset in range(0, 280, 32):
-        draw.arc(coords((740 - offset, 350 - offset, 1390 + offset, 1000 + offset)),
-                 185, 350, fill="#102d59" if dark else "#dce8fc", width=SCALE)
     draw.rectangle(coords((40, 32, 44, 49)), fill=ACCENT if dark else BLUE)
     text(draw, (55, 29), "CARREIRA GUIADA", 16, TEXT if dark else INK, bold=True)
-    text(draw, (904, 30), "SIMULAÇÃO", 15, DIM if dark else MUTED)
+    text(draw, (865, 30), "SIMULAÇÃO FICTÍCIA", 15, DIM if dark else MUTED)
+    draw.line(coords((40, 62, 1080, 62)), fill="#28426a" if dark else LINE, width=SCALE)
     return image, draw
 
 
 def progress_track(draw, number, progress=1, dark=False):
+    """Draw five steps with a zero-based current step and progress from 0 to 1."""
     for index in range(5):
         x = 40 + index * 210
         draw.rounded_rectangle(coords((x, 685, x + 194, 689)), 2 * SCALE,
@@ -77,46 +91,60 @@ def progress_track(draw, number, progress=1, dark=False):
 
 
 def frame(tool, command, title, number, conversation, note, cursor=False):
-    image, draw = backdrop()
-    text(draw, (40, 80), title, 36, INK, bold=True)
-    text(draw, (40, 133), "Você conversa. A IA organiza os próximos passos.", 21, MUTED)
+    """Return one RGB terminal scene for a one-based step from 1 through 5.
+
+    Conversation entries pair text with a color. Reject text that exceeds the
+    terminal area and optionally draw a caret after the last visible line.
+    """
+    image, draw = backdrop(dark=True)
+    text(draw, (40, 80), title, 40, TEXT, bold=True)
+    subtitle = ("Vá direto ao que precisa. A IA guia o próximo passo." if command == "claude"
+                else "Fontes aprovadas, formulários preenchidos e progresso salvo.")
+    text(draw, (40, 136), subtitle, 23, DIM)
     labels = (["Escolher atividade", "Criar currículo", "Mais opções", "Trocar de atividade", "Voltar no outro dia"]
               if command == "claude" else
               ["Buscar vagas", "Preencher dados", "Conferir o envio", "Acompanhar", "Parar e retomar"])
-    text(draw, (40, 205), f"0{number}", 64, BLUE, bold=True)
+    text(draw, (40, 205), f"0{number}", 64, ACCENT, bold=True)
     for index, label in enumerate(labels):
         y = 310 + index * 48
-        color = BLUE if index + 1 == number else MUTED
-        draw.ellipse(coords((42, y + 6, 50, y + 14)), fill=color if index < number else LINE)
-        text(draw, (64, y), label, 17, color, bold=index + 1 == number)
-    draw.rounded_rectangle(coords((309, 202, 1085, 616)), 16 * SCALE, fill="#cedcf3")
-    draw.rounded_rectangle(coords((300, 192, 1076, 606)), 16 * SCALE, fill=TERMINAL)
+        color = ACCENT if index + 1 == number else DIM
+        draw.ellipse(coords((42, y + 6, 50, y + 14)), fill=color if index < number else "#28426a")
+        text(draw, (64, y), label, 18, color, bold=index + 1 == number)
+    draw.rounded_rectangle(coords((300, 192, 1076, 606)), 16 * SCALE,
+                           fill="#0d2242", outline="#34557c", width=SCALE)
     text(draw, (324, 212), ">_ " + tool, 19, ACCENT, True)
     text(draw, (876, 215), "exemplo de terminal", 14, DIM)
     draw.line(coords((324, 255, 1052, 255)), fill="#28426a", width=SCALE)
     y, last = 277, ""
     for value, color in conversation:
-        for line in wrap(draw, value, width=714, size=20):
-            if y + 25 > 590:
+        for line in wrap(draw, value, width=714, size=23):
+            if y + 28 > 590:
                 raise ValueError("O texto não cabe no terminal; reduza esta cena.")
-            text(draw, (324, y), line, 20, color, True)
-            y += 28
+            text(draw, (324, y), line, 23, color, True)
+            y += 31
             last = line
     if cursor:
-        cursor_x = min(1045, 324 + draw.textlength(last, font=font(20, True)) / SCALE + 3)
-        draw.rectangle(coords((cursor_x, y - 23, cursor_x + 2, y - 2)), fill=ACCENT)
-    for index, line in enumerate(wrap(draw, note, 1030, 18, mono=False)):
-        text(draw, (40, 635 + index * 23), line, 18, INK)
-    progress_track(draw, number - 1)
+        cursor_x = min(1045, 324 + draw.textlength(last, font=font(23, True)) / SCALE + 3)
+        draw.rectangle(coords((cursor_x, y - 26, cursor_x + 2, y - 2)), fill=ACCENT)
+    for index, line in enumerate(wrap(draw, note, 1030, 20, mono=False)):
+        text(draw, (40, 632 + index * 25), line, 20, TEXT)
+    progress_track(draw, number - 1, dark=True)
     return image
 
 
 def render(name, tool, command, title, scenes, poster=0):
+    """Write a PNG poster and a looping GIF from five conversation scenes.
+
+    Each scene pairs colored conversation entries with a footer note. The
+    zero-based poster selects a completed scene; the GIF adds typing frames,
+    cursor blinks and reading pauses using a shared 128-color palette.
+    """
     frame(tool, command, title, poster + 1, *scenes[poster]).save(OUT / (name + ".png"))
     palette = frame(tool, command, title, 1, *scenes[0]).quantize(colors=128)
     frames, durations = [], []
 
     def append(number, conversation, note, duration, cursor=False):
+        """Buffer a palette-matched frame and its duration in milliseconds."""
         current = frame(tool, command, title, number, conversation, note, cursor)
         frames.append(current.quantize(palette=palette, dither=Image.Dither.NONE))
         durations.append(duration)
@@ -138,10 +166,10 @@ def render(name, tool, command, title, scenes, poster=0):
             visible.append((value, color))
             append(number, visible, note, 180, cursor=True)
         # Keep the completed scene readable while the cursor shows that it is animated.
-        for _ in range(3):
+        for _ in range(4):
             append(number, visible, note, 450)
             append(number, visible, note, 450, cursor=True)
-        append(number, visible, note, 600)
+        append(number, visible, note, 2000)
 
     frames[0].save(OUT / (name + ".gif"), save_all=True, append_images=frames[1:],
                    duration=durations, loop=0, optimize=True, disposal=1)
@@ -149,65 +177,65 @@ def render(name, tool, command, title, scenes, poster=0):
 
 
 def main():
+    """Generate the fictional menu and job-search examples in the assets folder."""
     OUT.mkdir(parents=True, exist_ok=True)
-    render("menu-guiado", "Claude Code", "claude", "Escolha por onde começar. Volte quando quiser.", [
+    render("escolher-atividade", "Claude Code", "claude", "Escolha por onde começar.", [
         ([("> iniciar", ACCENT), ("IA: O que você quer fazer?", TEXT),
           ("1. Currículo", TEXT), ("2. Entrevistas", TEXT),
           ("3. Guia de carreira", TEXT), ("4. Busca de vagas", TEXT),
           ("5. Mais opções", TEXT), ("> Quero criar meu currículo.", ACCENT)],
          "Escolha pelo número ou pelo nome. A IA pede só o necessário para essa atividade."),
-        ([("IA: O que você estudou ou está estudando?", TEXT),
+        ([("IA: O que você estudou?", TEXT),
           ("> Fiz um curso de atendimento ao público.", ACCENT), ("", DIM),
-          ("IA: Guardei essa informação.", TEXT),
-          ("Conte sobre um trabalho, projeto ou voluntariado.", TEXT),
+          ("IA: Salvei. Conte sobre um trabalho ou projeto.", TEXT),
           ("> Organizei pedidos em um projeto voluntário.", ACCENT)],
          "Uma pergunta por vez. Seu currículo pode começar sem configurar candidaturas."),
         ([("> Mais opções", ACCENT), ("IA: Também posso ajudar com:", TEXT),
           ("LinkedIn e GitHub", TEXT), ("Análise de empresas", TEXT),
           ("Comparação de propostas", TEXT), ("Escolha de modelos", TEXT),
           ("Preparo completo para candidaturas", TEXT)],
-         "Abrir as opções não muda sua atividade nem autoriza publicação ou envio."),
+         "Abra o menu quando precisar. Você escolhe qual atividade quer iniciar."),
         ([("> Quero investigar a Empresa Aurora.", ACCENT),
-          ("IA: Vamos analisar essa empresa fictícia.", TEXT),
-          ("Qual é sua principal dúvida sobre ela?", TEXT),
+          ("IA: Qual é sua principal dúvida sobre ela?", TEXT),
           ("> Quero entender a jornada de trabalho.", ACCENT),
           ("> Vou continuar amanhã.", ACCENT),
           ("IA: Análise salva. Falta combinar as fontes.", TEXT)],
          "A nova atividade fica salva. As respostas do currículo continuam disponíveis."),
         ([("> iniciar", ACCENT), ("IA: Sua análise de empresa está salva.", TEXT),
-          ("Quer continuar, revisar ou escolher outra atividade?", TEXT),
+          ("Quer continuar, revisar ou mudar de atividade?", TEXT),
           ("> Continuar.", ACCENT),
           ("IA: A dúvida é sobre a jornada de trabalho.", TEXT),
-          ("Vamos combinar as fontes públicas da pesquisa.", TEXT)],
-         "No outro dia, abra a mesma pasta. Retomar a conversa não libera ações externas paradas."),
+          ("Vamos escolher as fontes públicas da pesquisa.", TEXT)],
+         "No outro dia, abra a mesma pasta e diga o que quer continuar."),
     ])
-    render("busca-e-retomada", "Codex CLI", "codex", "Da busca ao envio, com a sua IA.", [
-        ([("> Busque vagas. Qualquer modalidade serve.", ACCENT),
-          ("", DIM), ("IA: Sua escolha já está salva.", TEXT),
-          ("Vou consultar as fontes que você aprovou.", TEXT),
-          ("Neste exemplo: perfil e ferramentas já conferidos.", DIM)],
-         "Sem perguntas repetidas. A pesquisa usa os filtros e as fontes que você escolheu."),
-        ([("Codex: A vaga da Empresa Exemplo é compatível.", TEXT),
-          ("Vou preencher os campos com seus dados confirmados.", TEXT),
+    render("busca-acompanhada", "Codex CLI", "codex", "A IA busca. Você acompanha.", [
+        ([("> Pode buscar e enviar nesta rodada,", ACCENT),
+          ("dentro dos filtros que aprovei.", ACCENT), ("", DIM),
+          ("IA: Permissão salva para esta rodada.", TEXT),
+          ("Vou consultar as fontes escolhidas.", TEXT),
+          ("Perfil, currículo e ferramentas conferidos.", DIM)],
+         "Você escolhe: autorizar a rodada ou confirmar cada envio."),
+        ([("IA: A vaga da Empresa Exemplo é compatível.", TEXT),
+          ("Vou preencher com seus dados confirmados.", TEXT),
           ("", DIM), ("> Use o currículo que aprovei.", ACCENT),
-          ("Codex: Se faltar uma resposta, eu pergunto.", TEXT)],
+          ("IA: Se faltar uma resposta, eu pergunto.", TEXT)],
          "Você não precisa repetir manualmente as mesmas informações em cada formulário."),
-        ([("Codex: Formulário preenchido. Confira o resumo:", TEXT),
-          ("currículo aprovado, contato e respostas confirmadas.", TEXT),
-          ("Posso enviar esta candidatura?", TEXT),
-          ("> Conferi. Pode enviar.", ACCENT)],
-         "A conferência e a autorização continuam com você."),
-        ([("Codex: No cenário fictício, o portal confirmou", TEXT),
-          ("o recebimento. A candidatura ficou registrada.", TEXT),
+        ([("IA: Formulário preenchido e conferido.", TEXT),
+          ("Currículo e destino verificados.", TEXT), ("", DIM),
+          ("A vaga está dentro da sua permissão.", TEXT),
+          ("Vou enviar e conferir a confirmação.", TEXT)],
+         "A autorização da rodada evita repetir a mesma pergunta a cada vaga."),
+        ([("IA: O portal fictício confirmou o recebimento.", TEXT),
+          ("A candidatura ficou registrada.", TEXT),
           ("", DIM), ("> Acompanhe os retornos que autorizei.", ACCENT),
-          ("Codex: Vou conferir prazos e próximas etapas.", TEXT)],
+          ("IA: Vou conferir prazos e próximas etapas.", TEXT)],
          "Uma candidatura só é contada quando há confirmação do destino."),
         ([("> Parar por agora.", ACCENT),
-          ("Codex: Novas ações interrompidas. Progresso salvo.", TEXT),
+          ("IA: Ações interrompidas. Progresso salvo.", TEXT),
           ("", DIM), ("> Continuar as candidaturas.", ACCENT),
           ("IA: Vou conferir os resultados pendentes.", TEXT),
           ("Envio incerto não será repetido.", TEXT)],
-         "A pasta guarda o progresso. Retomar uma atividade auxiliar mantém a campanha parada."),
+         "Ao continuar, a IA confere o estado salvo para evitar envios duplicados."),
     ], poster=2)
 
 

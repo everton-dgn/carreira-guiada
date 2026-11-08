@@ -78,7 +78,7 @@ não resolveram, ela pergunta.
 
 ## Exemplo do percurso
 
-![Prévia fictícia de um currículo organizado com a ajuda da IA.](assets/curriculo-guiado.png)
+![Prévia fictícia de um currículo organizado com a ajuda da IA.](assets/curriculo-revisado.png)
 
 1. A pessoa informa que atendia clientes na Empresa Exemplo e organizava
    pedidos. Confirma nome, contato e período antes de usar esses fatos.

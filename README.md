@@ -1,4 +1,4 @@
-![Carreira Guiada. Sua próxima vaga. Automatize buscas e candidaturas com sua IA.](docs/assets/carreira-guiada-cover-banner.png)
+![Carreira Guiada. Automatize a busca. Prepare-se para a vaga. Currículo, candidaturas e retornos com sua IA.](docs/assets/carreira-guiada-automacao-banner.png)
 
 # Carreira Guiada
 
@@ -56,11 +56,11 @@ ao voltar outro dia. A atividade escolhida e as respostas ficam salvas.
 "Não sei" e "depois" também são respostas válidas. Você conversa no chat,
 sem precisar aprender os comandos internos do projeto.
 
-![Demonstração fictícia: escolher no menu, criar um currículo, mudar de atividade e retomar no dia seguinte.](docs/assets/menu-guiado.gif)
+![Demonstração fictícia: escolher no menu, criar um currículo, mudar de atividade e retomar no dia seguinte.](docs/assets/escolher-atividade.gif)
 
 ## O caminho da preparação à proposta
 
-![Jornada ilustrada: preparar perfil e currículo, automatizar candidaturas, acompanhar e-mails e avançar nas entrevistas. É possível pausar, retomar e encerrar o ciclo.](docs/assets/fluxo-guiado-banner.png)
+![Jornada ilustrada: preparar perfil e currículo, automatizar candidaturas, acompanhar e-mails e avançar nas entrevistas. É possível pausar, retomar e encerrar o ciclo.](docs/assets/jornada-candidaturas-banner.png)
 
 Novas buscas continuam enquanto os retornos chegam. Currículo, perfis e treinos
 podem ser preparados antes; a análise de propostas entra quando você precisar.
@@ -73,13 +73,13 @@ Diga o que procura e aprove as fontes. A IA aplica seus filtros, avalia cada vag
 preenche os dados confirmados, anexa a versão aprovada do currículo e confere o
 resultado. Uma vaga bloqueada fica pendente enquanto as demais avançam.
 
-![Demonstração fictícia: buscar sem repetir perguntas, preservar uma parada e conferir o resultado antes de retomar.](docs/assets/busca-e-retomada.gif)
+![Demonstração fictícia: autorizar uma rodada, buscar vagas, preencher, confirmar o envio e retomar sem duplicar candidaturas.](docs/assets/busca-acompanhada.gif)
 
 Com preenchimento e envio autorizados no perfil, a campanha segue sem pedir
 confirmação em cada vaga. Você também pode escolher "pergunte antes de enviar",
 como na demonstração abaixo.
 
-![Portal fictício: a IA digita os campos, anexa o currículo e confere o recibo após autorização.](docs/assets/portal-guiado.gif)
+![Portal fictício: a IA digita os campos, anexa o currículo e confere o recibo após autorização.](docs/assets/candidatura-preenchida.gif)
 
 O projeto começa sem lista de sites. Cole os links que quer usar ou peça ajuda
 para encontrar fontes verificadas. A IA confere tanto o site quanto a vaga;
@@ -93,7 +93,7 @@ candidatura, identifica prazos e prepara a próxima etapa. Formulários
 complementares, respostas e agendamentos seguem suas autorizações específicas.
 Um e-mail suspeito não muda as regras da campanha.
 
-![Pare quando precisar. Retome do ponto certo. Retornos e pendências com progresso salvo.](docs/assets/retomada-email-banner.png)
+![Pare quando precisar. Retome do ponto certo. Retornos e pendências com progresso salvo.](docs/assets/retornos-progresso-banner.png)
 
 Diga **parar**. Quando voltar, diga **continuar**. O agente relê o progresso,
 confere as pendências e verifica envios incertos antes de tentar novamente.
@@ -113,7 +113,7 @@ com fatos que você confirmou. A [revisão para ATS](docs/ATS.md) confere a leit
 dos arquivos e ajuda a apresentar as experiências relevantes para a vaga.
 Você revisa e aprova cada versão antes do envio.
 
-![Simulação da IA organizando fatos, montando um currículo e gerando a versão aprovada.](docs/assets/curriculo-guiado.gif)
+![Simulação da IA organizando fatos, montando um currículo e gerando a versão aprovada.](docs/assets/curriculo-revisado.gif)
 
 ## Faça seu perfil contar a mesma história
 
@@ -122,7 +122,7 @@ experiência. Peça a revisão do LinkedIn: título, resumo, experiências e des
 Na área de tecnologia, inclua o README do GitHub e os projetos que demonstram
 suas habilidades.
 
-![Mostre o valor da sua experiência. Perfis e projetos alinhados ao seu currículo.](docs/assets/presenca-profissional-banner.png)
+![Mostre o valor da sua experiência. Perfis e projetos alinhados ao seu currículo.](docs/assets/perfil-projetos-banner.png)
 
 A IA prepara um diagnóstico e textos concretos para você conferir. Publicar
 exige aprovar o conteúdo, a conta e o destino. Se um fato mudar, as sugestões
@@ -146,7 +146,7 @@ Se seu aplicativo oferecer voz, experimente falar para tornar o treino mais
 realista. Também há preparação internacional e negociação salarial.
 [Conheça os treinos e exemplos](docs/ENTREVISTAS.md).
 
-![Conversa fictícia de treino: pergunta sobre um erro, resposta, feedback específico, pausa e retomada no dia seguinte.](docs/assets/entrevista-guiada.gif)
+![Conversa fictícia de treino: pergunta sobre um erro, resposta, feedback específico, pausa e retomada no dia seguinte.](docs/assets/entrevista-ensaio.gif)
 
 ## Investigue a empresa antes de decidir
 
@@ -155,7 +155,7 @@ fontes com você, confere a identidade da empresa e reúne evidências com data.
 Pode incluir relatos de funcionários, notícias e Reclame Aqui, mantendo cada
 fonte no contexto que ela realmente esclarece.
 
-![Conheça a empresa. Decida com evidências. Reputação, salários e riscos em contexto.](docs/assets/dossie-empresa-banner.png)
+![Conheça a empresa. Decida com evidências. Reputação, salários e riscos em contexto.](docs/assets/pesquisa-empresa-banner.png)
 
 O resultado separa fatos, relatos e inferências. Mostra contradições e transforma
 lacunas em perguntas para o recrutador. Uma média salarial mantém cargo, região,
@@ -183,7 +183,7 @@ experiência, prioridades e tempo disponível, sem exigir currículo pronto.
 Compara até três caminhos e ajuda a escolher um exercício pequeno para
 experimentar antes de investir mais tempo.
 
-![Escolha um foco. Teste o próximo passo. Compare caminhos e avance com um plano possível.](docs/assets/guia-carreira-banner.png)
+![Escolha um foco. Planeje seu próximo passo. Compare caminhos e avance com um plano possível.](docs/assets/plano-carreira-banner.png)
 
 Depois do exercício, você conta o que funcionou e o que ficou difícil. A IA ajuda
 a ajustar o próximo passo, inclusive mudar de direção. As escolhas ficam privadas
@@ -197,7 +197,7 @@ Os atalhos para uma tarefa seguem direto, sem interromper sua escolha. Pode
 responder "não sei" ou deixar para depois. A recomendação considera os modelos
 e os esforços que você informou ter, sem exigir uma nova assinatura.
 
-![Escolha a IA para cada etapa. Compare evidências. Use os modelos que você já tem.](docs/assets/modelos-por-etapa-banner.png)
+![Escolha a IA para cada tarefa. Compare evidências. Use os modelos que você já tem.](docs/assets/benchmark-modelos-banner.png)
 
 O benchmark também compara onboarding, currículo e guia de carreira: o modelo
 precisa entregar a orientação e o material, além de acertar decisões. Você vê

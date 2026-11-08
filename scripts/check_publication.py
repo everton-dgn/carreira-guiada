@@ -21,14 +21,14 @@ AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
-    "docs/assets/guia-carreira-banner.png": "fb46cf0e7a413d5c1aa6458e19def982ff5fae8c9b0165e5f5feda203bf77a3f",
+    "docs/assets/plano-carreira-banner.png": "0577d5ee271a8e92b5a40a7e30e73c519253b23f919f182ebb8be66d81ba4d2d",
     "docs/assets/propostas-comparacao-banner.png": "1bdce581389023f22447c4a60ad7b8b835f473da2afebd817f3d8cd439a11ba2",
-    "docs/assets/dossie-empresa-banner.png": "0c3ef923cf2de01e42012aa3277532a5f9622c3818b6696b838b0ff27354032e",
-    "docs/assets/presenca-profissional-banner.png": "d90280faa57c2301ccf184506bbde7409bdd039fe6f5a622246c15415b8d53e4",
-    "docs/assets/carreira-guiada-cover-banner.png": "2a3b31578e25f00f92f949ebc1fa2e359433899df2a307481109b7c1c108a8f6",
-    "docs/assets/fluxo-guiado-banner.png": "35579a0e7f81a4a4ad145533949bdd4a8084ff8a6d670938d4ea20fb2a6c86e1",
-    "docs/assets/retomada-email-banner.png": "3088df330f62eebb2de1137781b6120af2f1c720568bfdbe88ff0e0c04ec3e9d",
-    "docs/assets/modelos-por-etapa-banner.png": "fc9d7a29bc94014c2d122638bd25af48684820701a1dfe83f3608170154e94a0",
+    "docs/assets/pesquisa-empresa-banner.png": "73d09b61a09b1df1006a544ae14fcc4dfa42e4c0cc25c5ce5f0f2dd1300dfdae",
+    "docs/assets/perfil-projetos-banner.png": "e146a5434afd7aa997309401e006b0962316e2a9a6af91eb53fb7fa2587977c4",
+    "docs/assets/carreira-guiada-automacao-banner.png": "18a0242b83791649429bd6c178f5a513f1e21952ac1714c50546e457b97c0e77",
+    "docs/assets/jornada-candidaturas-banner.png": "c00e1f7258c07cca5a19eb671ed76475b4f3e81e28b088a27e2597ed3806b9da",
+    "docs/assets/retornos-progresso-banner.png": "c83526b7ebb4fb548d6b50f4ece547b3501302b0da0dbaf3e9d597c6a0a340d5",
+    "docs/assets/benchmark-modelos-banner.png": "b4e360cfb5755a81e80feac4a8e640c142b55bfca17ff4c362a434d7d630336f",
 }
 PATTERNS = {
     "caminho de usuário do computador": re.compile(r"(?:/(?:Users|home)/[^\s/'\"<>]+|[A-Za-z]:[\\/]Users[\\/][^\s\\/]+|/(?:private/)?var/folders/[^\s]+)"),

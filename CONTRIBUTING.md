@@ -77,6 +77,12 @@ leitura confortável. Confira todos os arquivos exibidos no README e nos guias.
 Ao substituir uma arte, use um nome novo e atualize as referências para evitar
 que a página reutilize o endereço de uma versão anterior.
 
+Use letras de cor uniforme, sem relevo ou sombra, e objetos que expliquem o
+recurso apresentado. Nos GIFs, mostre a digitação e deixe cada cena completa
+visível por pelo menos cinco segundos. Confira todas as cenas e amostras dos
+quadros intermediários, incluindo acentos, cortes e sobreposições. As telas
+ilustradas representam terminais ou serviços externos; mantenha isso claro.
+
 ```sh
 uv run --locked --group docs python scripts/maintainers/render_docs.py
 uv run --locked --group docs python scripts/maintainers/render_journeys.py
