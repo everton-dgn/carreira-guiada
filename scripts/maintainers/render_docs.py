@@ -15,6 +15,11 @@ BLUE, LINE, PALE = "#2864ed", "#c4d7f5", "#e4eeff"
 
 @lru_cache
 def font(size, mono=False, bold=False):
+    """Load a cached font at the scaled size, trying platform-specific paths.
+
+    Monospaced text takes precedence over bold. Raise RuntimeError when none
+    of the supported fonts can be loaded.
+    """
     candidates = (
         ("DejaVuSansMono.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
          "/System/Library/Fonts/Menlo.ttc", "C:/Windows/Fonts/consola.ttf") if mono else
@@ -32,10 +37,12 @@ def font(size, mono=False, bold=False):
 
 
 def coords(values):
+    """Convert logical coordinates to integer pixels at the rendering scale."""
     return tuple(int(value * SCALE) for value in values)
 
 
 def text(draw, position, value, size=20, fill=TEXT, mono=False, bold=False):
+    """Draw flat text in logical coordinates, rejecting canvas overflow."""
     face = font(size, mono, bold)
     bounds = draw.textbbox(coords(position), value, font=face)
     if bounds[0] < 0 or bounds[1] < 0 or bounds[2] > SIZE[0] or bounds[3] > SIZE[1]:
@@ -44,6 +51,10 @@ def text(draw, position, value, size=20, fill=TEXT, mono=False, bold=False):
 
 
 def wrap(draw, value, width=942, size=21, mono=True):
+    """Wrap words to a logical width using the selected font's measured size.
+
+    Individual words are never split; an empty value produces one empty line.
+    """
     lines, line = [], ""
     for word in value.split():
         trial = (line + " " + word).strip()
@@ -68,6 +79,7 @@ def backdrop(dark=False):
 
 
 def progress_track(draw, number, progress=1, dark=False):
+    """Draw five steps with a zero-based current step and progress from 0 to 1."""
     for index in range(5):
         x = 40 + index * 210
         draw.rounded_rectangle(coords((x, 685, x + 194, 689)), 2 * SCALE,
@@ -79,6 +91,11 @@ def progress_track(draw, number, progress=1, dark=False):
 
 
 def frame(tool, command, title, number, conversation, note, cursor=False):
+    """Return one RGB terminal scene for a one-based step from 1 through 5.
+
+    Conversation entries pair text with a color. Reject text that exceeds the
+    terminal area and optionally draw a caret after the last visible line.
+    """
     image, draw = backdrop(dark=True)
     text(draw, (40, 80), title, 40, TEXT, bold=True)
     subtitle = ("Vá direto ao que precisa. A IA guia o próximo passo." if command == "claude"
@@ -116,11 +133,18 @@ def frame(tool, command, title, number, conversation, note, cursor=False):
 
 
 def render(name, tool, command, title, scenes, poster=0):
+    """Write a PNG poster and a looping GIF from five conversation scenes.
+
+    Each scene pairs colored conversation entries with a footer note. The
+    zero-based poster selects a completed scene; the GIF adds typing frames,
+    cursor blinks and reading pauses using a shared 128-color palette.
+    """
     frame(tool, command, title, poster + 1, *scenes[poster]).save(OUT / (name + ".png"))
     palette = frame(tool, command, title, 1, *scenes[0]).quantize(colors=128)
     frames, durations = [], []
 
     def append(number, conversation, note, duration, cursor=False):
+        """Buffer a palette-matched frame and its duration in milliseconds."""
         current = frame(tool, command, title, number, conversation, note, cursor)
         frames.append(current.quantize(palette=palette, dither=Image.Dither.NONE))
         durations.append(duration)
@@ -153,6 +177,7 @@ def render(name, tool, command, title, scenes, poster=0):
 
 
 def main():
+    """Generate the fictional menu and job-search examples in the assets folder."""
     OUT.mkdir(parents=True, exist_ok=True)
     render("escolher-atividade", "Claude Code", "claude", "Escolha por onde começar.", [
         ([("> iniciar", ACCENT), ("IA: O que você quer fazer?", TEXT),

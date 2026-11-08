@@ -7,11 +7,17 @@ from render_docs import coords, font, text, wrap, backdrop, progress_track, BLUE
 
 
 def box(draw, bounds, fill, outline=None, radius=12):
+    """Draw a rounded rectangle with bounds and radius in logical pixels."""
     draw.rounded_rectangle(coords(bounds), radius=radius * SCALE,
                            fill=fill, outline=outline, width=2 * SCALE)
 
 
 def paragraph(draw, position, value, width, size=19, fill=TEXT, *, cursor=False, bottom=None):
+    """Draw wrapped monospaced text and return the next logical y coordinate.
+
+    Preserve explicit line breaks, optionally append a caret, and raise
+    ValueError if a line would exceed the supplied bottom boundary.
+    """
     x, y = position
     last = ""
     for part in value.split('\n'):
@@ -28,6 +34,7 @@ def paragraph(draw, position, value, width, size=19, fill=TEXT, *, cursor=False,
 
 
 def pointer(draw, position, clicking=False):
+    """Draw a fictional pointer at logical coordinates, with an optional click ring."""
     x, y = position
     if clicking:
         draw.ellipse(coords((x - 14, y - 14, x + 14, y + 14)),
@@ -37,6 +44,11 @@ def pointer(draw, position, clicking=False):
 
 
 def base(title, subtitle, number, message, progress, note):
+    """Return an RGB scene and drawing context for a zero-based journey step.
+
+    Progress from 0 to 1 reveals the conversation during the first half of the
+    step. Reject conversation overflow and draw the footer and progress track.
+    """
     image, draw = backdrop(dark=True)
     text(draw, (40, 78), title, 38, TEXT, bold=True)
     text(draw, (40, 134), subtitle, 23, DIM)
@@ -76,6 +88,11 @@ RESUME_SCENES = [
 
 
 def resume_frame(stage, progress, blink=False):
+    """Return a fictional resume frame for stage 0 to 4 and progress 0 to 1.
+
+    Show confirmed facts, document structure, revision or approval according
+    to the stage, optionally blinking the caret in the active text.
+    """
     image, draw = base("Seu currículo, claro e pronto para a vaga.",
                        "Organize sua experiência e revise o conteúdo antes de enviar.", stage,
                        RESUME_SCENES[stage][0], progress, RESUME_SCENES[stage][1])
@@ -130,6 +147,7 @@ PORTAL_SCENES = [
 
 
 def field(draw, y, label, value, active=False, blink=False):
+    """Draw a labeled fictional input, adding a caret only when active and blinking."""
     text(draw, (482, y), label, 18, MUTED)
     box(draw, (482, y + 25, 1058, y + 65), "#ffffff", INK if active else "#bdd1ef", radius=6)
     text(draw, (494, y + 33), value, 20, INK)
@@ -139,6 +157,11 @@ def field(draw, y, label, value, active=False, blink=False):
 
 
 def portal_frame(stage, progress, blink=False):
+    """Return a fictional application frame for stage 0 to 4 and progress 0 to 1.
+
+    Animate the pointer or field text through vacancy review, contact details,
+    resume attachment, permission and simulated confirmation. No data is sent.
+    """
     image, draw = base("Chega de repetir formulários.",
                        "A IA preenche o portal com os dados e o currículo aprovados.", stage,
                        PORTAL_SCENES[stage][0], progress, PORTAL_SCENES[stage][1])
@@ -193,6 +216,11 @@ PRACTICE_SCENES = [
 
 
 def practice_frame(stage, progress, blink=False):
+    """Return an interview rehearsal frame for stage 0 to 4 and progress 0 to 1.
+
+    Reveal the stage's practice notes with an optional caret, covering the
+    exercise, feedback, pause and resumption using only fictional dialogue.
+    """
     message, note, title, content = PRACTICE_SCENES[stage]
     image, draw = base('Ensaie a entrevista, uma resposta por vez.',
                        'Receba feedback e pratique o que ainda precisa melhorar.',
@@ -206,6 +234,12 @@ def practice_frame(stage, progress, blink=False):
 
 
 def render(name, draw_frame, poster):
+    """Write a PNG poster and a looping five-stage GIF from a frame callback.
+
+    The callback accepts a zero-based stage, progress from 0 to 1 and an optional
+    blink flag. Use a shared palette and millisecond timings for typing frames,
+    cursor blinks and reading pauses; poster selects a completed stage.
+    """
     draw_frame(poster, 1).save(OUT / (name + ".png"))
     # A single palette keeps text colors steady and allows compact delta frames.
     samples = Image.new("RGB", (SIZE[0] * 5, SIZE[1]))

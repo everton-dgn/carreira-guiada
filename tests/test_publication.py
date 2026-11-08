@@ -92,6 +92,7 @@ class PublicationTests(unittest.TestCase):
                 self.assertTrue(content_problems('docs/assets/' + name, changed))
 
     def test_gif_loop_extension_cannot_carry_extra_metadata(self):
+        """Reject extra GIF extension data while accepting the generated loop block."""
         assets = Path(__file__).resolve().parents[1] / "docs/assets"
         original = (assets / "escolher-atividade.gif").read_bytes()
         expected = b"\x0bNETSCAPE2.0\x03\x01\x00\x00\x00"
