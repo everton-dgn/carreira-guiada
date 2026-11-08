@@ -64,6 +64,8 @@ def selected_activity(root, state, focus=None, start=None):
     if route in LABELS and (route != 'prepare' or not start):
         return route
     if start:
+        if start.get('menu') and start['message'] == start['menu']['message']:
+            return 'menu'
         inferred = {'career_guidance': 'career', 'company_dossier': 'company',
                     'interview_preparation': 'practice', 'offers': 'offers',
                     'model_preferences': 'models', 'professional_presence': 'presence',
@@ -74,8 +76,6 @@ def selected_activity(root, state, focus=None, start=None):
                     'sources': 'search', 'execution_readiness': 'search'}.get(start.get('next_step'))
         if inferred:
             return inferred
-        if start.get('menu') and start['message'] == start['menu']['message']:
-            return 'menu'
     point = state.get('checkpoint')
     career = state.get('career') or {}
     if career.get('session') and not career.get('paused') and career.get('phase') != 'finished' and (not point or point['phase'] == 'career'):
@@ -209,6 +209,18 @@ def _activity(root, state, activity):
     return result
 
 
+def _dependency_instruction(root, dependency, current, activity, state):
+    """Use the domain's current question, never an old note's free-form instruction."""
+    if dependency['reason'] == 'answer':
+        if activity == 'practice' and state['practice'].get('next_step') in {'feedback', 'advance', 'finish'}:
+            return None
+        if activity == 'curriculum' and current['phase'] == 'review' and Intake(root).status()['complete']:
+            return None
+        if current['needs_user'] and current['condition'] == 'waiting_user':
+            return current['next_action']
+    return DEPENDENCIES[dependency['reason']]
+
+
 def project(root, state, now, focus=None, start=None):
     """Project saved state into a compact message and separately requested details."""
     activity = selected_activity(root, state, focus, start)
@@ -229,30 +241,36 @@ def project(root, state, now, focus=None, start=None):
     actionable_scope = valid_scope and not (activity == 'search' and state['control']['stopped'])
     if actionable_scope and point.get('dependency') and current['condition'] != 'completed':
         dependency = point['dependency']
-        dependencies.append({'source': 'checkpoint', 'activity': activity, 'needs_user': point['needs_user'],
-                             'instruction': DEPENDENCIES[dependency['reason']], 'reference': dependency.get('reference'),
-                             'due_at': dependency.get('due_at'), 'recorded': True})
-        if point['needs_user'] and current['condition'] not in {'completed', 'paused'}:
-            current['condition'] = 'waiting_user'
-            current.update(needs_user=True, next_action=DEPENDENCIES[dependency['reason']])
+        instruction = _dependency_instruction(root, dependency, current, activity, state)
+        if instruction:
+            dependencies.append({'source': 'checkpoint', 'activity': activity, 'needs_user': point['needs_user'],
+                                 'instruction': instruction, 'reference': dependency.get('reference'),
+                                 'due_at': dependency.get('due_at'), 'recorded': True})
+            if point['needs_user'] and current['condition'] not in {'completed', 'paused'}:
+                current['condition'] = 'waiting_user'
+                current.update(needs_user=True, next_action=instruction)
     if actionable_scope and point.get('condition') == 'waiting_tool' and current['condition'] not in {'paused', 'completed'}:
         current.update(condition='needs_verification', needs_user=False,
-                       next_action='Conferir o retorno da ferramenta antes de continuar esta etapa.')
+                       next_action=DEPENDENCIES['tool'])
     for key, note in notes.items():
         if key == activity or not note['needs_user'] or not note.get('dependency'):
             continue
         if key == 'search' and (state['control']['stopped'] or note.get('campaign_generation') != state['control']['generation']):
             continue
         try:
-            if _activity(root, state, key)['condition'] == 'completed':
+            other = _activity(root, state, key)
+            if other['condition'] == 'completed':
                 continue
         except (ValueError, KeyError, TypeError, AttributeError):
             state['optional_data_issues'].append({'area': key, 'message':
                 f'Os dados de {LABELS[key]} precisam de reparo. A pendência não pôde ser conferida; os registros foram preservados.'})
             continue
         dependency = note['dependency']
+        instruction = _dependency_instruction(root, dependency, other, key, state)
+        if instruction is None:
+            continue
         dependencies.append({'source': 'checkpoint', 'activity': key, 'needs_user': True,
-                             'instruction': DEPENDENCIES[dependency['reason']], 'reference': dependency.get('reference'),
+                             'instruction': instruction, 'reference': dependency.get('reference'),
                              'due_at': dependency.get('due_at'), 'recorded': True})
     for item in state['pending']:
         if item['type'] == 'step' and item['state'] == 'candidate_pending':
@@ -300,15 +318,13 @@ def project(root, state, now, focus=None, start=None):
     if other_steps:
         lines.append(f"{len(other_steps)} {'etapa complementar pendente' if len(other_steps) == 1 else 'etapas complementares pendentes'}; consulte os detalhes antes de agir.")
     prefix = 'Precisa de você: ' if current['needs_user'] else 'Próximo passo: '
-    if not any(item['instruction'] == current['next_action'] for item in dependencies[:3]):
+    if not any(item['activity'] == activity and item['instruction'] == current['next_action'] for item in dependencies[:3]):
         lines.append(prefix + current['next_action'])
     if saved:
         lines.append('Último ponto salvo desta atividade: ' + saved['display'] + '. Execução atual não verificada.')
     elif state.get('checkpoint'):
         previous = state['checkpoint']
         lines.append('Último ponto salvo de outra atividade: ' + LABELS.get(activity_of(previous), 'campanha') + '. Consulte os detalhes para retomar esse contexto.')
-    if valid_scope and point.get('condition') == 'waiting_tool':
-        lines.append('A última nota registrou espera por ferramenta. Falta conferir o resultado atual.')
     if activity != 'career' and (state.get('career') or {}).get('paused'):
         lines.append('Seu guia de carreira está pausado e pode ser retomado separadamente.')
     if activity != 'practice' and state['practice'].get('decision') in {'later', 'skip'} and state['practice'].get('session_id'):

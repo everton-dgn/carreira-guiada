@@ -68,6 +68,17 @@ Você conversa normalmente. Não precisa decorar comandos de terminal.
 A IA pede esclarecimento quando "continuar" puder se referir a atividades
 diferentes. Se você já nomeou a atividade, ela respeita essa escolha.
 
+Se disser "o que precisa de mim no currículo?", a resposta identifica o
+currículo e mostra a pergunta que falta, mesmo que você esteja treinando uma
+entrevista. Consultar outra atividade não troca a que ficou salva. Uma
+resposta já registrada não deve ser cobrada novamente por uma nota antiga.
+Pendências de outra atividade aparecem com o nome dela.
+
+Quando só faltar conferir o retorno de uma ferramenta, a IA explica esse
+próximo passo. Você não precisa repetir uma resposta nem adivinhar se deve
+fazer algo. Uma espera salva no dia anterior precisa ser conferida antes de
+afirmar que a operação ainda está em execução.
+
 ## Voltar no outro dia
 
 Abra a mesma pasta e diga `iniciar`. A IA identifica a atividade salva e oferece

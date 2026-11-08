@@ -69,6 +69,115 @@ class SessionStatusTests(unittest.TestCase):
                 'calls': self.calls,
             }, ensure_ascii=False, indent=2), encoding='utf-8')
 
+    def test_fresh_start_identifies_the_menu_before_any_choice(self):
+        """A new visitor has not selected a CV merely by opening the menu."""
+        start = self.call('start')
+        status = self.call('status')
+        self.assertEqual(start['session']['activity'], 'menu')
+        self.assertEqual(start['session']['activity'], status['session']['activity'])
+        self.assertIn('Escolha', start['session']['next_action'])
+        self.assertFalse((self.root / '.job').exists())
+
+    def test_saved_answer_dependency_shows_the_current_question_after_switching(self):
+        """A novice sees the missing answer, its activity and updated question."""
+        self.call('menu', '--choose', 'currículo', '--remember')
+        self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
+        self.call('intake', 'answer', data={'field': 'education', 'text': 'Curso fictício de atendimento.'})
+        self.call('checkpoint', 'save', data=self.note('curriculum', 'resume', needs_user=True,
+                  condition='waiting_user', dependency={'reason': 'answer'}))
+        question = self.call('intake', 'status')['question']['question']
+        state = self.call('status', '--needs-user')
+        self.assertTrue(state['message'].startswith('Atividade: Currículo.'))
+        self.assertIn(question, state['message'])
+        self.assertEqual(state['session']['next_action'], question)
+        self.call('menu', '--choose', 'entrevistas', '--remember')
+        practice = self.call('practice', 'start', data={'track': 'behavioral', 'mode': 'coach', 'question_ids': ['erro']})
+        state = self.call('status', '--needs-user')
+        self.assertTrue(state['message'].startswith('Atividade: Entrevistas.'))
+        self.assertIn('Precisa de você em Currículo: ' + question, state['message'])
+        self.call('practice', 'answer', data={'session_id': practice['session_id'], 'question_id': 'erro',
+                  'text': 'Corrigi um formulário fictício e conferi o resultado.'})
+        self.call('stop')
+        self.next_day()
+        before = (self.root / '.job/control.sqlite3').read_bytes()
+        state = self.call('status', '--focus', 'curriculum', '--needs-user')
+        self.assertIn(question, state['message'])
+        self.assertIn('Campanha de candidaturas parada', state['message'])
+        self.assertEqual((self.root / '.job/control.sqlite3').read_bytes(), before)
+        self.assertEqual(self.call('status')['session']['activity'], 'practice')
+        self.assertEqual(self.call('practice', 'status')['next_step'], 'feedback')
+        self.call('menu', '--choose', 'currículo', '--remember')
+        self.call('intake', 'answer', data={'field': 'experience', 'text': 'Atendimento em empresa fictícia.'})
+        next_question = self.call('intake', 'status')['question']['question']
+        state = self.call('status', '--needs-user')
+        self.assertIn(next_question, state['message'])
+        self.assertNotIn(question, state['message'])
+        for field in ('skills', 'languages', 'extra'):
+            self.call('intake', 'answer', data={'field': field, 'text': None})
+        state = self.call('status', '--needs-user')
+        self.assertFalse(state['session']['needs_user'])
+        self.assertFalse(state['session']['user_actions'])
+        self.assertIn('revisar', state['message'])
+
+    def test_answered_dependency_does_not_request_another_answer_before_feedback(self):
+        """Current domain state supersedes an old note awaiting a now-saved answer."""
+        self.call('menu', '--choose', 'entrevistas', '--remember')
+        practice = self.call('practice', 'start', data={'track': 'behavioral', 'mode': 'coach', 'question_ids': ['erro']})
+        self.call('checkpoint', 'save', data=self.note('practice', 'practice', needs_user=True,
+                  condition='waiting_user', dependency={'reason': 'answer'}))
+        self.call('practice', 'answer', data={'session_id': practice['session_id'], 'question_id': 'erro',
+                  'text': 'Corrigi um formulário fictício.'})
+        self.next_day()
+        state = self.call('status', '--needs-user')
+        self.assertFalse(state['session']['needs_user'])
+        self.assertFalse(state['session']['user_actions'])
+        self.assertNotIn('Precisa de você:', state['message'])
+        self.assertIn('devolutiva', state['message'])
+        self.call('menu', '--choose', 'currículo', '--remember')
+        state = self.call('status', '--needs-user')
+        self.assertNotIn('Precisa de você em Entrevistas:', state['message'])
+
+    def test_tool_wait_is_concise_and_has_a_next_step_without_a_user_action(self):
+        """Waiting is explained once and a next-day query never resumes work."""
+        self.call('menu', '--choose', 'empresa', '--remember')
+        self.call('company', 'create', data={
+            'entity': {'name': 'Empresa Fictícia', 'country': 'BR', 'domain': None, 'relationship': 'employer'},
+            'question': 'Como é a jornada?', 'dimensions': ['workload']})
+        self.call('checkpoint', 'save', data=self.note('company', 'company', condition='waiting_tool',
+                  dependency={'reason': 'tool'}))
+        self.call('stop')
+        self.next_day()
+        before = (self.root / '.job/control.sqlite3').read_bytes()
+        state = self.call('status')
+        self.assertEqual(state['message'].lower().count('ferramenta'), 1)
+        self.assertEqual(state['session']['condition'], 'needs_verification')
+        state = self.call('status', '--needs-user')
+        self.assertTrue(state['message'].startswith('Atividade: Análise de empresa.'))
+        self.assertIn('Próximo passo:', state['message'])
+        self.assertIn('ferramenta', state['message'])
+        self.assertTrue(state['control']['stopped'])
+        self.assertEqual(state['session']['execution'], 'unverified')
+        self.assertEqual((self.root / '.job/control.sqlite3').read_bytes(), before)
+        self.call('checkpoint', 'save', data=self.note('company', 'company', condition='ready',
+                  summary='Retorno fictício conferido; a análise pode continuar.'))
+        state = self.call('status')
+        self.assertEqual(state['session']['condition'], 'ready')
+        self.assertNotIn('ferramenta', state['message'])
+        self.assertTrue(state['control']['stopped'])
+
+    def test_untracked_company_answer_is_not_dismissed_as_already_received(self):
+        """A dossier alone does not prove that a custom follow-up was answered."""
+        self.call('company', 'create', data={
+            'entity': {'name': 'Empresa Fictícia', 'country': 'BR', 'domain': None, 'relationship': 'employer'},
+            'question': 'Como é a jornada?', 'dimensions': ['workload']})
+        self.call('checkpoint', 'save', data=self.note('company', 'company', needs_user=True,
+                  condition='waiting_user', dependency={'reason': 'answer', 'reference': 'Empresa Fictícia'}))
+        state = self.call('status', '--focus', 'company', '--needs-user')
+        self.assertTrue(state['session']['needs_user'])
+        self.assertIn('Empresa Fictícia', state['message'])
+        state = self.call('status', '--focus', 'curriculum', '--needs-user')
+        self.assertIn('Empresa Fictícia', state['message'])
+
     def test_selected_curriculum_survives_campaign_pause_next_day(self):
         """A paused campaign never hides or resumes the selected CV activity."""
         self.call('menu', '--choose', 'currículo', '--remember')
