@@ -81,6 +81,15 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   controle de abas. Avise a cada mudança de etapa e, durante execução demorada,
   em até 60 segundos quando a ferramenta devolver controle. Diga o que foi
   comprovado, o próximo passo e a ação exata que depende da pessoa.
+- Use `status --focus <atividade> --json` para reconciliar a atividade escolhida.
+  `session` separa etapa, condição, dependências e campanha parada. Para
+  "o que precisa de mim", use `status --needs-user`; para detalhes, `status
+  --details`. São consultas, sem iniciar trabalho ou alterar permissões.
+- Cada aviso deve fazer sentido sozinho: atividade, resultado observado e
+  próxima ação. Destaque destino e prazo de ações da pessoa quando conhecidos.
+  Notas antigas, reservas de abas e registros de executor não provam trabalho
+  ativo. Antes de uma chamada sem retorno parcial, explique a espera; ao
+  recuperar controle, confira o resultado antes de anunciar sucesso.
 - Antes de abrir ou assumir uma aba, reserve uma vaga com `tabs reserve`.
   O padrão é de duas abas para toda a campanha. Confira o ID observado e
   preserve formulários pendentes. Feche somente abas próprias sem pendência;
@@ -152,7 +161,10 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    reenvio daquela vaga; as demais vagas seguem, e a conferência da incerta
    entra como item da rodada, não como pré-condição.
 6. Se a pessoa já disse "continuar" ou "retomar", siga a atividade indicada
-   sem pedir a mesma decisão de novo. Retomar uma atividade de preparação,
+   sem pedir a mesma decisão de novo. Se não nomeou a atividade e há campanha
+   parada junto de outra atividade salva, pergunte qual quer continuar antes
+   de usar `resume-work`. Um "continuar" ambíguo não retoma candidaturas.
+   Retomar uma atividade de preparação,
    pesquisa de empresa ou revisão de modelos preserva uma campanha parada. Na retomada da campanha, reutilize
    o objetivo e as permissões vigentes. Pergunte só o que ainda não foi respondido.
 

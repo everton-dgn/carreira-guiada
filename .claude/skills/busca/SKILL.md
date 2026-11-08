@@ -9,6 +9,11 @@ Leia "Busca e cobertura", "Elegibilidade pelo perfil aprovado" e "Duplicidade
 e estados" em [AGENTS.md](../../../AGENTS.md), e as fontes escolhidas pela pessoa conforme
 [docs/FONTES.md](../../../docs/FONTES.md).
 
+Antes de uma consulta demorada, diga qual fonte será consultada e qual retorno
+falta. Atualize com resultados observados; sem retorno parcial, explique antes
+a limitação e responda assim que receber o controle. Contagens da rodada não
+são o histórico nem a meta inteira. Veja [acompanhamento](../../../docs/ACOMPANHAMENTO.md).
+
 ## Busca pública pelo menu
 
 Quando a pessoa escolher apenas ver vagas, registre

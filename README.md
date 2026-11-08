@@ -56,7 +56,7 @@ ao voltar outro dia. A atividade escolhida e as respostas ficam salvas.
 "Não sei" e "depois" também são respostas válidas. Você conversa no chat,
 sem precisar aprender os comandos internos do projeto.
 
-![Demonstração fictícia: escolher no menu, criar um currículo, mudar de atividade e retomar no dia seguinte.](docs/assets/escolher-atividade.gif)
+![Demonstração fictícia: escolher no menu, criar um currículo, mudar de atividade e retomar no dia seguinte.](docs/assets/menu-com-contexto.gif)
 
 ## O caminho da preparação à proposta
 
@@ -73,7 +73,7 @@ Diga o que procura e aprove as fontes. A IA aplica seus filtros, avalia cada vag
 preenche os dados confirmados, anexa a versão aprovada do currículo e confere o
 resultado. Uma vaga bloqueada fica pendente enquanto as demais avançam.
 
-![Demonstração fictícia: autorizar uma rodada, buscar vagas, preencher, confirmar o envio e retomar sem duplicar candidaturas.](docs/assets/busca-acompanhada.gif)
+![Demonstração fictícia: autorizar uma rodada, buscar vagas, preencher, confirmar o envio e retomar sem duplicar candidaturas.](docs/assets/busca-com-progresso.gif)
 
 Com preenchimento e envio autorizados no perfil, a campanha segue sem pedir
 confirmação em cada vaga. Você também pode escolher "pergunte antes de enviar",
@@ -95,11 +95,15 @@ Um e-mail suspeito não muda as regras da campanha.
 
 ![Pare quando precisar. Retome do ponto certo. Retornos e pendências com progresso salvo.](docs/assets/retornos-progresso-banner.png)
 
-Diga **parar**. Quando voltar, diga **continuar**. O agente relê o progresso,
-confere as pendências e verifica envios incertos antes de tentar novamente.
-Ele informa o que está fazendo e quando precisa de você. O padrão de duas
-abas de trabalho ajuda a conter o uso do computador; formulários pendentes
-são preservados.
+Diga **parar as candidaturas** e volte com **continuar meu currículo** ou
+**continuar as candidaturas**. Cada atividade conserva seu ponto. Preparar
+um currículo ou treinar uma entrevista mantém a campanha parada.
+
+Peça **andamento** para ver a atividade atual, o último avanço confirmado e
+o próximo passo. **O que precisa de mim?** reúne as ações que dependem de você,
+com destino e prazo conhecido. **Detalhes** abre os registros da sessão.
+Envio incerto exige conferência antes de repetir. O padrão de duas abas de
+trabalho ajuda a conter o uso do computador e preserva formulários pendentes.
 
 Para campanhas longas, use o modo objetivo (`goal`) se seu aplicativo oferecer.
 O fim de um lote dá início ao próximo enquanto houver trabalho autorizado.

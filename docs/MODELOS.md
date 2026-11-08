@@ -29,8 +29,8 @@ e-mail ou execução contínua: essas capacidades precisam ser conferidas na ses
 | Onboarding, currículo e carreira | GPT-6 Astra alto, Terra médio ou Sol médio, entre as opções que você tem | Configurações observadas sem ressalva material nos seis recortes de preparação. |
 | Preparo complexo fora dos recortes medidos | Astra ou Opus, como orientação inicial | Conferir documentos extensos e situações que ainda não foram medidas; validar o material com você. |
 | Buscar e operar candidaturas | GPT-6.1 Terra, esforço médio (`medium`) | Navegar, preencher e conferir o resultado das ações autorizadas. |
-| Resolver uma etapa difícil | Terra com esforço alto (`high`), ou voltar a Astra/Opus | Formulário incomum, regra ambígua ou divergência que exige análise. |
-| Organizar material já conferido | Modelo menor que você já usa, com esforço baixo ou médio quando disponível | Resumir vagas e classificar conteúdo, conferindo os resultados antes de agir. |
+| Resolver uma etapa difícil | Terra alto (`high`) ou Astra alto, entre as configurações medidas | Analisar formulário incomum ou divergência, conferindo o resultado. A amostra não provou vantagem do esforço alto. |
+| Organizar material já conferido | Modelo disponível, com revisão do resultado | Não há medição de esforço baixo nesta coleta para recomendar uma redução. |
 
 O esforço indica quanto o modelo deve raciocinar. Mais esforço pode consumir
 mais tempo e uso da sua conta. Nem toda ferramenta oferece esse ajuste ou usa
@@ -58,6 +58,8 @@ ressalvas da tarefa antes de reutilizar o texto. Isso não exige trocar de
 assinatura: a IA deve ajudar a revisar o material com o modelo que você tem.
 
 A indicação por tarefa usa somente os modelos e esforços que você informou.
+Para comparar fornecedores, veja a [tabela por tarefa e provedor](BENCHMARKS.md#escolha-pela-tarefa-e-pelo-provedor).
+Para saber o que falta testar, veja a [matriz de esforços](BENCHMARKS.md#quais-esforços-foram-comparados).
 Se houver empate, conserva a preferência inicial e o menor esforço medido
 válido daquele modelo. Um modelo pode ter evidência para carreira e precisar
 de revisão adicional no currículo. Nenhuma dessas notas autoriza ferramentas

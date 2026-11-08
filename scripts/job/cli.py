@@ -38,7 +38,10 @@ def parser():
     menu = command("menu", "Escolher uma atividade")
     menu.add_argument("--choose", help="Número ou nome da atividade")
     menu.add_argument("--remember", action="store_true", help="Salvar a atividade escolhida para continuar depois")
-    command("status", "Conferir o progresso e as pendências")
+    status = command("status", "Conferir o progresso e as pendências")
+    status.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models'), help='Consultar outra atividade sem mudar o foco salvo')
+    status.add_argument('--details', action='store_true', help='Mostrar histórico e pendências detalhadas')
+    status.add_argument('--needs-user', action='store_true', help='Mostrar o que depende da pessoa')
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
     models = command('models', 'Guardar os serviços de IA disponíveis e orientar a escolha por etapa')
@@ -61,6 +64,7 @@ def parser():
     tabs.add_argument('action', choices=('status', 'reserve', 'update', 'release'))
     saved = command('checkpoint', 'Guardar o último progresso e a próxima ação para outra sessão')
     saved.add_argument('action', choices=('show', 'save'))
+    saved.add_argument('--activity', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models'), help='Consultar a nota de uma atividade específica')
     for name in ("jobs", "steps", "step", "transition"):
         command(name, "Consultar ou registrar oportunidades e etapas")
     for name in ("coverage", "cleanup-rules"):
@@ -290,6 +294,23 @@ def onboarding(root, focus='prepare', resume_route=True, intake_state=None):
             "automatic_execution_started": False}
 
 
+def with_session(root, result, focus=None):
+    """Attach the same read-only session projection used by status to an entry."""
+    from .workflow import Workflow
+    workflow = Workflow(root)
+    try:
+        session = workflow.state(focus=focus, entry=result)['session']
+    finally:
+        workflow.close()
+    result['session'] = session
+    if session['campaign_stopped']:
+        note = 'Campanha de candidaturas parada; abrir este início não retoma os envios.'
+        result['message'] += '\n' + note
+        if result.get('welcome_back'):
+            result['resume_hint'] += '\n' + note
+    return result
+
+
 def dispatch(args):
     """Dispatch CLI commands; only explicit mutation commands persist state."""
     root = getattr(args, "root", ROOT).resolve()
@@ -306,7 +327,7 @@ def dispatch(args):
                 Intake(root).remember_route(result['selected'])
             route = onboarding(root, result['selected'], resume_route=False)
             route['welcome_back'] = None
-            return {**route, 'menu': result}
+            return with_session(root, {**route, 'menu': result}, result['selected'])
         return result
     if args.command == "start":
         from .models import Models
@@ -323,7 +344,7 @@ def dispatch(args):
             result = resume_entry(result, intake_state.get('route'))
             if result['next_step'] == 'curriculum_input' and not result.get('welcome_back') and not intake_state.get('mode') and not intake_state.get('route'):
                 result['message'] = result['menu']['message']
-        return result
+        return with_session(root, result, args.focus)
     if args.command == 'models':
         from .models import Models
         models = Models(root)
@@ -352,7 +373,7 @@ def dispatch(args):
         return result
     if args.command == 'checkpoint':
         from .checkpoint import checkpoint
-        return checkpoint(root, payload() if args.action == 'save' else None)
+        return checkpoint(root, payload() if args.action == 'save' else None, args.activity)
     if args.command == 'research':
         from .due_diligence import DueDiligence
         research = DueDiligence(root)
@@ -512,7 +533,7 @@ def dispatch_workflow(workflow, root, args):
     if args.command == "cleanup-rules":
         return workflow.cleanup_rules(payload() if args.action == "save" else None)
     if args.command == "status":
-        return workflow.state()
+        return workflow.state(focus=getattr(args, 'focus', None), details=getattr(args, 'details', False), needs_user=getattr(args, 'needs_user', False))
     if args.command == "context":
         from .profile import Profile
         from .resumes import ResumeManager
@@ -563,6 +584,8 @@ def main(argv=None):
         message = str(exc)
         if isinstance(exc, ImportError):
             message = "Falta uma dependência do projeto. Peça à IA para verificar o ambiente com uv sync e continuar."
+        elif isinstance(exc, sqlite3.Error):
+            message = "O registro local falhou. A operação não foi confirmada. Peça à IA para conferir o progresso salvo e o último resultado antes de tentar novamente."
         if getattr(args, "json", False):
             print(json.dumps({"error": message}, ensure_ascii=False))
         else:

@@ -279,8 +279,8 @@ Na CLI, `status` consulta a sessão selecionada por padrão, sem aceitar um ID.
 Para recuperar outra sessão, use `practice show` e localize seu ID em `sessions`.
 `show` corresponde a `get()` e `end-questions` a `end_questions()`. Para pausar
 somente o treino, use `practice choose` com `decision: later`. Pergunta e
-respostas já ficam salvas no treino. Preserve o checkpoint da campanha se
-ela continuar; use fase `practice` apenas se esse for o ponto geral de retomada.
+respostas já ficam salvas no treino. Use `activity: practice` nas notas do
+treino; elas preservam o checkpoint separado da campanha.
 A busca de vagas pode continuar.
 Para voltar ao treino, use `decision: now`; não encerre as perguntas.
 
@@ -361,11 +361,68 @@ não a encerra. O agente confere a ferramenta para registrar `closed`,
 `not_created`, `returned_to_user` ou `already_absent`. Não há controle direto
 do navegador pelo Python; os registros não substituem essa conferência.
 
-`checkpoint(root, data=None)` em `scripts/job/checkpoint.py` consulta ou salva
+`checkpoint(root, data=None, activity=None)` em `scripts/job/checkpoint.py` consulta ou salva
 `phase`, `summary`, `next_action` e `needs_user`, com data UTC acrescentada pelo
-controle. É uma nota de retomada, separada das evidências de cada ação.
-`state()` inclui `checkpoint` e `browser` para expor a última nota e o orçamento
-de abas, sem afirmar execução ativa. [Procedimento completo](OPERACAO.md#progresso-e-abas).
+controle. Opcionalmente recebe `activity`, `condition` e `dependency`.
+`activity` aceita os nove focos do menu. `condition` aceita `recorded`, `ready`,
+`waiting_user`, `waiting_tool`, `paused`, `completed` ou `needs_verification`.
+Exceto em `recorded`, `needs_user` precisa corresponder a `waiting_user`.
+`dependency` recebe `reason` (`login`, `answer`, `upload`, `review`, `verify`
+ou `tool`), `reference` opcional e `due_at` opcional com data, hora e fuso.
+Login, resposta, anexo e revisão exigem `needs_user: true`; ferramenta exige
+`false`. A fase de preparo deve corresponder à atividade informada.
+
+`checkpoint show --activity curriculum` consulta o ponto específico. Sem o
+seletor, devolve a última nota gravada, pela sequência de escrita. Uma mudança
+do relógio não faz uma nota nova perder prioridade para outra atividade.
+`checkpoints(root)` retorna o mapa por atividade. O payload antigo de quatro
+campos continua aceito; fases antigas determinam a atividade. A leitura não
+migra dados. A próxima escrita explícita preserva a nota antiga e grava as
+atividades em tabela adicional, na mesma transação. Uma falha desfaz a escrita.
+Notas de busca recebem a geração da campanha, usando a geração inicial 1
+antes da primeira gravação do controle. Ao mudar a geração, uma dependência
+antiga não vira instrução atual.
+
+`Workflow.state(focus=None, details=False, needs_user=False, entry=None)` inclui
+`checkpoint`, `browser`, `session`, `message` e `details_message`. `focus` só
+consulta; a escolha persistente continua em `menu --choose ... --remember`.
+`entry` concilia a projeção com o início guiado. `start` e uma escolha válida do
+menu também incluem `session`. `details` amplia o texto; `needs_user` filtra
+ações da pessoa, inclusive as que não cabem no resumo.
+
+`session` informa `activity`, `label`, `phase`, `condition`, `advance`,
+`next_action`, `needs_user`, `campaign_stopped`, `execution`, `last_saved`,
+`dependencies`, `user_actions`, `help` e `progress`. `execution` é `unverified`:
+o banco não verifica processos vivos. Dependências têm instrução controlada,
+referência e prazo quando disponíveis. Texto livre da nota continua no JSON
+privado de `checkpoint`; nos detalhes, aparece citado como contexto a conferir,
+sem virar o próximo passo autorizado da projeção. Dependências de outras
+atividades também aparecem, com o escopo identificado. Etapas complementares
+não terminais ficam nos detalhes, mesmo quando não dependem da pessoa.
+Uma nota antiga com `needs_user` sem dependência estruturada não transforma
+trabalho da IA em ação da pessoa; prevalece a etapa atual da atividade.
+Notas inválidas geram aviso em `optional_data_issues`, preservando o conteúdo.
+As outras notas válidas continuam disponíveis, e gravar outra atividade não
+apaga a linha inválida. Substituir o próprio registro inválido exige reparo
+prévio, para evitar perda de dados. Faça uma cópia privada e confira o registro
+com a IA; não apague o banco nem reinicie o perfil para resolver esse aviso.
+Isso também vale para uma escrita no formato antigo que substituiria a nota
+única ilegível: aceitar o formato não autoriza sobrescrever dados inválidos.
+
+`last_saved` tem `at`, `display`, `activity_matches`, `campaign_matches` e
+`note_is_not_authorization`. Horários usam o fuso do perfil, com UTC como
+alternativa explícita. `session.progress` aparece só na busca e usa o objetivo
+atual. `ledger.period_confirmed` é mantido por compatibilidade, mas abrange
+todo o histórico datado; `period_scope` e `period_note` explicitam esse limite.
+Não o use como contagem do período de uma meta.
+Pendências de ação incluem `company`, `title`, `expires_at` e
+`authorization_expired`; a consulta informa a expiração sem renovar o prazo.
+Dependências com prazo vencido o identificam no texto e em `overdue`.
+Notas de login da campanha parada ficam como contexto nos detalhes;
+etapas pessoais com prazo continuam visíveis. Retomar exige conferir de novo
+a sessão, pois a nota da geração anterior não comprova login atual.
+Nenhuma consulta concede permissão, retoma a campanha ou comprova envio.
+[Procedimento completo](OPERACAO.md#progresso-e-abas).
 
 `Workflow(root)` em `scripts/job/workflow.py` coordena o banco implementado em
 `scripts/candidaturas/`. Seus payloads completos estão nas docstrings.

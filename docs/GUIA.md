@@ -74,7 +74,7 @@ As demonstrações abaixo representam conversas fictícias no terminal.
 O Carreira Guiada não instala uma tela própria. Navegação e e-mail dependem
 das integrações disponíveis na sessão; iniciar a CLI não conecta contas.
 
-![Demonstração fictícia do menu, da escolha de atividade e da retomada.](assets/escolher-atividade.png)
+![Demonstração fictícia do menu, da escolha de atividade e da retomada.](assets/menu-com-contexto.png)
 
 ## A primeira conversa
 
@@ -181,7 +181,7 @@ versão aprovada.
    as suas escolhas. A candidatura só é contada após confirmação do destino.
 5. Você recebe o que foi confirmado, o que ficou em dúvida e a próxima ação.
 
-![Demonstração fictícia da busca com filtros salvos e conferência antes de retomar.](assets/busca-acompanhada.png)
+![Demonstração fictícia da busca com filtros salvos e conferência antes de retomar.](assets/busca-com-progresso.png)
 
 Uma vaga bloqueada por login não impede cuidar de outra. Um envio com resultado
 incerto exige conferência antes de tentar novamente.
@@ -229,8 +229,16 @@ Ela não deve apagar e-mails definitivamente.
 | "parar" | Novas ações param; o progresso é preservado. |
 | "continuar" | A IA confere o estado salvo e o próximo passo autorizado. |
 | "o que falta?" | Mostra pendências e o que depende de você. |
+| "andamento" | Resume a atividade atual, o último avanço confirmado e o próximo passo. |
+| "o que precisa de mim?" | Reúne ações da pessoa, destino e prazo conhecido. |
+| "detalhes" | Mostra registros e pendências sem iniciar ações. |
+| "continuar meu currículo" | Retoma o currículo e mantém candidaturas paradas. |
 | "quero corrigir meu salário" | Atualiza a resposta e pede aprovação do perfil. |
 | "não use mais este site" | Revê as fontes e pede aprovação da nova lista. |
+
+Se houver mais de uma atividade e você disser apenas "continuar", a IA
+confirma qual delas. Uma nota de ontem não prova que o trabalho seguiu durante
+a noite. [Entenda os avisos e as esperas](ACOMPANHAMENTO.md).
 
 O trabalho depende de execução ativa. A pasta guarda progresso, mas não
 mantém uma IA rodando sozinha depois que a sessão termina.

@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- Andamento por atividade mostra o próximo passo e separa a preparação da
+  campanha de candidaturas. Ações da pessoa, prazos e resultados incertos
+  continuam visíveis, inclusive depois de parar a campanha.
+- Notas de retomada ficam separadas por atividade, preservando os registros
+  antigos. Consultas não alteram o banco, retomam envios ou confirmam que um
+  executor continua ativo. Detalhes mostram etapas e autorizações vencidas.
+- Menu e guias explicam como pedir andamento, ações pendentes e detalhes,
+  além dos limites de atualização durante chamadas demoradas. Duas
+  demonstrações animadas mostram troca de atividade, login e retomada.
+- A página de benchmarks começa pela recomendação por tarefa e provedor,
+  seguida da matriz de esforços medidos, não medidos e ausentes no catálogo.
+  Os resultados publicados permanecem separados por protocolo, sem nova coleta.
+
 ## 0.15.1 - 2026-11-07
 
 - Banners usam textos mais diretos e ilustrações ligadas ao recurso: currículo,

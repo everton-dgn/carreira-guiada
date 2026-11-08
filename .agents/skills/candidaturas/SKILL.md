@@ -14,6 +14,10 @@ acontecendo durante a execução, salve checkpoint e use o limite compartilhado
 de duas abas por padrão. Reserve antes de abrir. Formulários pendentes não
 são fechados para liberar espaço, e o fim de um lote não apaga o progresso.
 
+Mostre atividade, avanço confirmado e próxima ação no último aviso.
+`status --focus search` separa a campanha da preparação. Para ações da pessoa,
+use `status --needs-user`; não esconda prazo ou envio incerto durante a parada.
+
 ## Pré-requisitos
 
 - Perfil `approved` (via `./job profile status`). Sem isso, volte a
@@ -22,8 +26,10 @@ são fechados para liberar espaço, e o fim de um lote não apaga o progresso.
   envio não.
 - Permissões: `research` para buscar, `fill` para preencher, `apply` para
   enviar. `ask` pergunta em linguagem simples no momento; `deny` não faz.
-- Nenhuma parada ativa. Com parada, "continuar" ou "retomar" já é a resposta:
-  use `./job resume-work` e siga. Só pergunte se a pessoa não disse nada.
+- Nenhuma parada ativa. "Continuar as candidaturas" autoriza `./job resume-work`.
+  Se a pessoa disser só "continuar" e houver outra atividade salva, confirme
+  qual quer retomar. Currículo, treino e carreira mantêm a campanha parada.
+  Sem ambiguidade e com retomada da campanha já pedida, aproveite a resposta.
 
 ## Objetivo
 

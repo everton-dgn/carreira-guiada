@@ -43,8 +43,8 @@ class Intake:
                     point = {'phase': 'resume', 'summary': 'Você escolheu preparar seu currículo.',
                              'next_action': 'Continuar a preparação do currículo.', 'needs_user': True,
                              'saved_at': datetime.now(timezone.utc).isoformat(timespec='seconds')}
-                    db.execute('CREATE TABLE IF NOT EXISTS job_checkpoint (id INTEGER PRIMARY KEY CHECK(id=1), value TEXT NOT NULL)')
-                    db.execute('INSERT OR REPLACE INTO job_checkpoint VALUES (1, ?)', (json.dumps(point, ensure_ascii=False),))
+                    from .checkpoint import save_note
+                    save_note(db, point, legacy=True)
             if obsolete_fact and db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_versions'").fetchone():
                 for resume_id, fact_ids in db.execute('SELECT id, fact_ids FROM resume_versions'):
                     if obsolete_fact in json.loads(fact_ids):

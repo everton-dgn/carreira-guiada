@@ -121,7 +121,7 @@ class GuidanceJourneyTests(unittest.TestCase):
         self.assertTrue(self.call('research-scope', 'check', data=check)['allowed'])
         self.call('stop')
         self.assertFalse(self.call('research-scope', 'check', data=check)['allowed'])
-        self.assertIn('parado', self.call('status')['message'])
+        self.assertIn('Campanha de candidaturas parada', self.call('status')['message'])
         resumed = self.call('resume-work')
         self.assertNotIn('dados de contato', resumed['message'])
         self.assertFalse(self.call('research-scope', 'check', data=check)['allowed'])
