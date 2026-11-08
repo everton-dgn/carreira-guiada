@@ -40,10 +40,12 @@ class Intake:
                 row = db.execute('SELECT value FROM job_checkpoint WHERE id=1').fetchone() if exists else None
                 point = json.loads(row[0]) if row else None
                 if not point or point['phase'] == 'career':
-                    point = {'phase': 'resume', 'summary': 'Você escolheu preparar seu currículo.',
-                             'next_action': 'Continuar a preparação do currículo.', 'needs_user': True,
-                             'saved_at': datetime.now(timezone.utc).isoformat(timespec='seconds')}
-                    from .checkpoint import save_note
+                    from .checkpoint import _read_notes, save_note
+                    saved = _read_notes(db, tolerate_invalid=True).get('curriculum')
+                    point = saved[0] if saved else {
+                        'phase': 'resume', 'summary': 'Você escolheu preparar seu currículo.',
+                        'next_action': 'Continuar a preparação do currículo.', 'needs_user': True,
+                        'saved_at': datetime.now(timezone.utc).isoformat(timespec='seconds')}
                     save_note(db, point, legacy=True)
             if obsolete_fact and db.execute("SELECT 1 FROM sqlite_master WHERE name='resume_versions'").fetchone():
                 for resume_id, fact_ids in db.execute('SELECT id, fact_ids FROM resume_versions'):

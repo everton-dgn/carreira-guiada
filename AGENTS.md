@@ -83,8 +83,10 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   comprovado, o próximo passo e a ação exata que depende da pessoa.
 - Use `status --focus <atividade> --json` para reconciliar a atividade escolhida.
   `session` separa etapa, condição, dependências e campanha parada. Para
-  "o que precisa de mim", use `status --needs-user`; para detalhes, `status
-  --details`. São consultas, sem iniciar trabalho ou alterar permissões.
+  "o que precisa de mim", use `status --needs-user`; para detalhes, use
+  `status --details`. Quando a pergunta indicar uma atividade, acrescente
+  `--focus <atividade>` a esses comandos. Sem atividade indicada, mantenha
+  o foco salvo. São consultas, sem iniciar trabalho ou alterar permissões.
 - Cada aviso deve fazer sentido sozinho: atividade, resultado observado e
   próxima ação. Destaque destino e prazo de ações da pessoa quando conhecidos.
   Notas antigas, reservas de abas e registros de executor não provam trabalho

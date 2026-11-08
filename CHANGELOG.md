@@ -10,6 +10,7 @@
 - Notas de retomada ficam separadas por atividade, preservando os registros
   antigos. Consultas não alteram o banco, retomam envios ou confirmam que um
   executor continua ativo. Detalhes mostram etapas e autorizações vencidas.
+  Escolher o preparo preserva a nota de currículo e suas pendências já salvas.
 - Menu e guias explicam como pedir andamento, ações pendentes e detalhes,
   além dos limites de atualização durante chamadas demoradas. Duas
   demonstrações animadas mostram troca de atividade, login e retomada.
