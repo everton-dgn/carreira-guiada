@@ -13,6 +13,11 @@ Perfil `approved`, conta em `connections`, permissão `email_read` e sessão
 autenticada observada por `./job capability`. Sem sessão: registre cobertura
 pendente para aquela conta e siga as demais fontes. Login é da pessoa.
 
+Explique qual conta e intervalo estão sendo consultados, sem expor o endereço
+no resumo. Separe mensagem lida, etapa pendente e resposta enviada. Mostre
+ação da pessoa e prazo verificado mesmo com a campanha parada; a exibição
+não retoma envios. Consulta parcial continua incompleta na retomada.
+
 ## Consultar
 
 Antes de ler uma conta, registre `action authorize` com `action: "email_read"`,

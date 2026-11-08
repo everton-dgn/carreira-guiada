@@ -16,7 +16,7 @@ Se precisar, diga "me ajude a copiar o link". A IA explica o próximo passo
 com base na tela que conseguir observar. Você não precisa editar arquivo,
 preencher uma configuração ou escolher um nome técnico para o site.
 
-![O menu permite começar pela busca de vagas e combinar as fontes depois.](assets/escolher-atividade.png)
+![O menu permite começar pela busca de vagas e combinar as fontes depois.](assets/menu-com-contexto.png)
 
 ## Ainda não tenho os links
 

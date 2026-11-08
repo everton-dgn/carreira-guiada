@@ -76,7 +76,12 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
    JSON. Reconheça esse diagnóstico do inicializador, conduza a instalação
    autorizada e repita `doctor` depois. Não trate a ausência de JSON como
    corrupção do perfil nem peça para a pessoa resolver sozinha.
-2. Leia `./job start --json` e `./job status --json`. `model_setup` é uma oferta
+2. Leia `./job start --json` e `./job status --json`. Use `session.activity` e
+   `session.condition` para explicar o contexto. Com atividade explícita,
+   consulte também `status --focus <atividade>`; isso não salva nem retoma.
+   "O que precisa de mim" pede `status --needs-user`; "detalhes", `status
+   --details`. Não reproduza `checkpoint.next_action` como instrução sem
+   conferir os registros atuais. `model_setup` é uma oferta
    opcional; não substitui `next_step`. Consultar a instalação
    vazia não deve criar perfil nem iniciar trabalho externo.
    Se o pedido for somente procurar ou mostrar vagas, use
@@ -102,6 +107,10 @@ controle, sem adicionar questionário técnico ou repetir dicas já dadas.
   a pergunta da próxima etapa antes dessa escolha. Se ela já pediu "continuar",
   "retomar" ou uma tarefa específica, siga esse pedido sem repetir o menu. Leia `status.checkpoint`,
   os registros atuais e `tabs status`; o ponto salvo não prova execução ativa.
+  Exceção: "continuar" sem atividade nomeada, com campanha parada e outra
+  atividade salva, exige perguntar qual delas. Não use `resume-work` enquanto
+  essa dúvida existir. Se a pessoa nomeou currículo ou treino, siga essa
+  atividade mantendo a campanha parada.
 - Se escolher revisar, mantenha a atividade atual. Currículo usa `intake show`,
   fatos e versões salvos; entrevistas usam `practice show`; carreira usa
   `career status` e a sessão atual; busca usa só preferências e fontes de

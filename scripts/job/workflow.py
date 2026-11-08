@@ -504,14 +504,19 @@ class Workflow:
                                (json.dumps(record, ensure_ascii=False), json.dumps(result, ensure_ascii=False), _stamp(self._now()), job_id))
         return {'opportunity_id': job_id, 'profile_version': profile['version'], 'evaluation': result}
 
-    def state(self) -> dict:
+    def state(self, focus=None, details=False, needs_user=False, entry=None) -> dict:
         """Status privado, somente leitura; em instalação nova não cria ``.job``.
 
         Retorna ``{initialized, control: {generation, stopped, ...}, goal, progress,
         profile: {available, approved, version, next_section, missing, questions},
         counts, ledger (Store.summary), pending: [...], capabilities: [...],
         mail_coverage, runner, checkpoint, browser, next_steps: [str], message,
-        optional_data_issues: [{area, message}]}``. Dados opcionais inválidos
+        session, details_message, optional_data_issues: [{area, message}]}``.
+        ``focus`` consulta uma atividade sem salvá-la; ``details`` amplia o
+        texto; ``needs_user`` mostra só as dependências da pessoa. ``entry``
+        permite reconciliar o mesmo foco usado pelo início guiado. A projeção
+        de sessão é somente leitura e não comprova execução ativa.
+        Dados opcionais inválidos
         preservam o status central e aparecem como avisos, sem apagar registros.
         Notas livres e pendências podem conter dados privados da pessoa ou da vaga.
         """
@@ -548,6 +553,8 @@ class Workflow:
                         unknown += 1
                 result["ledger"].update(eligible_confirmed=len(compatible), compatible_unknown=unknown,
                                         period_confirmed=sum(job["confirmed_at"] is not None for job in compatible),
+                                        period_scope='all_history_with_confirmation_date',
+                                        period_note='Campo legado sem intervalo; use progress para a meta do período.',
                                         evaluation_profile_version=profile["version"])
                 result["counts"]["messages"] = result["ledger"]["messages"]
                 for step in store.list_steps():
@@ -559,8 +566,11 @@ class Workflow:
                 result["counts"]["opportunities"] = conn.execute("SELECT COUNT(*) FROM wf_opportunities").fetchone()[0]
                 result["counts"]["actions"] = {row[0]: row[1] for row in conn.execute("SELECT status, COUNT(*) FROM wf_actions GROUP BY status")}
                 for row in conn.execute("SELECT * FROM wf_actions WHERE status IN ('authorized','uncertain') ORDER BY authorized_at"):
-                    status = "uncertain" if row["status"] == "authorized" and row["expires_at"] <= _stamp(now) else row["status"]
-                    result["pending"].append({"type": "action", "action_id": row["id"], "action": row["action"], "status": status, "opportunity_id": row["job_id"], "owner": row["owner"], "generation": row["generation"], "reason": row["reason"]})
+                    expired = row["status"] == "authorized" and row["expires_at"] <= _stamp(now)
+                    status = "uncertain" if expired else row["status"]
+                    job = conn.execute('SELECT company,title FROM jobs WHERE id=?', (row['job_id'],)).fetchone() if row['job_id'] else None
+                    result["pending"].append({"type": "action", "action_id": row["id"], "action": row["action"], "status": status, "opportunity_id": row["job_id"], "owner": row["owner"], "generation": row["generation"], "reason": row["reason"],
+                                              'authorization_expired': expired, 'expires_at': row['expires_at'], 'company': job['company'] if job else None, 'title': job['title'] if job else None})
                 seen = set()
                 for row in conn.execute("SELECT * FROM wf_capabilities ORDER BY id DESC"):
                     key = (row["kind"], row["provider"], row["account"])
@@ -582,11 +592,11 @@ class Workflow:
         from .practice import Practice
         from .career import CareerGuide
         from .company import CompanyDossiers
-        result['checkpoint'] = checkpoint(self.root)
         result['browser'] = Tabs(self.root).status()
         result['practice'] = Practice(self.root).status()
-        result.update(career=None, companies=[], optional_data_issues=[])
+        result.update(checkpoint=None, career=None, companies=[], optional_data_issues=[])
         for area, reader, label in (
+            ('checkpoint', lambda: checkpoint(self.root), 'das notas de retomada'),
             ('career', CareerGuide(self.root).status, 'do guia de carreira'),
             ('companies', CompanyDossiers(self.root).list, 'dos dossiês de empresas'),
         ):
@@ -595,81 +605,15 @@ class Workflow:
             except ValueError:
                 result['optional_data_issues'].append({'area': area, 'message':
                     f'Os dados {label} precisam de reparo. Os registros foram preservados; as demais informações continuam disponíveis.'})
-        result["next_steps"] = self._next_steps(result)
-        result['next_steps'].extend(issue['message'] for issue in result['optional_data_issues'])
-        result["message"] = "\n".join(["Situação do Carreira Guiada:"] + [f"- {step}" for step in result["next_steps"]])
-        if result['checkpoint']:
-            note = result['checkpoint']
-            result['message'] += '\nÚltimo ponto salvo (' + note['saved_at'] + '): ' + note['summary'] + '\nPróxima ação: ' + note['next_action']
+        from .session_status import project
+        result['session'], result['message'], result['details_message'] = project(self.root, result, now, focus, entry)
+        result['next_steps'] = result['message'].splitlines()[1:]
+        if details:
+            result['message'] = result['details_message']
+        if needs_user:
+            lines = [line for line in result['details_message'].splitlines() if line.startswith('Precisa de você')]
+            result['message'] = '\n'.join(lines) if lines else 'Não encontrei uma ação sua nas pendências registradas. Isso não comprova execução ativa.'
         return result
-
-    @staticmethod
-    def _next_steps(s):
-        steps = []
-        if s['ledger']:
-            ledger = s['ledger']
-            steps.append(f"Nos registros: {ledger['confirmed']} candidatura(s) confirmada(s), {ledger['uncertain']} envio(s) em dúvida e {ledger['discarded']} vaga(s) descartada(s).")
-        if s["control"]["stopped"]:
-            steps.append('O trabalho está parado. Seu progresso está salvo; diga "continuar" quando quiser retomar.')
-            uncertain_count = sum(p['type'] == 'action' and p.get('status') == 'uncertain' for p in s['pending'])
-            user_count = sum(p['type'] == 'step' and p.get('state') == 'candidate_pending' for p in s['pending'])
-            if uncertain_count or user_count:
-                steps.append(f'Pendências preservadas: {uncertain_count} ação(ões) sem confirmação e {user_count} etapa(s) que dependem de você. Nada será repetido durante a parada.')
-            return steps
-        practice = s.get('practice') or {}
-        training = practice.get('decision') == 'now' and practice.get('phase') in {'idle', 'questions', 'feedback'}
-        comparing = (s.get('checkpoint') or {}).get('phase') == 'offers'
-        career = s.get('career') or {}
-        point_phase = (s.get('checkpoint') or {}).get('phase')
-        guiding = (career.get('session') is not None and career.get('phase') != 'finished'
-                   and not career.get('paused') and point_phase in {None, 'career'})
-        investigating = ((s.get('checkpoint') or {}).get('phase') == 'company' or
-                         bool(s.get('companies') and not s.get('goal') and s['profile'].get('version') == 0))
-        if not s["profile"].get("approved") and not training and not comparing and not guiding and not investigating:
-            section = s["profile"].get("next_section")
-            labels = {'identity': 'seus dados de contato', 'preferences': 'o tipo de vaga que procura', 'sources': 'os endereços dos sites onde quer procurar vagas', 'permissions': 'o que posso fazer por você', 'connections': 'as contas que quer usar', 'limits': 'o funcionamento no chat'}
-            steps.append(f"Vamos completar {labels.get(section, 'seu perfil')}." if section else "Confira o resumo do perfil e diga se está correto.")
-        if training:
-            steps.append('Há um treino salvo. ' + practice['message'])
-        elif practice.get('phase') in {'questions', 'feedback'}:
-            steps.append('Seu treino adiado continua salvo. Você pode pedir para retomá-lo quando quiser.')
-        if comparing:
-            steps.append('A comparação de propostas está salva. Vamos continuar pelas premissas que faltam.')
-        if guiding or career.get('paused'):
-            steps.append(career['message'])
-        if investigating:
-            steps.append('A pesquisa da empresa está salva. Vamos conferir as fontes e as dúvidas pendentes antes de concluir.')
-        preparing = training or comparing or guiding or investigating or point_phase in {'onboarding', 'resume', 'presence', 'practice', 'company'}
-        if s['goal'] is None and (preparing or not s['profile'].get('approved')):
-            return steps
-        if s["goal"] is None:
-            steps.append('Diga se quer apenas conhecer vagas ou também se candidatar. Não precisa escolher uma quantidade nem um prazo.')
-        uncertain = [p for p in s["pending"] if p["type"] == "action" and p["status"] == "uncertain"]
-        if uncertain:
-            steps.append(f"Vou conferir {len(uncertain)} ação(ões) que ficaram sem confirmação antes de repetir qualquer uma delas.")
-        for account in s.get('mail_coverage') or []:
-            if account['status'] == 'partial':
-                steps.append(f"A leitura dos e-mails da conta {account['account']} ficou incompleta. O ponto de retomada está salvo.")
-            elif account['status'] in {'auth_required', 'unavailable'}:
-                steps.append(f"Ainda não consegui conferir os e-mails da conta {account['account']}. Preciso verificar o acesso antes de continuar essa consulta.")
-        for pending in s['pending']:
-            if pending['type'] != 'step' or pending['state'] in {'action_started', 'uncertain'}:
-                continue
-            label = 'Depende de você' if pending['state'] == 'candidate_pending' else 'Etapa pendente'
-            summary = pending.get('summary') or 'Conferir a próxima etapa no portal'
-            if summary.startswith('Ação ') and summary.endswith(' registrada pelo fluxo'):
-                summary = {'apply': 'Conferir o envio da candidatura', 'fill': 'Concluir o preenchimento do formulário',
-                           'register': 'Concluir o cadastro no portal'}.get(pending['kind'], 'Conferir a próxima etapa no portal')
-            steps.append(f"{label} em {pending['company']}: {summary}.")
-        if (s['goal'] or s['pending']) and not any(c["usable"] for c in s["capabilities"]):
-            steps.append('Ainda preciso conferir o acesso aos sites ou ao e-mail. Se houver login, eu explico onde entrar; não me passe sua senha.')
-        if s["progress"] and s["progress"]["reached"]:
-            steps.append("Meta do período atingida.")
-        if not s['pending'] and not s['control']['stopped'] and s['goal'] and s['profile'].get('approved') and any(c['usable'] for c in s['capabilities']) and not (s['progress'] and s['progress']['reached']):
-            steps.append('Posso continuar a pesquisa e as etapas que você autorizou.')
-        return steps
-
-    # ----- autorização e resultado -------------------------------------------------
 
     def _expire(self, store, now):
         rows = store.conn.execute("SELECT * FROM wf_actions WHERE status='authorized' AND expires_at<=?", (_stamp(now),)).fetchall()

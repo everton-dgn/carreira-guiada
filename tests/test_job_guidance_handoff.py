@@ -1,5 +1,7 @@
 """Real saved-state regressions for optional guidance and operational recovery."""
 from argparse import Namespace
+from pathlib import Path
+import tempfile
 import unittest
 
 from scripts.job.career import CareerGuide
@@ -42,6 +44,28 @@ class GuidanceHandoffTests(unittest.TestCase):
         self.assertEqual(onboarding(self.root)['next_step'], 'curriculum_input')
         self.assertEqual(checkpoint(self.root)['phase'], 'resume')
         self.assertEqual(guide.get(session['id']), session)
+
+    def test_preparation_choice_preserves_scoped_curriculum_note(self):
+        """Selecting preparation retains CV dependencies and the legacy handoff gate."""
+        for mode in ('create', 'import'):
+            for legacy_phase in (None, 'career', 'fill'):
+                with self.subTest(mode=mode, legacy_phase=legacy_phase), tempfile.TemporaryDirectory() as folder:
+                    root = Path(folder).resolve()
+                    original = checkpoint(root, {
+                        'activity': 'curriculum', 'phase': 'resume', 'summary': 'Versão fictícia pronta para revisão.',
+                        'next_action': 'Conferir a experiência antes de aprovar.', 'needs_user': True,
+                        'condition': 'waiting_user', 'dependency': {'reason': 'review', 'reference': 'Currículo fictício'}})
+                    if legacy_phase:
+                        previous = checkpoint(root, {'phase': legacy_phase, 'summary': 'Outra etapa fictícia salva.',
+                                                    'next_action': 'Conferir a etapa.', 'needs_user': True})
+                    Profile(root).save('identity', {'name': 'Pessoa Fictícia', 'email': 'pessoa@example.invalid'})
+                    Intake(root).choose(mode)
+                    self.assertEqual(checkpoint(root, activity='curriculum'), original)
+                    if legacy_phase == 'fill':
+                        self.assertEqual(checkpoint(root), previous)
+                    else:
+                        self.assertEqual(checkpoint(root), original)
+                        self.assertEqual(onboarding(root)['next_step'], 'curriculum_intake' if mode == 'create' else 'curriculum_input')
 
     def test_paused_career_preserves_search_prompts_even_with_checkpoint(self):
         guide, session = self.saved_career(paused=True, saved_point=True)

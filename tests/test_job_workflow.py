@@ -148,7 +148,7 @@ class WorkflowTests(unittest.TestCase):
         stopped = self.wf.stop()
         self.assertEqual(stopped["uncertain"], [action["action_id"]])
         state = self.wf.state()
-        self.assertIn('1 ação(ões) sem confirmação', state['message'])
+        self.assertIn('1 ação sem confirmação', state['message'])
         self.assertNotIn('conferir o acesso', state['message'])
         self.assertTrue(state['control']['stopped'])
         with self.assertRaisesRegex(ValueError, "Parada"):

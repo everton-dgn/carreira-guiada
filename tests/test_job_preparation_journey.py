@@ -28,8 +28,9 @@ import scripts.job.checkpoint as checkpoint
 import scripts.job.resumes as resumes
 import scripts.job.due_diligence as due_diligence
 import scripts.job.research_scope as research_scope
+import scripts.job.intake as intake
 workflow.datetime = checkpoint.datetime = resumes.datetime = SimulationDateTime
-due_diligence.datetime = research_scope.datetime = SimulationDateTime
+due_diligence.datetime = research_scope.datetime = intake.datetime = SimulationDateTime
 from scripts.job.cli import main
 if sys.argv[1:] == ["guard"]:
     for action in (lambda: socket.create_connection(("example.invalid", 443)),
@@ -162,7 +163,9 @@ class PreparationJourneyTests(unittest.TestCase):
         self.assertTrue(self.call('resume', 'check', draft['id'])['passed'])
         self.say('Preparei este currículo para conferir:\n\n' + CV, 'Está certo. Pode aprovar, sem enviar.')
         self.call('resume', 'approve', draft['id'])
-        self.assertEqual(self.call('start')['next_step'], 'professional_presence')
+        next_step = self.call('start')
+        self.assertEqual(next_step['next_step'], 'professional_presence')
+        self.assertEqual(next_step['session']['activity'], 'presence')
         return draft
 
     def checkpoint(self, phase, summary, next_action, needs_user=True):
@@ -272,7 +275,7 @@ class PreparationJourneyTests(unittest.TestCase):
         self.next_day()
         self.assertEqual(self.call('practice', 'status')['next_step'], 'feedback')
         self.assertTrue(self.call('status')['control']['stopped'])
-        self.assertIn('parado', ' '.join(self.call('status')['next_steps']).lower())
+        self.assertIn('Campanha de candidaturas parada', ' '.join(self.call('status')['next_steps']))
         self.call('resume-work')
         feedback = {'strengths': 'Você assumiu a mudança e explicou o problema.', 'improvements': 'Falta dizer como verificou a correção; isso ajuda a entender o resultado.', 'suggestion': 'Mantenha o contexto e acrescente somente a verificação que realmente fez.', 'exercise': 'Explique a verificação em uma frase, sem inventar números.'}
         self.assertNotIn('dados de contato', self.call('status')['message'])

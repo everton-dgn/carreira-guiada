@@ -11,6 +11,15 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 
 ## Cenários cobertos
 
+- Acompanhamento da sessão: 12 percursos fictícios cobrem instalação nova,
+  currículo e treino após parada, troca de atividade, login, espera por
+  ferramenta, autorização vencida, prazo por e-mail, meta e histórico,
+  notas legadas, falha de gravação, conteúdo malicioso e ajuda sob demanda.
+  Ações da pessoa aparecem mesmo quando pertencem a outra atividade. Etapas
+  complementares continuam nos detalhes. A sequência de gravação preserva a
+  última escolha quando o relógio muda; atualização feita pelo escritor antigo
+  sobrevive à próxima gravação. São testes programados, sem usuários reais.
+
 - Menu: quatro entradas diretas e Mais opções, números e nomes com acentos, opção desconhecida,
   consulta sem escrita e escolha salva sem conceder permissões. Currículo
   concluído sem cadastro completo, importação ainda sem arquivo e troca de
@@ -86,6 +95,13 @@ processo e com o relógio avançado. A campanha permanece parada e não há
 publicações, mensagens ou candidaturas.
 `JOB_MENU_REPORT` pode apontar para uma pasta privada de evidências.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
+`tests/test_job_session_status.py` acrescenta os 12 percursos de acompanhamento.
+As chamadas de CLI usam o bloqueio de rede e subprocessos do percurso de
+preparação; cenários em processo usam os controladores locais e bloqueiam
+conexões. O relógio avança sem manter uma execução por 24 horas. Para guardar
+entradas e saídas fictícias, defina `JOB_SESSION_REPORT` com uma pasta nova
+ao executar esse módulo. Os registros são evidência dos casos programados,
+não comprovam entendimento por uma pessoa nem cadência do aplicativo de IA.
 As imagens dos terminais, do currículo e do portal também são ilustrações.
 Não comprovam uma integração executada nos aplicativos citados ou um envio
 para um portal real. Cada sessão precisa conferir suas capacidades.

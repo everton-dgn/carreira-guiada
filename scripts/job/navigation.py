@@ -14,6 +14,7 @@ def menu(selection=None):
     message = 'O que você quer fazer?\n' + '\n'.join(f'{n}. {label}' for n, _, label in CHOICES)
     message += '\n5. Mais opções'
     message += '\nDiga o número ou o nome. Você pode mudar de atividade sem perder suas respostas.'
+    message += '\nPara acompanhar, peça "andamento", "o que precisa de mim" ou "detalhes". Pode dizer "parar" a qualquer momento.'
     if selection is None:
         return {'message': message, 'choices': choices, 'selected': None}
     key = ''.join(c for c in unicodedata.normalize('NFKD', selection.strip().casefold()) if not unicodedata.combining(c))

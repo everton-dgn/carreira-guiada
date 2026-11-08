@@ -8,6 +8,12 @@ description: Preencher e enviar uma vaga reservada, com perfil aprovado, curríc
 Leia "Preenchimento e envio", "Duplicidade e estados" e "Segurança antes dos
 dados pessoais" em [AGENTS.md](../../../AGENTS.md).
 
+Identifique a vaga e a etapa antes de preencher ou enviar. Se depender de
+login observado, preserve a aba e registre `activity: search`, `condition:
+waiting_user` e dependência `login`, com referência segura. Aba protegida
+sozinha não comprova login pendente. Após recuperar a sessão, atualize a nota.
+Um timeout mantém resultado incerto; consultar o status não renova autorização.
+
 ## Gate, todos obrigatórios
 
 - Perfil `approved`.

@@ -41,9 +41,10 @@ pausa ou retomada. Evite humilhação, hostilidade e perguntas íntimas. Não
 recomende fingir personalidade, mentir sobre saída ou inventar resultados.
 Ajude a assumir erros, explicar contribuições e preservar confidencialidade.
 
-Pergunta e respostas já ficam salvas no treino. Ao pausar só o treino, preserve
-o checkpoint da campanha que continua. Use fase `practice` somente quando esse
-for o ponto geral de retomada.
+Pergunta e respostas já ficam salvas no treino. Use `activity: practice` e
+fase `practice` na nota do treino; a nota da campanha permanece separada.
+Consulte `status --focus practice` e explique se falta resposta, feedback ou
+novo ensaio. O placar de candidaturas não é o resumo deste treino.
 `end-questions` encerra antecipadamente, não pausa. `choose later` permite
 continuar a busca sem perder o treino; `choose now` retoma a prioridade.
 `stop` interrompe toda a campanha; use apenas se a pessoa pedir essa parada.

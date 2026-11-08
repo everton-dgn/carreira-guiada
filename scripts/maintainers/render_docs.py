@@ -103,7 +103,7 @@ def frame(tool, command, title, number, conversation, note, cursor=False):
     text(draw, (40, 136), subtitle, 23, DIM)
     labels = (["Escolher atividade", "Criar currículo", "Mais opções", "Trocar de atividade", "Voltar no outro dia"]
               if command == "claude" else
-              ["Buscar vagas", "Preencher dados", "Conferir o envio", "Acompanhar", "Parar e retomar"])
+              ["Buscar vagas", "Ação da pessoa", "Conferir o envio", "Acompanhar", "Parar e retomar"])
     text(draw, (40, 205), f"0{number}", 64, ACCENT, bold=True)
     for index, label in enumerate(labels):
         y = 310 + index * 48
@@ -179,7 +179,7 @@ def render(name, tool, command, title, scenes, poster=0):
 def main():
     """Generate the fictional menu and job-search examples in the assets folder."""
     OUT.mkdir(parents=True, exist_ok=True)
-    render("escolher-atividade", "Claude Code", "claude", "Escolha por onde começar.", [
+    render("menu-com-contexto", "Claude Code", "claude", "Seu próximo passo, sem adivinhar.", [
         ([("> iniciar", ACCENT), ("IA: O que você quer fazer?", TEXT),
           ("1. Currículo", TEXT), ("2. Entrevistas", TEXT),
           ("3. Guia de carreira", TEXT), ("4. Busca de vagas", TEXT),
@@ -195,31 +195,34 @@ def main():
           ("Comparação de propostas", TEXT), ("Escolha de modelos", TEXT),
           ("Preparo completo para candidaturas", TEXT)],
          "Abra o menu quando precisar. Você escolhe qual atividade quer iniciar."),
-        ([("> Quero investigar a Empresa Aurora.", ACCENT),
-          ("IA: Qual é sua principal dúvida sobre ela?", TEXT),
-          ("> Quero entender a jornada de trabalho.", ACCENT),
-          ("> Vou continuar amanhã.", ACCENT),
-          ("IA: Análise salva. Falta combinar as fontes.", TEXT)],
-         "A nova atividade fica salva. As respostas do currículo continuam disponíveis."),
-        ([("> iniciar", ACCENT), ("IA: Sua análise de empresa está salva.", TEXT),
-          ("Quer continuar, revisar ou mudar de atividade?", TEXT),
-          ("> Continuar.", ACCENT),
-          ("IA: A dúvida é sobre a jornada de trabalho.", TEXT),
-          ("Vamos escolher as fontes públicas da pesquisa.", TEXT)],
-         "No outro dia, abra a mesma pasta e diga o que quer continuar."),
+        ([("> Parar as candidaturas. Quero treinar.", ACCENT),
+          ("IA: A campanha está parada. Vamos ao treino.", TEXT),
+          ("Conte um desafio de trabalho ou estudo.", TEXT),
+          ("> Organizei os pedidos do projeto.", ACCENT),
+          ("IA: Resposta salva. Falta o feedback.", TEXT)],
+         "Troque de atividade sem perder o currículo ou retomar candidaturas paradas."),
+        ([("> Continuar meu treino.", ACCENT),
+          ("IA: Atividade atual: entrevistas.", TEXT),
+          ("Sua resposta sobre o projeto está salva.", TEXT),
+          ("Vamos revisar o que você contou.", TEXT),
+          ("A campanha de candidaturas continua parada.", DIM),
+          ("> Depois quero voltar ao currículo.", ACCENT)],
+         "No outro dia, nomeie a atividade. Perguntas e respostas continuam no ponto salvo."),
     ])
-    render("busca-acompanhada", "Codex CLI", "codex", "A IA busca. Você acompanha.", [
+    render("busca-com-progresso", "Codex CLI", "codex", "Saiba o que acontece em cada etapa.", [
         ([("> Pode buscar e enviar nesta rodada,", ACCENT),
           ("dentro dos filtros que aprovei.", ACCENT), ("", DIM),
           ("IA: Permissão salva para esta rodada.", TEXT),
           ("Vou consultar as fontes escolhidas.", TEXT),
           ("Perfil, currículo e ferramentas conferidos.", DIM)],
          "Você escolhe: autorizar a rodada ou confirmar cada envio."),
-        ([("IA: A vaga da Empresa Exemplo é compatível.", TEXT),
-          ("Vou preencher com seus dados confirmados.", TEXT),
-          ("", DIM), ("> Use o currículo que aprovei.", ACCENT),
-          ("IA: Se faltar uma resposta, eu pergunto.", TEXT)],
-         "Você não precisa repetir manualmente as mesmas informações em cada formulário."),
+        ([("> O que precisa de mim?", ACCENT),
+          ("IA: Entre na conta do Portal Fictício.", TEXT),
+          ("A aba está preservada. Não envie sua senha.", TEXT),
+          ("Outra vaga autorizada pode seguir.", TEXT),
+          ("> Pronto, entrei.", ACCENT),
+          ("IA: Vou conferir a sessão antes de preencher.", TEXT)],
+         "Ação concreta, lugar certo. Uma pendência não paralisa as demais vagas autorizadas."),
         ([("IA: Formulário preenchido e conferido.", TEXT),
           ("Currículo e destino verificados.", TEXT), ("", DIM),
           ("A vaga está dentro da sua permissão.", TEXT),
@@ -228,14 +231,15 @@ def main():
         ([("IA: O portal fictício confirmou o recebimento.", TEXT),
           ("A candidatura ficou registrada.", TEXT),
           ("", DIM), ("> Acompanhe os retornos que autorizei.", ACCENT),
-          ("IA: Vou conferir prazos e próximas etapas.", TEXT)],
+          ("IA: Falta sua resposta na Empresa Exemplo.", TEXT),
+          ("Prazo: 9 de novembro, 18h (Brasília).", TEXT)],
          "Uma candidatura só é contada quando há confirmação do destino."),
         ([("> Parar por agora.", ACCENT),
           ("IA: Ações interrompidas. Progresso salvo.", TEXT),
           ("", DIM), ("> Continuar as candidaturas.", ACCENT),
           ("IA: Vou conferir os resultados pendentes.", TEXT),
           ("Envio incerto não será repetido.", TEXT)],
-         "Ao continuar, a IA confere o estado salvo para evitar envios duplicados."),
+         "Peça andamento, ações que dependem de você ou detalhes, a qualquer momento."),
     ], poster=2)
 
 

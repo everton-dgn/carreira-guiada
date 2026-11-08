@@ -20,7 +20,7 @@ plataforma de destino efetivamente verificada. Não use o nome do navegador.
 
 ## Executar
 
-1. Liste etapas pendentes com `./job status`; ordene por prazo verificado,
+1. Liste etapas pendentes com `./job status --details`; ordene por prazo verificado,
    depois por antiguidade. Prazo ambíguo: `prazo_a_confirmar`, sem converter.
 2. Reserve a etapa para um único executor. Contas distintas não autorizam
    executar o mesmo pedido duas vezes.
