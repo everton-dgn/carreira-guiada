@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.16.1 - 2026-11-08
+
+### Correções
+
+- O início identifica o menu corretamente. Consultas mostram a atividade e a
+  pergunta pendente, inclusive depois de trocar de atividade ou voltar no dia
+  seguinte, sem cobrar novamente respostas já salvas.
+- Esperas por ferramentas aparecem uma vez, com o próximo passo explícito.
+  Uma espera antiga exige conferir o retorno antes de afirmar que a operação
+  continua em execução. Candidaturas paradas permanecem paradas.
+- Registros de currículo danificados preservam a orientação de reparo e os
+  dados salvos, sem falhar durante a consulta de andamento.
+- O guia de acompanhamento explica esses comportamentos. Seis regressões
+  novas cobrem os casos encontrados na simulação com dados fictícios.
+
 ## 0.16.0 - 2026-11-08
 
 - Andamento por atividade mostra o próximo passo e separa a preparação da

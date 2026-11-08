@@ -612,7 +612,13 @@ class Workflow:
             result['message'] = result['details_message']
         if needs_user:
             lines = [line for line in result['details_message'].splitlines() if line.startswith('Precisa de você')]
-            result['message'] = '\n'.join(lines) if lines else 'Não encontrei uma ação sua nas pendências registradas. Isso não comprova execução ativa.'
+            context = ['Atividade: ' + result['session']['label'] + '.']
+            if result['session']['campaign_stopped']:
+                context.append('Campanha de candidaturas parada. As demais atividades podem ser retomadas separadamente.')
+            if not lines:
+                lines = ['Não encontrei uma ação sua nas pendências registradas. Isso não comprova execução ativa.',
+                         'Próximo passo: ' + result['session']['next_action']]
+            result['message'] = '\n'.join(context + lines)
         return result
 
     def _expire(self, store, now):
