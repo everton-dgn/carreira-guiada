@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.16.0 - 2026-11-08
+
 - Andamento por atividade mostra o próximo passo e separa a preparação da
   campanha de candidaturas. Ações da pessoa, prazos e resultados incertos
   continuam visíveis, inclusive depois de parar a campanha.
