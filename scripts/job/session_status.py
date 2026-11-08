@@ -102,6 +102,7 @@ def _activity(root, state, activity):
         result.update(condition='waiting_user', needs_user=True, next_action='Escolha currículo, entrevistas, carreira ou busca de vagas no menu.')
     elif activity == 'curriculum':
         intake = Intake(root).status()
+        result['_intake_complete'] = intake['complete']
         versions = ResumeManager(root).list()
         approved = []
         for version in versions:
@@ -209,12 +210,14 @@ def _activity(root, state, activity):
     return result
 
 
-def _dependency_instruction(root, dependency, current, activity, state):
+def _dependency_instruction(dependency, current, activity, state):
     """Use the domain's current question, never an old note's free-form instruction."""
     if dependency['reason'] == 'answer':
+        if current['condition'] == 'needs_verification':
+            return None
         if activity == 'practice' and state['practice'].get('next_step') in {'feedback', 'advance', 'finish'}:
             return None
-        if activity == 'curriculum' and current['phase'] == 'review' and Intake(root).status()['complete']:
+        if activity == 'curriculum' and current['phase'] == 'review' and current.get('_intake_complete'):
             return None
         if current['needs_user'] and current['condition'] == 'waiting_user':
             return current['next_action']
@@ -241,7 +244,7 @@ def project(root, state, now, focus=None, start=None):
     actionable_scope = valid_scope and not (activity == 'search' and state['control']['stopped'])
     if actionable_scope and point.get('dependency') and current['condition'] != 'completed':
         dependency = point['dependency']
-        instruction = _dependency_instruction(root, dependency, current, activity, state)
+        instruction = _dependency_instruction(dependency, current, activity, state)
         if instruction:
             dependencies.append({'source': 'checkpoint', 'activity': activity, 'needs_user': point['needs_user'],
                                  'instruction': instruction, 'reference': dependency.get('reference'),
@@ -266,7 +269,7 @@ def project(root, state, now, focus=None, start=None):
                 f'Os dados de {LABELS[key]} precisam de reparo. A pendência não pôde ser conferida; os registros foram preservados.'})
             continue
         dependency = note['dependency']
-        instruction = _dependency_instruction(root, dependency, other, key, state)
+        instruction = _dependency_instruction(dependency, other, key, state)
         if instruction is None:
             continue
         dependencies.append({'source': 'checkpoint', 'activity': key, 'needs_user': True,
@@ -285,6 +288,7 @@ def project(root, state, now, focus=None, start=None):
     saved = {'at': point['saved_at'], 'display': display_time(point['saved_at'], zone, now),
              'activity_matches': True, 'campaign_matches': valid_scope,
              'note_is_not_authorization': True} if point else None
+    current.pop('_intake_complete', None)
     current.update(activity=activity, label=LABELS[activity], campaign_stopped=bool(state['control']['stopped']),
                    execution='unverified', last_saved=saved, dependencies=dependencies,
                    user_actions=[item for item in dependencies if item['needs_user']],

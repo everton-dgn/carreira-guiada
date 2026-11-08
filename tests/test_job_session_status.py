@@ -178,6 +178,22 @@ class SessionStatusTests(unittest.TestCase):
         state = self.call('status', '--focus', 'curriculum', '--needs-user')
         self.assertIn('Empresa Fictícia', state['message'])
 
+    def test_invalid_intake_keeps_repair_guidance_with_a_saved_answer_dependency(self):
+        """Malformed CV answers retain repair guidance without a second unsafe read."""
+        self.call('intake', 'choose', data={'mode': 'create', 'route': 'curriculum'})
+        self.call('checkpoint', 'save', data=self.note('curriculum', 'resume', needs_user=True,
+                  condition='waiting_user', dependency={'reason': 'answer'}))
+        with Profile(self.root)._db(True) as db:
+            db.execute("UPDATE job_intake SET value='{}'")
+        before = (self.root / '.job/control.sqlite3').read_bytes()
+        state = self.call('status', '--focus', 'curriculum')
+        self.assertEqual(state['session']['condition'], 'needs_verification')
+        self.assertIn('precisam de reparo', state['message'])
+        self.assertFalse(state['session']['needs_user'])
+        self.assertFalse(state['session']['user_actions'])
+        self.assertFalse(any(key.startswith('_') for key in state['session']))
+        self.assertEqual((self.root / '.job/control.sqlite3').read_bytes(), before)
+
     def test_selected_curriculum_survives_campaign_pause_next_day(self):
         """A paused campaign never hides or resumes the selected CV activity."""
         self.call('menu', '--choose', 'currículo', '--remember')
