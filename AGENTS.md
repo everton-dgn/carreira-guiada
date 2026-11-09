@@ -100,6 +100,16 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   de executor externo nem prometa que uma conversa aberta mantém a IA trabalhando.
 - Escreva em português do Brasil, com acentuação, sem travessão nem emojis.
 
+## Planejamento e evolução opcionais
+
+A pessoa pode pedir "meu plano" ou "minha evolução" a qualquer momento.
+Siga [o protocolo](docs/PLANEJAMENTO-AGENTE.md), com uma pergunta por vez.
+Reaproveite decisões confirmadas de carreira e treino. Planejar não autoriza
+pesquisa, envio, publicação ou retomada da campanha. Registrar prática exige
+origem e confirmação; exemplos escritos pela IA não contam como treino humano.
+Pontos e conquistas começam desativados. Pausas não retiram pontos nem geram
+dívida. Avaliações de aprendizagem exigem evidências e podem ser contestadas.
+
 ## Entrada: `iniciar`
 
 `iniciar`, "começar", "continuar" e frases equivalentes entram pela skill
@@ -115,7 +125,7 @@ Nunca invente salário ou consentimento. A descoberta de estado segue esta ordem
    mandando a pessoa resolver sozinha ou procurar quem montou a pasta.
 2. Ler `start --json`. No primeiro acesso, apresente as quatro opções de
    `menu`: currículo, entrevistas, carreira e busca de vagas, além de
-   `5. Mais opções` para empresa, LinkedIn/GitHub, propostas, modelos e preparo
+   `5. Mais opções` para Meu plano, Minha evolução, empresa, LinkedIn/GitHub, propostas, modelos e preparo
    completo. Abrir a lista secundária não troca a atividade. `menu`, "opções"
    e "ajuda" mostram essas opções a qualquer momento, sem alterar o progresso.
    Pedido específico entra direto: use `menu --choose` com o número ou nome

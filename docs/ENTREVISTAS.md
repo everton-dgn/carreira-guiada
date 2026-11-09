@@ -145,3 +145,10 @@ Se uma resposta for recusada por parecer conter credenciais ou documentos,
 troque os valores por uma explicação do conceito. Não cole senha, chave ou
 número de documento para pedir ajuda. O aviso preserva as respostas anteriores;
 a conferência automática pode errar e não substitui esse cuidado.
+
+## Dar continuidade à prática
+
+Você pode pedir "coloque esse exercício no meu plano" e combinar um passo
+que caiba na semana. Para acompanhar tentativas e conquistas com evidências,
+use [Minha evolução](MINHA-EVOLUCAO.md). O acompanhamento começa desativado;
+respostas escritas pela IA não contam como ensaio pessoal.

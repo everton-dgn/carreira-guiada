@@ -11,6 +11,20 @@ uv run --locked python -m unittest discover -s tests -p 'test_*.py'
 
 ## Cenários cobertos
 
+- Plano e evolução: entrada direta sem cadastro, reaproveitamento de objetivo
+  confirmado, orçamento por semana, estimativa desconhecida, excesso de tarefas,
+  pausa de duas semanas e troca entre plano e treino. Os percursos fictícios
+  de Nina e Jo usam a CLI real e bloqueiam rede e novos subprocessos.
+  A comparação com candidatura incerta usa somente o controle local fictício;
+  concluir uma tarefa do plano não resolve nem repete o envio.
+- Registros pessoais: escritores concorrentes, rollback de falha de gravação,
+  revisões preservadas, referência de treino desatualizada, autoria pessoal,
+  tentativa pulada, eventos repetidos e correção de duração. Marcos ficam para
+  revisão quando uma evidência muda; desligar indicadores mantém respostas.
+- Terminal: 40, 60, 80 e 120 colunas, texto simples, `NO_COLOR`, saída
+  redirecionada, glifos alternativos, markup literal e neutralização de controles
+  ANSI/OSC e bidi. A apresentação não anima nem controla o cursor.
+
 - Acompanhamento da sessão: 12 percursos fictícios cobrem instalação nova,
   currículo e treino após parada, troca de atividade, login, espera por
   ferramenta, autorização vencida, prazo por e-mail, meta e histórico,
@@ -95,6 +109,14 @@ processo e com o relógio avançado. A campanha permanece parada e não há
 publicações, mensagens ou candidaturas.
 `JOB_MENU_REPORT` pode apontar para uma pasta privada de evidências.
 As conversas são roteiros de teste, não um estudo com pessoas reais.
+`tests/test_personal_journey.py` usa a mesma CLI em processos separados e o
+mesmo bloqueio. `JOB_PERSONAL_REPORT` permite exportar os roteiros para uma
+pasta privada nova. O relógio avança duas semanas sem manter um processo
+executando durante esse período. A suíte comprova os comportamentos
+programados; não mede motivação, aprendizagem real ou chance de contratação.
+O GIF de plano e evolução captura o renderer implementado, alimentado por
+registros fictícios. A digitação é uma montagem demonstrativa. Os demais
+visuais continuam sendo ilustrações dos fluxos.
 `tests/test_job_session_status.py` acrescenta os 12 percursos de acompanhamento.
 As chamadas de CLI usam o bloqueio de rede e subprocessos do percurso de
 preparação; cenários em processo usam os controladores locais e bloqueiam

@@ -112,3 +112,11 @@ Campanhas longas precisam de sessão ativa e ferramentas conectadas. Fechar o
 aplicativo interrompe essa execução; o progresso salvo permite voltar depois.
 [Como trabalhar por objetivo](GUIA.md#buscar-por-objetivo).
 Para instalar uma versão nova, veja [como atualizar sem perder o progresso](GUIA.md#atualizar-sem-perder-o-progresso).
+
+## Plano e práticas pessoais
+
+"Meu plano" mostra a direção, o próximo passo e o tempo planejado.
+"Minha evolução" oferece um registro opcional das práticas que você confirmou.
+Essas atividades têm retomada própria: uma pausa não retira pontos nem retoma
+candidaturas. Você pode pedir texto simples e desligar indicadores.
+[Planejamento](MEU-PLANO.md) · [Evolução pessoal](MINHA-EVOLUCAO.md).

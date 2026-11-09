@@ -2,6 +2,7 @@
 import json
 import re
 from uuid import uuid4
+from datetime import datetime, timezone
 
 from .profile import Profile
 from .resumes import _text
@@ -183,17 +184,35 @@ class Practice:
                 'message': 'Tudo bem não saber. Comece pelo que você já conhece e peça ajuda para organizar a resposta.',
                 'example': HINTS[session['track']]}
 
-    def answer(self, session_id, question_id, text):
+    def answer(self, session_id, question_id, text, *, attempt_id=None, origin=None, user_confirmation=None):
+        """Save a response with optional human provenance and idempotent attempt ID."""
+        if attempt_id is not None:
+            attempt_id = _text(attempt_id, "o identificador da tentativa", 200)
+        if origin not in (None, "person", "agent", "unknown"):
+            raise ValueError("Origem inválida.")
+        origin = origin or "unknown"
+        if user_confirmation is not None:
+            user_confirmation = _text(user_confirmation, "a confirmação", 2000)
+        if origin == "person" and not user_confirmation:
+            raise ValueError("A autoria da pessoa exige confirmação textual.")
         text = _answer_text(text, 'a resposta', 20000)
         if text.casefold().strip(' .!?') in ('não sei', 'nao sei'):
             return self.hint(session_id, question_id)
         def change(state):
+            if attempt_id is not None:
+                for session in state['sessions']:
+                    for question in session['questions']:
+                        for attempt in question['attempts']:
+                            if attempt.get('attempt_id') == attempt_id:
+                                if (session['id'] != session_id or question['id'] != question_id or attempt['text'] != text or attempt.get('origin') != origin or attempt.get('user_confirmation') != user_confirmation):
+                                    raise ValueError('Identificador de tentativa já usado com outros dados.')
+                                return
             q = self._current(self._session(state, session_id), question_id)
-            if q['attempts'] and q['attempts'][-1]['kind'] == 'answer' and q['attempts'][-1]['text'] == text:
+            if attempt_id is None and q['attempts'] and q['attempts'][-1]['kind'] == 'answer' and q['attempts'][-1]['text'] == text:
                 return
             if len(q['attempts']) >= 50:
                 raise ValueError('Limite de tentativas atingido.')
-            q['attempts'].append({'version': len(q['attempts']) + 1, 'kind': 'answer', 'text': text, 'feedback': None})
+            q['attempts'].append({'version': len(q['attempts']) + 1, 'kind': 'answer', 'text': text, 'feedback': None, 'attempt_id': attempt_id, 'origin': origin, 'user_confirmation': user_confirmation, 'recorded_at': datetime.now(timezone.utc).isoformat()})
         self._save(change)
         return self.status(session_id)
 

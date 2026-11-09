@@ -83,7 +83,8 @@ opções principais são currículo, entrevistas, guia de carreira e busca de va
 Responda pelo número mostrado ou pelo nome da tarefa. Não precisa saber qual
 comando a IA usa por trás da conversa.
 
-Em **Mais opções**, você encontra revisão de LinkedIn/GitHub, investigação
+Em **Mais opções**, você encontra [Meu plano](MEU-PLANO.md),
+[Minha evolução](MINHA-EVOLUCAO.md), revisão de LinkedIn/GitHub, investigação
 de empresas, comparação de propostas, escolha de modelos e preparo completo
 para candidaturas. Abrir essa lista não troca sua atividade nem inicia ações.
 Você também pode pedir diretamente "quero analisar uma proposta" ou

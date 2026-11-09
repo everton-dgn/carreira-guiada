@@ -15,7 +15,8 @@ class AuxiliaryNavigationTests(unittest.TestCase):
     def test_more_and_explicit_routes(self):
         result = self.call('menu', '--choose', 'mais opções', '--remember')
         self.assertIsNone(result['selected'])
-        self.assertEqual(len(result['choices']), 5)
+        self.assertEqual(len(result['choices']), 7)
+        self.assertEqual([item['focus'] for item in result['choices'][:2]], ['plan', 'progress'])
         self.assertFalse((self.root / '.job').exists())
         for name, step in [('empresa', 'company_dossier'), ('LinkedIn/GitHub', 'professional_presence'),
                            ('propostas', 'offers'), ('modelos', 'model_preferences')]:

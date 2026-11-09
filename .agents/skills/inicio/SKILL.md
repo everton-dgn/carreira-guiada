@@ -11,8 +11,8 @@ um exemplo. Evite apresentar uma lista de tarefas para ela executar sozinha.
 
 Mostre `./job menu --json` quando a pessoa pedir "menu", "opções" ou "ajuda".
 Apresente os quatro nomes e `5. Mais opções`; aceite o número ou uma frase curta.
-`menu --choose 5` mostra empresa, LinkedIn/GitHub, propostas, modelos e preparo
-completo. Nessa lista, aceite o nome da atividade, sem inventar numeração.
+`menu --choose 5` mostra Meu plano, Minha evolução, empresa, LinkedIn/GitHub,
+propostas, modelos e preparo completo. Nessa lista, aceite o nome da atividade, sem inventar numeração.
 Abrir a lista secundária não salva uma escolha, mesmo com `--remember`. Um número
 isolado só seleciona uma atividade quando responde ao menu recém-exibido.
 Use `menu --choose` com a escolha reconhecida e `--remember` para salvá-la
@@ -75,6 +75,16 @@ essa preferência. Isso não invalida perfil ou currículo nem autoriza troca.
 Ao longo do preparo, use as [dicas do onboarding](../../../docs/ONBOARDING.md#dicas-durante-o-preparo)
 quando forem pertinentes, uma por vez. Preserve a pergunta indicada pelo
 controle, sem adicionar questionário técnico ou repetir dicas já dadas.
+
+## Plano e evolução opcionais
+
+Pedidos como "meu plano", "organizar minha semana" e "minha evolução" entram
+pelas rotas `plan` e `progress`, sem exigir onboarding completo. Consulte
+[planejamento para o agente](../../../docs/PLANEJAMENTO-AGENTE.md) antes de
+salvar. Aproveite fatos confirmados de carreira e treino, faça uma pergunta
+por vez e aceite disponibilidade desconhecida. Não ative pontos por padrão.
+Essas rotas preservam a parada da campanha e as permissões de cada atividade.
+No chat, apresente o conteúdo de JSON sem sequências de terminal.
 
 ## Conferir o que já existe
 

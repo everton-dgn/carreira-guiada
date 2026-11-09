@@ -82,14 +82,14 @@ class Intake:
 
     def select_existing_route(self, route):
         """Switch an explicit direct route without changing operational checkpoints."""
-        if route not in ('career', 'practice'):
+        if route not in ('career', 'practice', 'plan', 'progress'):
             raise ValueError('Rota desconhecida.')
-        if self.get().get('route') in ('curriculum', 'career', 'practice', 'search', 'prepare', 'company', 'presence', 'offers', 'models'):
+        if self.get().get('route') in ('curriculum', 'career', 'practice', 'search', 'prepare', 'company', 'presence', 'offers', 'models', 'plan', 'progress'):
             self.remember_route(route)
 
     def remember_route(self, route):
         """Persist an explicit menu choice without granting or resuming actions."""
-        if route not in ('curriculum', 'career', 'practice', 'search', 'prepare', 'company', 'presence', 'offers', 'models'):
+        if route not in ('curriculum', 'career', 'practice', 'search', 'prepare', 'company', 'presence', 'offers', 'models', 'plan', 'progress'):
             raise ValueError('Escolha uma das atividades disponíveis no menu.')
         return self._save(lambda state: state.update(route=route))
 

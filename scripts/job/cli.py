@@ -29,23 +29,28 @@ def parser():
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument("--root", type=Path, default=argparse.SUPPRESS, help="Pasta do projeto; a área privada fica dentro dela")
     common.add_argument("--json", action="store_true", default=argparse.SUPPRESS, help="Resposta estruturada para o agente")
+    common.add_argument("--plain", action="store_true", default=argparse.SUPPRESS, help="Texto simples, sem cores ou desenhos")
     main = argparse.ArgumentParser(description="Carreira Guiada: guia de candidaturas no chat", parents=[common])
     commands = main.add_subparsers(dest="command", required=True)
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[common])
     start = command("start", "Ver o próximo passo do início guiado, sem iniciar envios")
-    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models'), default=None, help='Consultar uma atividade sem alterar a escolha salva')
+    start.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models', 'plan', 'progress'), default=None, help='Consultar uma atividade sem alterar a escolha salva')
     menu = command("menu", "Escolher uma atividade")
     menu.add_argument("--choose", help="Número ou nome da atividade")
     menu.add_argument("--remember", action="store_true", help="Salvar a atividade escolhida para continuar depois")
     status = command("status", "Conferir o progresso e as pendências")
-    status.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models'), help='Consultar outra atividade sem mudar o foco salvo')
+    status.add_argument('--focus', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models', 'plan', 'progress'), help='Consultar outra atividade sem mudar o foco salvo')
     status.add_argument('--details', action='store_true', help='Mostrar histórico e pendências detalhadas')
     status.add_argument('--needs-user', action='store_true', help='Mostrar o que depende da pessoa')
     command("context", "Ler o contexto privado para o agente responsável")
     command("doctor", "Conferir requisitos e capacidades observadas")
     models = command('models', 'Guardar os serviços de IA disponíveis e orientar a escolha por etapa')
     models.add_argument('action', choices=('show', 'save', 'recommend'))
+    plan = command('plan', 'Organizar seu objetivo, tempo e próximos passos')
+    plan.add_argument('action', choices=('show', 'status', 'get', 'history', 'start', 'update', 'action', 'transition', 'review', 'pause', 'resume', 'archive'))
+    progress = command('progress', 'Acompanhar práticas e conquistas opcionais')
+    progress.add_argument('action', choices=('show', 'status', 'get', 'history', 'configure', 'record', 'correct', 'milestone', 'contest'))
     presence = command('presence', 'Preparar a revisão opcional do LinkedIn e GitHub')
     presence.add_argument('action', choices=('show', 'status', 'choose', 'source', 'draft', 'finish'))
     practice = command('practice', 'Treinar entrevistas em particular, sem candidaturas ou contas reais')
@@ -64,7 +69,7 @@ def parser():
     tabs.add_argument('action', choices=('status', 'reserve', 'update', 'release'))
     saved = command('checkpoint', 'Guardar o último progresso e a próxima ação para outra sessão')
     saved.add_argument('action', choices=('show', 'save'))
-    saved.add_argument('--activity', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models'), help='Consultar a nota de uma atividade específica')
+    saved.add_argument('--activity', choices=('prepare', 'search', 'practice', 'career', 'company', 'curriculum', 'presence', 'offers', 'models', 'plan', 'progress'), help='Consultar a nota de uma atividade específica')
     for name in ("jobs", "steps", "step", "transition"):
         command(name, "Consultar ou registrar oportunidades e etapas")
     for name in ("coverage", "cleanup-rules"):
@@ -129,8 +134,11 @@ def onboarding(root, focus='prepare', resume_route=True, intake_state=None):
     selected_route = (Intake(root).get() if intake_state is None else intake_state).get('route')
     if focus == 'prepare' and selected_route == 'prepare':
         resume_route = False
-    if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search', 'company', 'presence', 'offers', 'models'):
+    if focus == 'prepare' and resume_route and selected_route in ('curriculum', 'career', 'practice', 'search', 'company', 'presence', 'offers', 'models', 'plan', 'progress'):
         focus = selected_route
+    if focus in ('plan', 'progress'):
+        from .personal_views import entry
+        return entry(root, focus)
     if focus in ('presence', 'offers', 'models'):
         if focus == 'presence':
             from .presence import Presence
@@ -338,13 +346,17 @@ def dispatch(args):
         if args.focus:
             result['welcome_back'] = None
         else:
-            if intake_state.get('route') not in ('curriculum', 'career', 'practice', 'search', 'company', 'presence', 'offers', 'models'):
+            if intake_state.get('route') not in ('curriculum', 'career', 'practice', 'search', 'company', 'presence', 'offers', 'models', 'plan', 'progress'):
                 result['model_setup'] = Models(root).guidance()
             result['menu'] = menu()
             result = resume_entry(result, intake_state.get('route'))
             if result['next_step'] == 'curriculum_input' and not result.get('welcome_back') and not intake_state.get('mode') and not intake_state.get('route'):
                 result['message'] = result['menu']['message']
         return with_session(root, result, args.focus)
+    if args.command in ('plan', 'progress'):
+        from .personal_views import dispatch as personal_dispatch
+        readonly = args.action in ('show', 'status') or (args.command == 'progress' and args.action in ('get', 'history'))
+        return personal_dispatch(root, args.command, args.action, None if readonly else payload())
     if args.command == 'models':
         from .models import Models
         models = Models(root)
@@ -411,7 +423,7 @@ def dispatch(args):
         fields = {'choose': ({'decision'}, set()),
                   'start': ({'track', 'mode'}, {'context', 'area', 'level', 'short', 'question_ids'}),
                   'hint': ({'session_id', 'question_id'}, set()),
-                  'answer': ({'session_id', 'question_id', 'text'}, set()),
+                  'answer': ({'session_id', 'question_id', 'text'}, {'attempt_id', 'origin', 'user_confirmation'}),
                   'skip': ({'session_id', 'question_id'}, set()),
                   'feedback': ({'session_id', 'question_id', 'version', 'strengths', 'improvements', 'suggestion', 'exercise'}, set()),
                   'advance': ({'session_id', 'question_id'}, set()),
@@ -589,9 +601,22 @@ def main(argv=None):
         if getattr(args, "json", False):
             print(json.dumps({"error": message}, ensure_ascii=False))
         else:
-            print(message, file=sys.stderr)
+            from .terminal import render as terminal_render
+            print(terminal_render({}, message, appearance='plain', stream=sys.stderr), file=sys.stderr)
         return 1
-    print(json.dumps(result, ensure_ascii=False, indent=2) if getattr(args, "json", False) else render(result))
+    if getattr(args, "json", False):
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        from .terminal import render as terminal_render
+        from .personal_progress import PersonalProgress
+        appearance = 'plain' if getattr(args, 'plain', False) else 'auto'
+        if appearance == 'auto':
+            try:
+                preferences = PersonalProgress(getattr(args, 'root', ROOT).resolve()).get()['preferences']
+                appearance = preferences.get('appearance', 'auto')
+            except (ValueError, KeyError, TypeError, sqlite3.Error):
+                appearance = 'plain'
+        print(terminal_render(result, render(result), appearance=appearance, stream=sys.stdout))
     return 0
 
 
