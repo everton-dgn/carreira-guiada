@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.22.0 - 2026-11-09
+
 ### Novidades
 
 - A campanha pode ser encerrada por pedido explícito, com histórico e pendências
