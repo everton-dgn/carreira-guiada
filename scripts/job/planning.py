@@ -32,10 +32,12 @@ def day(value):
 class PersonalPlan:
     """Save personal plans independently from operational permissions and goals."""
     def __init__(self, root):
+        """Bind plan storage to the private profile without initializing it."""
         self.profile = Profile(root)
 
     @staticmethod
     def _rows(db):
+        """Read immutable plan revisions in insertion order when storage exists."""
         if db is None or not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='personal_plan_revisions'").fetchone(): return []
         return [json.loads(row[0]) for row in db.execute('SELECT value FROM personal_plan_revisions ORDER BY rowid')]
 
@@ -66,6 +68,7 @@ class PersonalPlan:
 
     @staticmethod
     def _reference(db, ref):
+        """Validate a reference and check that its exact source revision exists."""
         if not isinstance(ref, dict): raise ValueError('Referência inválida.')
         if ref.get('kind') == 'career':
             obj(ref, ('kind','id','version'), ('kind','id','version'))
@@ -80,6 +83,7 @@ class PersonalPlan:
         raise ValueError('Tipo de referência desconhecido.')
 
     def _fields(self, data, db):
+        """Validate supplied plan fields and their stored source references."""
         if 'direction' in data and data['direction'] is not None: text(data['direction'])
         if 'weekly_minutes' in data and data['weekly_minutes'] is not None: integer(data['weekly_minutes'])
         if 'cycle' in data:
@@ -155,6 +159,7 @@ class PersonalPlan:
         return dict(exists=True, id=s['id'], version=s['version'], state=s['state'], message='Plano ' + labels[s['state']] + '.', next_action=nxt, next_step=nxt['title'] if nxt else 'Revise o plano quando quiser.', budget=dict(weekly_minutes=s['weekly_minutes'], periods=budget, without_period=[a for a in s['actions'] if a['period'] is None and a['state'] in ('planned','active')]), actions=s['actions'], basis=changed, direction=s['direction'], cycle=s['cycle'])
 
     def _mutate(self, operation, data):
+        """Apply one validated operation under optimistic version control."""
         fields = {'update':('direction','weekly_minutes','cycle','basis'), 'action':('action',), 'transition':('action_id','state','evidence'), 'review':('observation','next_step','decision'), 'pause':(), 'resume':(), 'archive':()}[operation]
         required = {'action':('action',), 'transition':('action_id','state'), 'review':('observation','next_step','decision')}.get(operation, ())
         obj(data, ('id','expected_version',*fields), ('id','expected_version',*required))

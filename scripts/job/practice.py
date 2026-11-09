@@ -199,6 +199,7 @@ class Practice:
         if text.casefold().strip(' .!?') in ('não sei', 'nao sei'):
             return self.hint(session_id, question_id)
         def change(state):
+            """Preserve retry identity and append one validated answer with its provenance."""
             if attempt_id is not None:
                 for session in state['sessions']:
                     for question in session['questions']:

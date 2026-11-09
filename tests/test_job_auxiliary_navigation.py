@@ -13,6 +13,7 @@ class AuxiliaryNavigationTests(unittest.TestCase):
     call = cli.CliTests.call
 
     def test_more_and_explicit_routes(self):
+        """The secondary menu exposes all routes without starting an unwanted activity."""
         result = self.call('menu', '--choose', 'mais opções', '--remember')
         self.assertIsNone(result['selected'])
         self.assertEqual(len(result['choices']), 7)

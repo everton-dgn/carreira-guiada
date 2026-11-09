@@ -46,6 +46,7 @@ def flat(output):
 
 
 def colors(output):
+    """Extract actual ANSI color codes for assertions about color-free output."""
     codes = set()
     for params in SGR.findall(output):
         codes.update(int(p) for p in params.split(';') if p)
@@ -133,6 +134,7 @@ class TerminalTests(unittest.TestCase):
         return output
 
     def test_plain_routes_return_sanitized_linear_text(self):
+        """Explicit plain output preserves readable route text without styling."""
         text = 'Linha um\x1b[31m vermelha\x1b[0m\nLinha dois'
         expected = 'Linha um vermelha\nLinha dois'
         self.assertEqual(render(PLAN, text, stream=Stream(tty=False)), expected)
@@ -141,16 +143,19 @@ class TerminalTests(unittest.TestCase):
         self.assertEqual(render(PLAN, text, stream=Stream()), expected)
 
     def test_default_stream_is_stdout_and_pipe_stays_plain(self):
+        """Piped output remains plain when no custom stream is provided."""
         with patch.object(sys, 'stdout', Stream(tty=False)):
             self.assertEqual(render(MENU, MENU_TEXT), MENU_TEXT)
 
     def test_choices_keep_numbers_and_appear_once(self):
+        """Rendering preserves menu numbering without duplicating choices."""
         output = visible(self.tty(MENU, MENU_TEXT, width=60))
         for line in MENU_TEXT.split('\n'):
             self.assertEqual(output.count(line), 1, line)
         self.assertNotIn('6.', output)
 
     def test_choices_without_linear_line_are_shown_without_renumbering(self):
+        """Choices missing from the prose remain available under their original numbers."""
         more = {'choices': [{'number': 'empresa', 'focus': 'company', 'label': 'Empresa'},
                             {'number': 'presença', 'focus': 'presence', 'label': 'LinkedIn/GitHub'}]}
         output = visible(self.tty(more, 'Mais opções:\nEmpresa\nDiga o nome da atividade.', width=60))
@@ -159,6 +164,7 @@ class TerminalTests(unittest.TestCase):
         self.assertNotRegex(output, r'\b1\.')
 
     def test_next_step_comes_first_and_plan_facts_are_equivalent(self):
+        """Visual hierarchy promotes the next step without losing the plan facts."""
         before = copy.deepcopy(PLAN)
         output = self.tty(PLAN, PLAN_TEXT, width=120)
         self.assertEqual(PLAN, before, 'render não altera a projeção')
@@ -177,6 +183,7 @@ class TerminalTests(unittest.TestCase):
         self.assertNotIn('%', text)
 
     def test_over_budget_is_marked_and_weeks_stay_separate(self):
+        """An overloaded week is identified without merging independent budgets."""
         text = visible(self.tty(PLAN, PLAN_TEXT, width=80))
         bars = [line for line in text.split('\n') if '█' in line]
         self.assertEqual(len(bars), 2)
@@ -187,6 +194,7 @@ class TerminalTests(unittest.TestCase):
         self.assertLess(text.index(bars[0]), text.index('Semana de 2026-11-16'))
 
     def test_unknown_budget_and_estimate_have_no_bar_and_no_zero(self):
+        """Unknown capacity must not appear as a measured zero or progress bar."""
         plan = {**PLAN, 'budget': {'weekly_minutes': None, 'without_period': [], 'periods': [
             {'period': '2026-11-09', 'planned_minutes': None, 'remaining_minutes': None, 'over_by_minutes': None},
             {'period': '2026-11-16', 'planned_minutes': 60, 'remaining_minutes': None, 'over_by_minutes': None}]}}
@@ -199,6 +207,7 @@ class TerminalTests(unittest.TestCase):
         self.assertNotIn('Sem semana definida', text)
 
     def test_paused_plan_is_labelled_without_progress_bars(self):
+        """Paused plans retain their status and omit active capacity bars."""
         plan = {**PLAN, 'state': 'paused', 'next_action': None,
                 'question': {'question': 'Seu plano está pausado. Quer retomá-lo, ajustar o próximo passo ou apenas consultar?'}}
         text = visible(self.tty(plan, 'Meu plano\nSituação: pausado.\n' + plan['question']['question'], width=120))
@@ -209,6 +218,7 @@ class TerminalTests(unittest.TestCase):
         self.assertIn('Semana de 2026-11-09: 60 min planejados; 30 min livres', text)
 
     def test_missing_plan_shows_only_next_step_and_linear_text(self):
+        """An absent plan does not produce fabricated visual indicators."""
         value = {'view': 'plan', 'exists': False, 'next_step': 'personal_plan', 'budget': None, 'actions': [],
                  'question': {'question': 'O que você quer conseguir primeiro? Pode dizer "não sei".'}}
         plain = 'Meu plano\nVamos escolher um objetivo e um primeiro passo que caiba na sua rotina.\n' + value['question']['question']
@@ -220,12 +230,14 @@ class TerminalTests(unittest.TestCase):
         self.assertNotIn('personal_plan', text)
 
     def test_prose_next_step_is_shown_when_there_is_no_action(self):
+        """A readable next step remains visible without a structured action."""
         value = {'view': 'plan', 'exists': True, 'state': 'active', 'next_action': None,
                  'next_step': 'Revise o plano quando quiser.', 'budget': {'weekly_minutes': 30, 'periods': []}}
         lines = [visible(line) for line in self.tty(value, 'Plano em andamento.', width=60).split('\n')]
         self.assertIn('Revise o plano quando quiser.', lines[1])
 
     def test_progress_shows_indicators_and_evidence_caveats(self):
+        """Enabled progress indicators retain warnings about their supporting evidence."""
         output = self.tty(PROGRESS, PROGRESS_TEXT, width=120)
         text = visible(output)
         self.assertIn(PROGRESS['question']['question'], text.split('\n')[1])
@@ -240,6 +252,7 @@ class TerminalTests(unittest.TestCase):
         self.assertNotIn('personal_progress', text)
 
     def test_progress_without_points_or_minutes_does_not_invent_values(self):
+        """Missing scores and durations remain absent from the displayed summary."""
         value = {**PROGRESS, 'mode': 'tracking', 'points': None, 'reported_minutes': None, 'milestones': [],
                  'evidence_warnings': []}
         text = visible(self.tty(value, 'Minha evolução', width=80))
@@ -249,6 +262,7 @@ class TerminalTests(unittest.TestCase):
         self.assertIn('45 min, total incompleto', visible(self.tty(partial, 'x', width=80)))
 
     def test_progress_off_has_no_scoreboard(self):
+        """Disabled tracking does not display practice scores or points."""
         value = {**PROGRESS, 'mode': 'off', 'practice_count': None, 'reported_minutes': None,
                  'question': {'question': 'Quer guardar suas práticas, ver conquistas com evidências ou também usar pontos?'}}
         plain = ('Minha evolução\nAcompanhamento desativado. Você pode usar todas as atividades sem pontos ou conquistas.\n'
@@ -261,6 +275,7 @@ class TerminalTests(unittest.TestCase):
             self.assertNotIn(hidden, text)
 
     def test_other_commands_keep_whole_linear_text(self):
+        """Unrecognized views retain their full plain-text response."""
         text = 'Falta conferir a sessão do portal.\nFaça o login na aba aberta e me avise quando terminar.\nPosso continuar?'
         output = visible(self.tty({'message': 'x', 'next_step': 'login', 'question': {'question': 'Posso continuar?'}},
                                   text, width=80))
@@ -270,6 +285,7 @@ class TerminalTests(unittest.TestCase):
         self.assertEqual(render([1, 2], 'lista', stream=Stream(), width=40).strip(), 'lista')
 
     def test_widths_keep_cells_and_long_text_without_cutting(self):
+        """Supported terminal widths wrap long text without losing its content."""
         long_word = 'https://exemplo.invalid/' + 'caminho' * 30
         plan = {**PLAN, 'direction': 'Direção longa ' * 12 + long_word}
         text = PLAN_TEXT + '\n' + 'Texto longo do resumo ' * 15 + long_word
@@ -285,10 +301,12 @@ class TerminalTests(unittest.TestCase):
             self.assertNotIn('…', visible(output))
 
     def test_width_falls_back_without_terminal_size(self):
+        """A stream without terminal dimensions uses the documented fallback width."""
         output = self.tty(PLAN, PLAN_TEXT)
         self.assertTrue(all(cell_len(line) <= 80 for line in visible(output).split('\n')))
 
     def test_no_color_removes_colors_but_keeps_glyphs(self):
+        """NO_COLOR disables styling colors while retaining supported glyphs."""
         self.assertTrue(colors(self.tty(PLAN, PLAN_TEXT, width=80)) & {34, 36})
         os.environ['NO_COLOR'] = '1'
         output = self.tty(PLAN, PLAN_TEXT, width=80)
@@ -297,17 +315,20 @@ class TerminalTests(unittest.TestCase):
         self.assertIn('●', output)
 
     def test_motion_is_accepted_without_animation(self):
+        """The motion preference cannot start an animation or change a static render."""
         still = self.tty(PROGRESS, PROGRESS_TEXT, width=80)
         self.assertEqual(self.tty(PROGRESS, PROGRESS_TEXT, width=80, motion=True), still)
         self.assertNotRegex(still, r'\x1b\[\?|\x1b\[[0-9;]*[ABCDEFGHJKST]|\r')
 
     def test_ascii_encoding_uses_ascii_boxes(self):
+        """Unsupported glyph encodings select ASCII decorative borders."""
         output = visible(self.tty(PLAN, 'Resumo simples', width=80, stream=Stream(encoding='ascii')))
         drawing = ''.join(ch for ch in output if not unicodedata.category(ch).startswith(('L', 'M')))
         self.assertTrue(all(ord(ch) < 128 for ch in drawing), drawing)
         self.assertIn('+-', output)
 
     def test_markup_is_literal(self):
+        """User-supplied bracket syntax remains literal rather than Rich markup."""
         hostile = '[bold red]x[/bold red] :smile: [link=https://exemplo.invalid]y[/link]'
         plan = {**PLAN, 'direction': hostile}
         output = self.tty(plan, hostile, width=120)
@@ -316,6 +337,7 @@ class TerminalTests(unittest.TestCase):
         self.assertNotIn('😄', output)
 
     def test_terminal_sequences_and_bidi_controls_are_neutralized(self):
+        """Untrusted terminal and bidirectional controls cannot affect display state."""
         hostile = ('Vaga\x1b]8;;https://mal.invalid\x07link\x1b]8;;\x07 \x1b[2J\x1b[?25l'
                    '\x9b31mfim \u202eodnum\u202c \u2066x\u2069 \x07\x00\x85\x1b]0;título\x1b\\ok')
         self.assertEqual(sanitize(hostile), 'Vagalink fim odnum x ok')
@@ -328,6 +350,7 @@ class TerminalTests(unittest.TestCase):
         self.assertEqual(render(plan, hostile, stream=Stream(tty=False)), 'Vagalink fim odnum x ok')
 
     def test_legitimate_unicode_is_preserved(self):
+        """Sanitization preserves legitimate accented and non-Latin text."""
         text = 'São Paulo, ação, coração\n👩\u200d💻 Dev 👍🏽 ❤️ é\ncoluna\tdois\r\nfim'
         self.assertEqual(sanitize(text), 'São Paulo, ação, coração\n👩\u200d💻 Dev 👍🏽 ❤️ é\ncoluna\tdois\nfim')
         output = visible(self.tty({'view': 'progress', 'mode': 'off'}, text, width=60))
@@ -335,10 +358,12 @@ class TerminalTests(unittest.TestCase):
             self.assertIn(piece, output)
 
     def test_missing_rich_falls_back_to_plain(self):
+        """An unavailable optional renderer leaves usable plain output."""
         with patch.dict(sys.modules, {'rich': None, 'rich.console': None}):
             self.assertEqual(render(PLAN, PLAN_TEXT, stream=Stream(), width=80), PLAN_TEXT)
 
     def test_render_creates_no_files(self):
+        """Rendering remains read-only even when a rich view is requested."""
         with tempfile.TemporaryDirectory() as folder:
             cwd = os.getcwd()
             os.chdir(folder)

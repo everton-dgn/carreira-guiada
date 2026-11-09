@@ -30,6 +30,7 @@ class Intake:
             return self._read(db)
 
     def _save(self, change, obsolete_fact=None, select_preparation=False):
+        """Persist intake changes and retire affected resumes in one transaction."""
         with self.profile._db(True) as db:
             state = self._read(db)
             change(state)

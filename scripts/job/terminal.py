@@ -81,6 +81,7 @@ def render(value, plain_text, *, appearance='auto', motion=False, width=None, st
 
 
 def _isatty(stream):
+    """Detect a terminal conservatively when stream capabilities are unavailable."""
     try:
         return bool(stream.isatty())
     except (AttributeError, OSError, ValueError):
@@ -88,6 +89,7 @@ def _isatty(stream):
 
 
 def _width(width, stream):
+    """Resolve terminal columns and clamp them to supported layout bounds."""
     if type(width) is not int:
         try:
             width = os.get_terminal_size(stream.fileno()).columns
@@ -97,6 +99,7 @@ def _width(width, stream):
 
 
 def _unicode(stream):
+    """Check whether the stream encoding supports every decorative glyph."""
     encoding = getattr(stream, 'encoding', None)
     if not encoding:
         return False
@@ -109,14 +112,17 @@ def _unicode(stream):
 
 
 def _key(line):
+    """Normalize a displayed line for exact-fact deduplication."""
     return line.strip().rstrip('.').strip()
 
 
 def _int(item):
+    """Accept integers without treating booleans as numeric measurements."""
     return item if type(item) is int else None
 
 
 def _text(item):
+    """Return sanitized nonempty text or an absent-field marker."""
     return sanitize(item).strip() if isinstance(item, str) and item.strip() else None
 
 
@@ -124,6 +130,7 @@ class _Visual:
     """Build one capture console and the ordered sections of a projection."""
 
     def __init__(self, value, plain, width, unicode_ok, no_color):
+        """Create a private capture console with fixed capabilities and literal text."""
         from rich import box
         from rich.console import Console
         self.value = value if isinstance(value, dict) else {}
@@ -151,6 +158,7 @@ class _Visual:
         return text
 
     def print(self, renderable=None):
+        """Append a padded renderable or blank line to the capture console."""
         from rich.padding import Padding
         if renderable is None:
             self.console.print()
@@ -158,6 +166,7 @@ class _Visual:
             self.console.print(Padding(renderable, (0, 1), expand=False))
 
     def output(self):
+        """Render the selected view and retain remaining plain-text facts."""
         view = self.value.get('view')
         if view == 'plan':
             self.plan()
@@ -173,10 +182,12 @@ class _Visual:
         return step if step and any(ch.isspace() for ch in step) else None
 
     def question(self):
+        """Read the contextual question without accepting malformed payloads."""
         question = self.value.get('question')
         return _text(question.get('question')) if isinstance(question, dict) else None
 
     def next_box(self, headline=None, extra=(), same=()):
+        """Place the next action and contextual question in one highlighted panel."""
         from rich.console import Group
         from rich.panel import Panel
         headline = headline or self.step()
@@ -190,16 +201,19 @@ class _Visual:
                                      title_align='left', box=self.box, border_style='blue', padding=(0, 1)))
 
     def heading(self, title, detail=None, same=()):
+        """Render a section title and record equivalent plain-text lines."""
         parts = [(title, 'bold blue')]
         if detail:
             parts += [('  ' + self.glyph['item'] + '  ', 'cyan'), (detail, 'bold')]
         self.print(self.line(*parts, same=(title, *same)))
 
     def field(self, label, content):
+        """Render a labeled field only when a value is present."""
         if content is not None:
             self.print(self.line((label + ': ', 'cyan'), (content, None)))
 
     def plan(self):
+        """Present the next action before saved direction, state and weekly capacity."""
         action = self.value.get('next_action')
         if not isinstance(action, dict):
             action = {}
@@ -229,6 +243,7 @@ class _Visual:
 
     @staticmethod
     def if_then(item):
+        """Normalize a textual or structured implementation intention for display."""
         if isinstance(item, str):
             return _text(item)
         if isinstance(item, dict) and _text(item.get('if')) and _text(item.get('then')):
@@ -236,10 +251,12 @@ class _Visual:
         return None
 
     def actions(self):
+        """Select dictionary actions whose states have known visual labels."""
         items = self.value.get('actions')
         return [a for a in items if isinstance(a, dict) and a.get('state') in _ACTION_STATES] if isinstance(items, list) else []
 
     def path(self):
+        """Show action-state glyphs with a legend limited to states actually present."""
         actions = self.actions()
         if not actions:
             return
@@ -251,12 +268,14 @@ class _Visual:
 
     @staticmethod
     def periods(budget):
+        """Normalize list or keyed weekly budgets without inferring missing values."""
         periods = budget.get('periods')
         if isinstance(periods, dict):
             periods = [{'period': k, **v} for k, v in sorted(periods.items()) if isinstance(v, dict)]
         return [p for p in periods if isinstance(p, dict)] if isinstance(periods, list) else []
 
     def budget(self, stopped):
+        """Show weekly estimates and suppress capacity bars for paused plans."""
         budget = self.value.get('budget') if isinstance(self.value.get('budget'), dict) else {}
         weekly = _int(budget.get('weekly_minutes'))
         self.field('Tempo disponível por semana', 'a combinar' if weekly is None else f'{weekly} min')
@@ -294,6 +313,7 @@ class _Visual:
         return self.line(*parts)
 
     def progress(self):
+        """Show only the indicators enabled by the chosen tracking mode."""
         self.next_box()
         mode = self.value.get('mode')
         label = _MODES.get(mode)
@@ -319,6 +339,7 @@ class _Visual:
                 self.print(self.line((self.glyph['warning'] + ' ', 'bold cyan'), (warning, None), same=(warning,)))
 
     def points(self, points):
+        """Display supplied points and an optional explanation without inventing totals."""
         if _int(points) is not None:
             self.field('Pontos', str(points))
         elif isinstance(points, dict):
@@ -332,6 +353,7 @@ class _Visual:
                 self.print(self.line((rule, 'dim')))
 
     def milestones(self):
+        """Present named milestones with contestation and stale-evidence warnings."""
         items = self.value.get('milestones')
         items = [m for m in items if isinstance(m, dict) and _text(m.get('title'))] if isinstance(items, list) else []
         if not items:
@@ -365,6 +387,7 @@ class _Visual:
         return numbered, labelled, missing
 
     def linear(self):
+        """Preserve unpromoted prose and every menu option without renumbering."""
         from rich.rule import Rule
         numbered, labelled, missing = self.choice_lines()
         promoted = self.shown.copy()

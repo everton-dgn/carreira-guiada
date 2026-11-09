@@ -12,27 +12,32 @@ POINTS_PER_PRACTICE = 10
 
 
 def _object(value, allowed, required=()):
+    """Reject unknown fields and missing required fields in a payload."""
     if not isinstance(value, dict) or set(value) - set(allowed) or not set(required) <= set(value):
         raise ValueError('Campos inválidos ou ausentes.')
 
 
 def _text(value):
+    """Return bounded nonempty text without coercing booleans or other types."""
     if not isinstance(value, str) or not value.strip() or len(value) > 10000:
         raise ValueError('Informe um texto não vazio de até 10000 caracteres.')
     return value.strip()
 
 
 def _minutes(value):
+    """Accept an unknown duration or a bounded integer number of minutes."""
     if value is not None and (type(value) is not int or not 0 <= value <= 1440):
         raise ValueError('Informe minutos entre 0 e 1440 ou deixe em aberto.')
     return value
 
 
 def _fingerprint(value):
+    """Hash canonical JSON to detect changes to quoted practice evidence."""
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
 
 
 def _attempt(db, source):
+    """Resolve an exact session, question and attempt version from private storage."""
     _object(source, ('kind', 'session_id', 'question_id', 'version'), ('kind', 'session_id', 'question_id', 'version'))
     if source['kind'] != 'practice' or type(source['version']) is not int or source['version'] < 1:
         raise ValueError('Referência de treino inválida.')
@@ -51,10 +56,12 @@ def _attempt(db, source):
 class PersonalProgress:
     """Track voluntary participation without turning it into application permission."""
     def __init__(self, root):
+        """Bind progress records to the private profile without creating storage."""
         self.profile = Profile(root)
 
     @staticmethod
     def _read(db):
+        """Read the latest revision or return the disabled first-use state."""
         if db is not None and db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='personal_progress_revisions'").fetchone():
             row = db.execute('SELECT value FROM personal_progress_revisions ORDER BY version DESC LIMIT 1').fetchone()
             if row:
@@ -74,6 +81,7 @@ class PersonalProgress:
             return [json.loads(row[0]) for row in db.execute('SELECT value FROM personal_progress_revisions ORDER BY version')]
 
     def _mutate(self, data, allowed, required, change):
+        """Append a validated revision while rejecting stale competing changes."""
         _object(data, allowed, required)
         if type(data['expected_version']) is not int or data['expected_version'] < 0:
             raise ValueError('Informe a versão esperada.')
@@ -94,6 +102,7 @@ class PersonalProgress:
     def configure(self, data):
         """Save the person's explicit tracking and presentation preferences."""
         def change(s, d, db):
+            """Validate preferences before updating the in-transaction state."""
             if d['mode'] not in ('off', 'tracking', 'achievements', 'points'):
                 raise ValueError('Modo inválido.')
             if 'appearance' in d and d['appearance'] not in ('auto', 'plain'):
@@ -104,6 +113,7 @@ class PersonalProgress:
         return self._mutate(data, ('expected_version', 'mode', 'appearance', 'motion'), ('expected_version', 'mode'), change)
 
     def _record(self, s, d, db):
+        """Append a confirmed event, rejecting duplicate attempts and conflicting IDs."""
         original = {k: copy.deepcopy(v) for k, v in d.items() if k != 'expected_version'}
         for e in s['events']:
             if e['event_id'] == d['event_id']:
@@ -146,6 +156,7 @@ class PersonalProgress:
     def correct(self, data):
         """Correct duration or revoke an event while retaining its original record."""
         def change(s, d, db):
+            """Apply a correction and mark affected milestone evidence for review."""
             _text(d['reason']); _text(d['event_id'])
             if 'reported_minutes' not in d and 'revoked' not in d:
                 raise ValueError('Informe uma correção.')
@@ -166,6 +177,7 @@ class PersonalProgress:
     def milestone(self, data):
         """Save a contestable observation or comparison backed by quoted evidence."""
         def change(s, d, db):
+            """Validate events and quoted evidence before saving a contestable milestone."""
             if s['preferences']['mode'] not in ('achievements', 'points'):
                 raise ValueError('A pessoa precisa escolher conquistas antes de registrar um marco.')
             for k in ('milestone_id', 'title', 'criterion', 'assessment'): _text(d[k])
@@ -210,6 +222,7 @@ class PersonalProgress:
     def contest(self, data):
         """Keep disagreement visible without deleting the original evaluation."""
         def change(s, d, db):
+            """Record the stated objection without deleting the milestone history."""
             _text(d['reason']); _text(d['milestone_id'])
             m = next((m for m in s['milestones'] if m['milestone_id'] == d['milestone_id']), None)
             if m is None: raise ValueError('Marco não encontrado.')

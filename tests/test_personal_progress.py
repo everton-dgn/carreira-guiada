@@ -7,12 +7,14 @@ from scripts.job.personal_progress import PersonalProgress
 
 class ProgressTests(unittest.TestCase):
     def setUp(self):
+        """Create isolated progress storage and register its automatic cleanup."""
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name).resolve()
         self.p = PersonalProgress(self.root)
 
     def test_empty_and_report_correction(self):
+        """Confirmed reports are idempotent and corrected history survives disabling."""
         self.assertEqual(self.p.get()['version'], 0)
         self.assertEqual(self.p.history(), [])
         self.assertFalse((self.root / '.job').exists())
@@ -31,6 +33,7 @@ class ProgressTests(unittest.TestCase):
         self.assertEqual(len(self.p.history()), 5)
 
     def test_practice_evidence_and_revocation(self):
+        """Scores require personal attempts and stale or revoked evidence needs review."""
         practice = Practice(self.root)
         s = practice.start('rh', 'coach', short=True)
         sid, q = s['session_id'], s['question']['id']
@@ -73,6 +76,7 @@ class ProgressTests(unittest.TestCase):
         self.assertEqual(self.p.status()['unreported_time_count'], 1)
 
     def test_unconfirmed_origins_and_invalid_inputs_do_not_change_progress(self):
+        """Unknown authorship and invalid versions cannot create scored practice."""
         practice = Practice(self.root)
         s = practice.start('rh', 'coach', short=True)
         sid, q = s['session_id'], s['question']['id']

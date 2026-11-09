@@ -6,6 +6,7 @@ from scripts.job.practice import Practice
 
 class ProvenanceTests(unittest.TestCase):
     def test_legacy_and_identified_attempts(self):
+        """Legacy retries deduplicate while distinct confirmed attempt IDs remain separate."""
         with tempfile.TemporaryDirectory() as root:
             p = Practice(Path(root).resolve())
             s = p.start('rh', 'coach', short=True)

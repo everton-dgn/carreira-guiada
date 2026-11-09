@@ -13,24 +13,29 @@ from scripts.job.practice import Practice
 
 class PlanningTests(unittest.TestCase):
     def setUp(self):
+        """Create isolated private storage for each fictional planning scenario."""
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name).resolve()
         self.plan = PersonalPlan(self.root)
 
     def tearDown(self):
+        """Remove the temporary fixture after the scenario finishes."""
         self.tmp.cleanup()
 
     def add(self, s, ident, minutes, period):
+        """Add one fictional practice action to a specified week."""
         return self.plan.action({'id': s['id'], 'expected_version': s['version'], 'action': {
             'id': ident, 'activity': 'practice', 'title': ident, 'reason': 'Aprender',
             'criterion': 'Terminar', 'estimated_minutes': minutes, 'period': period}})
 
     def test_empty_read_has_no_writes(self):
+        """Reading a new plan must not initialize the private database."""
         self.assertIsNone(self.plan.get())
         self.assertFalse(self.plan.status()['exists'])
         self.assertFalse((self.root / '.job').exists())
 
     def test_budget_separate_weeks_and_completion(self):
+        """Weekly capacity stays separate and completed work survives budget changes."""
         s = self.plan.start({'weekly_minutes': 90})
         s = self.add(s, 'a', 60, '2026-11-09')
         s = self.add(s, 'b', 30, '2026-11-16')
@@ -43,6 +48,7 @@ class PlanningTests(unittest.TestCase):
         self.assertEqual(self.plan.status()['budget']['periods'][0]['over_by_minutes'], 20)
 
     def test_unknown_and_no_period(self):
+        """Unknown estimates and unscheduled actions remain explicitly unknown."""
         s = self.plan.start({})
         s = self.add(s, 'a', None, '2026-11-09')
         s = self.add(s, 'b', 10, None)
@@ -52,6 +58,7 @@ class PlanningTests(unittest.TestCase):
         self.assertEqual(b['without_period'][0]['id'], 'b')
 
     def test_versions_concurrency_invalid_and_pause(self):
+        """Stale or invalid writes preserve history through pause and resume."""
         s = self.plan.start({'direction': 'Estudar'})
         first = s.copy()
         s = self.add(s, 'a', 30, None)
@@ -67,6 +74,7 @@ class PlanningTests(unittest.TestCase):
         self.assertEqual(len(self.plan.history(s['id'])), 4)
 
     def test_references_and_no_operational_effect(self):
+        """Source references must exist and planning cannot change operational permissions."""
         with self.assertRaises(ValueError): self.plan.start({'basis': [{'kind': 'career', 'id': 'missing', 'version': 1}]})
         career = CareerGuide(self.root).start({})
         s = self.plan.start({'basis': [{'kind': 'career', 'id': career['id'], 'version': 1}]})
@@ -77,6 +85,7 @@ class PlanningTests(unittest.TestCase):
         self.assertFalse(self.plan.status()['basis'][0]['changed'])
 
     def test_practice_reference_and_changed_source(self):
+        """A new practice attempt marks advice based on the earlier answer stale."""
         practice = Practice(self.root)
         started = practice.start('presentation', 'coach', short=True)
         sid = started['session_id']
@@ -90,6 +99,7 @@ class PlanningTests(unittest.TestCase):
         self.assertEqual(self.plan.get(s['id'], 1)['basis'], [ref])
 
     def test_review_archive_and_reuse(self):
+        """Archival preserves reflections while allowing a distinct new plan."""
         s = self.plan.start({})
         self.assertEqual(self.plan.start({})['id'], s['id'])
         s = self.plan.review({'id': s['id'], 'expected_version': s['version'], 'observation': 'Ainda sem resultado', 'next_step': 'Continuar', 'decision': 'continue'})
@@ -119,6 +129,7 @@ class PlanningTests(unittest.TestCase):
         """The database admits one update and rejects the stale competing writer."""
         plan = self.plan.start({})
         def write(direction):
+            """Attempt a competing revision and report whether it was accepted."""
             try:
                 PersonalPlan(self.root).update({'id': plan['id'], 'expected_version': 1, 'direction': direction})
                 return 'saved'
@@ -150,6 +161,7 @@ class PlanningTests(unittest.TestCase):
         plan = self.plan.start({'direction': 'Atendimento'})
         save = PersonalPlan._save
         def fail_after_insert(db, value):
+            """Inject a failure after insertion to exercise transaction rollback."""
             save(db, value)
             raise sqlite3.OperationalError('fictional disk failure')
         with patch.object(PersonalPlan, '_save', side_effect=fail_after_insert):

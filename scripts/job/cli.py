@@ -589,6 +589,7 @@ def render(value):
 
 
 def main(argv=None):
+    """Parse CLI input, dispatch the operation and format bounded user-facing errors."""
     args = parser().parse_args(argv)
     try:
         result = dispatch(args)
