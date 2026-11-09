@@ -210,6 +210,8 @@ Estimativas incompletas ficam claras. O plano pode reunir currículo, estudos,
 entrevistas e as outras atividades, preservando o progresso ao trocar de foco.
 [Organizar meu plano](docs/MEU-PLANO.md).
 
+![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-evolucao-terminal.gif)
+
 ## Enxergue o esforço que você já fez
 
 ![Minha evolução: práticas registradas e conquistas com evidências. Pontos opcionais, histórico preservado e liberdade para pausar.](docs/assets/minha-evolucao-ilustrada.png)
@@ -220,7 +222,7 @@ não retira o que você fez. Você pode conferir, corrigir ou contestar avaliaç
 e desligar os indicadores sem perder respostas.
 [Acompanhar minha evolução](docs/MINHA-EVOLUCAO.md).
 
-![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-evolucao-terminal.gif)
+![Simulação de Minha evolução: registrar um ensaio, ativar pontos por escolha própria, conferir a conquista Primeiros ensaios e voltar depois com os registros preservados. Todos os dados são fictícios.](docs/assets/minha-evolucao-demo.gif)
 
 ## Escolha o modelo pela tarefa e pelo que você tem
 
