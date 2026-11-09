@@ -88,9 +88,22 @@ uv run --locked --group docs python scripts/maintainers/render_docs.py
 uv run --locked --group docs python scripts/maintainers/render_journeys.py
 ```
 
+Os retoques dos banners preservam os originais no histórico do Git. Para
+reproduzir as alterações locais de brilho, letras e espaçamento, com o histórico
+completo disponível:
+
+```sh
+uv run --locked --group docs python scripts/maintainers/refine_banners.py
+```
+
+O script indica o commit de origem e grava derivados com outro nome, sem
+regenerar as ilustrações. Metadados de procedência dos originais permanecem
+naqueles arquivos versionados. Não aplique filtros novamente sobre os derivados.
+
 Para a demonstração de planejamento, o gerador captura a saída real do terminal
 com registros fictícios temporários. Usa um navegador próprio sem janela visível
-e bloqueia requisições de rede:
+e bloqueia requisições de rede. O pedido da pessoa aparece antes da consulta
+feita pela IA; saídas maiores rolam com pausas para leitura:
 
 ```sh
 uv sync --locked --group docs --group browser

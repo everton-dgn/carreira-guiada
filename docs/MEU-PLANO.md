@@ -5,7 +5,7 @@ Diga **"meu plano"**. A IA ajuda a escolher o próximo passo, organizar um ciclo
 de algumas semanas e manter uma direção profissional. Você pode usar esse
 recurso sem completar o cadastro de candidaturas.
 
-![Meu plano no terminal, com uma próxima ação e um orçamento semanal fictício.](assets/plano-e-evolucao.png)
+![Meu plano no terminal, com uma próxima ação e um orçamento semanal fictício.](assets/plano-evolucao-terminal.png)
 
 > Quero uma vaga de atendimento, mas só tenho uma hora e meia por semana.
 > Me ajude a decidir por onde começar.

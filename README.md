@@ -81,7 +81,7 @@ Com preenchimento e envio autorizados no perfil, a campanha segue sem pedir
 confirmação em cada vaga. Você também pode escolher "pergunte antes de enviar",
 como na demonstração abaixo.
 
-![Portal fictício: a IA digita os campos, anexa o currículo e confere o recibo após autorização.](docs/assets/candidatura-preenchida.gif)
+![Portal fictício: a IA digita os campos, anexa o currículo e confere o recibo após autorização.](docs/assets/candidatura-portal.gif)
 
 O projeto começa sem lista de sites. Cole os links que quer usar ou peça ajuda
 para encontrar fontes verificadas. A IA confere tanto o site quanto a vaga;
@@ -128,7 +128,7 @@ experiência. Peça a revisão do LinkedIn: título, resumo, experiências e des
 Na área de tecnologia, inclua o README do GitHub e os projetos que demonstram
 suas habilidades.
 
-![Mostre o valor da sua experiência. Perfis e projetos alinhados ao seu currículo.](docs/assets/perfil-projetos-banner.png)
+![Mostre o valor da sua experiência. Perfis e projetos alinhados ao seu currículo.](docs/assets/perfil-projetos-banner-refinado.png)
 
 A IA prepara um diagnóstico e textos concretos para você conferir. Publicar
 exige aprovar o conteúdo, a conta e o destino. Se um fato mudar, as sugestões
@@ -176,7 +176,7 @@ que você perderia. Compare CLT, PJ, MEI, cooperado ou contratação internacion
 com uma base anual: valores garantidos, benefícios, custos, impostos informados
 e reservas. Bônus possível e dinheiro com uso restrito aparecem separados.
 
-![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](docs/assets/propostas-comparacao-banner.png)
+![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](docs/assets/propostas-comparacao-banner-refinado.png)
 
 A IA mostra premissas ausentes, calcula equivalências com os dados confirmados
 e ajuda a preparar a negociação. Você decide o que pesa na escolha.
@@ -189,7 +189,7 @@ experiência, prioridades e tempo disponível, sem exigir currículo pronto.
 Compara até três caminhos e ajuda a escolher um exercício pequeno para
 experimentar antes de investir mais tempo.
 
-![Escolha um foco. Planeje seu próximo passo. Compare caminhos e avance com um plano possível.](docs/assets/plano-carreira-banner.png)
+![Escolha um foco. Planeje seu próximo passo. Compare caminhos e avance com um plano possível.](docs/assets/plano-carreira-banner-refinado.png)
 
 Depois do exercício, você conta o que funcionou e o que ficou difícil. A IA ajuda
 a ajustar o próximo passo, inclusive mudar de direção. As escolhas ficam privadas
@@ -198,7 +198,7 @@ e não alteram seus filtros ou currículo automaticamente.
 
 ## Transforme um objetivo grande em um próximo passo
 
-![Meu plano: um objetivo, um próximo passo. Metas possíveis para o tempo disponível, organizadas entre agora, próximas semanas e direção profissional.](docs/assets/meu-plano-ilustrado.png)
+![Meu plano: um objetivo, um próximo passo. Metas possíveis para o tempo disponível, organizadas entre agora, próximas semanas e direção profissional.](docs/assets/meu-plano-ilustrado-refinado.png)
 
 "Tenho pouco tempo e não sei por onde começar." O **Meu plano** organiza uma
 ação para agora, um ciclo de algumas semanas e sua direção profissional.
@@ -212,7 +212,7 @@ entrevistas e as outras atividades, preservando o progresso ao trocar de foco.
 
 ## Enxergue o esforço que você já fez
 
-![Minha evolução: práticas registradas e conquistas com evidências. Pontos opcionais, histórico preservado e liberdade para pausar.](docs/assets/minha-evolucao-ilustrada.png)
+![Minha evolução: práticas registradas e conquistas com evidências. Pontos opcionais, histórico preservado e liberdade para pausar.](docs/assets/minha-evolucao-ilustrada-refinado.png)
 
 **Minha evolução** guarda treinos confirmados,
 tempo informado e conquistas com evidências. Pontos são opcionais; uma pausa
@@ -220,7 +220,7 @@ não retira o que você fez. Você pode conferir, corrigir ou contestar avaliaç
 e desligar os indicadores sem perder respostas.
 [Acompanhar minha evolução](docs/MINHA-EVOLUCAO.md).
 
-![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-e-evolucao.gif)
+![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-evolucao-terminal.gif)
 
 ## Escolha o modelo pela tarefa e pelo que você tem
 

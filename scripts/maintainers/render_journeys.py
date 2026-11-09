@@ -165,6 +165,7 @@ def portal_frame(stage, progress, blink=False):
     image, draw = base("Chega de repetir formulários.",
                        "A IA preenche o portal com os dados e o currículo aprovados.", stage,
                        PORTAL_SCENES[stage][0], progress, PORTAL_SCENES[stage][1])
+    background = image.copy()
     box(draw, (456, 160, 1084, 596), "#ffffff", "#bdd1ef")
     box(draw, (470, 174, 1070, 213), "#e9f1ff", radius=7)
     text(draw, (485, 185), "carreiras.example | PORTAL FICTÍCIO", 16, INK, True)
@@ -203,6 +204,11 @@ def portal_frame(stage, progress, blink=False):
             box(draw, (827, 535, 1058, 580), INK)
             text(draw, (848, 547), "Enviar candidatura", 18)
             pointer(draw, (1030 - 70 * progress, 464 + 91 * progress), blink and progress == 1)
+    # Preserve the portal artwork while leaving space beneath the subtitle.
+    bounds = coords((456, 160, 1086, 598))
+    panel = image.crop(bounds)
+    image.paste(background.crop(bounds), bounds[:2])
+    image.paste(panel, coords((456, 176)))
     return image
 
 
@@ -262,5 +268,5 @@ def render(name, draw_frame, poster):
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     render("curriculo-revisado", resume_frame, 4)
-    render("candidatura-preenchida", portal_frame, 3)
+    render("candidatura-portal", portal_frame, 3)
     render("entrevista-ensaio", practice_frame, 2)

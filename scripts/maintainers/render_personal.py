@@ -1,5 +1,7 @@
 """Capture the real terminal renderer with fictional, temporary private records."""
 import html
+import base64
+from functools import lru_cache
 import io
 import os
 from pathlib import Path
@@ -16,6 +18,7 @@ from scripts.job.planning import PersonalPlan
 from scripts.job.practice import Practice
 from scripts.job.personal_progress import PersonalProgress
 from scripts.job.terminal import render
+from scripts.maintainers.render_docs import font
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'docs/assets'
@@ -75,28 +78,52 @@ def scenes(root):
 
 def fragment(ansi):
     """Convert actual ANSI text to literal HTML with a readable terminal palette."""
-    console = Console(record=True, file=io.StringIO(), width=86, force_terminal=True)
+    console = Console(record=True, file=io.StringIO(), width=76, force_terminal=True)
     console.print(Text.from_ansi(ansi), end='')
     return console.export_html(inline_styles=True, theme=THEME, code_format='{code}')
 
 
-def page(title, subtitle, command, body):
-    """Keep a marketing heading outside a clearly labelled terminal capture."""
+@lru_cache
+def font_css():
+    """Embed the same locally selected fonts used by the other demo renderers."""
+    rules = []
+    for name, mono, bold in [('Editorial', False, False), ('Editorial', False, True), ('Terminal', True, False)]:
+        data = base64.b64encode(Path(font(20, mono, bold).path).read_bytes()).decode('ascii')
+        weight = 'bold' if bold else 'normal'
+        rules.append(f"@font-face{{font-family:{name};font-weight:{weight};src:url(data:font/ttf;base64,{data})}}")
+    return ''.join(rules)
+
+
+def page(title, subtitle, request, command, body, scene):
+    """Frame real output consistently, separating the person's request from CLI use."""
+    segments = ''.join('<i class="{}"></i>'.format('done' if number <= scene else '') for number in range(4))
+    operation = 'Consulta feita pela IA: ' + command if command else ''
     return f'''<!doctype html><html lang="pt-BR"><meta charset="utf-8">
-<style>
+<style>{font_css()}
 *{{box-sizing:border-box}}body{{margin:0;width:1120px;height:700px;background:#07152e;color:#f3f7ff;
-font-family:Arial,sans-serif;padding:30px 42px;}}
-.brand{{color:#60d9f4;font-size:14px;font-weight:bold;letter-spacing:2px;display:flex;justify-content:space-between}}
-.note{{color:#a4bcdf;font-weight:normal;letter-spacing:0}}h1{{font-size:41px;letter-spacing:-1px;margin:22px 0 10px;}}
-.subtitle{{font-size:20px;color:#b7cff4;margin:0 0 24px}}
-.terminal{{border-top:2px solid #2864ed;padding:18px 20px 0;background:#07152e;}}
-.prompt{{color:#60d9f4;font:16px Menlo,"DejaVu Sans Mono",monospace;height:24px;white-space:pre}}
-pre{{font:15px/1.32 Menlo,"DejaVu Sans Mono",monospace;margin:8px 0 0;white-space:pre;}}
-.foot{{position:absolute;bottom:24px;color:#a4bcdf;font-size:16px;}}
-</style><div class="brand"><span>CARREIRA GUIADA</span><span class="note">Terminal real · dados fictícios</span></div>
+font-family:Editorial,Arial,sans-serif;}}
+.brand{{position:absolute;left:40px;right:40px;top:29px;height:34px;border-bottom:1px solid #28426a;
+font-size:16px;display:flex;justify-content:space-between;}}
+.brand strong{{border-left:4px solid #60d9f4;padding-left:11px;height:20px}}
+.note{{color:#a4bcdf}}h1{{position:absolute;left:40px;top:80px;font-size:40px;margin:0;}}
+.subtitle{{position:absolute;left:40px;top:136px;font-size:23px;color:#a4bcdf;margin:0}}
+.terminal{{position:absolute;left:40px;top:192px;width:1040px;height:418px;padding:16px 22px;
+border:1px solid #34557c;border-radius:16px;background:#07152e;color:#f3f7ff;}}
+.prompt{{color:#60d9f4;font:20px Terminal,monospace;height:28px;white-space:pre}}
+.command{{color:#a4bcdf;font:16px Editorial,sans-serif;height:27px;}}
+pre{{font:20px/23px Terminal,monospace;margin:0;white-space:pre;}}
+.viewport{{height:322px;overflow:hidden}}
+.continuation{{font:16px Editorial,sans-serif;color:#a4bcdf;height:20px;padding-top:2px}}
+.foot{{position:absolute;top:632px;left:40px;color:#a4bcdf;font-size:20px;}}
+.steps{{position:absolute;left:40px;right:40px;top:685px;display:flex;gap:16px}}
+.steps i{{height:4px;flex:1;background:#1c355b;border-radius:2px}}.steps .done{{background:#60d9f4}}
+</style><div class="brand"><strong>CARREIRA GUIADA</strong><span class="note">Terminal real com dados fictícios</span></div>
 <h1>{html.escape(title)}</h1><p class="subtitle">{html.escape(subtitle)}</p>
-<div class="terminal"><div class="prompt">{html.escape('$ ' + command)}</div><pre>{body}</pre></div>
-<div class="foot">No chat, basta pedir "meu plano" ou "minha evolução". A IA conduz cada passo.</div></html>'''
+<div class="terminal"><div class="prompt">{html.escape('Você: ' + request)}</div>
+<div class="command">{html.escape(operation)}</div>
+<div class="viewport"><pre>{body}</pre></div><div class="continuation"></div></div>
+<div class="foot">No chat, basta pedir "meu plano" ou "minha evolução". A IA conduz cada passo.</div>
+<div class="steps">{segments}</div></html>'''
 
 
 def main():
@@ -112,27 +139,51 @@ def main():
             context = browser.new_context(viewport={'width': 1120, 'height': 700}, device_scale_factor=2)
             context.route('**/*', lambda route: route.abort())
             tab = context.new_page()
+            requests = ['meu plano', 'já ensaiei minha apresentação', 'parar meu plano', 'minha evolução']
             for index, (title, subtitle, command, value) in enumerate(data):
                 value['welcome_back'] = None
-                ansi = render(value, value['message'], width=86, stream=Terminal())
+                ansi = render(value, value['message'], width=76, stream=Terminal())
                 text = fragment(ansi)
-                for length in [*range(3, len(command), 3), len(command)]:
-                    tab.set_content(page(title, subtitle, command[:length] + '▏', ''))
+                request = requests[index]
+                for length in [*range(2, len(request), 2), len(request)]:
+                    tab.set_content(page(title, subtitle, request[:length] + '▏', '', '', index))
+                    tab.evaluate('document.fonts.ready')
                     frames.append(Image.open(io.BytesIO(tab.screenshot())).convert('RGB'))
                     durations.append(100)
-                tab.set_content(page(title, subtitle, command, text))
-                bottom = tab.locator('pre').bounding_box()
-                if bottom['y'] + bottom['height'] > 640:
-                    raise ValueError('Terminal output overlaps the footer.')
+                tab.set_content(page(title, subtitle, request, command, text, index))
+                tab.evaluate('document.fonts.ready')
+                extent = tab.locator('.viewport').evaluate('(el) => ({width:el.clientWidth, contentWidth:el.scrollWidth, height:el.clientHeight, contentHeight:el.scrollHeight})')
+                if extent['contentWidth'] > extent['width']:
+                    raise ValueError('Terminal output exceeds the viewport width.')
+                scroll = max(0, extent['contentHeight'] - extent['height'])
+                if scroll:
+                    tab.locator('.continuation').evaluate('(el) => el.textContent = "Início da saída desta consulta."')
                 image = Image.open(io.BytesIO(tab.screenshot())).convert('RGB')
                 frames.append(image)
-                durations.append(5000)
+                durations.append(7000 if index == 3 else 6000)
                 if index == 0:
-                    image.save(OUT / 'plano-e-evolucao.png', optimize=True)
+                    image.save(OUT / 'plano-evolucao-terminal.png', optimize=True)
+                if scroll:
+                    for step in range(1, 13):
+                        tab.locator('.viewport').evaluate('(el, y) => el.scrollTop = y', round(scroll * step / 12))
+                        frames.append(Image.open(io.BytesIO(tab.screenshot())).convert('RGB'))
+                        durations.append(80)
+                    tab.locator('.continuation').evaluate('(el) => el.textContent = "Fim da saída desta consulta."')
+                    frames.append(Image.open(io.BytesIO(tab.screenshot())).convert('RGB'))
+                    durations.append(7000 if index == 3 else 6000)
         finally:
             browser.close()
-    frames[0].save(OUT / 'plano-e-evolucao.gif', save_all=True, append_images=frames[1:],
-                   duration=durations, loop=0, optimize=True, disposal=2)
+    # Share colors across scenes so only changed areas need to be stored.
+    samples = Image.new('RGB', (1120, 350))
+    completed = [frame for frame, duration in zip(frames, durations) if duration >= 5000]
+    for index, frame in enumerate(completed):
+        sample = frame.resize((280, 175), Image.Resampling.LANCZOS)
+        samples.paste(sample, ((index % 4) * 280, (index // 4) * 175))
+    palette = samples.quantize(colors=128)
+    for index, frame in enumerate(frames):
+        frames[index] = frame.quantize(palette=palette, dither=Image.Dither.NONE)
+    frames[0].save(OUT / 'plano-evolucao-terminal.gif', save_all=True, append_images=frames[1:],
+                   duration=durations, loop=0, optimize=True, disposal=1)
     print(f'{len(frames)} frames; {sum(durations)} ms; 2240 x 1400 pixels; fictional records only.')
 
 

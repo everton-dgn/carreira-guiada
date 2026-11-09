@@ -1,6 +1,6 @@
 # Escolher em que focar
 
-![Escolha um foco. Planeje seu próximo passo. Compare caminhos e avance com um plano possível.](assets/plano-carreira-banner.png)
+![Escolha um foco. Planeje seu próximo passo. Compare caminhos e avance com um plano possível.](assets/plano-carreira-banner-refinado.png)
 
 Se você ainda não sabe que trabalho procurar, diga:
 
