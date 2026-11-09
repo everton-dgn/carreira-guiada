@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.21.0 - 2026-11-09
+
+### Novidades
+
+- Minha evolução ganha um GIF próprio no README, com práticas confirmadas,
+  pontos opcionais, conquistas e retomada usando dados fictícios. O banner
+  azul original permanece preservado.
+
+### Correções
+
+- O terminal da demonstração usa grafite e texto claro, separado da moldura
+  marinha, com digitação e pausas para leitura.
+- A geração de prévias exige um destino explícito fora da pasta de imagens
+  publicadas, evitando incluir cenas intermediárias por engano.
+
 ## 0.20.0 - 2026-11-09
 
 - Guia visual reúne referências e critérios para retocar ilustrações e GIFs,
