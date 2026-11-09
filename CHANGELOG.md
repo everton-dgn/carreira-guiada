@@ -7,6 +7,14 @@
 - As instruções para agentes e colaboradores apontam para a mesma referência,
   com cuidados de tipografia, margens, brilho e pausas para leitura.
 
+## 0.19.0 - 2026-11-09
+
+- Meu plano e Minha evolução têm seções próprias no README, com ilustrações
+  que preservam a identidade das demais peças.
+- O GIF de planejamento usa a moldura da família, texto maior, digitação do
+  pedido no chat e rolagem da saída real com registros fictícios.
+- A demonstração de candidatura separa o portal do subtítulo para evitar colisão.
+
 ## 0.18.1 - 2026-11-09
 
 ### Correções

@@ -189,7 +189,7 @@ incerto exige conferência antes de tentar novamente.
 
 ## Exemplo de preenchimento no portal
 
-![Portal fictício com campos de candidatura preenchidos pela IA.](assets/candidatura-preenchida.png)
+![Portal fictício com campos de candidatura preenchidos pela IA.](assets/candidatura-portal.png)
 
 O GIF do README mostra um cenário ilustrativo com perfil, fontes e currículo
 já aprovados e uma ferramenta de navegador conectada:

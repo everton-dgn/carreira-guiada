@@ -88,7 +88,8 @@ uv run --locked --group docs python scripts/maintainers/render_journeys.py
 
 Para a demonstração de planejamento, o gerador captura a saída real do terminal
 com registros fictícios temporários. Usa um navegador próprio sem janela visível
-e bloqueia requisições de rede:
+e bloqueia requisições de rede. O pedido da pessoa aparece antes da consulta
+feita pela IA; saídas maiores rolam com pausas para leitura:
 
 ```sh
 uv sync --locked --group docs --group browser
