@@ -20,6 +20,8 @@ from scripts.maintainers.render_docs import (
 
 LABELS = ('Escolher', 'Praticar', 'Usar pontos', 'Conquistar', 'Retomar')
 NAME = 'minha-evolucao-demo'
+PANEL, PANEL_EDGE, PANEL_DIM = '#202020', '#595959', '#bfbfbf'
+PANEL_TEXT, REQUEST = '#f3f3f3', '#f5ead4'
 
 
 @dataclass(frozen=True)
@@ -93,7 +95,7 @@ def scenes(root):
     return result
 
 
-def mix(color, amount, background='#0d2242'):
+def mix(color, amount, background=PANEL):
     """Blend a foreground with its fixed background for subtle reveal frames."""
     a, b = (tuple(int(c[i:i + 2], 16) for i in (1, 3, 5)) for c in (background, color))
     return tuple(round(x + (y - x) * amount) for x, y in zip(a, b))
@@ -116,14 +118,14 @@ def lines(draw, value, x, y, color, size=23, width=714, cursor=False):
 def receipt(draw, state, amount, milestone):
     """Reveal confirmed values together; never animate through invented scores."""
     y = 495 + round(8 * (1 - amount))
-    draw.line(coords((324, 480, 1052, 480)), fill=mix('#34557c', amount), width=SCALE)
+    draw.line(coords((324, 480, 1052, 480)), fill=mix(PANEL_EDGE, amount), width=SCALE)
     count, minutes = state['practice_count'], state['reported_minutes']
     points = 'desligados' if state['points'] is None else str(state['points'])
     for x, value, label in [(324, str(count), 'treino' if count == 1 else 'treinos'),
                             (544, f'{minutes} min', 'informados'),
                             (800, points, 'pontos opcionais')]:
-        text(draw, (x, y), value, 28, mix(ACCENT, amount), bold=True)
-        text(draw, (x, y + 37), label, 17, mix(DIM, amount))
+        text(draw, (x, y), value, 28, mix(PANEL_TEXT, amount), bold=True)
+        text(draw, (x, y + 37), label, 17, mix(PANEL_DIM, amount))
     if milestone:
         draw.rounded_rectangle(coords((313, 567, 1062, 606)), 7 * SCALE,
                                outline=mix('#746f60', amount), width=SCALE)
@@ -145,13 +147,13 @@ def frame(scene, index, request, response='', reveal=0, cursor=False):
         draw.ellipse(coords((41, y + 5, 51, y + 15)), fill=ACCENT if number <= index else '#28426a')
         text(draw, (65, y), label, 18, color, bold=number == index)
     draw.rounded_rectangle(coords((300, 192, 1076, 616)), 16 * SCALE,
-                           fill='#0d2242', outline='#34557c', width=SCALE)
-    text(draw, (324, 212), '>_ Conversa no terminal', 19, ACCENT, mono=True)
-    text(draw, (901, 216), 'DEMONSTRAÇÃO', 14, DIM)
-    draw.line(coords((324, 255, 1052, 255)), fill='#28426a', width=SCALE)
-    y = lines(draw, '> ' + request, 324, 277, ACCENT, cursor=cursor and not response)
+                           fill=PANEL, outline=PANEL_EDGE, width=SCALE)
+    text(draw, (324, 212), '>_ Conversa no terminal', 19, PANEL_TEXT, mono=True)
+    text(draw, (901, 216), 'DEMONSTRAÇÃO', 14, PANEL_DIM)
+    draw.line(coords((324, 255, 1052, 255)), fill=PANEL_EDGE, width=SCALE)
+    y = lines(draw, '> ' + request, 324, 277, REQUEST, cursor=cursor and not response)
     if response:
-        lines(draw, 'IA: ' + response, 324, y + 16, TEXT, cursor=cursor)
+        lines(draw, 'IA: ' + response, 324, y + 16, PANEL_TEXT, cursor=cursor)
     if reveal:
         receipt(draw, scene.state, reveal, bool(scene.state['milestones']))
     text(draw, (40, 641), scene.note, 20, TEXT)
