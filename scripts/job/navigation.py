@@ -92,3 +92,49 @@ def search(root, sections):
     return {'next_step': 'search_scope_confirmation', 'question': None,
             'message': 'Confira os filtros e os links. Posso consultar resultados, páginas seguintes e detalhes de vagas dentro desses mesmos endereços e caminhos?',
             'filters': prefs, 'urls': urls, 'scope_request': {'purpose': 'job_search', 'target': target, 'urls': urls, 'url_policy': 'source_paths'}}
+
+
+def task_capabilities(state, *, local_ready=True):
+    """Task requirements, not tool discovery or proof of current authentication.
+
+    ready means local preparation can proceed. External tasks always require a
+    live tool check; saved observations are reported separately by Workflow.
+    """
+    tasks = {}
+    for name in ('curriculum', 'practice', 'career'):
+        tasks[name] = {'ready': local_ready, 'requires_authentication': False,
+                       'authentication_verified': False,
+                       'missing': [] if local_ready else ['local_runtime'],
+                       'verify_now': [],
+                       'message': ('Pode começar no chat, sem perfil completo, navegador ou e-mail.' if local_ready else
+                                   'Falta preparar o controle local. A IA orienta o próximo passo; navegador e e-mail podem ficar para depois.')}
+    tasks['search'] = {'ready': False, 'requires_authentication': False,
+                       'authentication_verified': False,
+                       'missing': [] if local_ready else ['local_runtime'],
+                       'verify_now': ['public_research_tool_check', 'sources_and_scope_confirmation'],
+                       'message': 'Pesquisa pública exige fontes escolhidas, escopo autorizado e ferramenta de consulta conferida; dispensa login e e-mail.'}
+    missing = [] if local_ready else ['local_runtime']
+    if not state['profile'].get('approved'):
+        missing.append('approved_profile')
+    if not state.get('goal'):
+        missing.append('active_goal')
+    if state['control']['stopped']:
+        missing.append('explicit_resume')
+    tasks['applications'] = {'ready': False, 'requires_authentication': True,
+                            'authentication_verified': False,
+                            'missing': missing,
+                            'verify_now': ['browser_live_check', 'action_authorization', 'approved_resume_check'],
+                            'message': 'Candidaturas exigem perfil e currículo aprovados, objetivo ativo, permissões e conferência atual do portal. E-mail conectado não é requisito.'}
+    tasks['email'] = {'ready': False, 'requires_authentication': True,
+                      'authentication_verified': False,
+                      'missing': [] if local_ready else ['local_runtime'],
+                      'verify_now': ['registered_account', 'mail_live_check', 'email_read_permission'],
+                      'message': 'Acompanhamento por e-mail é opcional e exige conta registrada, permissão e integração autenticada conferida.'}
+    return tasks
+
+
+def completed_campaign_message(closed):
+    """Explain an explicit closure without implying a verified hiring event."""
+    outcome = 'Você informou que conseguiu emprego.' if closed['outcome'] == 'hired' else 'Encerramento registrado por sua decisão.'
+    return ('Campanha de candidaturas encerrada. ' + outcome +
+            ' O histórico e as pendências foram preservados. Uma nova campanha exige um novo pedido explícito; a anterior não será retomada.')

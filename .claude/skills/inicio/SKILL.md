@@ -9,6 +9,24 @@ Leia [AGENTS.md](../../../AGENTS.md). A pessoa não precisa entender arquivos,
 comandos nem configurações. Conduza a próxima etapa com uma pergunta curta e
 um exemplo. Evite apresentar uma lista de tarefas para ela executar sozinha.
 
+Na primeira utilização, confira se consegue ler a pasta e executar o controle
+local. Se faltar acesso, explique a limitação e conduza a abertura da pasta
+com as opções observadas no aplicativo, seguindo
+[o guia de primeiro uso](../../../docs/GUIA.md#primeira-vez). Não peça dados
+pessoais para resolver uma limitação da ferramenta.
+Consulte `start.task_capabilities` ou `doctor.tasks` para a atividade escolhida.
+Separe requisito conhecido ausente de acesso externo ainda não conferido.
+Confira a ferramenta real antes de pesquisar, preencher ou consultar e-mail;
+o diagnóstico local não verifica autenticação. Ofereça uma atividade que já
+possa ser feita quando uma conexão ficar para depois.
+
+Se `closed_goal` ou `session.campaign_completed` estiver presente, informe
+o encerramento e mantenha currículo, entrevistas e outras atividades acessíveis.
+Não use `resume-work` para reabrir a campanha encerrada nem trate `iniciar`
+como pedido de outra campanha. Para isso, obtenha o novo objetivo explícito
+e registre a confirmação em `goal`, conforme
+[o contrato de encerramento](../../../docs/CONTRATOS.md#encerramento-de-campanha).
+
 Mostre `./job menu --json` quando a pessoa pedir "menu", "opções" ou "ajuda".
 Apresente os quatro nomes e `5. Mais opções`; aceite o número ou uma frase curta.
 `menu --choose 5` mostra Meu plano, Minha evolução, empresa, LinkedIn/GitHub,

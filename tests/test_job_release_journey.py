@@ -149,6 +149,27 @@ class ReleaseJourneyTests(unittest.TestCase):
         self.assertTrue(final['stopped'])
         self.assertEqual(self.call('status')['counts']['opportunities'], 1)
         self.assertEqual(self.call('status')['pending'], [])
+        self.say('A simulação está pausada e o histórico está salvo.', 'Consegui emprego. Quero encerrar esta campanha.')
+        closed = self.call('goal-complete', data={
+            'goal_version': 1, 'outcome': 'hired', 'reason': 'Emprego confirmado no roteiro fictício.',
+            'user_confirmation': 'Consegui emprego. Quero encerrar esta campanha.'})
+        self.assertEqual(closed['status'], 'completed')
+        self.next_day()
+        returned = self.call('start', '--focus', 'search')
+        self.assertEqual(returned['next_step'], 'campaign_completed')
+        self.assertIn('encerrada', returned['message'])
+        self.call('resume-work', success=False)
+        self.assertEqual(self.call('start', '--focus', 'career')['next_step'], 'career_guidance')
+        self.assertEqual(self.call('status')['counts']['opportunities'], 1)
+        self.say(returned['message'], 'Quero iniciar outra campanha com o mesmo perfil.')
+        self.call('goal', data={'summary': 'Nova busca fictícia', 'actions': ['research']}, success=False)
+        new = self.call('goal', data={'summary': 'Nova busca fictícia', 'actions': ['research'],
+                                     'user_confirmation': 'Quero iniciar outra campanha com o mesmo perfil.'})
+        self.assertEqual(new['version'], 2)
+        self.assertTrue(self.call('status')['control']['stopped'])
+        self.call('resume-work')
+        self.assertIsNone(self.call('status')['closed_goal'])
+        self.assertEqual(self.call('status')['counts']['opportunities'], 1)
 
 
 if __name__ == '__main__':

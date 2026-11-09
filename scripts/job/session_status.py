@@ -87,7 +87,7 @@ def selected_activity(root, state, focus=None, start=None):
     practice = state.get('practice') or {}
     if practice.get('decision') == 'now' and practice.get('phase') in {'idle', 'questions', 'feedback'}:
         return 'practice'
-    if state.get('goal'):
+    if state.get('goal') or state.get('closed_goal'):
         return 'search'
     if not state['initialized'] and not point and not state['profile'].get('version'):
         return 'menu'
@@ -152,7 +152,9 @@ def _activity(root, state, activity):
             result.update(condition='waiting_user' if not career.get('session') else 'ready', needs_user=not career.get('session'),
                           next_action=career.get('message') or 'Conte o que quer decidir sobre sua carreira.')
     elif activity == 'search':
-        if state['control']['stopped']:
+        if state.get('closed_goal'):
+            result.update(phase='campaign_completed', condition='completed', next_action='Peça explicitamente uma nova campanha ou escolha outra atividade.')
+        elif state['control']['stopped']:
             result.update(condition='paused', next_action='Diga "continuar as candidaturas" se quiser retomar a campanha.')
         elif state.get('goal'):
             result['next_action'] = 'Conferir as pendências e as conexões antes da próxima ação autorizada.'
@@ -239,6 +241,10 @@ def project(root, state, now, focus=None, start=None):
     activity = selected_activity(root, state, focus, start)
     try:
         current = _activity(root, state, activity)
+        if activity == 'search' and state.get('closed_goal') and (start or {}).get('public_search'):
+            ready = start['next_step'] == 'search_ready'
+            current.update(phase=start['next_step'], condition='ready' if ready else 'waiting_user',
+                           needs_user=not ready, next_action=start['message'])
     except (ValueError, KeyError, TypeError, AttributeError):
         if activity not in {'curriculum', 'presence', 'offers', 'models', 'plan', 'progress'}:
             raise
@@ -299,11 +305,15 @@ def project(root, state, now, focus=None, start=None):
              'activity_matches': True, 'campaign_matches': valid_scope,
              'note_is_not_authorization': True} if point else None
     current.pop('_intake_complete', None)
-    current.update(activity=activity, label=LABELS[activity], campaign_stopped=bool(state['control']['stopped']),
+    current.update(activity=activity, label=LABELS[activity], campaign_stopped=bool(state['control']['stopped']) and not bool(state.get('closed_goal')),
+                   campaign_completed=bool(state.get('closed_goal')),
                    execution='unverified', last_saved=saved, dependencies=dependencies,
                    user_actions=[item for item in dependencies if item['needs_user']],
                    help=HELP, progress=state.get('progress') if activity == 'search' else None)
     lines = ['Atividade: ' + current['label'] + '.']
+    if current['campaign_completed']:
+        from .navigation import completed_campaign_message
+        lines.append(completed_campaign_message(state['closed_goal']))
     if current['campaign_stopped']:
         lines.append('Campanha de candidaturas parada. As demais atividades podem ser retomadas separadamente.')
     if current['advance']:

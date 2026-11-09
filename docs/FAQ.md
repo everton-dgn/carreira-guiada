@@ -6,6 +6,13 @@ Não para conversar com o Carreira Guiada. Abra a pasta no aplicativo de IA e es
 `iniciar`. A IA conduz os comandos e explica quando precisa de uma ação sua.
 Se faltar uma ferramenta, ela pede autorização e ajuda a instalar.
 
+## E se eu ainda não tiver um aplicativo compatível?
+
+Siga [a escolha do aplicativo](MODELOS.md#se-ainda-não-tem-um-aplicativo-compatível)
+e depois [o primeiro uso](GUIA.md#primeira-vez). Comece por uma ferramenta que
+consiga abrir a pasta e salvar seu progresso. Não precisa contratar outro
+modelo ou conectar e-mail para revisar currículo e treinar entrevistas.
+
 ## Isso é um aplicativo com tela própria?
 
 O Carreira Guiada funciona na conversa da ferramenta de IA escolhida. Os GIFs
@@ -81,6 +88,14 @@ Sim. Diga "quero só pesquisar vagas", "quero melhorar meu currículo" ou
 "quero treinar uma entrevista". A pesquisa prepara filtros e fontes sem
 exigir currículo; o treino também dispensa perfil e contas. Enviar candidaturas
 exige o preparo e as permissões correspondentes.
+
+## Consegui emprego. Como encerro a busca?
+
+Diga "consegui emprego, encerre a campanha". A IA registra sua decisão,
+preserva o histórico e impede novas ações da campanha. Também pode encerrar
+por outro motivo. "Parar" apenas pausa para retomar depois. Ao voltar, o
+projeto mostra o encerramento; outra campanha exige um novo pedido.
+[Veja o que fica salvo e como recomeçar](ACOMPANHAMENTO.md#encerrar-a-campanha).
 
 ## A IA fica procurando enquanto estou fora?
 

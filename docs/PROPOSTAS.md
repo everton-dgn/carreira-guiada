@@ -2,6 +2,31 @@
 
 ![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](assets/propostas-comparacao-banner.png)
 
+## Comece com o que você sabe
+
+Diga "quero comparar propostas" ou escolha essa atividade em **Mais opções**.
+Pode começar assim:
+
+> Recebi uma proposta CLT e outra PJ. Não sei qual compensa mais.
+> Tenho os salários e alguns benefícios. Me ajude a comparar uma coisa por vez.
+
+Cole os valores e as condições relevantes ou conte o que lembra. Não precisa
+preencher uma planilha nem enviar documentos pessoais. Se ainda não recebeu
+uma proposta, pode montar cenários fictícios para planejar uma negociação.
+
+A IA organiza os valores, pergunta só o que falta para a comparação e mostra:
+
+- O dinheiro disponível estimado, separado de benefícios, bônus e fundos restritos.
+- O que ainda está desconhecido e como isso pode mudar a conclusão.
+- As diferenças de jornada, descanso, estabilidade e outras prioridades suas.
+- Perguntas para esclarecer com a empresa e uma base para negociar.
+
+Se não souber impostos ou custos, diga "não sei". A IA pode comparar as partes
+conhecidas, mas não fecha uma equivalência sem as premissas necessárias.
+Você pode corrigir os valores, parar e retomar outro dia com o cenário salvo.
+
+## Como a comparação é feita
+
 Esta comparação usa valores que você informa ou confirma. Ela ajuda a organizar
 as diferenças entre CLT, PJ, MEI, cooperado e trabalho internacional. Não é
 assessoria tributária ou jurídica, nem escolhe uma proposta por você. Antes de

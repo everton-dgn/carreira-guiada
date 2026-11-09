@@ -542,6 +542,51 @@ observação e prontidão. Nenhum diagnóstico abre conta ou instala integraçã
 Execução por dias depende do computador, do ambiente da IA e das sessões.
 Validação e limites observados ficam em [VALIDACAO.md](VALIDACAO.md).
 
+## Encerramento de campanha
+
+`Workflow.complete_goal(payload)`, exposto por `goal-complete`, exige
+`goal_version` inteiro positivo, `user_confirmation` e `reason` não vazios,
+além de `outcome: hired | user_closed`. A confirmação registra o pedido explícito
+da pessoa; `hired` registra seu relato, sem inferência pela quantidade de envios.
+
+A transação muda o objetivo ativo para `completed`, grava o motivo, o resultado,
+a confirmação, o horário e a geração em `wf_goal_completions`, avança a geração
+do controle e torna incertas as ações autorizadas cujo resultado ainda não foi
+conferido. Histórico, etapas e incertezas existentes permanecem. A pausa anterior
+não é ativada nem removida. Retorna o objetivo concluído com `unchanged`;
+repetição da mesma versão e metadados é idempotente, e dados divergentes falham.
+
+`state.closed_goal` apresenta a última conclusão quando não há objetivo ativo.
+Consultas em banco legado sem a tabela adicional retornam `null`, sem migrar
+nem criar o banco. As colunas originais de `wf_goals` são preservadas.
+`start` mostra `next_step: campaign_completed` na rota da campanha;
+`session.campaign_completed` distingue conclusão e pausa, inclusive nos detalhes.
+
+Uma escolha explícita de `start --focus search` ou `menu --choose search`
+pode abrir a pesquisa pública independente com `public_search: true`, preservando
+`scope_request` e a fase correspondente na sessão. Isso não reabre o objetivo:
+exige escopo novo e mantém a campanha concluída. A entrada genérica `start`
+continua mostrando o encerramento na rota salva da campanha. Uma pausa ativa
+mantém a consulta bloqueada; a seleção da atividade não remove a pausa.
+
+`resume-work` recusa a campanha concluída. Depois dela, `configure_goal` exige
+`user_confirmation` para criar outra versão e registra o pedido em
+`wf_goal_starts`. A geração avança, sem reativar IDs de ações ou escopos antigos.
+Se havia parada ativa, a nova campanha continua dependendo de retomada explícita.
+Como a geração é global, escopos de pesquisa de outras atividades também devem
+ser conferidos novamente antes de uso. Nenhuma dessas operações transmite dados
+ou confirma uma candidatura no destino.
+
+`doctor.tasks` e `start/menu.task_capabilities` apresentam os requisitos por
+atividade. `ready` refere-se à preparação local; ferramentas externas exigem
+conferência atual. `authentication_verified` é falso no diagnóstico local.
+`missing` lista requisitos cuja ausência foi confirmada; `verify_now` lista
+conferências que dependem da ferramenta ou da sessão atual. Um item nessa
+segunda lista não significa que a pessoa deixou de configurá-lo.
+`doctor.ready.effects` não pode comprovar autorização operacional e permanece
+falso; o cálculo baseado nos registros salvos está em
+`recorded_effect_prerequisites`. Nenhum desses campos substitui `action check`.
+
 ## Comparação de propostas
 
 Na CLI, use `offers save` com o cenário, `offers get` com `offer_id`, `offers

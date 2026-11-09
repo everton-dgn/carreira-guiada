@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+### Novidades
+
+- A campanha pode ser encerrada por pedido explícito, com histórico e pendências
+  preservados. O próximo acesso mostra a conclusão; outra campanha exige um
+  novo pedido e não recupera autorizações antigas.
+- O primeiro uso orienta a escolha do aplicativo e mostra os requisitos de cada
+  atividade. Currículo, entrevistas e carreira podem começar antes das conexões
+  de navegador e e-mail. O guia de propostas começa pelas informações disponíveis.
+- O benchmark recebe 14 sessões complementares, com evidências e recomendações
+  por tarefa. Falhas de formato, prazos excedidos e resultados anteriores ficam
+  preservados; completar a coleta não significa aprovar todos os modelos.
+
+### Correções
+
+- A CI usa uma rota curta para documentos e imagens conhecidos, inclusive quando
+  acompanhados apenas da atualização de versão. Publicação, links, espelhamento
+  das skills e consistência da release continuam verificados. Código, protocolos
+  e mudanças desconhecidas executam a suíte completa.
+- O diagnóstico local distingue dados ausentes de conexões ainda não conferidas
+  e deixa de apresentar observações antigas como prontidão para ações externas.
+
 ## 0.21.1 - 2026-11-09
 
 ### Correções

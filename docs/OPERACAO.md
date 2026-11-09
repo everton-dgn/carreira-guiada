@@ -24,6 +24,14 @@ reais de execução. A pessoa nunca executa nada disto.
 observações de sessão. Disponibilidade de ferramenta não comprova
 autenticação. `doctor` não abre navegador, não lê credenciais, não instala.
 
+`doctor.tasks` e `start.task_capabilities` separam requisitos de currículo,
+treino, carreira, pesquisa, candidaturas e e-mail. Explique somente os da
+atividade escolhida. `doctor.ready.effects` permanece falso porque o diagnóstico
+local não comprova acesso atual ao destino; `recorded_effect_prerequisites`
+mostra apenas os pré-requisitos registrados. Confira a ferramenta da sessão
+antes da ação. Não use esses campos para exigir onboarding completo nas
+atividades de preparação ou pedir novamente um dado já salvo.
+
 Se faltar `uv` ou Python, o agente conduz a instalação no espaço da pessoa:
 explica em uma frase, pede a permissão necessária, executa o instalador
 oficial da ferramenta sem privilégios de administrador, confere com `doctor` e
@@ -111,6 +119,7 @@ O candidato encontra o pedido em linguagem comum no
 | `resume check <id>` | Compara o texto extraído dos arquivos gerados, verifica seções e tabelas. Não calcula pontuação de ATS. |
 | `goal` | Objetivo persistido com versão e critérios; não sobrescreve objetivo ativo incompatível. |
 | `goal-extend` | Acrescenta `add_actions` ao objetivo indicado em `goal_version`, com `user_confirmation`. Preserva início, meta e contagens; não concede permissões nem retoma uma parada. |
+| `goal-complete` | Encerra a versão ativa mediante pedido explícito, com `goal_version`, `user_confirmation`, `reason` e `outcome: hired ou user_closed`. Preserva histórico e pendências; não confirma envios incertos. |
 | `opportunity` | Registro de oportunidade com chave e aliases; distinto de candidatura. |
 | `decision` | `opportunity_id`, `reasons` atuais e `user_confirmation`; aceita ausência permitida só nessa vaga, sem alterar os filtros gerais. |
 | `capability` | Observação de capacidade (navegador, e-mail) com provedor, apelido, horário, estado, evidência. |
@@ -217,7 +226,9 @@ Na ausência de referência individual estável, deixe a mensagem preservada.
    um item da rodada.
 2. Gate: perfil `approved`, permissão da ação (`allow`, ou `ask` respondido
    nesta rodada), currículo `approved` para envio.
-3. `goal` se não houver objetivo ativo compatível. Se a pessoa apenas acrescentar
+3. Confira `closed_goal`: uma conclusão exige novo pedido para criar outra
+   campanha, registrado em `goal.user_confirmation`. `iniciar` não concede
+   essa autorização. Use `goal` se não houver objetivo ativo compatível. Se a pessoa apenas acrescentar
    uma atividade, use `goal-extend` com a versão atual e a confirmação recebida,
    sem substituir a campanha. Consulte as adições em `status.goal.amendments`.
 4. `capability` para navegador e cada conta de e-mail usada; sessão expirada

@@ -13,6 +13,11 @@ o recurso. Pode parar e retomar outro dia, com as respostas e o feedback salvos.
 
 ## Primeira vez
 
+Se já usa um aplicativo de IA que abre pastas e executa comandos, continue nos
+passos abaixo. Se está começando do zero, veja primeiro
+[como escolher onde conversar](MODELOS.md#se-ainda-não-tem-um-aplicativo-compatível).
+Você não precisa escolher o melhor modelo nem conectar e-mail agora.
+
 1. Na página do projeto no GitHub, use **Code** e **Download ZIP** para baixar
    os arquivos. Abra o arquivo baixado para extrair a pasta. Ela pode se chamar
    `carreira-guiada-main`; esse nome também funciona.
@@ -27,6 +32,24 @@ o recurso. Pode parar e retomar outro dia, com as respostas e o feedback salvos.
 Se não encontrar como abrir a pasta, diga ao assistente qual aplicativo está
 usando e que quer abrir a pasta do Carreira Guiada. Ele deve orientar com base nas opções
 que conseguir observar, sem inventar nomes de botões.
+
+Pode copiar esta mensagem para pedir ajuda no aplicativo escolhido:
+
+> É meu primeiro uso. Estou no [macOS ou Linux] e baixei o Carreira Guiada.
+> Ajude-me a abrir a pasta do projeto e confira o que consigo fazer aqui.
+> Explique uma etapa por vez, sem presumir que conheço o terminal.
+
+Depois de abrir a pasta, espere uma resposta como esta, conforme as capacidades
+que a IA realmente conseguiu conferir:
+
+> Consigo ler o projeto e salvar seu progresso. Podemos começar pelo currículo.
+> Ainda falta uma ferramenta de navegador para buscar vagas.
+> Você prefere revisar o currículo agora ou receber ajuda para conectar o navegador?
+
+Se o chat só consegue responder texto e não acessa a pasta, abra um ambiente
+compatível pelo guia acima. Colar dados pessoais ali não resolve a falta de
+acesso ao projeto. Quando faltar uma conexão, a IA mostra o próximo passo que
+existe no aplicativo e mantém disponíveis as atividades que já funcionam.
 
 O controle local usa macOS ou Linux. Windows nativo não é suportado; WSL ainda
 não foi validado. A IA precisa conseguir ler arquivos e executar ferramentas.
@@ -224,6 +247,11 @@ pendentes e move apenas mensagens individuais para a lixeira restaurável.
 Ela não deve apagar e-mails definitivamente.
 
 ## Parar, voltar e corrigir
+
+Quando quiser finalizar a busca, diga "consegui emprego, encerre a campanha"
+ou "quero encerrar esta campanha". O histórico fica salvo, e `iniciar` mostra
+o encerramento no próximo acesso. Para começar outra, peça uma nova campanha.
+[Entenda a diferença entre pausar e encerrar](ACOMPANHAMENTO.md#encerrar-a-campanha).
 
 | Você diz | O que deve acontecer |
 |---|---|

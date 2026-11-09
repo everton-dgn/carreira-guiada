@@ -63,6 +63,7 @@ Você conversa normalmente. Não precisa decorar comandos de terminal.
 | "Mostre os detalhes" | Resultados, pendências e limites da consulta, separados por atividade. |
 | "Quais são as opções?" | Menu de atividades, sem apagar seu progresso. |
 | "Parar as candidaturas" | Interrupção de novas ações da campanha e registro do ponto de retomada. |
+| "Consegui emprego, encerre a campanha" | Encerramento explícito, com histórico preservado e sem retomada automática. |
 | "Continuar meu currículo" | Retomada do currículo; candidaturas paradas continuam paradas. |
 
 A IA pede esclarecimento quando "continuar" puder se referir a atividades
@@ -96,6 +97,32 @@ as conexões necessárias e qualquer envio sem confirmação antes de agir.
 Revisar preserva suas respostas e altera somente o que você corrigir. Um treino
 adiado mantém pergunta e resposta; se falta feedback, a IA começa por ele.
 Cada atividade conserva seu contexto sem retomar uma campanha por conta própria.
+
+## Encerrar a campanha
+
+Para finalizar a busca, diga "consegui emprego, encerre a campanha" ou
+"quero encerrar esta campanha". A IA registra sua decisão e impede novas ações
+daquela campanha. Apenas dizer que recebeu uma proposta não encerra nada.
+
+Se disser "parar", a campanha fica pausada para continuar depois. Se disser
+"encerrar", ela fica concluída. Atingir uma meta de candidaturas também não
+significa que você conseguiu emprego.
+
+Seu histórico, currículo, treinos e pendências permanecem salvos. Uma tentativa
+de envio sem confirmação continua incerta: encerrar não confirma essa candidatura,
+nem a cancela no portal, nem autoriza reenviá-la. A IA também não avisa empresas
+nem apaga mensagens por causa do encerramento.
+
+Ao voltar à mesma pasta e dizer `iniciar`, você verá a campanha encerrada.
+Pode usar outras atividades normalmente. Para uma nova busca, diga "quero
+iniciar uma nova campanha" e informe o objetivo. A IA cria outro registro,
+confere as preferências e as conexões necessárias e preserva os registros
+anteriores. Autorizações de ações antigas não voltam a valer.
+
+Se quiser apenas olhar vagas, escolha **Busca de vagas** no menu e diga isso.
+Sem uma pausa ativa, a IA pode pedir um novo escopo para a consulta pública,
+mantendo a campanha anterior encerrada e sem autorizar candidaturas.
+Uma pausa anterior continua valendo; a IA explica essa condição antes de pesquisar.
 
 ## Abas e recursos do computador
 

@@ -106,6 +106,7 @@ def parser():
         show.add_argument("id")
     for name, help_text in (
         ("goal", "Registrar o objetivo autorizado, JSON via stdin"),
+        ("goal-complete", "Encerrar explicitamente a campanha, JSON via stdin"),
         ("goal-extend", "Adicionar ações ao objetivo ativo, JSON via stdin"),
         ("opportunity", "Registrar uma oportunidade, JSON via stdin"),
         ("decision", "Registrar uma decisão da pessoa somente para uma vaga"),
@@ -304,13 +305,35 @@ def onboarding(root, focus='prepare', resume_route=True, intake_state=None):
 
 def with_session(root, result, focus=None):
     """Attach the same read-only session projection used by status to an entry."""
+    public_search = focus == 'search' and result.get('next_step') in {
+        'preferences', 'sources', 'search_scope_confirmation', 'search_ready'}
+    if public_search:
+        result['public_search'] = True
     from .workflow import Workflow
     workflow = Workflow(root)
     try:
-        session = workflow.state(focus=focus, entry=result)['session']
+        state = workflow.state(focus=focus, entry=result)
+        session = state['session']
     finally:
         workflow.close()
+    from .navigation import task_capabilities, completed_campaign_message
+    result['task_capabilities'] = task_capabilities(state)
+    result['closed_goal'] = state.get('closed_goal')
     result['session'] = session
+    if state.get('closed_goal'):
+        note = completed_campaign_message(state['closed_goal'])
+        if 'choices' in result:
+            result['message'] = note + '\n' + result['message']
+        elif session['activity'] in ('search', 'prepare', 'menu') and not public_search:
+            result.update(next_step='campaign_completed', message=note, question=None,
+                          welcome_back=None, resume_options=[], automatic_execution_started=False)
+            result.pop('scope_request', None)
+            result.pop('scope', None)
+        else:
+            result['message'] += '\n' + note
+    showing_menu = 'choices' in result or result.get('message') == result.get('menu', {}).get('message')
+    if not state['initialized'] and showing_menu:
+        result['message'] += '\nCurrículo, entrevistas e carreira podem começar no chat sem login ou e-mail. Pesquisa e candidaturas dependem das ferramentas e autorizações da atividade escolhida.'
     if session['campaign_stopped']:
         note = 'Campanha de candidaturas parada; abrir este início não retoma os envios.'
         result['message'] += '\n' + note
@@ -336,7 +359,7 @@ def dispatch(args):
             route = onboarding(root, result['selected'], resume_route=False)
             route['welcome_back'] = None
             return with_session(root, {**route, 'menu': result}, result['selected'])
-        return result
+        return with_session(root, result)
     if args.command == "start":
         from .models import Models
         from .navigation import menu, resume_entry
@@ -552,6 +575,8 @@ def dispatch_workflow(workflow, root, args):
         return {"profile": Profile(root).get(), "resumes": ResumeManager(root).list(), "workflow": workflow.state(), "notice": "Contexto privado. Compartilhe somente os campos necessários com o destino autorizado. O piso salarial não é a pretensão."}
     if args.command == "goal":
         return workflow.configure_goal(payload())
+    if args.command == "goal-complete":
+        return workflow.complete_goal(payload())
     if args.command == "goal-extend":
         return workflow.extend_goal(payload())
     if args.command == "opportunity":

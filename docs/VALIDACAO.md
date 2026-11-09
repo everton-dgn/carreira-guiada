@@ -257,6 +257,14 @@ usa a CLI real em outro processo, com bloqueio de rede e de subprocessos externo
 O relógio avança artificialmente; nenhuma publicação ou mensagem é enviada.
 O relatório opcional usa `JOB_PREPARATION_REPORT`, fora do repositório.
 
+O mesmo percurso encerra a campanha por pedido explícito, avança outro dia e
+confere que `iniciar` mostra o encerramento. A pessoa usa o guia de carreira
+e abre outra campanha sem perder o histórico. `test_job_campaign_completion.py`
+acrescenta os casos de envio incerto, pausa, autorização antiga, repetição do
+encerramento, banco legado e capacidades ainda não verificadas na sessão.
+Esses roteiros simulam as falas de uma pessoa leiga; não são uma pesquisa com
+participantes humanos.
+
 As regressões em `test_job_publication_flow.py` e `test_job_resume_corrections.py`
 cobrem texto alterado após autorização, destino incorreto, incerteza, perfis
 antigos, explicações técnicas, bloqueio de credenciais, importação recusada sem

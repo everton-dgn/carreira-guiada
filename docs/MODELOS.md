@@ -8,6 +8,47 @@ O modelo é a IA que interpreta e decide. O aplicativo é onde ela conversa com
 você, lê os arquivos e acessa o navegador. Escolher um modelo não conecta, por
 si só, sites ou e-mail.
 
+## Se ainda não tem um aplicativo compatível
+
+Comece pelo aplicativo, antes de comparar modelos ou pagar por outra assinatura.
+Para usar o projeto e guardar seu progresso, ele precisa abrir uma pasta local
+e executar os comandos dela. Um chat que só recebe texto pode ajudar a redigir,
+mas não mantém o controle local do Carreira Guiada.
+
+Se já tem um aplicativo de IA, procure no guia oficial dele como abrir uma
+pasta de projeto. Se não encontrar, informe seu aplicativo e sistema operacional
+ao assistente e peça orientação uma etapa por vez. Ele deve conferir as opções
+disponíveis, sem inventar um botão ou exigir uma chave de API no chat.
+
+Para começar com um dos exemplos documentados, escolha **um**:
+[Claude Code](https://code.claude.com/docs/en/quickstart) ou
+[Codex CLI](https://learn.chatgpt.com/docs/codex/cli). Siga a instalação e o login
+do guia oficial escolhido, depois volte a [Primeira vez](GUIA.md#primeira-vez).
+Os exemplos usam terminal; o guia do projeto explica os comandos de entrada.
+Outros aplicativos com as mesmas capacidades também servem. O controle local
+foi preparado para macOS e Linux; Windows nativo não é suportado.
+
+Depois que a pasta estiver aberta, escreva:
+
+> iniciar. Confira o que funciona neste aplicativo e me ajude com o que faltar.
+
+| Quero fazer | O que a IA precisa conferir |
+|---|---|
+| Currículo, entrevista, carreira ou comparação de propostas | Leitura da pasta, comandos locais e gravação do progresso. Navegador e e-mail podem ficar para depois. |
+| Pesquisar vagas ou investigar uma empresa | Acesso a fontes públicas pela ferramenta de pesquisa ou navegador, conforme a tarefa. |
+| Preencher e enviar uma candidatura | Navegador utilizável no destino, perfil e currículo aprovados e autorização para aquela ação. |
+| Acompanhar retornos | Acesso autorizado à caixa escolhida, pela integração ou pelo navegador disponível. |
+
+A conferência do controle local mostra requisitos e observações salvas. A IA
+também precisa verificar a ferramenta da sessão e o acesso ao destino antes
+de agir. Ter o modelo instalado ou uma conexão registrada ontem não comprova
+que o acesso funciona agora.
+
+Se faltar uma ferramenta, a IA explica o que continua disponível e ajuda a
+localizar a conexão no aplicativo. Login é feito por você, na tela do serviço.
+Ela não instala integrações, troca de aplicativo ou concede permissões por
+conta própria. Você pode deixar a conexão para depois e seguir outra atividade.
+
 ## Primeiro, o que você já usa
 
 No preparo completo, a IA oferece uma pergunta sobre os aplicativos ou

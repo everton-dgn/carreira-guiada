@@ -35,12 +35,13 @@ ALIASES = {
 }
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max', 'ultra')
 REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-decisions.json'
-TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-browser.json'
+TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-09-followup-browser.json'
 ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-adversarial.json'
 CODEX_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-codex-adversarial.json'
-PREPARATION_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-preparation.json'
-GUIDANCE_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-guidance.json'
+PREPARATION_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-09-followup-preparation.json'
+GUIDANCE_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-09-followup-guidance.json'
 COMPLETE_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-security.json'
+FOLLOWUP_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-09-followup-security.json'
 
 
 PREPARATION_TASKS = {
@@ -333,7 +334,8 @@ class Models:
         candidates = [{'provider': p['name'], **m} for p in saved['providers'] for m in p['models']]
         report = json.loads(TOOL_REPORT.read_text(encoding='utf-8')) if TOOL_REPORT.is_file() else {}
         attacks = [json.loads(path.read_text(encoding='utf-8')) for path in
-                   (ADVERSARIAL_REPORT, CODEX_ADVERSARIAL_REPORT, COMPLETE_ADVERSARIAL_REPORT)
+                   (ADVERSARIAL_REPORT, CODEX_ADVERSARIAL_REPORT, COMPLETE_ADVERSARIAL_REPORT,
+                    FOLLOWUP_ADVERSARIAL_REPORT)
                    if path.is_file()]
         preparation = preparation_recommendations(candidates,
             json.loads(PREPARATION_REPORT.read_text(encoding='utf-8')) if PREPARATION_REPORT.is_file() else {})

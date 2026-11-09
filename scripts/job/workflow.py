@@ -59,6 +59,8 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _SCHEMA = (
     "CREATE TABLE IF NOT EXISTS wf_control (id INTEGER PRIMARY KEY CHECK(id=1), generation INTEGER NOT NULL, stopped INTEGER NOT NULL, stopped_at TEXT, stop_reason TEXT, resumed_at TEXT, updated_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_goals (version INTEGER PRIMARY KEY, status TEXT NOT NULL, summary TEXT NOT NULL, criteria TEXT NOT NULL, profile_version INTEGER, created_at TEXT NOT NULL, superseded_at TEXT)",
+    "CREATE TABLE IF NOT EXISTS wf_goal_starts (goal_version INTEGER PRIMARY KEY REFERENCES wf_goals(version), user_confirmation TEXT NOT NULL, generation INTEGER NOT NULL, created_at TEXT NOT NULL)",
+    "CREATE TABLE IF NOT EXISTS wf_goal_completions (goal_version INTEGER PRIMARY KEY REFERENCES wf_goals(version), outcome TEXT NOT NULL, reason TEXT NOT NULL, user_confirmation TEXT NOT NULL, completed_at TEXT NOT NULL, generation INTEGER NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_goal_amendments (id INTEGER PRIMARY KEY, goal_version INTEGER NOT NULL REFERENCES wf_goals(version), add_actions TEXT NOT NULL, user_confirmation TEXT NOT NULL, created_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_opportunities (job_id INTEGER PRIMARY KEY REFERENCES jobs(id), source_key TEXT NOT NULL, record TEXT NOT NULL, vacancy TEXT NOT NULL, evaluation TEXT, evaluated_profile_version INTEGER, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)",
     "CREATE TABLE IF NOT EXISTS wf_capabilities (id INTEGER PRIMARY KEY, kind TEXT NOT NULL, provider TEXT NOT NULL, account TEXT NOT NULL, status TEXT NOT NULL, checked_at TEXT NOT NULL, valid_until TEXT NOT NULL, agent_provider TEXT, evidence TEXT NOT NULL, created_at TEXT NOT NULL)",
@@ -243,6 +245,61 @@ class Workflow:
         goal["criteria"] = json.loads(goal["criteria"])
         return goal
 
+    @staticmethod
+    def _closed_goal(conn):
+        """Latest completed goal, only when no active goal exists; legacy-safe read."""
+        if conn is None or "wf_goal_completions" not in _tables(conn) or Workflow._goal(conn):
+            return None
+        row = conn.execute("SELECT g.*, c.outcome, c.reason, c.user_confirmation, c.completed_at, c.generation FROM wf_goals g JOIN wf_goal_completions c ON c.goal_version=g.version WHERE g.status='completed' ORDER BY g.version DESC LIMIT 1").fetchone()
+        if row is None:
+            return None
+        result = dict(row)
+        result['criteria'] = json.loads(result['criteria'])
+        return result
+
+    def complete_goal(self, payload: dict) -> dict:
+        """Close a campaign explicitly, never as a consequence of application counts.
+
+        Payload: {goal_version: positive int, user_confirmation: nonempty str,
+        reason: nonempty str, outcome: "hired" | "user_closed"}. The confirmation
+        records the person's explicit request; hired is their report, not inferred.
+        Atomically sets status=completed (superseded_at remains untouched), stores
+        wf_goal_completions metadata, increments control generation and changes open
+        authorized actions to uncertain. Existing uncertainties, steps and history
+        remain. Does not set or clear a pause. Same version and identical metadata
+        is idempotent; conflicting or stale closure is rejected. Returns the closed
+        goal plus unchanged. A new goal requires configure_goal user_confirmation,
+        gets a new version and cannot revive prior action or research grants.
+        """
+        p = _fields(payload, {'goal_version', 'user_confirmation', 'reason', 'outcome'},
+                    ('goal_version', 'user_confirmation', 'reason', 'outcome'))
+        version = _int(p['goal_version'], 'goal_version', 1, 2**63 - 1)
+        confirmation = _text(p['user_confirmation'], 'user_confirmation', limit=500)
+        reason = _text(p['reason'], 'reason', limit=300)
+        outcome = p['outcome']
+        if outcome not in ('hired', 'user_closed'):
+            raise ValueError('outcome: use hired ou user_closed')
+        store, now = self._writer(), self._now()
+        with store.transaction():
+            previous = store.conn.execute('SELECT * FROM wf_goal_completions WHERE goal_version=?', (version,)).fetchone()
+            if previous:
+                if (previous['outcome'], previous['reason'], previous['user_confirmation']) != (outcome, reason, confirmation):
+                    raise ValueError('Conclusão já registrada com outros dados.')
+                row = dict(store.conn.execute('SELECT * FROM wf_goals WHERE version=?', (version,)).fetchone())
+                row['criteria'] = json.loads(row['criteria'])
+                return {**row, **{key: previous[key] for key in previous.keys() if key != 'goal_version'}, 'unchanged': True}
+            active = self._goal(store.conn)
+            if not active or active['version'] != version:
+                raise ValueError('goal_version: objetivo ativo ausente ou versão desatualizada')
+            store.conn.execute("UPDATE wf_goals SET status='completed' WHERE version=?", (version,))
+            store.conn.execute('UPDATE wf_control SET generation=generation+1, updated_at=? WHERE id=1', (_stamp(now),))
+            generation = self._control(store.conn)['generation']
+            store.conn.execute('INSERT INTO wf_goal_completions VALUES(?,?,?,?,?,?)',
+                               (version, outcome, reason, confirmation, _stamp(now), generation))
+            for row in store.conn.execute("SELECT * FROM wf_actions WHERE status='authorized'").fetchall():
+                self._to_uncertain(store, row, 'Campanha encerrada antes da conferência do resultado.', 'goal_complete', now)
+            return {**self._closed_goal(store.conn), 'unchanged': False}
+
     def _progress(self, conn, goal, now):
         if goal is None or goal["criteria"].get("target_applications") is None:
             return None
@@ -301,14 +358,17 @@ class Workflow:
         """Persiste o objetivo explícito.
 
         Payload: ``{summary: str, actions: [ação de ACTIONS, ...], period_days?: int 1..90,
-        target_applications?: int 1..500 (só com apply), portals?: [str] (vazio = qualquer
+        target_applications?: int 1..500 (só com apply), user_confirmation?: str (obrigatória para nova campanha após conclusão),
+        portals?: [str] (vazio = qualquer
         portal), replace_version?: int}``. Sem meta ou prazo o objetivo é aberto (modo
         chat); nada é inventado. Meta sem prazo conta desde a criação do objetivo.
         Retorna ``{version, status, summary, criteria, profile_version, created_at, unchanged}``.
+        Após conclusão, a confirmação é persistida em wf_goal_starts e a geração
+        avança novamente; a nova versão não reaproveita autorizações antigas.
         Objetivo ativo idêntico é idempotente; diferente só é substituído com
         ``replace_version`` igual à versão ativa (a anterior fica ``superseded``).
         """
-        p = _fields(payload, {"summary", "actions", "period_days", "target_applications", "portals", "replace_version"}, ("summary", "actions"))
+        p = _fields(payload, {"summary", "actions", "period_days", "target_applications", "portals", "replace_version", "user_confirmation"}, ("summary", "actions"))
         summary = _text(p["summary"], "summary", limit=300)
         actions = p["actions"]
         if not isinstance(actions, list) or not actions or len(set(actions)) != len(actions) or set(actions) - set(ACTIONS):
@@ -324,6 +384,7 @@ class Workflow:
         if not isinstance(portals, list) or len(set(portals)) != len(portals):
             raise ValueError("portals: lista de portais sem repetição")
         criteria["portals"] = sorted(_text(portal, "portals", limit=100) for portal in portals)
+        confirmation = _text(p.get("user_confirmation"), "user_confirmation", optional=True, limit=500)
         replace = p.get("replace_version")
         profile_version = None
         try:
@@ -339,10 +400,17 @@ class Workflow:
                 raise ValueError(f"objetivo: já existe objetivo ativo versão {active['version']} com outros critérios; envie replace_version para substituí-lo")
             if active is None and replace is not None:
                 raise ValueError("replace_version: não há objetivo ativo para substituir")
+            closed = self._closed_goal(store.conn)
+            if closed and not confirmation:
+                raise ValueError('user_confirmation: uma nova campanha exige pedido explícito após o encerramento')
             version = (store.conn.execute("SELECT MAX(version) FROM wf_goals").fetchone()[0] or 0) + 1
             if active:
                 store.conn.execute("UPDATE wf_goals SET status='superseded', superseded_at=? WHERE version=?", (_stamp(now), active["version"]))
             store.conn.execute("INSERT INTO wf_goals(version,status,summary,criteria,profile_version,created_at) VALUES(?,?,?,?,?,?)", (version, "active", summary, json.dumps(criteria, sort_keys=True), profile_version, _stamp(now)))
+            if closed:
+                store.conn.execute('UPDATE wf_control SET generation=generation+1, updated_at=? WHERE id=1', (_stamp(now),))
+                store.conn.execute('INSERT INTO wf_goal_starts VALUES(?,?,?,?)',
+                                   (version, confirmation, self._control(store.conn)['generation'], _stamp(now)))
             return {**self._goal(store.conn), "unchanged": False}
 
     def extend_goal(self, payload: dict) -> dict:
@@ -507,6 +575,8 @@ class Workflow:
     def state(self, focus=None, details=False, needs_user=False, entry=None) -> dict:
         """Status privado, somente leitura; em instalação nova não cria ``.job``.
 
+        ``closed_goal`` contém a última conclusão explícita somente sem objetivo
+        ativo; bancos sem tabela de conclusões retornam null, sem migração na leitura.
         Retorna ``{initialized, control: {generation, stopped, ...}, goal, progress,
         profile: {available, approved, version, next_section, missing, questions},
         counts, ledger (Store.summary), pending: [...], capabilities: [...],
@@ -532,7 +602,7 @@ class Workflow:
                         amendment = dict(row)
                         amendment["add_actions"] = json.loads(amendment["add_actions"])
                         goal["amendments"].append(amendment)
-            result = {"initialized": conn is not None, "control": control, "goal": goal, "progress": None, "ledger": None,
+            result = {"initialized": conn is not None, "control": control, "goal": goal, "closed_goal": self._closed_goal(conn), "progress": None, "ledger": None,
                       "counts": {"opportunities": 0, "actions": {}, "messages": 0}, "pending": [], "capabilities": [], "mail_coverage": None, "runner": None}
             if conn is not None:
                 result["ledger"] = store.summary()
@@ -613,6 +683,9 @@ class Workflow:
         if needs_user:
             lines = [line for line in result['details_message'].splitlines() if line.startswith('Precisa de você')]
             context = ['Atividade: ' + result['session']['label'] + '.']
+            if result['session']['campaign_completed']:
+                from .navigation import completed_campaign_message
+                context.append(completed_campaign_message(result['closed_goal']))
             if result['session']['campaign_stopped']:
                 context.append('Campanha de candidaturas parada. As demais atividades podem ser retomadas separadamente.')
             if not lines:
@@ -1150,6 +1223,8 @@ class Workflow:
         with store.transaction():
             self._expire(store, now)
             control = self._control(store.conn)
+            if self._closed_goal(store.conn):
+                raise ValueError("Campanha encerrada: peça uma nova campanha, sem retomar a anterior.")
             if not control["stopped"]:
                 raise ValueError("Não há parada ativa para retomar.")
             store.conn.execute("UPDATE wf_control SET generation=generation+1, stopped=0, resumed_at=?, updated_at=? WHERE id=1", (_stamp(now), _stamp(now)))

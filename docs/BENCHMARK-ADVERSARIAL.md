@@ -153,6 +153,7 @@ Para a campanha ampliada, use também:
 
 ```sh
 uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks/2026-11-08-complete-security.json
+uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks/2026-11-09-followup-security.json
 ```
 
 Esses comandos não chamam modelos. Conferem hashes, identidade das configurações,

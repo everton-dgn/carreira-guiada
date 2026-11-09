@@ -21,10 +21,10 @@ significa que é preciso conferir as ressalvas antes de usar o resultado.
 | Currículo | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 low<br>Fable 5.1 low<br>Haiku 5.5 low | Sem opção qualificada | Sem opção qualificada |
 | Guia de carreira | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 low<br>Fable 5.1 low<br>Haiku 5.5 low | GLM 5.3 max | Sem opção qualificada |
 | Entrevistas | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 high<br>Haiku 5.5 xhigh | Sem opção qualificada | Sem opção qualificada |
-| LinkedIn/GitHub | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 high<br>Haiku 5.5 high | Sem opção qualificada | Sem opção qualificada |
+| LinkedIn/GitHub | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 high<br>Haiku 5.5 low | Sem opção qualificada | Sem opção qualificada |
 | Dossiê da empresa | Terra 6.1 low<br>Sol 6.1 medium<br>Astra 6 low | Opus 5.5 low | Sem opção qualificada | Sem opção qualificada |
 | Propostas | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Haiku 5.5 xhigh | Sem opção qualificada | Sem opção qualificada |
-| Negociação | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Haiku 5.5 medium | Sem opção qualificada | Sem opção qualificada |
+| Negociação | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Haiku 5.5 low | Sem opção qualificada | Sem opção qualificada |
 | Retomar orientação | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 low<br>Fable 5.1 low<br>Haiku 5.5 high | Sem opção qualificada | Sem opção qualificada |
 | Triar vagas | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 low<br>Fable 5.1 medium<br>Haiku 5.5 low | GLM 5.3 max | Sem opção qualificada |
 | Candidatar | Terra 6.1 low<br>Sol 6.1 low<br>Astra 6 low | Opus 5.5 low<br>Fable 5.1 medium<br>Haiku 5.5 low | GLM 5.3 max | Sem opção qualificada |
@@ -49,16 +49,29 @@ do modelo. As falhas e notas por tarefa estão nos
 | OpenAI / Sol 6.1 | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 |
 | OpenAI / Astra 6 | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 |
 | Anthropic / Opus 5.5 | 4/4 | 3/4 | 3/4 | 3/4 | 4/4 | ND |
-| Anthropic / Fable 5.1 | 4/4 | 3/4 | 4/4 | 4/4 | 3/4 | ND |
-| Anthropic / Haiku 5.5 | 3/4 | 4/4 | 4/4 | 4/4 | 3/4 | ND |
+| Anthropic / Fable 5.1 | 4/4 | 4/4 | 4/4 | 4/4 | 3/4 | ND |
+| Anthropic / Haiku 5.5 | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 | ND |
 | GLM / GLM 5.3 | ND | ND | ND | ND | 4/4 | ND |
-| MiniMax / M3.1 Flash | ND | ND | ND | 3/4 | ND | ND |
+| MiniMax / M3.1 Flash | ND | ND | ND | 4/4 | ND | ND |
 
-Catálogo conferido em 8/11/2026. As medições novas começaram nesse dia;
-resultados reutilizados mantêm a data original de 7/11/2026. Cada execução
-informa sua data efetiva. No Codex, o cliente confirmou o esforço; nos demais
+Catálogo conferido na campanha original de 8/11/2026 e nas configurações
+retomadas em 9/11/2026. O complemento tem 14 sessões novas; resultados
+reutilizados mantêm suas datas originais. Cada execução informa sua data efetiva. No Codex, o cliente confirmou o esforço; nos demais
 clientes, registramos o argumento solicitado, sem confirmação do orçamento
 efetivo pelo serviço. Nomes iguais não tornam esforços equivalentes.
+
+## O que o complemento resolveu
+
+O Fable médio passou os seis casos de preparação e a revisão de conteúdo.
+O Haiku baixo concluiu a orientação e mostrou resistência nos seis ataques,
+com oito das nove tarefas legítimas concluídas. Haiku máximo e M3 concluíram
+as sessões de navegador, mas continuam com falhas operacionais por etapa.
+
+Restam duas limitações: Opus médio, alto e xhigh devolveram JSON cercado por
+Markdown, fora do formato exigido; Fable máximo respondeu aos 16 casos, mas
+ultrapassou o prazo ao encerrar a retomada. As respostas estão preservadas.
+Esses resultados não recebem aprovação artificial nem apagam tentativas antigas.
+[Coleta e evidências do complemento](benchmarks/2026-11-09-followup-matrix.json).
 
 ## Onboarding, currículo e guia de carreira
 
@@ -102,7 +115,7 @@ ferramentas da sessão continua necessário antes de operar.
 |---|---|
 | Notas de todos os modelos e esforços, com ressalvas | [Resultados completos](BENCHMARK-RESULTADOS.md) |
 | Navegador, e-mail, parada e retomada | [Protocolo operacional](BENCHMARK-NAVEGADOR.md) |
-| Partidas, exclusões e mudanças no instrumento | [Inventário da campanha](benchmarks/2026-11-08-complete-matrix.json) |
+| Partidas, exclusões e mudanças no instrumento | [Campanha original](benchmarks/2026-11-08-complete-matrix.json) e [complemento](benchmarks/2026-11-09-followup-matrix.json) |
 | Testes do código, separados da avaliação dos modelos | [Validação](VALIDACAO.md) |
 | Acrescentar modelos, provedores ou esforços | [Como contribuir](../CONTRIBUTING.md#testar-outro-provedor-ou-modelo) |
 
