@@ -10,6 +10,7 @@ import tempfile
 from PIL import Image
 from playwright.sync_api import sync_playwright
 from rich.console import Console
+from rich.style import Style
 from rich.terminal_theme import TerminalTheme
 from rich.text import Text
 
@@ -18,13 +19,13 @@ from scripts.job.planning import PersonalPlan
 from scripts.job.practice import Practice
 from scripts.job.personal_progress import PersonalProgress
 from scripts.job.terminal import render
-from scripts.maintainers.render_docs import font
+from scripts.maintainers.render_docs import BLUE, INK, LINE, MUTED, font, white_palette
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'docs/assets'
-COLORS = [(7, 21, 46), (255, 124, 124), (121, 211, 175), (245, 209, 125),
-          (109, 167, 255), (196, 163, 255), (96, 217, 244), (243, 247, 255)]
-THEME = TerminalTheme((7, 21, 46), (243, 247, 255), COLORS, COLORS)
+COLORS = [(16, 41, 81), (180, 35, 24), (20, 108, 67), (143, 94, 0),
+          (40, 100, 237), (123, 63, 180), (40, 100, 237), (16, 41, 81)]
+THEME = TerminalTheme((255, 255, 255), (16, 41, 81), COLORS, COLORS)
 
 
 class Terminal:
@@ -79,7 +80,11 @@ def scenes(root):
 def fragment(ansi):
     """Convert actual ANSI text to literal HTML with a readable terminal palette."""
     console = Console(record=True, file=io.StringIO(), width=76, force_terminal=True)
-    console.print(Text.from_ansi(ansi), end='')
+    content = Text.from_ansi(ansi)
+    # ANSI dim is blended toward the background; use the guide's readable gray.
+    content.spans = [span._replace(style=span.style + Style(color=MUTED, dim=False))
+                     if span.style.dim else span for span in content.spans]
+    console.print(content, end='')
     return console.export_html(inline_styles=True, theme=THEME, code_format='{code}')
 
 
@@ -108,12 +113,12 @@ font-size:16px;display:flex;justify-content:space-between;}}
 .note{{color:#a4bcdf}}h1{{position:absolute;left:40px;top:80px;font-size:40px;margin:0;}}
 .subtitle{{position:absolute;left:40px;top:136px;font-size:23px;color:#a4bcdf;margin:0}}
 .terminal{{position:absolute;left:40px;top:192px;width:1040px;height:418px;padding:16px 22px;
-border:1px solid #34557c;border-radius:16px;background:#07152e;color:#f3f7ff;}}
-.prompt{{color:#60d9f4;font:20px Terminal,monospace;height:28px;white-space:pre}}
-.command{{color:#a4bcdf;font:16px Editorial,sans-serif;height:27px;}}
+border:1px solid {LINE};border-radius:16px;background:#ffffff;color:{INK};}}
+.prompt{{color:{BLUE};font:20px Terminal,monospace;height:28px;white-space:pre}}
+.command{{color:{MUTED};font:16px Editorial,sans-serif;height:27px;}}
 pre{{font:20px/23px Terminal,monospace;margin:0;white-space:pre;}}
 .viewport{{height:322px;overflow:hidden}}
-.continuation{{font:16px Editorial,sans-serif;color:#a4bcdf;height:20px;padding-top:2px}}
+.continuation{{font:16px Editorial,sans-serif;color:{MUTED};height:20px;padding-top:2px}}
 .foot{{position:absolute;top:632px;left:40px;color:#a4bcdf;font-size:20px;}}
 .steps{{position:absolute;left:40px;right:40px;top:685px;display:flex;gap:16px}}
 .steps i{{height:4px;flex:1;background:#1c355b;border-radius:2px}}.steps .done{{background:#60d9f4}}
@@ -174,12 +179,12 @@ def main():
         finally:
             browser.close()
     # Share colors across scenes so only changed areas need to be stored.
-    samples = Image.new('RGB', (1120, 350))
     completed = [frame for frame, duration in zip(frames, durations) if duration >= 5000]
+    width, height = frames[0].size
+    samples = Image.new('RGB', (width * 4, height * ((len(completed) + 3) // 4)))
     for index, frame in enumerate(completed):
-        sample = frame.resize((280, 175), Image.Resampling.LANCZOS)
-        samples.paste(sample, ((index % 4) * 280, (index // 4) * 175))
-    palette = samples.quantize(colors=128)
+        samples.paste(frame, ((index % 4) * width, (index // 4) * height))
+    palette = white_palette(samples)
     for index, frame in enumerate(frames):
         frames[index] = frame.quantize(palette=palette, dither=Image.Dither.NONE)
     frames[0].save(OUT / 'plano-evolucao-terminal.gif', save_all=True, append_images=frames[1:],
