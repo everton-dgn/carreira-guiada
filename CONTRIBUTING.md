@@ -69,19 +69,17 @@ usam merge commit, preservando o histórico. Não há merge automático de bots.
 
 ## Documentação e imagens
 
-Use frases curtas, dados fictícios e passos que alguém sem experiência técnica
-consiga acompanhar. Identifique ilustrações e simulações como tais. Inclua
-texto alternativo e uma versão estática para animações importantes.
-Todo banner deve ter um título curto dentro da própria arte, com contraste e
-leitura confortável. Confira todos os arquivos exibidos no README e nos guias.
-Ao substituir uma arte, use um nome novo e atualize as referências para evitar
-que a página reutilize o endereço de uma versão anterior.
+Antes de criar ou substituir uma peça, siga o
+[guia de estilo das ilustrações e dos GIFs](docs/GUIA-VISUAL.md). Ele concentra
+a paleta, a composição, a tipografia, os tempos de leitura e a conferência
+visual. Use sua ficha de produção e registre no PR quais peças foram verificadas.
+Os arquivos atuais ainda têm estilos anteriores; confira o guia antes de
+usá-los como referência. Os comandos abaixo continuam usando os geradores
+atuais, que precisam ser adaptados junto com cada demonstração migrada.
 
-Use letras de cor uniforme, sem relevo ou sombra, e objetos que expliquem o
-recurso apresentado. Nos GIFs, mostre a digitação e deixe cada cena completa
-visível por pelo menos cinco segundos. Confira todas as cenas e amostras dos
-quadros intermediários, incluindo acentos, cortes e sobreposições. As telas
-ilustradas representam terminais ou serviços externos; mantenha isso claro.
+Use frases curtas, dados fictícios e passos que alguém sem experiência técnica
+consiga acompanhar. As telas ilustradas representam terminais ou serviços
+externos; mantenha essa distinção clara.
 
 ```sh
 uv run --locked --group docs python scripts/maintainers/render_docs.py

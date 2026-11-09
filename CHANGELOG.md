@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Guia visual unifica as regras de ilustrações e GIFs: fundos claros nos
+  banners, azul como destaque, tipografia, composição e pausas para leitura.
+  As instruções para agentes e colaboradores passam a apontar para essa referência.
+
 ## 0.18.1 - 2026-11-09
 
 ### Correções
