@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Meu plano e Minha evolução têm seções próprias no README, com artes em azul,
+  títulos dentro das imagens e exemplos visuais ligados a cada recurso.
+- A demonstração animada do terminal continua disponível junto às novas seções.
+
 ## 0.18.1 - 2026-11-09
 
 ### Correções

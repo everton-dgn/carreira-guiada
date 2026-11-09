@@ -198,22 +198,29 @@ e não alteram seus filtros ou currículo automaticamente.
 
 ## Transforme um objetivo grande em um próximo passo
 
+![Meu plano: um objetivo, um próximo passo. Metas possíveis para o tempo disponível, organizadas entre agora, próximas semanas e direção profissional.](docs/assets/meu-plano-ilustrado.png)
+
 "Tenho pouco tempo e não sei por onde começar." O **Meu plano** organiza uma
 ação para agora, um ciclo de algumas semanas e sua direção profissional.
 A IA aproveita suas respostas, combina um tempo possível e oferece uma versão
 menor da tarefa para os dias difíceis. Você pode pausar ou mudar de rumo.
 
-![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-e-evolucao.gif)
-
 Com 90 minutos disponíveis e 60 planejados, você vê os 30 minutos livres.
 Estimativas incompletas ficam claras. O plano pode reunir currículo, estudos,
 entrevistas e as outras atividades, preservando o progresso ao trocar de foco.
+[Organizar meu plano](docs/MEU-PLANO.md).
 
-Quer enxergar o que já praticou? **Minha evolução** guarda treinos confirmados,
+## Enxergue o esforço que você já fez
+
+![Minha evolução: práticas registradas e conquistas com evidências. Pontos opcionais, histórico preservado e liberdade para pausar.](docs/assets/minha-evolucao-ilustrada.png)
+
+**Minha evolução** guarda treinos confirmados,
 tempo informado e conquistas com evidências. Pontos são opcionais; uma pausa
 não retira o que você fez. Você pode conferir, corrigir ou contestar avaliações
 e desligar os indicadores sem perder respostas.
-[Organizar meu plano](docs/MEU-PLANO.md) · [Acompanhar minha evolução](docs/MINHA-EVOLUCAO.md).
+[Acompanhar minha evolução](docs/MINHA-EVOLUCAO.md).
+
+![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-e-evolucao.gif)
 
 ## Escolha o modelo pela tarefa e pelo que você tem
 
