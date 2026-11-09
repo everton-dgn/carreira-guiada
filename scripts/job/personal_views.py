@@ -1,11 +1,14 @@
 """Private planning entry points and readable projections, without execution."""
 
+from datetime import datetime
+
 from .planning import PersonalPlan
 from .personal_progress import PersonalProgress
 
 
 def entry(root, focus):
     """Offer one contextual question without requiring the application profile."""
+    reports = []
     if focus == 'plan':
         state = PersonalPlan(root).status()
         if not state['exists']:
@@ -20,6 +23,12 @@ def entry(root, focus):
             question = 'Seu plano está pausado. Quer retomá-lo, ajustar o próximo passo ou apenas consultar?'
         elif state['state'] == 'archived':
             question = 'Este plano está arquivado. Quer consultar o histórico ou começar outro?'
+        elif not state.get('next_action') and any(a['state'] == 'deferred' for a in state['actions']):
+            question = 'Há ação adiada no plano. Quer retomar uma delas, ajustar o combinado ou deixar para depois?'
+        elif state['actions'] and all(a['state'] == 'completed' for a in state['actions']):
+            question = 'As ações combinadas foram concluídas. Quer revisar este ciclo, escolher outro passo ou encerrar o plano?'
+        elif not state.get('next_action') and state['actions']:
+            question = 'Não há ação pendente. Quer revisar este ciclo, escolher outro passo ou encerrar o plano?'
         elif not state.get('next_action'):
             question = 'Qual pequeno passo cabe na sua rotina? Por exemplo, ensaiar uma resposta por cinco minutos.'
         elif any(ref['changed'] for ref in state.get('basis', [])):
@@ -28,23 +37,33 @@ def entry(root, focus):
             question = 'Quer fazer esse passo agora, diminuí-lo ou escolher outra atividade?'
         label, step = 'Meu plano', 'personal_plan'
     else:
-        state = PersonalProgress(root).status()
-        question = ('Quer guardar suas práticas, ver conquistas com evidências ou também usar pontos? Pode deixar desativado.'
-                    if state['mode'] == 'off' else
-                    'Quer registrar uma prática que você fez, conferir um marco ou ajustar este acompanhamento?')
+        progress = PersonalProgress(root)
+        state = progress.status()
+        if state['mode'] != 'off':
+            reports = [event for event in progress.get()['events']
+                       if not event['revoked'] and event['source']['kind'] == 'user_report']
+        if state['mode'] == 'off':
+            question = 'Quer guardar suas práticas, ver conquistas com evidências ou também usar pontos? Pode deixar desativado.'
+        elif not state['practice_count'] and not reports:
+            question = 'Quer registrar algo que você praticou? Por exemplo, uma resposta ensaiada ou um estudo. Pode deixar para depois.'
+        elif state['mode'] == 'tracking' or not state['milestones']:
+            question = 'Quer registrar outra prática, corrigir um registro ou ajustar este acompanhamento?'
+        else:
+            question = 'Quer registrar uma prática que você fez, conferir uma conquista ou ajustar este acompanhamento?'
         label, step = 'Minha evolução', 'personal_progress'
     value = {**state, 'view': focus, 'next_step': step, 'question': {'question': question},
              'welcome_back': None, 'resume_hint': question, 'resume_options': [],
              'automatic_execution_started': False}
-    value['message'] = describe(value) + '\n' + question
+    value['message'] = describe(value, reports) + '\n' + question
     if state.get('exists') or state.get('version', 0):
-        value['welcome_back'] = f'{label} está salvo. Você pode continuar, ajustar ou escolher outra atividade.'
+        saved = 'salvo' if focus == 'plan' else 'salva'
+        value['welcome_back'] = f'{label} está {saved}. Você pode continuar, ajustar ou escolher outra atividade.'
         value['resume_options'] = ['continue', 'review', 'menu']
         value['resume_hint'] = value['message']
     return value
 
 
-def describe(value):
+def describe(value, reports=()):
     """Keep evidence, unknown estimates and the next action visible in plain text."""
     if value['view'] == 'plan':
         lines = ['Meu plano']
@@ -68,6 +87,15 @@ def describe(value):
                 lines.append('Se, então: ' + action['if_then'])
             estimate = action.get('estimated_minutes')
             lines.append('Estimativa: ' + ('a combinar' if estimate is None else f'{estimate} min'))
+        other_actions = [item for item in value.get('actions', []) if not action or item['id'] != action['id']]
+        action_labels = {'planned': 'Planejada', 'active': 'Em andamento', 'completed': 'Concluída',
+                         'deferred': 'Adiada', 'cancelled': 'Cancelada'}
+        if other_actions:
+            lines.append('Outras ações salvas:' if action else 'Ações salvas:')
+            for item in other_actions[:5]:
+                lines.append(action_labels[item['state']] + ': ' + item['title'])
+            if len(other_actions) > 5:
+                lines.append(f'Mais {len(other_actions) - 5} ações salvas. Peça para ver todas quando quiser.')
         budget = value.get('budget') or {}
         capacity = budget.get('weekly_minutes')
         lines.append('Tempo disponível por semana: ' + ('a combinar' if capacity is None else f'{capacity} min') + '.')
@@ -90,6 +118,20 @@ def describe(value):
     lines = ['Minha evolução', 'Você escolheu: ' + labels[mode] + '.',
              f"Treinos com autoria confirmada: {value['practice_count']}.",
              f"Tempo informado por você: {value['reported_minutes']} min."]
+    if reports:
+        lines.append(f'Atividades relatadas por você: {len(reports)}.')
+        lines.append('Últimos relatos salvos:')
+        for event in reports[-3:]:
+            description = ' '.join(event['source']['description'].split())
+            if len(description) > 160:
+                description = description[:157] + '...'
+            day = datetime.fromisoformat(event['occurred_at']).strftime('%d/%m/%Y')
+            duration = 'duração não informada' if event['reported_minutes'] is None else f"{event['reported_minutes']} min"
+            lines.append(f'Relato de {day}: {description} ({duration}).')
+        if len(reports) > 3:
+            lines.append('Peça para ver os relatos anteriores quando quiser.')
+    elif not value['practice_count']:
+        lines.append('Ainda não há práticas registradas. Ativar o acompanhamento não registra um treino por si só.')
     if value.get('unreported_time_count'):
         lines.append(f"{value['unreported_time_count']} registro(s) sem duração informada; o total está incompleto.")
     if value.get('points') is not None:

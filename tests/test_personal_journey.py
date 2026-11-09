@@ -3,10 +3,13 @@ import json
 import os
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 from tests import test_job_preparation_journey as preparation
 from tests import test_job_workflow as support
+from tests.test_terminal import Stream, flat
 from scripts.job.planning import PersonalPlan
+from scripts.job.terminal import render
 
 
 class PersonalJourneyTests(unittest.TestCase):
@@ -204,3 +207,153 @@ class PersonalJourneyTests(unittest.TestCase):
         plain = self.call('plan', 'show', '--plain', plain=True)
         self.assertIn('Estimativa: 20 min', plain)
         self.assertIn('Se eu me cansar, paro depois da primeira frase.', plain)
+
+    def test_return_shows_completed_and_deferred_goals_without_restarting_them(self):
+        """A novice can identify saved work and choose what to do with a deferral."""
+        self.time = '2026-11-09T18:00:00-03:00'
+        self.call('menu', '--choose', 'meu plano', '--remember')
+        plan = self.call('plan', 'start', data={'direction': 'Preparar entrevistas de atendimento', 'weekly_minutes': 60})
+        plan = self.action(plan, 'intro', 20, 'Ensaiar minha apresentação')
+        plan = self.action(plan, 'example', 20, 'Preparar um exemplo de atendimento')
+        plan = self.call('plan', 'transition', data={'id': plan['id'], 'expected_version': plan['version'],
+            'action_id': 'intro', 'state': 'completed', 'evidence': {'kind': 'user_report',
+                'description': 'Lia Exemplo confirmou o ensaio e a revisão da sugestão.',
+                'criterion': 'Responder à pergunta e conferir uma sugestão de melhoria.'}})
+        plan = self.call('plan', 'transition', data={'id': plan['id'], 'expected_version': plan['version'],
+            'action_id': 'example', 'state': 'deferred'})
+        plan = self.call('plan', 'pause', data={'id': plan['id'], 'expected_version': plan['version']})
+        self.call('stop')
+        self.call('menu', '--choose', 'minha evolução', '--remember')
+        self.call('menu', '--choose', 'meu plano', '--remember')
+        self.next_day()
+        before = (self.root / '.job/control.sqlite3').read_bytes()
+        paused = self.call('start')
+        self.assertEqual(paused['state'], 'paused')
+        self.assertIn('Concluída: Ensaiar minha apresentação', paused['message'])
+        self.assertIn('Adiada: Preparar um exemplo de atendimento', paused['message'])
+        self.assertIsNone(paused['next_action'])
+        self.assertEqual((self.root / '.job/control.sqlite3').read_bytes(), before)
+        self.call('plan', 'resume', data={'id': plan['id'], 'expected_version': plan['version']})
+        resumed = self.call('start')
+        self.assertIn('adiada', resumed['question']['question'])
+        self.assertIn('retomar', resumed['question']['question'])
+        self.assertIsNone(resumed['next_action'])
+        self.assertTrue(resumed['session']['campaign_stopped'])
+        self.assertEqual([a['state'] for a in resumed['actions']], ['completed', 'deferred'])
+        self.assertIn('Preparar um exemplo de atendimento', self.call('start', '--plain', plain=True))
+        with patch.dict(os.environ, {'TERM': 'xterm-256color'}):
+            for width in (42, 100):
+                output = render(resumed, resumed['message'], width=width, stream=Stream())
+                self.assertIn(flat('Concluída: Ensaiar minha apresentação'), flat(output))
+                self.assertIn(flat('Adiada: Preparar um exemplo de atendimento'), flat(output))
+
+    def test_finished_actions_offer_cycle_review_instead_of_an_empty_plan_prompt(self):
+        """Completing the agreed work offers review without claiming a job outcome."""
+        self.call('menu', '--choose', 'meu plano', '--remember')
+        plan = self.call('plan', 'start', data={'direction': 'Preparar minha apresentação'})
+        plan = self.action(plan, 'a', 5)
+        self.call('plan', 'transition', data={'id': plan['id'], 'expected_version': plan['version'],
+            'action_id': 'a', 'state': 'completed', 'evidence': {'kind': 'user_report',
+                'description': 'Ensaiei e conferi uma sugestão.',
+                'criterion': 'Responder à pergunta e conferir uma sugestão de melhoria.'}})
+        self.next_day()
+        shown = self.call('start')
+        self.assertIn('revisar este ciclo', shown['question']['question'])
+        self.assertIn('Concluída: Ensaiar minha apresentação', shown['message'])
+        self.assertEqual(shown['state'], 'active')
+        self.assertIsNone(shown['next_action'])
+        self.assertFalse(shown['automatic_execution_started'])
+
+    def test_reported_study_remains_visible_after_switch_return_and_correction(self):
+        """A reported study is visible separately from scored interview attempts."""
+        self.time = '2026-11-09T18:00:00-03:00'
+        self.call('menu', '--choose', 'minha evolução', '--remember')
+        self.call('progress', 'configure', data={'expected_version': 0, 'mode': 'tracking'})
+        empty = self.call('start')
+        self.assertIn('Ainda não há práticas registradas', empty['message'])
+        self.assertNotIn('marco', empty['question']['question'])
+        self.assertIn('Minha evolução está salva', empty['welcome_back'])
+        event = {'expected_version': 1, 'event_id': 'lia-study', 'activity': 'study',
+            'source': {'kind': 'user_report', 'description': 'Estudei organização de pedidos com um exercício fictício.'},
+            'user_confirmation': 'Eu estudei hoje por 20 minutos.', 'reported_minutes': 20, 'occurred_at': self.time}
+        self.call('progress', 'record', data=event)
+        self.call('progress', 'record', data=event)
+        self.call('menu', '--choose', 'entrevistas', '--remember')
+        self.call('menu', '--choose', 'minha evolução', '--remember')
+        self.next_day()
+        before = (self.root / '.job/control.sqlite3').read_bytes()
+        shown = self.call('start')
+        self.assertIn('Atividades relatadas por você: 1', shown['message'])
+        self.assertIn(event['source']['description'], shown['message'])
+        self.assertNotIn('marco', shown['question']['question'])
+        self.assertEqual(shown['practice_count'], 0)
+        self.assertEqual(shown['reported_minutes'], 20)
+        self.assertIsNone(shown['points'])
+        self.assertEqual((self.root / '.job/control.sqlite3').read_bytes(), before)
+        with patch.dict(os.environ, {'TERM': 'xterm-256color'}):
+            for width in (42, 100):
+                output = render(shown, shown['message'], width=width, stream=Stream())
+                self.assertIn(flat(event['source']['description']), flat(output))
+                self.assertIn(flat('Atividades relatadas por você: 1'), flat(output))
+        self.call('progress', 'correct', data={'expected_version': 2, 'event_id': 'lia-study',
+            'reason': 'Conferi a duração do exercício.', 'reported_minutes': 15})
+        plain = self.call('progress', 'show', '--plain', plain=True)
+        self.assertIn('Tempo informado por você: 15 min', plain)
+        self.assertIn(event['source']['description'], plain)
+        self.call('progress', 'correct', data={'expected_version': 3, 'event_id': 'lia-study',
+            'reason': 'O registro era somente um exemplo.', 'revoked': True})
+        self.assertNotIn(event['source']['description'], self.call('progress', 'show')['message'])
+        self.assertEqual(self.call('progress', 'history')[1]['events'][0]['reported_minutes'], 20)
+
+    def test_lia_practices_a_goal_and_returns_next_day_without_duplicate_points(self):
+        """A fictional novice completes one goal, records practice and resumes another."""
+        preparation.PreparationJourneyTests.test_external_access_guard(self)
+        self.time = '2026-11-09T18:00:00-03:00'
+        first = self.call('menu', '--choose', 'meu plano', '--remember')
+        self.say(first['message'], 'Quero preparar entrevistas de atendimento. Tenho uma hora por semana.')
+        plan = self.call('plan', 'start', data={'direction': 'Preparar entrevistas de atendimento',
+            'weekly_minutes': 60, 'cycle': {'title': 'Explicar minha experiência', 'review_on': '2026-11-23'}})
+        plan = self.action(plan, 'intro', 20, 'Ensaiar minha apresentação')
+        plan = self.action(plan, 'example', 20, 'Preparar um exemplo de atendimento')
+        self.say(self.call('plan', 'show')['message'], 'Quero fazer o ensaio agora.')
+        self.call('menu', '--choose', 'entrevistas', '--remember')
+        practice = self.call('practice', 'start', data={'track': 'presentation', 'mode': 'coach', 'short': True})
+        sid, qid = practice['session_id'], practice['question']['id']
+        self.say(practice['message'], 'Atendi clientes em uma loja fictícia e organizei os pedidos para evitar esquecimentos.')
+        self.call('practice', 'answer', data={'session_id': sid, 'question_id': qid,
+            'text': self.turns[-1]['person'], 'attempt_id': 'lia-intro-1', 'origin': 'person',
+            'user_confirmation': 'Eu mesma ensaiei esta resposta.'})
+        self.call('practice', 'feedback', data={'session_id': sid, 'question_id': qid, 'version': 1,
+            'strengths': 'Você explicou que organizava os pedidos.', 'improvements': 'Falta contar um exemplo específico.',
+            'suggestion': 'Escolha um pedido e explique como conferiu o resultado.', 'exercise': 'Ensaiar esse exemplo em duas frases.'})
+        self.say('Você ensaiou e conferiu a sugestão. Quer marcar esta ação como concluída?', 'Sim. Quero guardar a prática com pontos, sem estimar o tempo.')
+        source = {'kind': 'practice', 'session_id': sid, 'question_id': qid, 'version': 1}
+        plan = self.call('plan', 'transition', data={'id': plan['id'], 'expected_version': plan['version'],
+            'action_id': 'intro', 'state': 'completed', 'evidence': {'kind': 'source', 'source': source,
+                'description': 'Lia confirmou o ensaio e a leitura da sugestão.',
+                'criterion': 'Responder à pergunta e conferir uma sugestão de melhoria.'}})
+        self.call('menu', '--choose', 'minha evolução', '--remember')
+        self.call('progress', 'configure', data={'expected_version': 0, 'mode': 'points'})
+        event = {'expected_version': 1, 'event_id': 'lia-intro-event', 'activity': 'practice', 'source': source,
+            'user_confirmation': 'Eu ensaiei hoje.', 'reported_minutes': None, 'occurred_at': self.time}
+        self.call('progress', 'record', data=event)
+        self.say(self.call('progress', 'show')['message'], 'Vou parar por hoje. Amanhã quero continuar meu plano.')
+        plan = self.call('plan', 'pause', data={'id': plan['id'], 'expected_version': plan['version']})
+        self.call('menu', '--choose', 'meu plano', '--remember')
+        self.next_day()
+        paused = self.call('start')
+        self.say(paused['message'], 'Quero retomar. Hoje cabe preparar o exemplo.')
+        self.assertEqual(paused['state'], 'paused')
+        self.assertIn('Concluída: Ensaiar minha apresentação', paused['message'])
+        self.call('plan', 'resume', data={'id': plan['id'], 'expected_version': plan['version']})
+        resumed = self.call('start')
+        self.assertEqual(resumed['next_action']['id'], 'example')
+        self.call('menu', '--choose', 'minha evolução', '--remember')
+        self.call('progress', 'record', data=event)
+        progress = self.call('start')
+        self.assertEqual(progress['practice_count'], 1)
+        self.assertEqual(progress['points'], 10)
+        self.assertEqual(progress['unreported_time_count'], 1)
+        self.assertIn('total está incompleto', progress['message'])
+        self.assertFalse(progress['automatic_execution_started'])
+        self.assertFalse(self.call('profile', 'status')['approved'])

@@ -47,6 +47,26 @@ Na volta, diga `iniciar` ou "continuar meu plano". Você vê o que ficou salvo e
 escolhe continuar, ajustar ou trocar de atividade. Um plano pausado precisa de
 um pedido de retomada. As candidaturas continuam com seu próprio estado.
 
+O resumo identifica as ações como planejadas, em andamento, concluídas, adiadas
+ou canceladas. As concluídas e adiadas continuam salvas, inclusive quando não
+há um próximo passo ativo. Retomar o plano mantém os adiamentos; você escolhe
+qual ação quer retomar. Se a lista for longa, peça "mostre todas as minhas ações".
+
+### Exemplo: começar hoje e voltar amanhã
+
+Lia, uma pessoa fictícia, quer preparar entrevistas de atendimento e tem uma
+hora por semana. Ela combina duas ações de 20 minutos: ensaiar a apresentação
+e preparar um exemplo de atendimento. Depois de ensaiar, diz:
+
+> Fiz a apresentação e conferi a sugestão de melhoria. Pode marcar essa ação
+> como concluída. Quero deixar o exemplo para depois e pausar meu plano.
+
+No dia seguinte, "continuar meu plano" recupera a apresentação concluída e o
+exemplo adiado. Lia pode dizer "quero retomar o exemplo, mas hoje só tenho dez
+minutos". A IA combina o ajuste antes de salvar. Não precisa refazer o cadastro
+nem explicar novamente o objetivo. Se quiser conferir sem retomar, basta
+dizer "só quero ver meu plano".
+
 Ao revisar um ciclo, a pergunta é curta: "O que ajudou e qual passo cabe agora?"
 Você pode adiar a revisão. Datas de revisão são lembretes dentro da conversa;
 não criam notificações nem mantêm a IA executando com o aplicativo fechado.
@@ -57,6 +77,11 @@ A IA registra o que sustenta uma conclusão: seu relato identificado ou uma
 referência de treino ou carreira. Uma anotação do plano não confirma uma
 candidatura, não aprova um currículo e não autoriza envios. Se um envio ficou
 incerto, o destino ainda precisa ser conferido.
+
+Quando todas as ações combinadas terminarem, você pode revisar o ciclo,
+escolher outro passo ou encerrar o plano. A IA não cria metas adicionais nem
+arquiva o plano automaticamente. Marcar uma meta como concluída e registrar
+uma prática em [Minha evolução](MINHA-EVOLUCAO.md) são escolhas separadas.
 
 Quando um feedback usado no plano mudar, a IA avisa que a orientação precisa
 ser revista. Ela não substitui silenciosamente o que você havia combinado.

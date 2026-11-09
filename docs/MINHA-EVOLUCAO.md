@@ -6,7 +6,7 @@ O recurso começa desativado. Você pode mudar de ideia a qualquer momento.
 | Escolha | O que aparece |
 |---|---|
 | Deixar desativado | Você segue usando todas as atividades, sem indicadores. |
-| Registrar práticas | Treinos confirmados e tempo informado por você. |
+| Registrar práticas | Entrevistas ensaiadas, outras atividades relatadas e tempo informado por você. |
 | Ver conquistas | Práticas e marcos com critério e evidências. |
 | Também usar pontos | O acompanhamento anterior e pontos de participação. |
 
@@ -18,7 +18,9 @@ preenchimento automático de vagas não contam como estudo ou treino.
 Uma resposta escrita pela IA como exemplo também não conta como sua prática.
 
 Você pode registrar outras atividades por relato, como "estudei modelagem por
-20 minutos". Esses relatos ficam identificados. Os pontos da primeira versão
+20 minutos". O resumo mostra quantas atividades você relatou e os três últimos
+relatos salvos, com data e duração quando informada. Você pode pedir os anteriores.
+Os pontos da primeira versão
 valem apenas para tentativas de entrevista com autoria pessoal confirmada:
 **10 pontos por tentativa registrada**, independentemente da duração.
 
@@ -26,6 +28,29 @@ Consultar, reabrir ou retomar a mesma tentativa não soma pontos. Um novo ensaio
 tem identificação própria, mesmo quando você escolhe repetir as mesmas palavras.
 Uma pausa longa não tira pontos. Também não há classificação entre pessoas,
 cobrança de presença diária ou prêmio por quantidade de candidaturas.
+
+## Registrar e voltar depois
+
+Comece dizendo "quero acompanhar minhas práticas, sem pontos". Antes do
+primeiro registro, a IA informa que ainda não há práticas salvas. Para registrar
+um estudo, por exemplo:
+
+> Hoje estudei organização de pedidos por 20 minutos e resolvi um exercício.
+> Pode guardar esse relato.
+
+A IA confirma o que foi salvo. Se faltar a data ou a duração, pergunta somente
+o necessário; a duração pode ficar em aberto. Um estudo aparece como atividade
+relatada. O contador de treinos com autoria confirmada corresponde às respostas
+ensaiadas nas entrevistas, e pode continuar em zero mesmo com estudos salvos.
+
+No dia seguinte, diga "minha evolução" para ver os registros. Se essa foi a
+última atividade escolhida, `iniciar` também a recupera. Trocar para currículo
+ou Meu plano preserva tudo. Consultar o mesmo registro novamente não o duplica.
+
+Você pode dizer "na verdade foram 15 minutos", "esse registro era só um exemplo"
+ou "deixe o acompanhamento desativado". A IA confere a atividade que você quer
+corrigir; desligar preserva o histórico e não apaga os treinos. Para voltar a
+registrar, peça explicitamente para reativar o acompanhamento.
 
 ## Conquistas que você consegue conferir
 

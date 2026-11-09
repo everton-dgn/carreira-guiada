@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.18.1 - 2026-11-09
+
+### Correções
+
+- Meu plano mostra ações concluídas e adiadas, com orientações para retomar,
+  ajustar ou encerrar um ciclo sem criar novas metas automaticamente.
+- Minha evolução confirma práticas de estudo salvas e distingue esses relatos
+  dos treinos de entrevista. A retomada preserva correções, pausas e histórico.
+- Os guias explicam esses percursos com exemplos fictícios, incluindo a volta
+  no dia seguinte e o acompanhamento desligado sem perda dos registros.
+
 ## 0.18.0 - 2026-11-09
 
 - Meu plano organiza direção profissional, ciclos e próximas ações com orçamento
