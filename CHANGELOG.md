@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.17.0 - 2026-11-09
+
 - Comparação ampliada dos modelos e esforços disponíveis, com resultados por
   tarefa e provedor e distinção entre decisão correta e qualidade do texto.
 - Jornadas fictícias de entrevistas, LinkedIn/GitHub, investigação de empresas,
