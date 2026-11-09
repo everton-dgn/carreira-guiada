@@ -4,8 +4,6 @@
 
 - Meu plano e Minha evolução têm seções próprias no README, com ilustrações
   que preservam a identidade das demais peças.
-- Cinco artes recebem retoques locais de brilho, tipografia e espaçamento,
-  mantendo as composições, os objetos e a resolução originais.
 - O GIF de planejamento usa a moldura da família, texto maior, digitação do
   pedido no chat e rolagem da saída real com registros fictícios.
 - A demonstração de candidatura separa o portal do subtítulo para evitar colisão.

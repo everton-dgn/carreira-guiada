@@ -21,7 +21,12 @@ AUTH_URL = re.compile(r"https?://[^\s/'\"<>]+:[^\s/'\"<>]+@([A-Za-z0-9.:-]+)")
 RESERVED_DOMAINS = {"example.com", "example.net", "example.org"}
 # Exact, visually reviewed originals. Retain their generated C2PA provenance.
 REVIEWED_IMAGES = {
+    "docs/assets/meu-plano-ilustrado.png": "f9fcf1e6547192e2209701c510b17d6664909bc7e9e755c1a88cbc0420100a69",
+    "docs/assets/minha-evolucao-ilustrada.png": "24b24e41d20c65f21dd59aa8740f9771b6a816df48d1ef744b9a271b21b10638",
+    "docs/assets/plano-carreira-banner.png": "0577d5ee271a8e92b5a40a7e30e73c519253b23f919f182ebb8be66d81ba4d2d",
+    "docs/assets/propostas-comparacao-banner.png": "1bdce581389023f22447c4a60ad7b8b835f473da2afebd817f3d8cd439a11ba2",
     "docs/assets/pesquisa-empresa-banner.png": "73d09b61a09b1df1006a544ae14fcc4dfa42e4c0cc25c5ce5f0f2dd1300dfdae",
+    "docs/assets/perfil-projetos-banner.png": "e146a5434afd7aa997309401e006b0962316e2a9a6af91eb53fb7fa2587977c4",
     "docs/assets/carreira-guiada-automacao-banner.png": "18a0242b83791649429bd6c178f5a513f1e21952ac1714c50546e457b97c0e77",
     "docs/assets/jornada-candidaturas-banner.png": "c00e1f7258c07cca5a19eb671ed76475b4f3e81e28b088a27e2597ed3806b9da",
     "docs/assets/retornos-progresso-banner.png": "c83526b7ebb4fb548d6b50f4ece547b3501302b0da0dbaf3e9d597c6a0a340d5",

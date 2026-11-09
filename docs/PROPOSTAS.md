@@ -1,6 +1,6 @@
 # Comparar propostas de trabalho
 
-![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](assets/propostas-comparacao-banner-refinado.png)
+![Compare o pacote. Negocie com clareza. Salário, benefícios e custos na mesma conta.](assets/propostas-comparacao-banner.png)
 
 Esta comparação usa valores que você informa ou confirma. Ela ajuda a organizar
 as diferenças entre CLT, PJ, MEI, cooperado e trabalho internacional. Não é
