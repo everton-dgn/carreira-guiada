@@ -612,6 +612,12 @@ pessoa nunca precisa invocá-los.
 
 ## Escrita e privacidade
 
+Ao criar ou revisar ilustrações, banners e GIFs da documentação, leia primeiro
+[docs/GUIA-VISUAL.md](docs/GUIA-VISUAL.md). Reutilize sua ficha de produção,
+paleta e critérios de conferência. Uma peça antiga ou uma nova saída do gerador
+não altera o padrão por conta própria. Essa regra se aplica à manutenção das
+artes do projeto; currículos seguem as orientações próprias de candidatura.
+
 Escreva em português do Brasil, com acentuação, sem travessão, emojis, elogios
 vazios ou exageros. Ao terminar, informe envios confirmados, pendências e
 descartes com motivos; não conte pesquisa ou formulário preenchido como envio.

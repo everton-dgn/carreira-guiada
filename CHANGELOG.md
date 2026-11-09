@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.20.0 - 2026-11-09
+
+- Guia visual reúne referências e critérios para retocar ilustrações e GIFs,
+  preservando o fundo marinho, o volume dos objetos e a identidade existente.
+- As instruções para agentes e colaboradores apontam para a mesma referência,
+  com cuidados de tipografia, margens, brilho e pausas para leitura.
+
 ## 0.19.0 - 2026-11-09
 
 - Meu plano e Minha evolução têm seções próprias no README, com ilustrações
