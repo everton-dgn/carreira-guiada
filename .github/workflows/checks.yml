@@ -14,7 +14,49 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  plan:
+    name: Select required checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    outputs:
+      mode: ${{ steps.select.outputs.mode }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: '0.13.5'
+          python-version: '3.13'
+      - name: Compare event commits conservatively
+        id: select
+        run: uv run --no-project python scripts/maintainers/ci_checks.py select
+  documentation:
+    name: publication and documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: '0.13.5'
+          python-version: '3.13'
+      - name: Check exact publication index
+        run: uv run --no-project python scripts/check_publication.py --staged
+      - name: Check actual project and lock release versions
+        run: uv run --no-project python scripts/maintainers/ci_checks.py versions
+      - name: Check links, skill mirrors, publication, release and CI contracts
+        run: >-
+          uv run --no-project python -m unittest
+          tests.test_job_package tests.test_publication tests.test_release tests.test_ci_checks
   tests:
+    needs: plan
+    if: needs.plan.outputs.mode == 'full'
     name: tests (${{ matrix.os }}, Python ${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 12
@@ -51,6 +93,8 @@ jobs:
           test ! -e .job
           git diff --exit-code
   browser:
+    needs: plan
+    if: needs.plan.outputs.mode == 'full'
     name: browser (isolated fictional services)
     runs-on: ubuntu-latest
     timeout-minutes: 8
@@ -70,12 +114,18 @@ jobs:
   quality:
     name: quality
     if: always()
-    needs: [tests, browser]
+    needs: [plan, documentation, tests, browser]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Require every test platform to pass
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: '0.13.5'
+          python-version: '3.13'
+      - name: Require every selected check to pass
         env:
-          RESULT: ${{ needs.tests.result }}
-          BROWSER_RESULT: ${{ needs.browser.result }}
-        run: test "$RESULT" = success && test "$BROWSER_RESULT" = success
+          CI_NEEDS: ${{ toJSON(needs) }}
+        run: uv run --no-project python scripts/maintainers/ci_checks.py quality
