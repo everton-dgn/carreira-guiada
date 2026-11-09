@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.18.0 - 2026-11-09
+
 - Meu plano organiza direção profissional, ciclos e próximas ações com orçamento
   semanal, referências de carreira e treino, versões preservadas e pausa própria.
 - Minha evolução oferece registros de práticas, conquistas com evidências e
