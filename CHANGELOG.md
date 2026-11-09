@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.20.0 - 2026-11-09
+
 - Guia visual reúne referências e critérios para retocar ilustrações e GIFs,
   preservando o fundo marinho, o volume dos objetos e a identidade existente.
 - As instruções para agentes e colaboradores apontam para a mesma referência,
