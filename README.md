@@ -40,9 +40,11 @@ continuidade quando a sessão da IA termina.
 | Treinar para uma entrevista | "Quero treinar uma entrevista" |
 | Escolher um rumo profissional | "Quero ajuda com minha carreira" |
 | Encontrar oportunidades | "Quero ver vagas" |
+| Organizar uma rotina possível | "Quero montar meu plano" |
+| Acompanhar minhas práticas | "Quero ver minha evolução" |
 
 Escreva **menu** ou **opções** a qualquer momento para ver os caminhos.
-**Mais opções** reúne LinkedIn/GitHub, empresas, propostas, modelos e preparo
+**Mais opções** reúne Meu plano, Minha evolução, LinkedIn/GitHub, empresas, propostas, modelos e preparo
 completo para candidaturas. Também pode pedir uma dessas atividades pelo nome.
 Pode responder pelo número mostrado. Currículo, entrevistas e carreira não
 exigem completar o cadastro de candidaturas. Para conhecer vagas, combine
@@ -194,6 +196,25 @@ a ajustar o próximo passo, inclusive mudar de direção. As escolhas ficam priv
 e não alteram seus filtros ou currículo automaticamente.
 [Começar o guia de carreira](docs/CARREIRA.md).
 
+## Transforme um objetivo grande em um próximo passo
+
+"Tenho pouco tempo e não sei por onde começar." O **Meu plano** organiza uma
+ação para agora, um ciclo de algumas semanas e sua direção profissional.
+A IA aproveita suas respostas, combina um tempo possível e oferece uma versão
+menor da tarefa para os dias difíceis. Você pode pausar ou mudar de rumo.
+
+![Demonstração do terminal com dados fictícios: plano semanal, próximo passo e acompanhamento opcional de práticas.](docs/assets/plano-e-evolucao.gif)
+
+Com 90 minutos disponíveis e 60 planejados, você vê os 30 minutos livres.
+Estimativas incompletas ficam claras. O plano pode reunir currículo, estudos,
+entrevistas e as outras atividades, preservando o progresso ao trocar de foco.
+
+Quer enxergar o que já praticou? **Minha evolução** guarda treinos confirmados,
+tempo informado e conquistas com evidências. Pontos são opcionais; uma pausa
+não retira o que você fez. Você pode conferir, corrigir ou contestar avaliações
+e desligar os indicadores sem perder respostas.
+[Organizar meu plano](docs/MEU-PLANO.md) · [Acompanhar minha evolução](docs/MINHA-EVOLUCAO.md).
+
 ## Escolha o modelo pela tarefa e pelo que você tem
 
 No preparo completo, a IA pode perguntar quais aplicativos e serviços você já usa.
@@ -266,6 +287,8 @@ vários dias nem compatibilidade com todas as interfaces de recrutamento.
 | Escolher modelo e esforço | [Modelos e ferramentas](docs/MODELOS.md) |
 | Escolher os links de busca | [Fontes escolhidas por você](docs/FONTES.md) |
 | Escolher em que área focar | [Guia de carreira](docs/CARREIRA.md) |
+| Planejar ações e tempo disponível | [Meu plano](docs/MEU-PLANO.md) |
+| Acompanhar práticas e conquistas | [Minha evolução](docs/MINHA-EVOLUCAO.md) |
 | Criar ou revisar um currículo | [Currículos](docs/CURRICULOS.md) |
 | Melhorar LinkedIn e GitHub | [Apresentação profissional](docs/PRESENCA-PROFISSIONAL.md) |
 | Ensaiar uma entrevista | [Treinos e feedback](docs/ENTREVISTAS.md) |

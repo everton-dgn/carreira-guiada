@@ -88,6 +88,16 @@ uv run --locked --group docs python scripts/maintainers/render_docs.py
 uv run --locked --group docs python scripts/maintainers/render_journeys.py
 ```
 
+Para a demonstração de planejamento, o gerador captura a saída real do terminal
+com registros fictícios temporários. Usa um navegador próprio sem janela visível
+e bloqueia requisições de rede:
+
+```sh
+uv sync --locked --group docs --group browser
+uv run --no-sync playwright install chromium --only-shell
+uv run --no-sync python -m scripts.maintainers.render_personal
+```
+
 O gerador usa uma fonte de texto (DejaVu Sans ou Arial) e uma monoespaçada
 (DejaVu Sans Mono, Menlo ou Consolas) disponíveis no sistema. Confira acentos
 e legibilidade antes de publicar. Não copie fontes de terceiros para o projeto.

@@ -82,3 +82,9 @@ em vista, você também pode [investigar a empresa](EMPRESAS.md) ou
 
 As respostas e o progresso ficam na área privada da sua instalação. O aplicativo
 de IA processa o que você compartilha com ele; consulte [privacidade](PRIVACIDADE.md).
+
+## Levar a escolha para a rotina
+
+Diga "quero montar meu plano" para transformar a direção escolhida em ações
+curtas, um ciclo de semanas e um orçamento de tempo. A IA reaproveita o que
+você confirmou e pergunta só o necessário. [Conheça Meu plano](MEU-PLANO.md).

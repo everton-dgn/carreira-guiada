@@ -3,7 +3,7 @@ import unicodedata
 
 CHOICES = [('1', 'curriculum', 'Currículo'), ('2', 'practice', 'Entrevistas'),
            ('3', 'career', 'Guia de carreira'), ('4', 'search', 'Busca de vagas')]
-MORE = [('empresa', 'company', 'Empresa'), ('presença', 'presence', 'LinkedIn/GitHub'),
+MORE = [('plano', 'plan', 'Meu plano'), ('evolução', 'progress', 'Minha evolução'), ('empresa', 'company', 'Empresa'), ('presença', 'presence', 'LinkedIn/GitHub'),
         ('propostas', 'offers', 'Propostas'), ('modelos', 'models', 'Preferências de modelos'),
         ('preparo', 'prepare', 'Preparo completo')]
 
@@ -22,7 +22,8 @@ def menu(selection=None):
         choices = [{'number': n, 'focus': f, 'label': label} for n, f, label in MORE]
         return {'message': 'Mais opções:\n' + '\n'.join(label for _, _, label in MORE) + '\nDiga o nome da atividade.',
                 'choices': choices, 'selected': None}
-    aliases = {'curriculo': 'curriculum', 'entrevista': 'practice', 'entrevistas': 'practice',
+    aliases = {'plano': 'plan', 'meu plano': 'plan', 'plan': 'plan',
+               'evolucao': 'progress', 'minha evolucao': 'progress', 'progress': 'progress', 'curriculo': 'curriculum', 'entrevista': 'practice', 'entrevistas': 'practice',
                'carreira': 'career', 'guia de carreira': 'career', 'busca': 'search', 'vagas': 'search', 'busca de vagas': 'search',
                'prepare': 'prepare', 'preparo': 'prepare', 'preparo completo': 'prepare',
                'empresa': 'company', 'empresas': 'company', 'company': 'company',

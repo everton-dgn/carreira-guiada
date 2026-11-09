@@ -10,7 +10,7 @@ from .resumes import ResumeManager
 LABELS = {'menu': 'Escolher uma atividade', 'prepare': 'Preparo completo',
           'curriculum': 'Currículo', 'practice': 'Entrevistas', 'career': 'Guia de carreira',
           'search': 'Busca e candidaturas', 'company': 'Análise de empresa',
-          'presence': 'LinkedIn e GitHub', 'offers': 'Comparação de propostas', 'models': 'Escolha de modelos'}
+          'presence': 'LinkedIn e GitHub', 'offers': 'Comparação de propostas', 'models': 'Escolha de modelos', 'plan': 'Meu plano', 'progress': 'Minha evolução'}
 HELP = 'Pode pedir "andamento", "o que precisa de mim", "detalhes", "menu" ou "parar".'
 ACTION_LABELS = {'research': 'pesquisa', 'register': 'cadastro', 'fill': 'preenchimento',
                  'apply': 'candidatura', 'email_read': 'consulta de e-mail', 'email_reply': 'resposta por e-mail',
@@ -66,7 +66,7 @@ def selected_activity(root, state, focus=None, start=None):
     if start:
         if start.get('menu') and start['message'] == start['menu']['message']:
             return 'menu'
-        inferred = {'career_guidance': 'career', 'company_dossier': 'company',
+        inferred = {'personal_plan': 'plan', 'personal_progress': 'progress', 'career_guidance': 'career', 'company_dossier': 'company',
                     'interview_preparation': 'practice', 'offers': 'offers',
                     'model_preferences': 'models', 'professional_presence': 'presence',
                     'resume_approval': 'curriculum', 'curriculum_input': 'curriculum',
@@ -198,6 +198,16 @@ def _activity(root, state, activity):
                           next_action='Conferir as premissas que faltam nas propostas salvas.' if incomplete else 'Conferir as premissas e comparar as propostas escolhidas.')
         else:
             result.update(condition='waiting_user', needs_user=True, next_action='Conte quais propostas quer comparar.')
+    elif activity in ('plan', 'progress'):
+        from .personal_views import entry
+        saved = entry(root, activity)
+        result.update(phase=activity, condition='waiting_user', needs_user=True,
+                      advance='Há um registro salvo desta atividade.' if saved.get('welcome_back') else None,
+                      next_action=saved['question']['question'])
+        if activity == 'plan' and saved.get('next_action'):
+            result['next_action'] = saved['next_action']['title'] + '. ' + saved['question']['question']
+        if activity == 'plan' and saved.get('state') in ('paused', 'archived'):
+            result.update(condition='paused', needs_user=False)
     elif activity == 'models':
         from .models import Models
         guidance = Models(root).guidance()
@@ -230,7 +240,7 @@ def project(root, state, now, focus=None, start=None):
     try:
         current = _activity(root, state, activity)
     except (ValueError, KeyError, TypeError, AttributeError):
-        if activity not in {'curriculum', 'presence', 'offers', 'models'}:
+        if activity not in {'curriculum', 'presence', 'offers', 'models', 'plan', 'progress'}:
             raise
         current = {'phase': 'review', 'condition': 'needs_verification', 'advance': None,
                    'next_action': 'Conferir os registros desta atividade com a IA antes de continuar.', 'needs_user': False}

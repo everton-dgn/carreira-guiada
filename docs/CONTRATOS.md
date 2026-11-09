@@ -163,7 +163,7 @@ não torna a coleta obrigatória para busca, carreira, dossiê ou treino.
 `menu` retorna `message`, `choices` e `selected`. Cada opção tem `number`,
 `focus` e `label`. As quatro escolhas principais são numeradas de 1 a 4;
 `message` também oferece `5. Mais opções`. `--choose 5` ou `mais opções`
-devolve `selected: null` e cinco escolhas auxiliares por nome: `empresa`,
+devolve `selected: null` e sete escolhas auxiliares por nome: `plano`, `evolução`, `empresa`,
 `presença`, `propostas`, `modelos` e `preparo`. Nessa lista, `number` contém
 o nome aceito, não um novo índice numérico. Abrir a lista não grava, mesmo
 com `--remember`. `--choose` aceita número, nome em português ou identificador
@@ -252,7 +252,7 @@ A primeira mantém a entrada direta e preserva o checkpoint operacional; a
 segunda volta ao preparo completo. Sem `route`, `choose` mantém o comportamento
 anterior. `remember_route(route)` guarda a escolha
 explícita do menu (`curriculum`, `practice`, `career`, `search`, `prepare`,
-`company`, `presence`, `offers` ou `models`) sem mudar
+`company`, `presence`, `offers`, `models`, `plan` ou `progress`) sem mudar
 permissões, modo do currículo ou checkpoint.
 `get()` expõe a rota salva. Criar um dossiê preserva a atividade escolhida;
 entrar diretamente em empresas exige `menu --choose company --remember`.
@@ -585,3 +585,28 @@ uma taxa por moeda diferente dela. Taxa ausente impede equivalência; registro
 incompleto ou inválido gera `ValueError`. A validação é sintática e não verifica
 se a fonte está acessível ou se a taxa é correta. Cabe ao agente confirmar a
 fonte pública e a taxa fora do módulo. O módulo não lê o piso do perfil.
+
+## Plano e evolução pessoal
+
+`PersonalPlan(root)` e `PersonalProgress(root)` mantêm revisões imutáveis em
+`personal_plan_revisions` e `personal_progress_revisions`, criadas apenas na
+primeira gravação. O acesso usa `Profile._db`, com validação e gravação na mesma
+transação. `expected_version` impede sobrescrever uma alteração concorrente.
+Esses registros não alteram perfil aprovado, ações externas ou campanha.
+
+As rotas `plan` e `progress` funcionam no menu, em `start --focus`, no status e
+nas notas por atividade. Os próximos passos são `personal_plan` e
+`personal_progress`. Leituras não inicializam `.job`. A configuração visual
+não muda o contrato JSON. `--plain` força texto simples naquela chamada.
+
+A CLI de treino aceita em `practice answer` os campos opcionais `attempt_id`,
+`origin` (`person`, `agent` ou `unknown`) e `user_confirmation`. A confirmação,
+quando informada, deve ser uma string não vazia, por exemplo
+`"user_confirmation": "Eu mesma ensaiei esta resposta."`; o booleano `true`
+é rejeitado. `person` exige essa confirmação textual; chamadas legadas
+permanecem com origem desconhecida. O mesmo ID
+com o mesmo conteúdo é idempotente, e com conteúdo diferente é rejeitado.
+Novo ensaio pode repetir o texto usando outro ID. O controle grava
+`recorded_at` em UTC; isso registra a gravação, não a duração do treino.
+
+[Payloads e regras do planejamento](PLANEJAMENTO-AGENTE.md#contrato-dos-comandos).

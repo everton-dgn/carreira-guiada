@@ -5,8 +5,8 @@ from datetime import datetime, timezone
 from .profile import Profile
 from .resumes import _text
 
-PHASES = ('onboarding', 'resume', 'presence', 'practice', 'career', 'company', 'offers', 'research', 'fill', 'email', 'followup', 'waiting', 'stopped')
-ACTIVITIES = ('prepare', 'curriculum', 'presence', 'practice', 'career', 'company', 'offers', 'search', 'models')
+PHASES = ('onboarding', 'resume', 'presence', 'practice', 'career', 'company', 'offers', 'plan', 'progress', 'research', 'fill', 'email', 'followup', 'waiting', 'stopped')
+ACTIVITIES = ('prepare', 'curriculum', 'presence', 'practice', 'career', 'company', 'offers', 'search', 'models', 'plan', 'progress')
 CONDITIONS = ('recorded', 'ready', 'waiting_user', 'waiting_tool', 'paused', 'completed', 'needs_verification')
 DEPENDENCIES = {'login': 'Entre na conta pela aba preservada, sem enviar sua senha no chat.',
                 'answer': 'Responda à pergunta atual desta atividade.',
@@ -15,7 +15,7 @@ DEPENDENCIES = {'login': 'Entre na conta pela aba preservada, sem enviar sua sen
                 'verify': 'Confira o resultado no destino antes de repetir a ação.',
                 'tool': 'Falta conferir o retorno da ferramenta.'}
 PHASE_ACTIVITY = {'onboarding': 'prepare', 'resume': 'curriculum', 'presence': 'presence',
-                  'practice': 'practice', 'career': 'career', 'company': 'company', 'offers': 'offers'}
+                  'practice': 'practice', 'career': 'career', 'company': 'company', 'offers': 'offers', 'plan': 'plan', 'progress': 'progress'}
 
 
 def activity_of(note):

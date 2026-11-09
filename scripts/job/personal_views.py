@@ -1,0 +1,138 @@
+"""Private planning entry points and readable projections, without execution."""
+
+from .planning import PersonalPlan
+from .personal_progress import PersonalProgress
+
+
+def entry(root, focus):
+    """Offer one contextual question without requiring the application profile."""
+    if focus == 'plan':
+        state = PersonalPlan(root).status()
+        if not state['exists']:
+            question = 'O que você quer conseguir primeiro? Por exemplo, preparar o currículo ou treinar uma entrevista. Pode dizer "não sei".'
+            from .career import CareerGuide
+            career = CareerGuide(root).status()['session']
+            if career and career['answers'].get('goal', {}).get('value'):
+                state['confirmed_context'] = career['answers']
+                state['suggested_basis'] = [{'kind': 'career', 'id': career['id'], 'version': career['version']}]
+                question = 'Você já contou seu objetivo no guia de carreira: ' + career['answers']['goal']['value'] + '. Quer usá-lo neste plano ou ajustar a direção?'
+        elif state['state'] == 'paused':
+            question = 'Seu plano está pausado. Quer retomá-lo, ajustar o próximo passo ou apenas consultar?'
+        elif state['state'] == 'archived':
+            question = 'Este plano está arquivado. Quer consultar o histórico ou começar outro?'
+        elif not state.get('next_action'):
+            question = 'Qual pequeno passo cabe na sua rotina? Por exemplo, ensaiar uma resposta por cinco minutos.'
+        elif any(ref['changed'] for ref in state.get('basis', [])):
+            question = 'Uma fonte do plano mudou. Vamos conferir essa orientação antes de escolher o próximo passo?'
+        else:
+            question = 'Quer fazer esse passo agora, diminuí-lo ou escolher outra atividade?'
+        label, step = 'Meu plano', 'personal_plan'
+    else:
+        state = PersonalProgress(root).status()
+        question = ('Quer guardar suas práticas, ver conquistas com evidências ou também usar pontos? Pode deixar desativado.'
+                    if state['mode'] == 'off' else
+                    'Quer registrar uma prática que você fez, conferir um marco ou ajustar este acompanhamento?')
+        label, step = 'Minha evolução', 'personal_progress'
+    value = {**state, 'view': focus, 'next_step': step, 'question': {'question': question},
+             'welcome_back': None, 'resume_hint': question, 'resume_options': [],
+             'automatic_execution_started': False}
+    value['message'] = describe(value) + '\n' + question
+    if state.get('exists') or state.get('version', 0):
+        value['welcome_back'] = f'{label} está salvo. Você pode continuar, ajustar ou escolher outra atividade.'
+        value['resume_options'] = ['continue', 'review', 'menu']
+        value['resume_hint'] = value['message']
+    return value
+
+
+def describe(value):
+    """Keep evidence, unknown estimates and the next action visible in plain text."""
+    if value['view'] == 'plan':
+        lines = ['Meu plano']
+        if not value.get('exists'):
+            return '\n'.join(lines + ['Vamos escolher um objetivo e um primeiro passo que caiba na sua rotina.'])
+        labels = {'active': 'em andamento', 'paused': 'pausado', 'archived': 'arquivado'}
+        lines.append('Situação: ' + labels[value['state']] + '.')
+        lines.append('Direção: ' + (value.get('direction') or 'a combinar') + '.')
+        cycle = value.get('cycle')
+        if cycle:
+            lines.append('Ciclo atual: ' + cycle['title'])
+            if cycle.get('review_on'):
+                lines.append('Revisão combinada: ' + cycle['review_on'])
+        action = value.get('next_action')
+        if action:
+            lines += ['Próximo passo: ' + action['title'], 'Para quê: ' + action['reason'],
+                      'Termina quando: ' + action['criterion']]
+            if action.get('smaller_step'):
+                lines.append('Se hoje couber menos: ' + action['smaller_step'])
+            if action.get('if_then'):
+                lines.append('Se, então: ' + action['if_then'])
+            estimate = action.get('estimated_minutes')
+            lines.append('Estimativa: ' + ('a combinar' if estimate is None else f'{estimate} min'))
+        budget = value.get('budget') or {}
+        capacity = budget.get('weekly_minutes')
+        lines.append('Tempo disponível por semana: ' + ('a combinar' if capacity is None else f'{capacity} min') + '.')
+        for period in budget.get('periods', []):
+            planned, remaining = period['planned_minutes'], period['remaining_minutes']
+            estimate = 'estimativa incompleta' if planned is None else f'{planned} min planejados'
+            free = '; tempo livre a calcular' if remaining is None else f'; {remaining} min livres'
+            lines.append(f"Semana de {period['period']}: {estimate}{free}.")
+            if period['over_by_minutes']:
+                lines.append(f"O plano ultrapassa sua disponibilidade em {period['over_by_minutes']} min. Podemos reduzir ou adiar uma ação.")
+        if budget.get('without_period'):
+            lines.append(f"{len(budget['without_period'])} ação(ões) ainda sem semana definida.")
+        if any(ref['changed'] for ref in value.get('basis', [])):
+            lines.append('Uma fonte do plano mudou. Confira a orientação antes de seguir a ação relacionada.')
+        return '\n'.join(lines)
+    mode = value['mode']
+    if mode == 'off':
+        return 'Minha evolução\nAcompanhamento desativado. Você pode usar todas as atividades sem pontos ou conquistas.'
+    labels = {'tracking': 'práticas registradas', 'achievements': 'práticas e conquistas', 'points': 'práticas, conquistas e pontos'}
+    lines = ['Minha evolução', 'Você escolheu: ' + labels[mode] + '.',
+             f"Treinos com autoria confirmada: {value['practice_count']}.",
+             f"Tempo informado por você: {value['reported_minutes']} min."]
+    if value.get('unreported_time_count'):
+        lines.append(f"{value['unreported_time_count']} registro(s) sem duração informada; o total está incompleto.")
+    if value.get('points') is not None:
+        lines += [f"Pontos: {value['points']}.", 'Convenção v1: 10 por treino confirmado, sem relação com a duração.']
+    for milestone in value.get('milestones', []):
+        status = 'precisa de revisão' if milestone.get('needs_review') else 'registrado'
+        lines.append(f"Marco: {milestone['title']} ({status}).")
+        lines.append('Critério: ' + milestone['criterion'])
+        lines.append('Avaliação contestável: ' + milestone['assessment'])
+        evidence = milestone.get('evidence') or {}
+        if evidence.get('answer_excerpt'):
+            lines.append('Trecho da resposta: ' + evidence['answer_excerpt'])
+            lines.append('Trecho do feedback: ' + evidence['feedback_excerpt'])
+        if evidence.get('previous_answer_excerpt'):
+            lines.append('Resposta anterior: ' + evidence['previous_answer_excerpt'])
+            lines.append('Feedback anterior: ' + evidence['previous_feedback_excerpt'])
+    lines.extend(value.get('evidence_warnings', []))
+    lines.append('Esses registros não medem seu valor nem garantem contratação. Você pode corrigir ou contestar uma avaliação.')
+    return '\n'.join(lines)
+
+
+def dispatch(root, command, action, data=None):
+    """Separate read-only display from explicit, version-checked mutations."""
+    service = PersonalPlan(root) if command == 'plan' else PersonalProgress(root)
+    if action in ('show', 'status'):
+        return entry(root, command)
+    if action == 'get':
+        if command == 'progress':
+            return service.get()
+        if not isinstance(data, dict) or set(data) - {'id', 'version'}:
+            raise ValueError('A IA precisa conferir o identificador e a versão do plano salvo.')
+        result = service.get(data.get('id'), data.get('version'))
+        if result is None:
+            raise ValueError('Plano não encontrado. Vamos conferir os planos salvos antes de continuar.')
+        return result
+    if action == 'history':
+        if command == 'progress':
+            return service.history()
+        if not isinstance(data, dict) or set(data) != {'id'}:
+            raise ValueError('Informe o identificador do plano para consultar seu histórico.')
+        return service.history(data['id'])
+    result = getattr(service, action)(data)
+    if command == 'plan' and action in ('start', 'resume'):
+        from .intake import Intake
+        Intake(root).select_existing_route('plan')
+    return result

@@ -1,6 +1,6 @@
 [project]
 name = "carreira-guiada"
-version = "0.17.0"
+version = "0.18.0"
 description = "Automatize a busca de emprego, o currículo e as candidaturas com seu modelo de IA"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -10,6 +10,7 @@ dependencies = [
   "pypdf>=5",
   "python-docx>=1.1",
   "reportlab>=4.2",
+  "rich>=15,<16",
 ]
 
 [tool.uv]

@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## 0.18.0 - 2026-11-09
+
+- Meu plano organiza direção profissional, ciclos e próximas ações com orçamento
+  semanal, referências de carreira e treino, versões preservadas e pausa própria.
+- Minha evolução oferece registros de práticas, conquistas com evidências e
+  pontos opcionais. Correções e contestações preservam o histórico; pausas não
+  retiram pontos nem transformam ações antigas em dívida.
+- O terminal mostra próximos passos em azul, com desenhos, glifos e orçamento
+  visual. Texto simples, cores desativadas e JSON mantêm seus caminhos próprios.
+- Menu, retomada e guias incluem as novas atividades sem exigir cadastro
+  completo. Demonstração em alta resolução usa a saída real e dados fictícios.
+- O status dessas atividades só anuncia um registro confirmado depois que ele
+  foi salvo. O contrato de treino inclui um exemplo de confirmação textual.
+
 ## 0.17.0 - 2026-11-09
 
 - Comparação ampliada dos modelos e esforços disponíveis, com resultados por
