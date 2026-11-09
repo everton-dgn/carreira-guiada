@@ -178,9 +178,12 @@ def timeline(data):
 def main():
     """Generate a bounded, high-resolution animation with a shared color palette."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--preview', action='store_true', help='Write only the five completed scenes to --output.')
-    parser.add_argument('--output', type=Path, default=OUT, help='Destination for the GIF and static poster.')
+    parser.add_argument('--preview', action='store_true', help='Write five scene PNGs; requires --output outside docs/assets.')
+    parser.add_argument('--output', type=Path, help='Output directory; defaults to docs/assets except in preview mode.')
     args = parser.parse_args()
+    if args.preview and (args.output is None or args.output.resolve().is_relative_to(OUT.resolve())):
+        parser.error('--preview requires --output outside docs/assets.')
+    args.output = args.output or OUT
     args.output.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='career-evolution-demo-') as folder:
         data = scenes(Path(folder).resolve())
