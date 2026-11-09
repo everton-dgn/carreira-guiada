@@ -3,7 +3,7 @@
 from PIL import Image
 
 from render_docs import OUT, SIZE, SCALE, INK, MUTED, TEXT, ACCENT
-from render_docs import coords, font, text, wrap, backdrop, progress_track, BLUE, LINE, DIM
+from render_docs import coords, font, text, wrap, backdrop, progress_track, BLUE, LINE, DIM, white_palette
 
 
 def box(draw, bounds, fill, outline=None, radius=12):
@@ -52,14 +52,15 @@ def base(title, subtitle, number, message, progress, note):
     image, draw = backdrop(dark=True)
     text(draw, (40, 78), title, 38, TEXT, bold=True)
     text(draw, (40, 134), subtitle, 23, DIM)
-    text(draw, (40, 206), ">_ conversa com sua IA", 19, ACCENT, True)
-    draw.line(coords((40, 244, 407, 244)), fill="#28426a", width=SCALE)
+    box(draw, (28, 192, 432, 610), "#ffffff", LINE)
+    text(draw, (40, 206), ">_ conversa com sua IA", 19, INK, True)
+    draw.line(coords((40, 244, 407, 244)), fill=LINE, width=SCALE)
     visible = message[:max(1, int(len(message) * min(1, progress * 2)))]
-    end = paragraph(draw, (40, 266), visible, 374, 23)
+    end = paragraph(draw, (40, 266), visible, 374, 23, INK)
     if end > 550:
         raise ValueError("A conversa ultrapassou a área de leitura.")
-    text(draw, (40, 556), f"0{number + 1}", 32, ACCENT, bold=True)
-    text(draw, (96, 568), "DE 05 ETAPAS", 14, DIM)
+    text(draw, (40, 556), f"0{number + 1}", 32, BLUE, bold=True)
+    text(draw, (96, 568), "DE 05 ETAPAS", 14, MUTED)
     for index, line in enumerate(wrap(draw, note, 1030, 20, mono=False)):
         text(draw, (40, 632 + index * 25), line, 20, TEXT)
     progress_track(draw, number, progress, dark=True)
@@ -251,7 +252,7 @@ def render(name, draw_frame, poster):
     samples = Image.new("RGB", (SIZE[0] * 5, SIZE[1]))
     for stage in range(5):
         samples.paste(draw_frame(stage, 1), (stage * SIZE[0], 0))
-    palette = samples.quantize(colors=128)
+    palette = white_palette(samples)
     frames, durations = [], []
     for stage in range(5):
         timeline = [(i / 32, 100, True) for i in range(33)]

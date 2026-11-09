@@ -41,6 +41,17 @@ def coords(values):
     return tuple(int(value * SCALE) for value in values)
 
 
+def white_palette(image):
+    """Keep white panels white after the GIF encoder's coarse color lookup."""
+    palette = image.quantize(colors=128)
+    colors = palette.getpalette()
+    for offset in range(0, len(colors), 3):
+        if min(colors[offset:offset + 3]) >= 248:
+            colors[offset:offset + 3] = [255, 255, 255]
+    palette.putpalette(colors)
+    return palette
+
+
 def text(draw, position, value, size=20, fill=TEXT, mono=False, bold=False):
     """Draw flat text in logical coordinates, rejecting canvas overflow."""
     face = font(size, mono, bold)
@@ -111,12 +122,13 @@ def frame(tool, command, title, number, conversation, note, cursor=False):
         draw.ellipse(coords((42, y + 6, 50, y + 14)), fill=color if index < number else "#28426a")
         text(draw, (64, y), label, 18, color, bold=index + 1 == number)
     draw.rounded_rectangle(coords((300, 192, 1076, 606)), 16 * SCALE,
-                           fill="#0d2242", outline="#34557c", width=SCALE)
-    text(draw, (324, 212), ">_ " + tool, 19, ACCENT, True)
-    text(draw, (876, 215), "exemplo de terminal", 14, DIM)
-    draw.line(coords((324, 255, 1052, 255)), fill="#28426a", width=SCALE)
+                           fill="#ffffff", outline=LINE, width=SCALE)
+    text(draw, (324, 212), ">_ " + tool, 19, INK, True)
+    text(draw, (876, 215), "exemplo de terminal", 14, MUTED)
+    draw.line(coords((324, 255, 1052, 255)), fill=LINE, width=SCALE)
     y, last = 277, ""
     for value, color in conversation:
+        color = {ACCENT: BLUE, TEXT: INK, DIM: MUTED}[color]
         for line in wrap(draw, value, width=714, size=23):
             if y + 28 > 590:
                 raise ValueError("O texto não cabe no terminal; reduza esta cena.")
@@ -125,7 +137,7 @@ def frame(tool, command, title, number, conversation, note, cursor=False):
             last = line
     if cursor:
         cursor_x = min(1045, 324 + draw.textlength(last, font=font(23, True)) / SCALE + 3)
-        draw.rectangle(coords((cursor_x, y - 26, cursor_x + 2, y - 2)), fill=ACCENT)
+        draw.rectangle(coords((cursor_x, y - 26, cursor_x + 2, y - 2)), fill=BLUE)
     for index, line in enumerate(wrap(draw, note, 1030, 20, mono=False)):
         text(draw, (40, 632 + index * 25), line, 20, TEXT)
     progress_track(draw, number - 1, dark=True)
@@ -140,7 +152,7 @@ def render(name, tool, command, title, scenes, poster=0):
     cursor blinks and reading pauses using a shared 128-color palette.
     """
     frame(tool, command, title, poster + 1, *scenes[poster]).save(OUT / (name + ".png"))
-    palette = frame(tool, command, title, 1, *scenes[0]).quantize(colors=128)
+    palette = white_palette(frame(tool, command, title, 1, *scenes[0]))
     frames, durations = [], []
 
     def append(number, conversation, note, duration, cursor=False):

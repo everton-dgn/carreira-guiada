@@ -14,8 +14,10 @@ substituir objetos por ícones ou refazer a composição.
 
 A referência dos banners é `retornos-progresso-banner.png`: objetos relacionados
 ao recurso, papel claro, contraste e espaço entre título e ilustração.
-Para os GIFs, use a moldura de `busca-com-progresso.gif`. O diagrama da jornada
-mantém fundo claro para separar etapas e conexões. Essas diferenças têm função.
+Para os GIFs, use `minha-evolucao-demo.gif`: moldura marinha, terminal branco,
+texto escuro e destaques azuis. Essa referência vale também para conversas
+ao lado de um currículo, caderno ou portal. O diagrama da jornada mantém fundo
+claro para separar etapas e conexões. Essas diferenças têm função.
 
 Antes de alterar uma peça, registre o defeito concreto e a menor correção:
 brilho intenso, letra com sombra, texto encostado em objeto ou detalhe ilegível.
@@ -30,6 +32,7 @@ a proposta com o mantenedor antes de aplicá-la ao conjunto.
 | Hierarquia e letras legíveis, sem efeitos sobre títulos | Objetos, papéis sobrepostos e perspectiva discreta |
 | Texto separado da ilustração | Fitas e etiquetas nas peças de planejamento e evolução |
 | Cabeçalho e informação de contexto nos GIFs | Painel de conversa, documento, portal ou saída real |
+| Fundo branco e texto escuro em toda área de terminal | Largura do painel e posição dentro da moldura marinha |
 | Digitação visível e pausa para leitura | Número de cenas necessário para mostrar a tarefa |
 
 Toda peça publicada tem título dentro da arte. Mantenha uma peça principal por
@@ -40,13 +43,13 @@ Detalhes de produção ficam neste guia e no CONTRIBUTING, fora do README.
 
 | Função | Referência | Uso |
 |---|---|---|
-| Fundo marinho | `#07152E` | Base dos banners e terminais |
+| Fundo marinho | `#07152E` | Base dos banners e moldura externa dos GIFs |
 | Texto claro | `#F3F7FF` | Títulos e conteúdo sobre escuro |
 | Texto de apoio | `#A4BCDF` | Contexto e legendas sobre escuro |
 | Ciano | `#60D9F4` | Rótulo, expressão destacada e pequenas marcações |
 | Azul claro | `#6DA7FF` | Texto secundário e detalhes sobre escuro |
 | Azul | `#2864ED` | Capas, objetos e marcações, com moderação |
-| Papel | `#FFFFFF` | Documentos e fichas |
+| Branco | `#FFFFFF` | Fundo dos terminais, documentos e fichas |
 | Papel creme | `#F5EAD4` | Cadernos e notas das peças pessoais |
 | Texto sobre claro | `#0F1B2D` | Títulos e conteúdo de documentos |
 
@@ -109,9 +112,34 @@ ou portal pertencem às demonstrações e recebem identificação explícita.
 
 A base é 1120 × 700, exportada em 2240 × 1400. Preserve a moldura escura da
 família existente: marca à esquerda, natureza da demonstração à direita,
-divisor, título e subtítulo. Documentos e portais podem usar papel claro dentro
-da cena. Use margens de 40 px, título próximo de 40 px e subtítulo de 23 px.
+divisor, título e subtítulo. Dentro dela, toda conversa ou saída de terminal
+fica em painel branco, inclusive nas cenas com documento ou portal ao lado.
+Use margens de 40 px, título próximo de 40 px e subtítulo de 23 px.
 Conteúdo principal usa pelo menos 20 px; rótulos de apoio, pelo menos 16 px.
+
+### Paleta do terminal
+
+| Elemento dentro do painel | Cor |
+|---|---|
+| Fundo | `#FFFFFF` |
+| Texto principal | `#102951` |
+| Texto de apoio e identificação | `#546D8F` |
+| Pedido, comando destacado e cursor | `#2864ED` |
+| Borda e divisores | `#C4D7F5` |
+| Fundo de destaque discreto | `#E4EEFF` |
+
+Use as cores claras e o ciano da moldura somente sobre o fundo marinho.
+A digitação e a rolagem preservam a paleta do terminal.
+Saída real mantém o conteúdo e a identificação dos estados; adapte
+sua paleta de apresentação ao branco, sem trocar o tema do terminal da pessoa.
+Não adicione sombras, gradientes ou reflexos às letras.
+
+O painel fica branco em todas as cenas e quadros intermediários. Confira o GIF
+exportado, pois a redução da paleta pode tingir o branco mesmo quando o PNG
+está correto. Preserve a moldura marinha, a composição e os banners azuis;
+padronizar terminais não autoriza redesenhar essas peças.
+
+### Sequência e leitura
 
 Diferencie "Simulação fictícia" de "Terminal real com dados fictícios".
 Mostre primeiro o pedido da pessoa. Uma consulta como `./job plan show`,
@@ -145,6 +173,10 @@ atrás das propostas, mantendo os documentos, o título e o fundo marinho".
 - [ ] O título continua dentro da arte, com acentos e sem efeitos nas letras.
 - [ ] Texto, objetos e bordas não colidem.
 - [ ] A cor de destaque orienta a leitura sem cobrir a ilustração inteira.
+- [ ] Todos os painéis de conversa e saída usam fundo branco, texto escuro e
+  a paleta de terminal deste guia, inclusive os painéis laterais.
+- [ ] O GIF exportado mantém o branco no início, nas cenas completas,
+  nos quadros intermediários e na volta do loop.
 - [ ] A 900 px, o conteúdo principal é legível; a 400 px, título e ideia central
   continuam reconhecíveis. Informação essencial também aparece no texto da página.
 - [ ] GIF, PNG e gerador correspondem; os tempos foram conferidos.
@@ -152,8 +184,17 @@ atrás das propostas, mantendo os documentos, o título e o fundo marinho".
 - [ ] Substituições usam nome novo e referências atualizadas. Os originais
   permanecem recuperáveis no Git; a publicação passa pela conferência do índice.
 
-Os geradores ficam em `scripts/maintainers/render_docs.py`,
-`render_journeys.py` e `render_personal.py`. Os comandos de produção estão em
+Confira o gerador responsável antes de corrigir ou regenerar uma peça:
+
+| Gerador em `scripts/maintainers/` | GIFs |
+|---|---|
+| `render_docs.py` | `menu-com-contexto.gif`, `busca-com-progresso.gif` |
+| `render_journeys.py` | `curriculo-revisado.gif`, `candidatura-portal.gif`, `entrevista-ensaio.gif` |
+| `render_personal.py` | `plano-evolucao-terminal.gif` |
+| `render_evolution.py` | `minha-evolucao-demo.gif` |
+
+Uma saída antiga de qualquer gerador precisa passar pela paleta deste guia
+antes de ser republicada. Os comandos de produção estão em
 [CONTRIBUTING.md](../CONTRIBUTING.md#documentação-e-imagens).
 Peça coerente e legível pode ser mantida sem alteração. Revisar o conjunto
 não exige modificar todos os arquivos.
