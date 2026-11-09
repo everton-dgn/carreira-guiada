@@ -56,8 +56,10 @@ class ModelGuidanceTests(unittest.TestCase):
             {'name': 'GPT-6.1 Terra', 'efforts': ['medium']},
             {'name': 'GPT-6 Astra', 'efforts': ['high']}]}])
         result = self.models.recommend()
-        self.assertEqual(result['stages'][0]['model']['name'], 'GPT-6 Astra')
-        self.assertEqual(result['stages'][0]['effort'], 'high')
+        self.assertEqual(result['stages'][0]['model']['name'], 'GPT-6.1 Terra')
+        self.assertEqual(result['stages'][0]['effort'], 'medium')
+        self.assertEqual(result['stages'][0]['preparation_evidence']['task'], 'onboarding')
+        self.assertEqual(result['stages'][0]['preparation_evidence']['total'], 2)
         self.assertEqual(result['stages'][2]['model']['name'], 'GPT-6.1 Terra')
         self.assertEqual(result['stages'][2]['effort'], 'medium')
         self.assertEqual(result['stages'][2]['benchmark_evidence']['passed'], 4)
@@ -71,6 +73,21 @@ class ModelGuidanceTests(unittest.TestCase):
         self.assertEqual(measured['critical_failures'], 2)
         self.assertEqual(measured['passed'], 4)
         self.assertEqual(measured['total'], 6)
+
+    def test_guidance_uses_the_task_evidence_instead_of_the_preparation_choice(self):
+        """Interview advice must not inherit a successful curriculum suggestion."""
+        self.save(providers=[{'name': 'Serviço informado', 'models': [
+            {'name': 'GPT-6.1 Terra', 'efforts': ['medium']},
+            {'name': 'GPT-6.1 Sol', 'efforts': ['medium']}]}])
+        result = self.models.recommend()
+        preparation = {r['task']: r for r in result['preparation_by_task']}
+        guidance = {r['task']: r for r in result['guidance_by_task']}
+        self.assertEqual(preparation['cv']['model']['name'], 'GPT-6.1 Terra')
+        self.assertEqual(guidance['interview']['model']['name'], 'GPT-6.1 Sol')
+        self.assertEqual(guidance['interview']['basis'], 'exploratory_guidance')
+        self.assertEqual(guidance['interview']['guidance_evidence']['total'], 6)
+        self.assertFalse(guidance['interview']['guidance_evidence']['real_services_validated'])
+        self.assertFalse(result['automatic_switch'])
 
     def test_profile_approval_and_saved_resume_survive_model_change(self):
         helper = workflow_tests.WorkflowTests()

@@ -1,7 +1,10 @@
 import copy
 import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 
 import unittest
 import tempfile
@@ -20,6 +23,18 @@ def sample():
 
 
 class PreparationBenchmarkTests(unittest.TestCase):
+    def test_documented_command_verifies_fresh_evidence_outside_checkout(self):
+        """The documented script entry point resolves its own package imports."""
+        report = PATH.parents[2] / 'docs/benchmarks/2026-11-08-complete-preparation.json'
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                [sys.executable, str(PATH), 'verify', '--report', str(report)],
+                cwd=directory, env={**os.environ, 'PYTHONPATH': ''},
+                capture_output=True, text=True, timeout=30,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)['runs'], 35)
+
     def test_valid_and_oracle_hidden(self):
         result = bench.score(sample())
         assert result['passed'] == result['total'] == 6
@@ -77,11 +92,31 @@ class PreparationBenchmarkTests(unittest.TestCase):
         report = PATH.parents[2] / 'docs/benchmarks/2026-11-07-preparation.json'
         self.assertEqual(bench.verify_report(report)['runs'], 9)
 
+    def test_fresh_client_evidence_rejects_unfinished_tools_and_changed_identity(self):
+        """A successful score cannot replace the actual client completion or reply."""
+        from tests.test_adversarial_codex import proof
+        run = {'model':'fixture', 'effort':'medium', 'session_complete':True, 'tool_calls':0}
+        evidence = {'model':'fixture', 'effort':'medium', 'session':{
+            'model':'fixture', 'effort':'medium', 'completed':True, 'has_final':True,
+            'isolation':{**proof(), 'model':'fixture', 'effort':'medium'},
+            'final_text':'Resposta original.',
+            'client_trace':{'calls':[], 'started_tools':[], 'other_tool_items':[]}}}
+        bench.verify_client(evidence,run,'Resposta original.')
+        for change in ('identity','unfinished_tool','gate','completion','reply'):
+            altered=copy.deepcopy(evidence);session=altered['session']
+            if change=='identity': session['model']='other'
+            elif change=='unfinished_tool': session['client_trace']['started_tools']=[{'server':'fictional','tool':'lab'}]
+            elif change=='gate': session['isolation']['verified']=False
+            elif change=='completion': session['completed']=False
+            else: session['final_text']='Edited'
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                bench.verify_client(altered,run,'Resposta original.')
+
     def test_tampered_report_is_rejected(self):
         original = json.loads((PATH.parents[2] / 'docs/benchmarks/2026-11-07-preparation.json').read_text(encoding='utf-8'))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'report.json'
-            for change in ('hash', 'score', 'quote', 'coverage', 'traversal', 'stage',
+            for change in ('hash', 'score', 'quote', 'cross_case_quote', 'coverage', 'traversal', 'stage',
                            'note', 'tool_hash', 'tool_traversal', 'tool_count',
                            'tool_count_type', 'session_type'):
                 with self.subTest(change=change):
@@ -90,6 +125,14 @@ class PreparationBenchmarkTests(unittest.TestCase):
                     if change == 'hash': run['response_sha256'] = '0' * 64
                     if change == 'score': run['score']['passed'] = 0
                     if change == 'quote': run['text_review']['cases'][0]['evidence'] = ['trecho ausente fictício']
+                    if change == 'cross_case_quote':
+                        raw=(PATH.parents[2]/run['response_path']).read_text(encoding='utf-8')
+                        answers=bench.strict_json(raw)['answers']
+                        target=run['text_review']['cases'][0]['id']
+                        current=next(a for a in answers if a['id']==target)
+                        quote=next(a['message'] for a in answers if a['id']!=target)
+                        self.assertNotIn(quote,current['message']+'\n'+current['content'])
+                        run['text_review']['cases'][0]['evidence']=[quote]
                     if change == 'coverage': run['text_review']['cases'].pop()
                     if change == 'traversal': run['response_path'] = '../../outside.txt'
                     if change == 'stage': run['text_review']['cases'][0]['stage'] = 'cv'

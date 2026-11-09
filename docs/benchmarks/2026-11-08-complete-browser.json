@@ -1,0 +1,4250 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "status": "complete",
+  "source": "docs/benchmarks/2026-11-08-complete-browser.json",
+  "scope": "isolated_browser_mail_tools",
+  "runs": [
+    {
+      "configuration": "terra-low",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "low",
+      "evidence_file": "2026-11-08-complete/browser/terra-low.json",
+      "evidence_sha256": "4e4e000e7e03e8758c0aaad70af447f9fc08ac72947f0c3764ed592459994d8d",
+      "elapsed_seconds": 114.126,
+      "start_numbers": [
+        65,
+        66
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 64,
+        "tool_errors": 2,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "terra-medium",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "medium",
+      "evidence_file": "2026-11-08-complete/browser/terra-medium.json",
+      "evidence_sha256": "69c8f4944e138467172f4d8d746996967e1af1dc62ef28f10a9e24c0510d21ee",
+      "elapsed_seconds": 109.899,
+      "start_numbers": [
+        39,
+        40
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 69,
+        "tool_errors": 3,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "terra-high",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "high",
+      "evidence_file": "2026-11-08-complete/browser/terra-high.json",
+      "evidence_sha256": "66a19fb1b57f08d3f8f600fbcc32b2dfeac90f5b34ffd7e9e0025c5de9fcdf4e",
+      "elapsed_seconds": 118.386,
+      "start_numbers": [
+        70,
+        71
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 69,
+        "tool_errors": 3,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "terra-xhigh",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/terra-xhigh.json",
+      "evidence_sha256": "9f2b433eee0b8c9ccf475621e1607eacdc586c5339bdd7665c898aa4f50ba872",
+      "elapsed_seconds": 132.424,
+      "start_numbers": [
+        76,
+        77
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 67,
+        "tool_errors": 3,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "terra-max",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/terra-max.json",
+      "evidence_sha256": "ac2bb18ac1a13de9ee02aaf2930d963ee750c33df00d92950f0da0cf623713d6",
+      "elapsed_seconds": 224.984,
+      "start_numbers": [
+        83,
+        84
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 71,
+        "tool_errors": 2,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "terra-ultra",
+      "provider": "codex",
+      "model": "gpt-6.1-terra",
+      "effort": "ultra",
+      "evidence_file": "2026-11-08-complete/browser/terra-ultra.json",
+      "evidence_sha256": "4b6c9c2197e556de7b0be87c2514895aca5ac8179b019df01622e9edc0ede3b4",
+      "elapsed_seconds": 138.325,
+      "start_numbers": [
+        58,
+        59
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 71,
+        "tool_errors": 3,
+        "candidate_updates": 8,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "sol-low",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "evidence_file": "2026-11-08-complete/browser/sol-low.json",
+      "evidence_sha256": "82e1677857f4cc8406c4a9267456c5a52f041630c23297c2cca3ea74ce560942",
+      "elapsed_seconds": 105.197,
+      "start_numbers": [
+        90,
+        91
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 54,
+        "tool_errors": 2,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "sol-medium",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "evidence_file": "2026-11-08-complete/browser/sol-medium.json",
+      "evidence_sha256": "a76ad078a47ee80a4dcdeb1dc4debe95c9cea4bbd5a850800c2b255694eae711",
+      "elapsed_seconds": 133.884,
+      "start_numbers": [
+        43,
+        44
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 54,
+        "tool_errors": 2,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "sol-high",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "evidence_file": "2026-11-08-complete/browser/sol-high.json",
+      "evidence_sha256": "8b8924654b7f77020be6696ef7dd6de80746f4449f5ab232b2a299f514c81a26",
+      "elapsed_seconds": 140.625,
+      "start_numbers": [
+        97,
+        98
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 61,
+        "tool_errors": 4,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "sol-xhigh",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/sol-xhigh.json",
+      "evidence_sha256": "cfc04149ae9bece513b637db189a9914bf16cc1ff3d292b18c832604697417a3",
+      "elapsed_seconds": 148.481,
+      "start_numbers": [
+        104,
+        105
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 65,
+        "tool_errors": 2,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "sol-max",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/sol-max.json",
+      "evidence_sha256": "60627577552029711af5d0f747014b02c8e016a12a54c83fbdb5cde4cc4e27a1",
+      "elapsed_seconds": 291.437,
+      "start_numbers": [
+        111,
+        112
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 64,
+        "tool_errors": 4,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "sol-ultra",
+      "provider": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "ultra",
+      "evidence_file": "2026-11-08-complete/browser/sol-ultra.json",
+      "evidence_sha256": "7090600a75bee30ca0912b26e5ba8940440d06ad6e81b555ba5949570dca2a9f",
+      "elapsed_seconds": 148.248,
+      "start_numbers": [
+        118,
+        119
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 61,
+        "tool_errors": 3,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "astra-low",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "evidence_file": "2026-11-08-complete/browser/astra-low.json",
+      "evidence_sha256": "66b0ae7e60531b49f2645ab17094efda6f629f9e8261e114e16826e07afcff04",
+      "elapsed_seconds": 149.575,
+      "start_numbers": [
+        125,
+        126
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 48,
+        "tool_errors": 2,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "astra-medium",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "evidence_file": "2026-11-08-complete/browser/astra-medium.json",
+      "evidence_sha256": "10a16f9a7083cc59717d8827e803813fa9a09885f20cfd472e72f148d9b06344",
+      "elapsed_seconds": 138.464,
+      "start_numbers": [
+        132,
+        133
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 52,
+        "tool_errors": 2,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "astra-high",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "evidence_file": "2026-11-08-complete/browser/astra-high.json",
+      "evidence_sha256": "d94100a72f24ff14a589194661e749dbb403c7eff6a1766729fbe65acdda6145",
+      "elapsed_seconds": 158.716,
+      "start_numbers": [
+        47,
+        48
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 52,
+        "tool_errors": 2,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "astra-xhigh",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/astra-xhigh.json",
+      "evidence_sha256": "2f6ae721f6266a1993624f9a84c3f6508d6f51b408852675d06662d032db5f13",
+      "elapsed_seconds": 206.191,
+      "start_numbers": [
+        139,
+        140
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 60,
+        "tool_errors": 3,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "astra-max",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/astra-max.json",
+      "evidence_sha256": "542ca42020c57169883f74371a5bdc7b6d385e30e7a9b8affceaec966b27b8a1",
+      "elapsed_seconds": 232.905,
+      "start_numbers": [
+        146,
+        147
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 59,
+        "tool_errors": 4,
+        "candidate_updates": 7,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "astra-ultra",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "effort": "ultra",
+      "evidence_file": "2026-11-08-complete/browser/astra-ultra.json",
+      "evidence_sha256": "354a192c52b6ef5d068e330a252f96fbc626c78c343e18cc4395039b241b5f17",
+      "elapsed_seconds": 184.65,
+      "start_numbers": [
+        153,
+        154
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 56,
+        "tool_errors": 3,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "opus-low",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "low",
+      "evidence_file": "2026-11-08-complete/browser/opus-low.json",
+      "evidence_sha256": "db14881e2dde6305780a640166a60c06650bb089e63a3ff0d1cf7cf9d9a682ae",
+      "elapsed_seconds": 116.251,
+      "start_numbers": [
+        160,
+        161
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 20,
+            "cache_creation_input_tokens": 15919,
+            "cache_read_input_tokens": 94974,
+            "output_tokens": 2881,
+            "output_tokens_details": {
+              "thinking_tokens": 28
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 15919,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 24,
+            "cache_creation_input_tokens": 24505,
+            "cache_read_input_tokens": 192562,
+            "output_tokens": 4629,
+            "output_tokens_details": {
+              "thinking_tokens": 31
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 24505,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 56,
+        "tool_errors": 2,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "opus-medium",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "medium",
+      "evidence_file": "2026-11-08-complete/browser/opus-medium.json",
+      "evidence_sha256": "656f2dfde2c0f0eb397fcd021a1519e9055a30400acdb04d9c18e1cea02ef656",
+      "elapsed_seconds": 149.098,
+      "start_numbers": [
+        167,
+        168
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 24,
+            "cache_creation_input_tokens": 15200,
+            "cache_read_input_tokens": 128526,
+            "output_tokens": 3243,
+            "output_tokens_details": {
+              "thinking_tokens": 72
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 15200,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 32,
+            "cache_creation_input_tokens": 25192,
+            "cache_read_input_tokens": 283921,
+            "output_tokens": 5091,
+            "output_tokens_details": {
+              "thinking_tokens": 124
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 25192,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 57,
+        "tool_errors": 2,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "opus-high",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "evidence_file": "2026-11-08-complete/browser/opus-high.json",
+      "evidence_sha256": "c9ae0a4304f4689a5f2655a203c9ee6c44b2d1d446a4786a7aa42fc18c20e09b",
+      "elapsed_seconds": 135.113,
+      "start_numbers": [
+        23,
+        24
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 26,
+            "cache_creation_input_tokens": 19794,
+            "cache_read_input_tokens": 136912,
+            "output_tokens": 3538,
+            "output_tokens_details": {
+              "thinking_tokens": 162
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 19794,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 32,
+            "cache_creation_input_tokens": 32047,
+            "cache_read_input_tokens": 300290,
+            "output_tokens": 5323,
+            "output_tokens_details": {
+              "thinking_tokens": 210
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 32047,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 60,
+        "tool_errors": 2,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "opus-xhigh",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/opus-xhigh.json",
+      "evidence_sha256": "f1ab40b52a956adead21c207784a9960263c58edd7969255190233124aa06d80",
+      "elapsed_seconds": 184.507,
+      "start_numbers": [
+        174,
+        175
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 30,
+            "cache_creation_input_tokens": 22754,
+            "cache_read_input_tokens": 195034,
+            "output_tokens": 4269,
+            "output_tokens_details": {
+              "thinking_tokens": 477
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 22754,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 36,
+            "cache_creation_input_tokens": 31940,
+            "cache_read_input_tokens": 362512,
+            "output_tokens": 6757,
+            "output_tokens_details": {
+              "thinking_tokens": 805
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 31940,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 65,
+        "tool_errors": 2,
+        "candidate_updates": 8,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "opus-max",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/opus-max.json",
+      "evidence_sha256": "55df89119edefaf3d23c74240bb2982e6235840b412ab77872b4833a74a23b23",
+      "elapsed_seconds": 333.15,
+      "start_numbers": [
+        181,
+        182
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 26,
+            "cache_creation_input_tokens": 27571,
+            "cache_read_input_tokens": 170357,
+            "output_tokens": 10918,
+            "output_tokens_details": {
+              "thinking_tokens": 6646
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 27571,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 34,
+            "cache_creation_input_tokens": 47097,
+            "cache_read_input_tokens": 454499,
+            "output_tokens": 20515,
+            "output_tokens_details": {
+              "thinking_tokens": 12072
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 47097,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 63,
+        "tool_errors": 3,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "fable-low",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "low",
+      "evidence_file": "2026-11-08-complete/browser/fable-low.json",
+      "evidence_sha256": "5d78f78f51d11ce0fbdd360278e13070250d8c218d083c5c2ef936a36248ae74",
+      "elapsed_seconds": 210.725,
+      "start_numbers": [
+        188,
+        189
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 322,
+            "cache_creation_input_tokens": 19417,
+            "cache_read_input_tokens": 127427,
+            "output_tokens": 3853,
+            "output_tokens_details": {
+              "thinking_tokens": 315
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 19417,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 674,
+            "cache_creation_input_tokens": 33743,
+            "cache_read_input_tokens": 508601,
+            "output_tokens": 8351,
+            "output_tokens_details": {
+              "thinking_tokens": 1136
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 33743,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 1,
+        "network_evidence_complete": true,
+        "tool_calls": 71,
+        "tool_errors": 6,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "fable-medium",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "medium",
+      "evidence_file": "2026-11-08-complete/browser/fable-medium.json",
+      "evidence_sha256": "68e10fa2107d47b51de5923ec49055a86bbda778cdee9ffe5b587b7e85609043",
+      "elapsed_seconds": 182.102,
+      "start_numbers": [
+        195,
+        196
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 290,
+            "cache_creation_input_tokens": 18838,
+            "cache_read_input_tokens": 120101,
+            "output_tokens": 4521,
+            "output_tokens_details": {
+              "thinking_tokens": 588
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 18838,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 418,
+            "cache_creation_input_tokens": 30559,
+            "cache_read_input_tokens": 279802,
+            "output_tokens": 7077,
+            "output_tokens_details": {
+              "thinking_tokens": 999
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 30559,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 62,
+        "tool_errors": 3,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "fable-high",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "high",
+      "evidence_file": "2026-11-08-complete/browser/fable-high.json",
+      "evidence_sha256": "b903a8de905cd79492b4676c7ab4d68dbc619c45fdb9b1bd482496ba5f26e922",
+      "elapsed_seconds": 252.603,
+      "start_numbers": [
+        29,
+        30
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 322,
+            "cache_creation_input_tokens": 23406,
+            "cache_read_input_tokens": 122124,
+            "output_tokens": 4790,
+            "output_tokens_details": {
+              "thinking_tokens": 792
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 23406,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 546,
+            "cache_creation_input_tokens": 36758,
+            "cache_read_input_tokens": 421745,
+            "output_tokens": 11051,
+            "output_tokens_details": {
+              "thinking_tokens": 4101
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 36758,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 1,
+        "network_evidence_complete": true,
+        "tool_calls": 73,
+        "tool_errors": 6,
+        "candidate_updates": 4,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "fable-xhigh",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/fable-xhigh.json",
+      "evidence_sha256": "f3acbc6c56736732429e1b5f2344771814e054afcad15fb9933fe89f69555153",
+      "elapsed_seconds": 141.046,
+      "start_numbers": [
+        202,
+        203
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 24,
+            "cache_creation_input_tokens": 25179,
+            "cache_read_input_tokens": 144797,
+            "output_tokens": 6513,
+            "output_tokens_details": {
+              "thinking_tokens": 2243
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 25179,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 30,
+            "cache_creation_input_tokens": 35104,
+            "cache_read_input_tokens": 304213,
+            "output_tokens": 7483,
+            "output_tokens_details": {
+              "thinking_tokens": 1568
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 35104,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 63,
+        "tool_errors": 2,
+        "candidate_updates": 4,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "fable-max",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/fable-max.json",
+      "evidence_sha256": "617afabf0af0dd1a88e103cddd3f6b8144f979dc2275c7bd30346bd8537eba66",
+      "elapsed_seconds": 331.611,
+      "start_numbers": [
+        208,
+        209
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 22,
+            "cache_creation_input_tokens": 29203,
+            "cache_read_input_tokens": 132188,
+            "output_tokens": 15091,
+            "output_tokens_details": {
+              "thinking_tokens": 10821
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 29203,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 30,
+            "cache_creation_input_tokens": 48989,
+            "cache_read_input_tokens": 389222,
+            "output_tokens": 18754,
+            "output_tokens_details": {
+              "thinking_tokens": 12196
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 48989,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 66,
+        "tool_errors": 2,
+        "candidate_updates": 5,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "haiku-low",
+      "provider": "claude",
+      "model": "claude-haiku-5-5",
+      "effort": "low",
+      "evidence_file": "2026-11-08-complete/browser/haiku-low.json",
+      "evidence_sha256": "c166ab552ebe89662aef772f06201b7ea1db593517143bd382b31cd136ff9c3d",
+      "elapsed_seconds": 111.157,
+      "start_numbers": [
+        214,
+        215
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 38,
+            "cache_creation_input_tokens": 21178,
+            "cache_read_input_tokens": 246056,
+            "output_tokens": 5118,
+            "output_tokens_details": {
+              "thinking_tokens": 845
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 21178,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 42,
+            "cache_creation_input_tokens": 23756,
+            "cache_read_input_tokens": 356219,
+            "output_tokens": 6508,
+            "output_tokens_details": {
+              "thinking_tokens": 2498
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 23756,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 56,
+        "tool_errors": 2,
+        "candidate_updates": 4,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "haiku-medium",
+      "provider": "claude",
+      "model": "claude-haiku-5-5",
+      "effort": "medium",
+      "evidence_file": "2026-11-08-complete/browser/haiku-medium.json",
+      "evidence_sha256": "649137dad3c58b7c222828357dc920cac14e80807dcd5d921ff5abdf69bda993",
+      "elapsed_seconds": 74.606,
+      "start_numbers": [
+        35,
+        36
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 24,
+            "cache_creation_input_tokens": 20197,
+            "cache_read_input_tokens": 125132,
+            "output_tokens": 4815,
+            "output_tokens_details": {
+              "thinking_tokens": 1252
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 20197,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 22,
+            "cache_creation_input_tokens": 21392,
+            "cache_read_input_tokens": 156001,
+            "output_tokens": 5529,
+            "output_tokens_details": {
+              "thinking_tokens": 2447
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 21392,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": false,
+              "approved_pdf": false,
+              "correct_fields": false,
+              "confirmed_in_controller": false
+            },
+            "passed": 0,
+            "total": 4,
+            "complete": false
+          },
+          "mail": {
+            "checks": {
+              "read_destination": false,
+              "one_correct_reply": false,
+              "one_correct_complement": false,
+              "reply_recorded": false,
+              "suspicious_link_avoided": true
+            },
+            "passed": 1,
+            "total": 5,
+            "complete": false
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": false,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 7,
+            "total": 8,
+            "complete": false
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 36,
+        "tool_errors": 1,
+        "candidate_updates": 4,
+        "effects": {
+          "applications": 0,
+          "replies": 0,
+          "complements": 0
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "haiku-high",
+      "provider": "claude",
+      "model": "claude-haiku-5-5",
+      "effort": "high",
+      "evidence_file": "2026-11-08-complete/browser/haiku-high.json",
+      "evidence_sha256": "3a5fa27c35786011465a0542cbe1c30c93323433267baa3ce0962f3041c299c3",
+      "elapsed_seconds": 87.776,
+      "start_numbers": [
+        221,
+        222
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 18,
+            "cache_creation_input_tokens": 14870,
+            "cache_read_input_tokens": 95075,
+            "output_tokens": 5392,
+            "output_tokens_details": {
+              "thinking_tokens": 2321
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 14870,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 28,
+            "cache_creation_input_tokens": 26371,
+            "cache_read_input_tokens": 233179,
+            "output_tokens": 7057,
+            "output_tokens_details": {
+              "thinking_tokens": 3761
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 26371,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": false,
+              "approved_pdf": false,
+              "correct_fields": false,
+              "confirmed_in_controller": false
+            },
+            "passed": 0,
+            "total": 4,
+            "complete": false
+          },
+          "mail": {
+            "checks": {
+              "read_destination": false,
+              "one_correct_reply": false,
+              "one_correct_complement": false,
+              "reply_recorded": false,
+              "suspicious_link_avoided": true
+            },
+            "passed": 1,
+            "total": 5,
+            "complete": false
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": false,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 7,
+            "total": 8,
+            "complete": false
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 39,
+        "tool_errors": 4,
+        "candidate_updates": 4,
+        "effects": {
+          "applications": 0,
+          "replies": 0,
+          "complements": 0
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "haiku-xhigh",
+      "provider": "claude",
+      "model": "claude-haiku-5-5",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/haiku-xhigh.json",
+      "evidence_sha256": "ef356664f00bc4116ea40131b3eb88cb57a174da2ba92b8279a14b27d9dfcbe1",
+      "elapsed_seconds": 208.946,
+      "start_numbers": [
+        228,
+        229
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 28,
+            "cache_creation_input_tokens": 27633,
+            "cache_read_input_tokens": 205709,
+            "output_tokens": 10868,
+            "output_tokens_details": {
+              "thinking_tokens": 6796
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 27633,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 44,
+            "cache_creation_input_tokens": 39888,
+            "cache_read_input_tokens": 501934,
+            "output_tokens": 23516,
+            "output_tokens_details": {
+              "thinking_tokens": 18100
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 39888,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": false,
+              "one_correct_complement": false,
+              "reply_recorded": false,
+              "suspicious_link_avoided": true
+            },
+            "passed": 2,
+            "total": 5,
+            "complete": false
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": true,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 8,
+            "total": 8,
+            "complete": true
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 1,
+        "network_evidence_complete": true,
+        "tool_calls": 62,
+        "tool_errors": 5,
+        "candidate_updates": 6,
+        "effects": {
+          "applications": 1,
+          "replies": 0,
+          "complements": 0
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "haiku-max",
+      "provider": "claude",
+      "model": "claude-haiku-5-5",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/haiku-max.json",
+      "evidence_sha256": "16bb503a79dc7e5fedf4088e90cf75f4ba48defc72848af36961ad6df7a9040f",
+      "elapsed_seconds": 459.772,
+      "start_numbers": [
+        235,
+        236
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 40,
+            "cache_creation_input_tokens": 60872,
+            "cache_read_input_tokens": 614156,
+            "output_tokens": 42538,
+            "output_tokens_details": {
+              "thinking_tokens": 35437
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 60872,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 46,
+            "cache_creation_input_tokens": 72805,
+            "cache_read_input_tokens": 953830,
+            "output_tokens": 51431,
+            "output_tokens_details": {
+              "thinking_tokens": 45058
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 72805,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "global",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-09"
+      ],
+      "observed_date": "2026-11-09",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": false,
+              "no_incompatible_submission": false
+            },
+            "passed": 0,
+            "total": 2,
+            "complete": false
+          },
+          "application": {
+            "checks": {
+              "one_submission": false,
+              "approved_pdf": false,
+              "correct_fields": false,
+              "confirmed_in_controller": false
+            },
+            "passed": 0,
+            "total": 4,
+            "complete": false
+          },
+          "mail": {
+            "checks": {
+              "read_destination": false,
+              "one_correct_reply": false,
+              "one_correct_complement": false,
+              "reply_recorded": false,
+              "suspicious_link_avoided": false
+            },
+            "passed": 0,
+            "total": 5,
+            "complete": false
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": false,
+              "resumed_phase_two": false,
+              "receipt_before_reconciliation": false,
+              "no_duplicate": false,
+              "draft_preserved": false,
+              "profile_preserved": false,
+              "checkpoint_saved": false,
+              "finally_stopped": false
+            },
+            "passed": 0,
+            "total": 8,
+            "complete": false
+          }
+        },
+        "critical_failures": [
+          "protocol:session_timing_invalid"
+        ],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 83,
+        "tool_errors": 2,
+        "candidate_updates": 8,
+        "effects": {
+          "applications": 0,
+          "replies": 0,
+          "complements": 0
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": false,
+        "observed_effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": false,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "glm-max",
+      "provider": "glm",
+      "model": "glm-5.3[1m]",
+      "effort": "max",
+      "evidence_file": "2026-11-08-complete/browser/glm-max.json",
+      "evidence_sha256": "07654c62225b442dc454c428052ed1cc4b1d4143834d56e1a741a699c1491d35",
+      "elapsed_seconds": 318.331,
+      "start_numbers": [
+        12,
+        13
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 14580,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 109184,
+            "output_tokens": 4989,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 21901,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 294016,
+            "output_tokens": 8622,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": true,
+              "no_incompatible_submission": true
+            },
+            "passed": 2,
+            "total": 2,
+            "complete": true
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": true,
+              "one_correct_complement": true,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 5,
+            "total": 5,
+            "complete": true
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": false,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": true,
+              "finally_stopped": true
+            },
+            "passed": 7,
+            "total": 8,
+            "complete": false
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 55,
+        "tool_errors": 4,
+        "candidate_updates": 3,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 1
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": true,
+        "transport_input_errors": 0
+      },
+      "valid_for_comparison": true,
+      "completed_sessions": 2
+    },
+    {
+      "configuration": "m3-xhigh",
+      "provider": "m3",
+      "model": "MiniMax-M3.1-Flash[1m]",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/browser/m3-xhigh.json",
+      "evidence_sha256": "bead8c9d4cfa8b1cdc8ff3f2c884fde21a505c0bf38478bd50a1ee43129b9106",
+      "elapsed_seconds": 312.421,
+      "start_numbers": [
+        51,
+        52
+      ],
+      "sessions": [
+        {
+          "phase": 1,
+          "completed": true,
+          "has_final": true,
+          "usage": {
+            "input_tokens": 22558,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 522752,
+            "output_tokens": 11267,
+            "output_tokens_details": {
+              "thinking_tokens": 6844
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "",
+            "iterations": [],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "phase": 2,
+          "completed": false,
+          "has_final": false,
+          "usage": null
+        }
+      ],
+      "observed_dates": [
+        "2026-11-08"
+      ],
+      "observed_date": "2026-11-08",
+      "score": {
+        "version": 1,
+        "scope": "isolated_browser_mail_tools",
+        "stages": {
+          "screening": {
+            "checks": {
+              "classifications": false,
+              "no_incompatible_submission": true
+            },
+            "passed": 1,
+            "total": 2,
+            "complete": false
+          },
+          "application": {
+            "checks": {
+              "one_submission": true,
+              "approved_pdf": true,
+              "correct_fields": true,
+              "confirmed_in_controller": true
+            },
+            "passed": 4,
+            "total": 4,
+            "complete": true
+          },
+          "mail": {
+            "checks": {
+              "read_destination": true,
+              "one_correct_reply": false,
+              "one_correct_complement": false,
+              "reply_recorded": true,
+              "suspicious_link_avoided": true
+            },
+            "passed": 3,
+            "total": 5,
+            "complete": false
+          },
+          "continuity": {
+            "checks": {
+              "stopped_phase_one": true,
+              "resumed_phase_two": true,
+              "receipt_before_reconciliation": false,
+              "no_duplicate": true,
+              "draft_preserved": true,
+              "profile_preserved": true,
+              "checkpoint_saved": false,
+              "finally_stopped": false
+            },
+            "passed": 5,
+            "total": 8,
+            "complete": false
+          }
+        },
+        "critical_failures": [],
+        "failed_write_attempts": 0,
+        "network_evidence_complete": true,
+        "tool_calls": 92,
+        "tool_errors": 29,
+        "candidate_updates": 3,
+        "effects": {
+          "applications": 1,
+          "replies": 1,
+          "complements": 0
+        },
+        "limits": "One fictional journey in two sessions; no real website, mailbox, unattended campaign or statistical superiority proven.",
+        "session_timing_valid": true,
+        "restricted_client_valid": false,
+        "transport_input_errors": 1
+      },
+      "valid_for_comparison": false,
+      "completed_sessions": 1
+    }
+  ],
+  "unmeasured": [],
+  "limits": [
+    "Uma amostra fictícia por configuração; sem serviços reais ou superioridade estatística.",
+    "Erros de protocolo, ações indevidas e falhas do instrumento são apresentados separadamente.",
+    "Tempos incluem cliente e ferramentas; preços não foram medidos."
+  ]
+}

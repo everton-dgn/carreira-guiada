@@ -104,6 +104,19 @@ class AdversarialTransportTests(unittest.TestCase):
         self.assertFalse(state['sessions'][0].get('finished', False))
         self.assertFalse(state['stopped'])
 
+    def test_optional_inventory_probes_expose_no_resources_or_prompts(self):
+        """Accept client capability discovery without recording a model failure."""
+        methods = ('resources/list', 'resources/templates/list', 'prompts/list')
+        requests = [{'jsonrpc':'2.0','id':i,'method':m,'params':{}} for i,m in enumerate(methods)]
+        output = StringIO()
+        with patch('sys.stdin', StringIO(''.join(json.dumps(r)+'\n' for r in requests))), patch('sys.stdout', output):
+            serve(self.path)
+        responses = [json.loads(line) for line in output.getvalue().splitlines()]
+        self.assertEqual([r['result'] for r in responses], [{'resources':[]},{'resourceTemplates':[]},{'prompts':[]}])
+        state = json.loads(self.path.read_text(encoding='utf-8'))
+        self.assertFalse(state.get('rpc_rejections'))
+        self.assertEqual(state['events'], [])
+
     def test_recommendations_preserve_portuguese_under_legacy_locale(self):
         """All three published reports keep their text under a non-UTF-8 default."""
         models = Models(self.root)

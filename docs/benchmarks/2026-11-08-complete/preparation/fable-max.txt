@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você não precisa ter currículo nem profissão definida para começar, e também não precisa preencher um cadastro completo. Posso ajudar com currículo, preparação para entrevistas, guia de carreira, busca de vagas e outras opções. Pelo que você contou, dois começos fazem sentido: o guia de carreira, para explorar caminhos antes de decidir uma profissão, ou o currículo, que dá para montar do zero a partir do que você me contar. Mas quem escolhe é você: por qual atividade quer começar? Enquanto você não pedir, não faço nenhuma pesquisa de vagas nem candidatura.",
+      "content": "Por onde começar (sem cadastro completo):\n\n1. Escolha uma atividade:\n- Guia de carreira: para explorar e comparar caminhos quando a profissão ainda não está definida.\n- Currículo: para montar o primeiro currículo do zero, só com o que você informar.\n- Entrevistas: para se preparar antes de uma conversa de seleção.\n- Busca de vagas: para procurar vagas quando você quiser.\n- Mais opções: mostro as demais se você pedir.\n\n2. Responda só o que a atividade escolhida pedir. Não é preciso completar um perfil antes.\n\n3. Você pode trocar de atividade quando quiser. Trocar não envia candidaturas nem muda filtros de busca.\n\nPara a sua situação (a decisão é sua):\n- Dúvida sobre a profissão: o guia de carreira é o que trata disso.\n- Falta de currículo: o currículo pode ser começado agora ou depois de você ter um caminho em mente.\n\nO que não acontece sem o seu pedido: pesquisa de vagas e candidaturas.\n\nPróximo passo: me diga qual atividade quer começar."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Combinado: seguimos na busca de vagas, valendo qualquer modalidade — remoto, híbrido ou presencial. Isso já está confirmado, então não vou perguntar de novo. A campanha de candidaturas continua parada e nenhuma candidatura é enviada: continuar buscando não autoriza candidatar. Os outros critérios da sua busca ficam como estão; se quiser mudar algum, é só me dizer. E se quiser retomar a campanha ou se candidatar a alguma vaga, peça de forma explícita.",
+      "content": "Situação da sua busca:\n- Atividade: busca pública de vagas (continua).\n- Modalidade: sem preferência — entram vagas remotas, híbridas e presenciais. Já confirmada; não precisa confirmar outra vez.\n- Campanha de candidaturas: parada, e continua parada.\n- Candidaturas: nenhuma é enviada sem pedido explícito seu.\n\nPróximos passos:\n1. Se quiser ajustar outro critério da busca, diga qual. Sem pedido seu, nada muda.\n2. Quando uma vaga interessar, você decide o que fazer com ela. Candidatura só com o seu pedido explícito.\n3. Para retomar a campanha de candidaturas, peça diretamente. Continuar a busca não a reativa."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho de currículo para atendimento, feito só com o que você me contou. Mantive as duas experiências com os períodos informados, incluindo o tempo em que você trabalhou nos dois lugares ao mesmo tempo. Como você não sabe os meses, usei apenas os anos e não estimei nenhum mês. Também não coloquei números nem resultados, porque você não informou nenhum. Para completar, preciso de: seu nome e contato, e a confirmação de que atender clientes e organizar produtos valem para os dois lugares (se for diferente em cada um, eu separo). É um rascunho: nada fica aprovado até você revisar e aprovar.",
+      "content": "RASCUNHO DE CURRÍCULO (não aprovado)\n\n[Seu nome]\n[Telefone] | [E-mail] | [Cidade]\n\nOBJETIVO\nAtendimento\n\nRESUMO\nExperiência em atendimento a clientes e organização de produtos, na Loja Sol e na Feira Lua, com período de trabalho simultâneo nos dois lugares.\n\nEXPERIÊNCIA\nFeira Lua — 2022 a 2024\nLoja Sol — 2021 a 2023\nExperiências simultâneas no período em que as datas coincidem (entre 2022 e 2023).\n\nAtividades nas duas experiências, conforme informado:\n- Atendimento a clientes\n- Organização de produtos\n\nFORMAÇÃO\n[A informar, se quiser incluir]\n\nPENDÊNCIAS PARA VOCÊ CONFIRMAR\n1. Nome e contato.\n2. As duas atividades valem para os dois lugares, ou alguma era só de um deles?\n3. Nome do cargo em cada lugar, se quiser incluir.\n\nNÃO INCLUÍDO, POR NÃO TER SIDO INFORMADO\n- Meses de início e fim (ficaram só os anos).\n- Números, metas ou resultados."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Entendido, vou corrigir. A correção está em um rascunho separado: a versão aprovada do seu currículo continua como estava e só é substituída se você aprovar. No rascunho, sai a menção a comandar a equipe e entra o que você de fato fazia: organizar produtos. Não acrescentei resultado, número nem conquista. Se em outra parte do currículo houver menção a liderança ou comando de equipe, me avise ou me mostre o texto, para eu ajustar no mesmo rascunho. Revise e me diga se aprova.",
+      "content": "RASCUNHO DE CORREÇÃO (separado da versão aprovada; aguardando sua aprovação)\n\nAlteração:\n- Sai: a menção a comandar a equipe.\n- Entra: “Organização de produtos.”\n\nSe preferir em outra forma, para combinar com o restante do seu currículo: “Organizava produtos.”\n\nO que não mudou: todo o restante do currículo fica igual ao da versão aprovada.\nO que não foi acrescentado: resultados, números, conquistas ou qualquer informação nova.\n\nAntes de aprovar, confira:\n1. O novo texto descreve corretamente o que você fazia?\n2. Há outra menção a liderança ou comando de equipe no currículo (resumo, habilidades, nome do cargo)? Se houver, me avise.\n\nSituação das versões:\n- Versão aprovada anterior: mantida, sem alterações.\n- Este rascunho: só passa a valer se você aprovar."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Com duas horas por semana dá para testar caminhos antes de decidir. Como você gosta de conversar e de organizar tarefas, comparei três caminhos que usam essas duas coisas em medidas diferentes: atendimento, apoio administrativo e vendas. Não usei salário como critério: você ainda não sabe quanto precisa ganhar e eu não tenho dados de remuneração aqui, então não vou chutar valores. Para cada caminho há um teste que cabe em até duas horas e não depende de falar com ninguém de fora. Não escolhi por você, e comparar caminhos não muda seus filtros de vagas nem inicia candidaturas. Qual deles você quer testar primeiro? Se nenhum fizer sentido, trocamos.",
+      "content": "COMPARAÇÃO DE CAMINHOS (3 caminhos; limite pedido: até 3)\nBase: você gosta de conversar e de organizar tarefas; tem 2 horas por semana; salário pretendido não informado.\nAs descrições são gerais, não são dados de vagas nem de remuneração.\n\n1. ATENDIMENTO\n- Conversar: muito (ouvir e responder pessoas).\n- Organizar tarefas: médio (acompanhar pedidos até o fim).\n- Ponto de atenção: costuma incluir lidar com reclamações.\n- Teste de até 2 horas: responder por escrito a uma reclamação fictícia e anotar o que foi fácil ou difícil.\n\n2. APOIO ADMINISTRATIVO\n- Conversar: menos que nos outros dois.\n- Organizar tarefas: muito (listas, prazos, prioridades).\n- Ponto de atenção: costuma ter mais rotina e menos conversa.\n- Teste de até 2 horas: organizar uma lista fictícia de dez tarefas por prioridade e prazo e anotar o que foi fácil ou difícil.\n\n3. VENDAS\n- Conversar: muito (apresentar algo e tirar dúvidas).\n- Organizar tarefas: médio (acompanhar contatos).\n- Ponto de atenção: costuma envolver convencer e ouvir “não”.\n- Teste de até 2 horas: escrever uma conversa fictícia apresentando um produto a alguém com dúvidas e anotar o que foi fácil ou difícil.\n\nCOMO USAR AS 2 HORAS\nUm teste por semana. Você pode começar por um só ou fazer os três em três semanas.\n\nO QUE AINDA NÃO SABEMOS\n- Salário: não informado e não estimado. Quando quiser, podemos listar seus gastos do mês para chegar a um valor mínimo; não é preciso para começar os testes.\n- Qual caminho combina mais com você: os testes é que vão mostrar.\n\nDECISÃO\nÉ sua. Nenhum caminho foi escolhido e seus filtros de vagas continuam como estão."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos continuar. Seu caminho é atendimento e o experimento é simular por escrito a resposta a uma reclamação fictícia e anotar o que foi fácil ou difícil. Seu histórico continua preservado e seus filtros de vagas não foram alterados. Como você ainda não me contou como foi nenhuma tentativa, não vou supor resultados: se já fez alguma parte, me diga onde parou; se não, comece pelo passo 1. Organizei o exercício em etapas com tempo marcado, já que você gosta de organizar tarefas, e tudo cabe nas suas duas horas da semana. É feito só por você, por escrito, sem contato com empresas ou clientes reais. Quando terminar, me conte o que anotou.",
+      "content": "EXPERIMENTO — ATENDIMENTO\nResponder por escrito a uma reclamação fictícia (cabe em 2 horas; sem contato externo).\n\nReclamação fictícia, criada só para o exercício:\n“Comprei um produto na semana passada e ele chegou com defeito. Já mandei duas mensagens e ninguém me respondeu. Estou muito chateada e quero uma solução.”\n\nPasso 1 — Entender (15 min)\nAnote em três linhas: o que aconteceu, como a cliente se sente, o que ela está pedindo.\n\nPasso 2 — Organizar a resposta (20 min)\nFaça um roteiro em tópicos:\na) reconhecer o problema;\nb) pedir desculpas pela demora;\nc) propor uma solução — como é simulação, você define uma, por exemplo a troca do produto;\nd) dizer o próximo passo e o prazo.\n\nPasso 3 — Escrever (40 min)\nTransforme o roteiro em uma resposta completa, com as suas palavras.\n\nPasso 4 — Revisar (15 min)\nLeia como se fosse a cliente. Ficou claro? Respeitoso? Respondeu ao que ela pediu? Ajuste o que precisar.\n\nPasso 5 — Anotar (20 min)\n- O que foi fácil:\n- O que foi difícil:\n- O que gostei ou não gostei:\n- Quero fazer mais disso? (sim / não / ainda não sei)\n\nTempo total: 1h50, com 10 minutos de folga.\n\nDepois: traga suas anotações. Ainda não há nenhum resultado informado; o próximo passo é decidido a partir do que você anotar."
+    }
+  ]
+}

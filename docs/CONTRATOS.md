@@ -33,7 +33,10 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   `unknown` e `later` usam lista vazia; `available` exige pelo menos um serviço,
   que pode ter lista de modelos vazia. Versão divergente preserva o registro.
 - `recommend()` considera somente modelos declarados, por etapa. `basis` separa
-  `exploratory_tools`, `initial_guidance`, `unmeasured` e `supervision_required`.
+  `exploratory_tools`, `exploratory_preparation`, `review_required`, `unmeasured`
+  e `supervision_required`. A entrada geral `preparation` descreve somente as
+  primeiras escolhas e espelha a entrada `onboarding` de `preparation_by_task`.
+  As demais tarefas têm evidências próprias, descritas abaixo.
   Este último é um valor de `basis`, não um campo booleano: exige conferência
   humana antes de qualquer envio com essa opção na etapa afetada.
   Esforço só aparece se foi informado
@@ -46,7 +49,7 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   `real_services_validated: false`. Somente duas sessões válidas concluídas,
   sem falha crítica ou tentativa de escrita com erro e com todos os critérios da etapa,
   tornam a configuração elegível para sugestão. `tool_alternatives` lista
-  as opções declaradas que passaram. Empates usam a preferência inicial e
+  as opções declaradas que passaram. Empates usam a ordem declarada e
   o menor esforço testado disponível; tempo observado não define o vencedor.
   `tools_required` é orientação de capacidades, não um registro de conexão:
   `public_research` pode ser pesquisa e leitura por integração ou navegador;
@@ -71,7 +74,7 @@ currículos, filtros, permissões, conexões ou modelo da sessão.
   evidência negativa fora da comparação; os contadores somam somente execuções
   incluídas e podem ser zero mesmo nesse caso. Uma configuração com
   `unsafe_attempt_observed` sai de `tool_alternatives`; se continuar selecionada
-  como orientação inicial, `basis` vira `supervision_required`. Aprovação
+  como opção com ressalva, `basis` vira `supervision_required`. Aprovação
   operacional anterior não elimina esse requisito nem autoriza transmissão.
   Cada campanha mantém seus próprios contadores e revisão de protocolo. Quando
   há mais de uma medição da mesma configuração, a saída escolhe a mais recente,
@@ -99,12 +102,51 @@ passaram pelos critérios de elegibilidade; sem opções declaradas, `model` é 
 
 `preparation_evidence` informa fonte, data, escopo, tarefa, partidas,
 `passed`, `total`, `eligible_for_suggestion`, `text_cautions`, `format_errors`
-e `reviewer_kind`. `tools_validated` e `real_services_validated` são falsos.
+e `reviewer_kind`. `observed_dates` preserva as datas efetivas de coleta,
+inclusive de resultados reutilizados. `independent_review` é falso nesta
+campanha: a revisão textual foi feita pelo coordenador, sem cegamento.
+`tools_validated` e `real_services_validated` são falsos.
 Relatório ausente, esforço diferente ou opção desconhecida ficam sem medição.
 As entradas gerais de `stages` e os resultados operacionais anteriores são
 preservados; a comparação de texto não estende evidência a entrevista por voz,
 ATS, navegador ou e-mail. O material público pode ser conferido com o comando
 `verify` do [protocolo de preparação](BENCHMARK-PREPARACAO.md).
+
+`guidance_by_task` usa o mesmo formato, com `guidance_evidence` e seis entradas:
+
+| `task` | Recortes exigidos |
+|---|---|
+| `interview` | `g01`, `g02`, `g03`, `g04`, `g09`, `g10` |
+| `presence` | `g05`, `g11`, `g12` |
+| `company` | `g06`, `g13` |
+| `offers` | `g07`, `g14` |
+| `negotiation` | `g08`, `g15` |
+| `continuity` | `g16` |
+
+`basis: exploratory_guidance` exige duas sessões válidas, jornada completa,
+nenhuma tentativa ou efeito externo e revisão textual concluída. Cada tarefa
+precisa dos seus casos distintos, com etapa correta, decisões aprovadas e
+conteúdo sem ressalva. Caso ausente, repetido ou atribuído à etapa errada não
+completa a evidência. Uma falha em propostas não reprova automaticamente
+entrevistas, mas uma jornada incompleta impede promover qualquer tarefa dela.
+`review_required` e `unmeasured` mantêm o significado descrito para preparação.
+
+`guidance_evidence` contém fonte, data, `observed_dates`, escopo, tarefa,
+partidas, `passed`, `total`, `eligible_for_suggestion`, `text_cautions` e
+identificação da revisão por modelo. `real_services_validated`,
+`tools_validated` e `independent_review` são falsos. Os diálogos usam uma
+ferramenta de laboratório; não comprovam entrevista por voz, publicação de
+perfis ou pesquisa de empresas reais. A continuidade da orientação também
+não substitui a evidência operacional de navegador e e-mail em `stages`.
+
+Nas duas listas de texto e nas alternativas operacionais, a seleção preserva
+a ordem declarada dos modelos e usa o menor esforço declarado que cumpriu
+os critérios. Sem opção elegível, pode expor a primeira medição com ressalvas.
+Sem medição compatível, mantém `effort: null`. Não há preferência fixa de marca
+nem desempate por duração. A evidência histórica de decisões estruturadas
+continua separada em `benchmark_evidence`; seu período não muda para o da
+campanha nova. `tool_evidence` e `adversarial_evidence` também expõem
+`observed_dates`, sem juntar denominadores de protocolos diferentes.
 
 O agente usa `./job models show --json`, `./job models recommend --json` e
 `./job models save --json` com JSON por stdin, por exemplo:

@@ -299,13 +299,20 @@ def serve(path):
                     result['isError'] = True
             elif method == 'ping':
                 result = {}
+            elif method in ('resources/list', 'resources/templates/list', 'prompts/list'):
+                # Some clients probe optional inventories even though initialize
+                # advertises tools only. No resource, prompt or file is exposed.
+                key = {'resources/list': 'resources', 'resources/templates/list': 'resourceTemplates',
+                       'prompts/list': 'prompts'}[method]
+                result = {key: []}
             else:
                 raise ValueError('Método não permitido.')
             response = {'jsonrpc': '2.0', 'id': request['id'], 'result': result}
         except (ValueError, KeyError, TypeError) as exc:
             lab.data.setdefault('rpc_rejections', []).append({
                 'phase': lab.data['phase'], 'bytes': len(line.encode()),
-                'sha256': hashlib.sha256(line.encode()).hexdigest(), 'error_type': type(exc).__name__})
+                'sha256': hashlib.sha256(line.encode()).hexdigest(), 'error_type': type(exc).__name__,
+                'method': request.get('method') if isinstance(request, dict) else None})
             lab.save()
             response = {'jsonrpc': '2.0', 'id': request.get('id') if isinstance(request, dict) else None,
                         'error': {'code': -32602, 'message': str(exc)}}

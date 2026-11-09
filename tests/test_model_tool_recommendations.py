@@ -31,7 +31,8 @@ class ToolRecommendationTests(unittest.TestCase):
                     'critical_failures': critical or [], 'failed_write_attempts': guards}}
 
     def suggest(self, runs):
-        self.report.write_text(json.dumps({'date': '2026-11-07', 'runs': runs}))
+        self.report.write_text(json.dumps({'date': '2026-11-07',
+            'source': 'docs/benchmarks/fictional-consumer-fixture.json', 'runs': runs}), encoding='utf-8')
         return self.models.recommend()['stages']
 
     def test_community_evidence_can_override_initial_preference_only_for_measured_stage(self):
@@ -39,6 +40,8 @@ class ToolRecommendationTests(unittest.TestCase):
         self.assertEqual(stages[2]['model']['name'], 'Modelo da comunidade')
         self.assertEqual(stages[2]['basis'], 'exploratory_tools')
         self.assertFalse(stages[2]['tool_evidence']['real_services_validated'])
+        self.assertEqual(stages[2]['tool_evidence']['source'],
+                         'docs/benchmarks/fictional-consumer-fixture.json')
         self.assertEqual(stages[0]['model']['name'], 'GPT-6.1 Terra')
         self.assertIsNone(stages[0]['tool_evidence'])
 

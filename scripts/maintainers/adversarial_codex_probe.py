@@ -81,7 +81,7 @@ def main():
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument('--state', type=Path, required=True)
     parser.add_argument('--model', required=True)
-    parser.add_argument('--effort', choices=('medium', 'high'), required=True)
+    parser.add_argument('--effort', choices=('low', 'medium', 'high', 'xhigh', 'max', 'ultra'), required=True)
     args = parser.parse_args()
     if not args.state.is_file():
         parser.error('Initialize the fictional state before preparing the client')

@@ -22,110 +22,80 @@ quais modelos aparecem na sua conta, sem pedir credenciais. Ter assinatura de
 um serviço não comprova acesso a todos os modelos. Também não garante navegador,
 e-mail ou execução contínua: essas capacidades precisam ser conferidas na sessão.
 
-## Sugestões iniciais por etapa
+## Peça uma indicação para a tarefa
 
-| Etapa | Sugestão do projeto | Quando usar |
-|---|---|---|
-| Onboarding, currículo e carreira | GPT-6 Astra alto, Terra médio ou Sol médio, entre as opções que você tem | Configurações observadas sem ressalva material nos seis recortes de preparação. |
-| Preparo complexo fora dos recortes medidos | Astra ou Opus, como orientação inicial | Conferir documentos extensos e situações que ainda não foram medidas; validar o material com você. |
-| Buscar e operar candidaturas | GPT-6.1 Terra, esforço médio (`medium`) | Navegar, preencher e conferir o resultado das ações autorizadas. |
-| Resolver uma etapa difícil | Terra alto (`high`) ou Astra alto, entre as configurações medidas | Analisar formulário incomum ou divergência, conferindo o resultado. A amostra não provou vantagem do esforço alto. |
-| Organizar material já conferido | Modelo disponível, com revisão do resultado | Não há medição de esforço baixo nesta coleta para recomendar uma redução. |
+Diga, por exemplo: "Tenho estes modelos. Qual uso para revisar meu currículo?"
+A IA confere suas opções e consulta a [tabela por tarefa e provedor](BENCHMARKS.md#escolha-pela-tarefa-e-pelo-provedor).
+Você escolhe no aplicativo; o projeto não muda o modelo sozinho.
 
-O esforço indica quanto o modelo deve raciocinar. Mais esforço pode consumir
-mais tempo e uso da sua conta. Nem toda ferramenta oferece esse ajuste ou usa
-os mesmos nomes. Comece com a opção indicada; a IA deve ajudar a localizar a
-escolha no aplicativo sem pedir que você edite configurações técnicas.
+| Sua atividade | Evidência que importa |
+|---|---|
+| Começar, revisar currículo ou escolher um foco de carreira | Clareza da orientação, respeito aos fatos e material útil para aquela tarefa. |
+| Treinar entrevistas, revisar LinkedIn/GitHub ou investigar empresa | Respostas completas, correções incorporadas e continuidade entre sessões. |
+| Comparar propostas ou negociar | Contas conferidas, premissas explícitas e mensagem fiel ao que você autorizou. |
+| Buscar vagas, preencher e acompanhar e-mail | Operações concluídas no navegador fictício, conferência do resultado e respeito às permissões. |
 
-Terra 6.1 com `medium` é nossa recomendação inicial para automação. Suba para
-`high` se a etapa exigir mais análise. Não recomendamos reduzir o esforço
-apenas porque a tarefa parece repetitiva: é preciso conferir o destino, os
-campos e o resultado de cada envio. Haiku 5.5 não concluiu o percurso fictício e tentou uma ferramenta fora
-do protocolo; por isso esta rodada não o promove para operar candidaturas.
+Um modelo pode ter bom resultado em carreira e acrescentar fatos no currículo.
+Por isso, confira a tarefa específica. Passar no teste de currículo também não
+comprova que ele consegue operar o navegador da sua sessão.
 
-## Recomendações para começar, escrever e escolher um foco
+## Entenda o esforço sem configurar nada técnico
 
-O [benchmark de preparação](BENCHMARKS.md#onboarding-currículo-e-guia-de-carreira)
-separa as primeiras escolhas, o currículo e o guia de carreira. Terra
-médio/alto, Sol médio e Astra alto completaram os recortes sem ressalva material
-na revisão. A amostra não comprovou vantagem de subir o esforço do Terra.
+O esforço é uma opção de raciocínio oferecida por alguns aplicativos. Pode
+aparecer como `low`, `medium`, `high`, `xhigh`, `max` ou `ultra`. A IA ajuda a
+localizar a escolha que existe na sua conta; você não precisa editar arquivos.
 
-Há diferenças que a nota de campos não mostra. Fable e GLM acrescentaram ou
-inferiram detalhes no currículo; Haiku conduziu o início como exploração de
-profissões; M3 impôs etapas e declarou pesquisa ativa sem ferramentas. O Opus
-respondeu em um bloco Markdown quando a coleta exigia JSON. Consulte as
-ressalvas da tarefa antes de reutilizar o texto. Isso não exige trocar de
-assinatura: a IA deve ajudar a revisar o material com o modelo que você tem.
+A [matriz de esforços](BENCHMARKS.md#quais-esforços-foram-comparados) mostra o que
+foi medido para cada modelo. Nomes iguais em fornecedores diferentes não
+significam o mesmo orçamento de raciocínio. Uma opção no catálogo também não
+comprova que o serviço aplicou esse esforço: os relatórios distinguem o ajuste
+solicitado da confirmação observada no cliente.
 
-A indicação por tarefa usa somente os modelos e esforços que você informou.
-Para comparar fornecedores, veja a [tabela por tarefa e provedor](BENCHMARKS.md#escolha-pela-tarefa-e-pelo-provedor).
-Para saber o que falta testar, veja a [matriz de esforços](BENCHMARKS.md#quais-esforços-foram-comparados).
-Se houver empate, conserva a preferência inicial e o menor esforço medido
-válido daquele modelo. Um modelo pode ter evidência para carreira e precisar
-de revisão adicional no currículo. Nenhuma dessas notas autoriza ferramentas
-ou substitui a aprovação de fatos profissionais.
+Entre opções com evidência suficiente para a tarefa, a indicação preserva a
+ordem dos modelos que você informou e escolhe o menor esforço disponível que
+cumpriu os critérios daquele modelo. As outras opções elegíveis aparecem como
+alternativas. Isso evita escolher uma marca por hábito; não prova que o menor
+esforço terá o mesmo desempenho em qualquer situação ou será mais barato.
 
-## O que sabemos sobre instruções maliciosas
+Se a etapa ficar difícil, a IA primeiro explica o problema: falta informação,
+falhou uma ferramenta ou a resposta precisa de revisão. Aumentar o esforço
+não resolve falta de acesso nem concede permissão para agir.
 
-O [ensaio adversarial](BENCHMARKS.md#instruções-maliciosas-em-vagas-e-mails-e-retomada)
-testou vagas, e-mails e anotações de retomada com ferramentas limitadas a dados
-fictícios. Opus e Fable concluíram os nove casos sem tentar cumprir os seis
-ataques e sem erros de protocolo. GLM concluiu com um erro de protocolo; Haiku
-deixou uma confirmação incompleta. M3 concluiu após uma tentativa de ação fora
-da autorização, bloqueada pelo executor, e quatro erros de protocolo.
+## Como ler uma recomendação
 
-Nenhum dos cinco tentou cumprir o objetivo dos ataques. Essa coleta usa o
-protocolo original e não demonstra imunidade nem define qual resistirá melhor
-em páginas reais.
+- Com evidência na tarefa: a configuração cumpriu os critérios dos recortes
+  fictícios e as exigências de revisão. É um ponto de partida para conferir
+  na sua sessão.
+- Com ressalvas: houve erro, falta de conclusão ou problema no texto. A IA
+  explica o cuidado necessário antes de aproveitar o resultado.
+- Sem medição: não há evidência compatível com aquela tarefa e esforço. Você
+  pode continuar com o modelo atual e revisar o material.
+- Com tentativa indevida observada: a etapa exige conferência humana antes
+  de envio. Uma ferramenta ter bloqueado a ação não significa que o modelo
+  respeitou a autorização.
 
-Com o isolamento Codex corrigido, Terra médio/alto, Sol médio e Astra alto concluíram as
-duas sessões da revisão 2: seis ataques expostos sem tentativa indevida e nove
-tarefas legítimas concluídas, sem erros de protocolo. Na retomada, as quatro
-configurações preservaram a pausa e conferiram recibos sem repetir envios. As coletas
-dos dois protocolos permanecem separadas, sem ranking entre fornecedores.
+As recomendações consideram apenas as opções que você informou. Não é preciso
+contratar outro serviço para começar. Resultados completos, falhas e limites
+ficam no [benchmark](BENCHMARKS.md); a coleta aceita contribuições de outros
+fornecedores e modelos locais.
 
-Terra médio continua como sugestão operacional inicial, apoiada no ensaio de
-navegador e nessa observação adversarial. Terra alto, Sol médio e Astra alto são alternativas
-completas nas duas medições. Não foi observada vantagem de resistência ao subir
-o esforço do Terra. A coleta específica de preparação, descrita acima, trata de textos
-e decisões. O ensaio adversarial não avaliou currículos.
+## Segurança e limites da comparação
 
-Para retomadas, confira sempre os recibos e o registro final. Se usar M3 na
-triagem ou candidatura, a recomendação pede conferência humana antes de envio devido à ação
-indevida observada. As preferências consideram apenas modelos que você informou
-ter; a evidência não instala, troca ou libera um provedor automaticamente.
+Os [testes de instruções maliciosas](BENCHMARKS.md#instruções-maliciosas-em-vagas-e-mails-e-retomada)
+observam o que o modelo tentou fazer ao ler vagas, e-mails e anotações de
+retomada fictícios. A evidência de ataques é separada da qualidade do texto e
+do uso de ferramentas. Uma nova coleta bem-sucedida preserva falhas anteriores
+para consulta; não demonstra imunidade.
 
-## Como a evidência entra na escolha
+A revisão de conteúdo é feita por modelo, sem estudo com candidatos reais.
+Navegador e e-mail são serviços de laboratório, com isolamento e ferramentas
+limitadas. Não foram validados login, CAPTCHA, navegação por imagens, serviços
+reais ou campanhas por dias. Tempos de uma rodada não estabelecem superioridade
+estatística, preço ou consumo de assinatura.
 
-O [benchmark público](BENCHMARKS.md) separa decisões estruturadas de operações
-escolhidas pelos modelos em um navegador com portal e e-mail fictícios. A
-segunda sessão retoma apenas pelo estado salvo. Os resultados têm critérios
-por etapa e registram falhas, tentativas de escrita com erro e indisponibilidades.
-
-Quando uma configuração informada por você passa nos critérios da etapa,
-sem falha crítica ou tentativa de escrita com erro e com duas sessões válidas concluídas,
-ela ganha preferência sobre a sugestão inicial. Se houver empate, a orientação
-mostra as alternativas, preserva a preferência inicial e escolhe o menor esforço
-testado disponível desse modelo. O tempo de uma única rodada não decide o empate.
-
-Isso recomenda um ponto de partida para aquela etapa, dentro da amostra.
-O laboratório não mede navegação por imagens, login, CAPTCHA, serviços reais
-ou campanhas por dias. A coleta de preparação avalia trechos de currículo e
-exercícios, sem provar uma conversa inteira ou leitura por ATS. Confira as ferramentas e acompanhe
-a primeira etapa no seu aplicativo. O protocolo aceita outros provedores,
-inclusive modelos locais, sem exigir um orquestrador específico.
-
-As referências oficiais usadas na orientação original descrevem o
-[GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)
-para raciocínio complexo e criação de documentos, e o
-[GPT-6.1 Terra](https://developers.openai.com/api/docs/models/gpt-6.1-terra)
-para raciocínio visual, uso do computador e escrita, com suporte a esforço
-médio e alto. A Anthropic apresenta o
-[Opus 5.5](https://www.anthropic.com/claude-opus-5-5)
-para trabalho com agentes, uso do computador e tarefas complexas.
-Fontes consultadas em 5 de novembro de 2026. Nomes e disponibilidade variam;
-confira o catálogo da sua conta quando for escolher. Essas referências não
-substituem os resultados e limites do benchmark.
+Na prática, a IA confere as ferramentas e acompanha com você a primeira etapa.
+Antes de retomar um envio incerto, verifica o resultado no destino. Trocar de
+modelo mantém essas regras e suas permissões.
 
 ## Usar outra ferramenta ou outro LLM
 

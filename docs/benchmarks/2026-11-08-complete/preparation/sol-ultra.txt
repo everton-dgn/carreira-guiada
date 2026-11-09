@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você não precisa ter currículo, escolher uma profissão ou preencher um cadastro completo para começar. Quer explorar algumas profissões ou montar um primeiro rascunho de currículo?",
+      "content": "Para explorar profissões, liste duas atividades que você gosta de fazer. Elas podem servir de ponto de partida para o guia de carreira. Para começar pelo currículo, anote uma experiência ou atividade que você já fez e descreva o que fazia nela. Se preferir, também há opções de treino de entrevista e busca de vagas."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Você pode continuar na busca pública de vagas sem restringir a modalidade. A campanha de candidaturas continua pausada.",
+      "content": "Na busca pública, deixe o filtro de modalidade sem restrição para incluir vagas remotas, híbridas e presenciais. Você pode consultar as vagas sem retomar a campanha nem enviar candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento. Mantive os períodos sobrepostos e usei apenas os anos que você informou.",
+      "content": "Objetivo: atendimento\n\nExperiência profissional\n\nLoja Sol | 2021–2023\n• Atendimento a clientes e organização de produtos.\n\nFeira Lua | 2022–2024\n• Atendimento a clientes e organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "A correção abaixo é um rascunho separado para sua revisão. A versão aprovada permanece como está.",
+      "content": "Substitua o trecho sobre liderança de equipe por: “Organização de produtos.”"
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Com duas horas por semana, você pode experimentar três caminhos antes de decidir. Como você ainda não sabe quanto precisa ganhar, compare primeiro as tarefas, sem usar salário como critério nesta etapa.",
+      "content": "1. Atendimento: prioriza a conversa e a resolução de dúvidas. Simule uma resposta a uma reclamação fictícia.\n2. Apoio administrativo: prioriza a organização de prazos e pendências. Monte uma agenda fictícia com três tarefas e defina a ordem em que faria cada uma.\n3. Suporte operacional: combina organização e comunicação. Imagine um atraso em uma entrega, liste os próximos passos e escreva um aviso curto para a equipe.\n\nUse 30 minutos para cada exercício e os 30 minutos finais para comparar: em qual você mais gostou de conversar, em qual mais gostou de organizar e qual tarefa teria vontade de repetir?"
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o exercício de atendimento que você escolheu. Você pode fazê-lo por escrito, sem contatar ninguém.",
+      "content": "Reclamação fictícia: “Meu pedido chegou com um item faltando. Como vocês vão resolver isso?”\n\nEscreva uma resposta que reconheça o problema, peça a informação necessária para entender o caso e indique um próximo passo sem prometer prazo ou solução. Depois, anote o que foi fácil, o que foi difícil e se organizar os próximos passos ajudou a escrever a resposta."
+    }
+  ]
+}

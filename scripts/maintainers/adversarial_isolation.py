@@ -2,6 +2,16 @@
 from .adversarial_codex import CATALOG_RESTRICTIONS, DISABLED, ENABLED
 
 
+def unexpected_rpc_errors(records):
+    """Legacy MCP may refuse discovery before the client falls back to initialize.
+
+    Only an explicitly observed server/discover probe is exempt. An old record
+    without method evidence remains inconclusive, even if its hash looks alike.
+    """
+    return [r for r in records if r.get('method') != 'server/discover'
+            or r.get('error_type') != 'ValueError']
+
+
 def valid_gate(proof):
     """Check legacy or restricted Codex attestations without inferring missing proof."""
     if not isinstance(proof, dict) or proof.get('verified') is not True:
@@ -11,6 +21,16 @@ def valid_gate(proof):
     if 'kind' not in proof:
         return proof.get('servers') == [
             {'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]
+    if proof.get('kind') == 'claude-restricted-v2':
+        return (proof.get('servers') == [
+                    {'name': 'fictional', 'status': 'connected', 'source': 'dynamic'}]
+                and proof.get('setting_sources') == [] and proof.get('native_tools') == []
+                and all(proof.get(k) is True for k in
+                        ('strict_mcp', 'hooks_disabled', 'memory_disabled', 'system_prompt_replaced',
+                         'builtin_definitions_not_callable', 'instruction_directories_denied'))
+                and proof.get('effort_observation') == 'explicit_cli_argument'
+                and proof.get('effort') in ('low', 'medium', 'high', 'xhigh', 'max')
+                and isinstance(proof.get('model'), str) and bool(proof['model']))
     if proof.get('kind') != 'codex-restricted-v1':
         return False
     return (proof.get('servers') == [

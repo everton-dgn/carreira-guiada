@@ -57,6 +57,25 @@ controle, não serviços acessados pelo navegador.
 
 ## Reproduzir com qualquer provedor
 
+A campanha ampliada usa um cliente novo em cada fase, com apenas a ferramenta
+MCP `lab`. O pedido está em
+[browser-benchmark-mcp.json](../templates/browser-benchmark-mcp.json).
+O adaptador expõe o mesmo guia e as mesmas operações do navegador, recebendo
+uma string JSON em `request_json`, sem shell nem leitura arbitrária de arquivos.
+Os [adaptadores restritos](BENCHMARK-ADVERSARIAL.md#clientes-da-campanha-ampliada)
+precisam confirmar o catálogo antes de expor a jornada.
+
+`benchmark_session` prepara esse cliente com `--kind browser`, `--state`
+apontando para o `state.json` do laboratório e `--seconds 240`. O mantenedor
+inicia o servidor e registra `start-session` antes de entregar o prompt,
+encerra a fase com `finish-session` e cria outro cliente após `advance`.
+Não repasse o chat anterior. O verificador `benchmark_browser_report`
+reconstrói as operações e confere a inicialização e o transporte de cada fase.
+
+O procedimento abaixo mantém a rota pelo wrapper de terminal para reprodução
+e contribuição. Registre qual transporte foi usado; a coleta anterior por
+wrapper e a nova coleta MCP são observações distintas.
+
 Prepare as dependências da [suíte de navegador](VALIDACAO.md#navegador-e-e-mail-fictício).
 Na raiz do projeto, crie um laboratório novo e uma pasta de cliente fora do Git:
 
@@ -150,6 +169,7 @@ As evidências publicadas permitem recalcular as notas sem navegador ou modelo:
 
 ```sh
 uv run --locked python -m scripts.maintainers.bench_report docs/benchmarks/2026-11-07-browser-mail.json
+uv run --locked python -m scripts.maintainers.bench_report docs/benchmarks/2026-11-08-complete-browser.json
 ```
 
 Uma jornada por configuração é exploratória. Para propor uma recomendação,
@@ -157,7 +177,20 @@ compare etapas equivalentes, preserve resultados negativos e explique o que
 o teste deixou de fora. Variações novas devem ter uma versão própria; não
 mude o cenário só para um modelo. Custos e tokens exigem medição observada.
 
-## Limites encontrados nesta coleta
+Na campanha iniciada em 8/11/2026, a retomada do M3 terminou após um pedido
+ao nome `mcp__fcp__fictional__lab`, embora o catálogo oferecesse somente
+`mcp__fictional__lab`. O adaptador encerrou a sessão por essa divergência,
+antes do limite de tempo. O pedido está preservado em `other_tool_items`;
+não comprova acesso a uma ferramenta real. O percurso ficou incompleto e
+inelegível para indicação operacional, sem repetir a amostra para substituí-lo.
+
+O Haiku no esforço `max` produziu os três efeitos fictícios e respondeu nas
+duas sessões, mas encerrou a segunda em cerca de 250 segundos, acima do limite
+de 240. Os efeitos continuam em `observed_effects`; a configuração não recebe
+crédito operacional nessa coleta. Terminar as chamadas antes do prazo não
+substitui o encerramento da sessão dentro do tempo combinado.
+
+## Limites da coleta anterior
 
 A coleta publicada usou o limite externo do executor, antes da inclusão de
 `start-session` e `finish-session`. As trilhas antigas preservam sua nota de

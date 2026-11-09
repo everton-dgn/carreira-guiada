@@ -113,6 +113,11 @@ O [ensaio de preparação](docs/BENCHMARK-PREPARACAO.md) acrescenta onboarding,
 currículo e carreira sem ferramentas externas. Além das decisões estruturadas,
 exige o material que seria entregue à pessoa e uma revisão com evidências.
 
+As [jornadas de entrevistas, perfis e decisões](docs/BENCHMARK-JORNADAS.md)
+avaliam textos, fontes fictícias, cálculos e correções no dia seguinte. Publique
+a revisão de cada resposta com trechos que sustentem o veredito. Identifique
+quando o próprio responsável pela coleta também fez essa revisão.
+
 ## Licença das contribuições
 
 Envie somente material que você tem direito de distribuir sob a

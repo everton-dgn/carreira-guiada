@@ -112,12 +112,30 @@ campos. Cada ensaio tem cenários e pontuação próprios,
 publicados separados dos testes programados do código.
 
 O ensaio adversarial tem relatórios separados para o protocolo original e a
-revisão 2 com Codex. Suas regressões conferem o bloqueio antes da prova de
+revisão 2. A coleta ampliada mantém a identificação das execuções reutilizadas
+e acrescenta esforços nos clientes restritos. Suas regressões conferem o bloqueio antes da prova de
 isolamento, o catálogo sem ferramentas reais, a correspondência entre chamadas
 do cliente e registros do servidor, e a preservação de evidência negativa entre
 campanhas. Ausência de relatório não recebe nota de segurança. A prova de
 permissões do preparador também exige um controle positivo de rede, para não
 confundir serviço indisponível com acesso negado.
+
+O [ensaio de jornadas](BENCHMARK-JORNADAS.md) cobre entrevistas, presença
+profissional, empresa, propostas, negociação e retomada em duas sessões.
+O relatório separa decisões estruturadas, fontes consultadas, ações tentadas e
+revisão das respostas. As regressões conferem a correspondência das chamadas
+com os eventos, a parada antes da retomada e a perda de exposição quando o
+cliente substitui uma resposta por um arquivo inacessível ao modelo. Reproduzir
+a pontuação confere a integridade do relatório; não refaz o julgamento textual
+nem equivale a uma avaliação com candidatos reais.
+
+A regressão da contagem de tentativas usa o produtor real e a recomendação:
+um pedido de envio com campos extras ou depois de parar continua registrado
+como tentativa, mesmo sem efeito externo. O caminho normal de bloqueio também
+é conferido para evitar contar a mesma operação duas vezes.
+O verificador de preparo também é executado pelo comando documentado, a
+partir de outra pasta, para conferir as evidências novas sem depender do
+diretório atual ou de `PYTHONPATH`.
 
 ## Navegador e e-mail fictício
 

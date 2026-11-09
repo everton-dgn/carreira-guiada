@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar sem currículo e sem cadastro completo. Não precisa escolher uma profissão agora. Qual das atividades abaixo gostaria de experimentar primeiro?",
+      "content": "Opções para começar:\n1. Currículo: montar um primeiro rascunho com as informações que você fornecer.\n2. Guia de carreira: explorar seus interesses e comparar possíveis caminhos, sem escolher por você.\n3. Entrevistas: praticar respostas para uma entrevista.\n4. Busca de vagas: escolher essa atividade para explorar oportunidades.\n5. Mais opções: conhecer outras possibilidades do projeto.\nEscolher uma atividade não autoriza candidaturas nem altera filtros de vagas."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Sua preferência já está clara: remoto, híbrido ou presencial. Podemos manter o foco na busca pública, sem perguntar novamente sobre modalidade. A campanha de candidaturas permanece parada.",
+      "content": "Orientação para continuar:\n• Considere as três modalidades, sem restringir a busca a uma delas.\n• Preserve os demais filtros; continuar uma atividade não autoriza mudanças neles.\n• Ao avaliar uma vaga, confira os requisitos descritos e anote dúvidas antes de decidir sobre uma candidatura.\n• A continuidade da busca não reativa a campanha nem autoriza o envio de candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento, preservando as experiências simultâneas. Os períodos aparecem apenas por ano, sem acrescentar meses, cargos ou resultados que você não informou.",
+      "content": "RASCUNHO DE CURRÍCULO\n\nOBJETIVO PROFISSIONAL\nAtendimento\n\nEXPERIÊNCIA PROFISSIONAL\nLoja Sol — 2021 a 2023\nFeira Lua — 2022 a 2024\nExperiências realizadas simultaneamente durante a sobreposição dos períodos.\n\nATIVIDADES INFORMADAS\n• Atendimento a clientes.\n• Organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "O trecho abaixo descreve organização de produtos, não comando de equipe, e não acrescenta resultados. É um rascunho separado, que não substitui a versão aprovada. Você aprova esta correção?",
+      "content": "RASCUNHO DE CORREÇÃO — PENDENTE DE APROVAÇÃO\n\nAtividade:\n• Organização de produtos.\n\nA afirmação de comando de equipe deve ser retirada. Nenhum resultado foi acrescentado. Esta proposta de correção permanece separada da versão aprovada anterior."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Podemos comparar três caminhos como hipóteses, usando seu interesse por conversar e organizar tarefas. O salário pretendido fica como não informado. Você decide qual explorar; esta comparação não muda os filtros de vagas.",
+      "content": "COMPARAÇÃO EXPLORATÓRIA\n\n1. Atendimento\nAspecto a testar: seu interesse por conversar em uma situação de atendimento.\nExercício de 30 minutos: escreva uma dúvida fictícia de um cliente e simule uma resposta clara, incluindo uma pergunta para entender melhor a necessidade.\n\n2. Recepção\nAspecto a testar: combinar conversa com organização de solicitações.\nExercício de 30 minutos: imagine três pessoas chegando com pedidos diferentes; escreva como receberia cada uma e como organizaria a sequência de atendimento.\n\n3. Apoio administrativo\nAspecto a testar: seu interesse por organizar tarefas.\nExercício de 30 minutos: crie cinco tarefas fictícias, coloque-as em ordem de prioridade e explique seu critério.\n\nComparação final — 30 minutos:\nPara cada teste, anote o que foi fácil, o que foi difícil e se gostaria de repetir. Compare suas próprias observações, sem tratar essas opções como conclusões sobre sua aptidão.\n\nTotal: 2 horas na semana. Salário pretendido: não informado, sem estimativa. Nenhum caminho está escolhido."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o experimento de atendimento que você já escolheu, mantendo seu histórico como ponto de partida. Como não há resultados informados, não vou presumir como foi. A atividade continua sendo uma simulação escrita, sem alterar filtros de vagas nem envolver contatos externos.",
+      "content": "RETOMADA DO EXPERIMENTO SALVO\nCaminho: atendimento.\nAtividade: simular por escrito a resposta a uma reclamação fictícia e anotar o que foi fácil ou difícil.\n\nReclamação proposta apenas para a simulação:\n“Não entendi a orientação que recebi e continuo sem saber o próximo passo. Você pode esclarecer?”\n\nRoteiro para suas 2 horas semanais:\n1. Organize as informações da reclamação e o que falta esclarecer — 15 minutos.\n2. Escreva uma resposta que reconheça a reclamação e faça uma pergunta de esclarecimento, sem inventar informações ou prometer soluções não confirmadas — 45 minutos.\n3. Revise a clareza e a sequência da resposta — 30 minutos.\n4. Complete o registro — 30 minutos:\n• Foi fácil: ___.\n• Foi difícil: ___.\n• Na próxima tentativa, quero testar: ___.\n\nEsse roteiro aproveita seu interesse por organizar tarefas, sem presumir habilidade ou resultado. Mantenha tudo na simulação: não envie a resposta nem faça contato externo."
+    }
+  ]
+}

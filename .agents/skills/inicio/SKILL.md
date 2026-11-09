@@ -50,6 +50,16 @@ ATS ou execução de ferramentas. `review_required` pede conferência do materia
 não chame a opção de aprovada porque acertou campos. As recomendações gerais
 para outras tarefas continuam separadas. Não troque o modelo automaticamente.
 
+Para entrevistas, LinkedIn/GitHub, dossiê, propostas, negociação ou retomada
+dessas orientações, consulte a entrada correspondente de `guidance_by_task`.
+Mostre uma indicação por vez, conforme a atividade pedida. A aprovação em
+uma tarefa não se estende às outras. `exploratory_guidance` cobre os recortes
+fictícios de texto e sua retomada; não comprova voz, pesquisa em sites reais ou
+publicação. Consulte `guidance_evidence.text_cautions` nas opções com ressalvas.
+Entre alternativas elegíveis, preserve a ordem de modelos informada pela pessoa
+e o menor esforço declarado que passou. Não transforme isso em promessa de
+menor custo ou maior capacidade. Sem medição compatível, não invente um esforço.
+
 Leia `benchmark_evidence` quando presente. Se houver falha crítica na etapa,
 explique o problema observado, ofereça outra opção disponível ou conduza a etapa
 com conferência dos fatos e campos antes de salvar. Ressalva no texto também
