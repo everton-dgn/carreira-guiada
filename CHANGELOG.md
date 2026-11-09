@@ -2,9 +2,10 @@
 
 ## Unreleased
 
-- Guia visual unifica as regras de ilustrações e GIFs: fundos claros nos
-  banners, azul como destaque, tipografia, composição e pausas para leitura.
-  As instruções para agentes e colaboradores passam a apontar para essa referência.
+- Guia visual reúne referências e critérios para retocar ilustrações e GIFs,
+  preservando o fundo marinho, o volume dos objetos e a identidade existente.
+- As instruções para agentes e colaboradores apontam para a mesma referência,
+  com cuidados de tipografia, margens, brilho e pausas para leitura.
 
 ## 0.18.1 - 2026-11-09
 

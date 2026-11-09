@@ -73,9 +73,9 @@ Antes de criar ou substituir uma peça, siga o
 [guia de estilo das ilustrações e dos GIFs](docs/GUIA-VISUAL.md). Ele concentra
 a paleta, a composição, a tipografia, os tempos de leitura e a conferência
 visual. Use sua ficha de produção e registre no PR quais peças foram verificadas.
-Os arquivos atuais ainda têm estilos anteriores; confira o guia antes de
-usá-los como referência. Os comandos abaixo continuam usando os geradores
-atuais, que precisam ser adaptados junto com cada demonstração migrada.
+Preserve a identidade das artes existentes. Corrija apenas os problemas
+observados e compare o antes e o depois. Ajustes em GIFs atualizam também
+o gerador e o PNG correspondente.
 
 Use frases curtas, dados fictícios e passos que alguém sem experiência técnica
 consiga acompanhar. As telas ilustradas representam terminais ou serviços
