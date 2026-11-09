@@ -12,7 +12,7 @@
 
 ### Correções
 
-- O terminal da demonstração usa grafite e texto claro, separado da moldura
+- O terminal da demonstração usa fundo branco e texto escuro, separado da moldura
   marinha, com digitação e pausas para leitura.
 - A geração de prévias exige um destino explícito fora da pasta de imagens
   publicadas, evitando incluir cenas intermediárias por engano.

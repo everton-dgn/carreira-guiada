@@ -15,13 +15,14 @@ from PIL import Image
 from scripts.job.personal_progress import PersonalProgress
 from scripts.job.practice import Practice
 from scripts.maintainers.render_docs import (
-    ACCENT, DIM, OUT, SCALE, TEXT, backdrop, coords, font, progress_track, text, wrap,
+    ACCENT, BLUE, DIM, INK, LINE, MUTED, OUT, PALE, SCALE, TEXT,
+    backdrop, coords, font, progress_track, text, wrap,
 )
 
 LABELS = ('Escolher', 'Praticar', 'Usar pontos', 'Conquistar', 'Retomar')
 NAME = 'minha-evolucao-demo'
-PANEL, PANEL_EDGE, PANEL_DIM = '#202020', '#595959', '#bfbfbf'
-PANEL_TEXT, REQUEST = '#f3f3f3', '#f5ead4'
+PANEL, PANEL_EDGE, PANEL_DIM = '#ffffff', LINE, MUTED
+PANEL_TEXT, REQUEST = INK, BLUE
 
 
 @dataclass(frozen=True)
@@ -111,7 +112,7 @@ def lines(draw, value, x, y, color, size=23, width=714, cursor=False):
             y += 32
     if cursor:
         right = x + draw.textlength(line, font=font(size, True)) / SCALE + 3
-        draw.rectangle(coords((right, y - 27, right + 2, y - 4)), fill=ACCENT)
+        draw.rectangle(coords((right, y - 27, right + 2, y - 4)), fill=BLUE)
     return y
 
 
@@ -128,9 +129,9 @@ def receipt(draw, state, amount, milestone):
         text(draw, (x, y + 37), label, 17, mix(PANEL_DIM, amount))
     if milestone:
         draw.rounded_rectangle(coords((313, 567, 1062, 606)), 7 * SCALE,
-                               outline=mix('#746f60', amount), width=SCALE)
+                               fill=mix(PALE, amount), outline=mix(LINE, amount), width=SCALE)
         text(draw, (324, 576), '✓ Primeiros ensaios · conquista de participação', 18,
-             mix('#f5ead4', amount), mono=True)
+             mix(INK, amount), mono=True)
 
 
 def frame(scene, index, request, response='', reveal=0, cursor=False):
@@ -195,8 +196,14 @@ def main():
             image.save(args.output / f'{NAME}-{i + 1}.png')
         print('Five completed scenes rendered; fictional records cleaned up.')
         return
-    # Full-size pixels retain the exact navy and cream; resized samples mix them.
+    # Full-size pixels retain the navy frame and white panel; resized samples mix them.
     palette = completed[3].quantize(colors=128)
+    # Merge near-white entries so the GIF's coarse lookup cannot tint pure white.
+    colors = palette.getpalette()
+    for offset in range(0, len(colors), 3):
+        if min(colors[offset:offset + 3]) >= 248:
+            colors[offset:offset + 3] = [255, 255, 255]
+    palette.putpalette(colors)
     frames, durations = [], []
     for image, duration in timeline(data):
         frames.append(image.quantize(palette=palette, dither=Image.Dither.NONE))
