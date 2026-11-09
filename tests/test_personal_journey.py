@@ -89,6 +89,24 @@ class PersonalJourneyTests(unittest.TestCase):
         self.assertTrue(self.call('status')['control']['stopped'])
         self.assertEqual(self.call('progress', 'status')['mode'], 'off')
 
+    def test_personal_status_reports_progress_only_after_a_record_is_saved(self):
+        """A first visit or route choice cannot become a confirmed advance."""
+        for focus in ('plan', 'progress'):
+            with self.subTest(focus=focus):
+                self.call('menu', '--choose', focus, '--remember')
+                status = self.call('status', '--focus', focus)
+                self.assertIsNone(status['session']['advance'])
+                self.assertNotIn('Último avanço confirmado:', status['message'])
+                self.assertTrue(status['session']['next_action'])
+        self.call('plan', 'start', data={'direction': 'Preparar minha apresentação'})
+        self.call('progress', 'configure', data={'expected_version': 0, 'mode': 'off'})
+        for focus in ('plan', 'progress'):
+            with self.subTest(saved_focus=focus):
+                status = self.call('status', '--focus', focus)
+                self.assertEqual(status['session']['advance'], 'Há um registro salvo desta atividade.')
+                self.assertIn('Último avanço confirmado:', status['message'])
+                self.assertTrue(status['session']['next_action'])
+
     def test_jo_unknown_capacity_then_over_budget_preserves_completed_action(self):
         """Jo can begin without an estimate and reduce future work explicitly."""
         self.call('menu', '--choose', 'plano', '--remember')

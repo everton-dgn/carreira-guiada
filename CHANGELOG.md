@@ -11,6 +11,8 @@
   visual. Texto simples, cores desativadas e JSON mantêm seus caminhos próprios.
 - Menu, retomada e guias incluem as novas atividades sem exigir cadastro
   completo. Demonstração em alta resolução usa a saída real e dados fictícios.
+- O status dessas atividades só anuncia um registro confirmado depois que ele
+  foi salvo. O contrato de treino inclui um exemplo de confirmação textual.
 
 ## 0.17.0 - 2026-11-09
 

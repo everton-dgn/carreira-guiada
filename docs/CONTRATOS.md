@@ -600,8 +600,11 @@ nas notas por atividade. Os próximos passos são `personal_plan` e
 não muda o contrato JSON. `--plain` força texto simples naquela chamada.
 
 A CLI de treino aceita em `practice answer` os campos opcionais `attempt_id`,
-`origin` (`person`, `agent` ou `unknown`) e `user_confirmation`. `person` exige
-confirmação; chamadas legadas permanecem com origem desconhecida. O mesmo ID
+`origin` (`person`, `agent` ou `unknown`) e `user_confirmation`. A confirmação,
+quando informada, deve ser uma string não vazia, por exemplo
+`"user_confirmation": "Eu mesma ensaiei esta resposta."`; o booleano `true`
+é rejeitado. `person` exige essa confirmação textual; chamadas legadas
+permanecem com origem desconhecida. O mesmo ID
 com o mesmo conteúdo é idempotente, e com conteúdo diferente é rejeitado.
 Novo ensaio pode repetir o texto usando outro ID. O controle grava
 `recorded_at` em UTC; isso registra a gravação, não a duração do treino.

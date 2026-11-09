@@ -202,7 +202,8 @@ def _activity(root, state, activity):
         from .personal_views import entry
         saved = entry(root, activity)
         result.update(phase=activity, condition='waiting_user', needs_user=True,
-                      advance=saved['message'].splitlines()[1], next_action=saved['question']['question'])
+                      advance='Há um registro salvo desta atividade.' if saved.get('welcome_back') else None,
+                      next_action=saved['question']['question'])
         if activity == 'plan' and saved.get('next_action'):
             result['next_action'] = saved['next_action']['title'] + '. ' + saved['question']['question']
         if activity == 'plan' and saved.get('state') in ('paused', 'archived'):
