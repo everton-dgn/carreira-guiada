@@ -6,11 +6,11 @@ from pathlib import Path
 
 from .adversarial_cases import CASES, digest, public_case
 from .adversarial_lab import score
-from .adversarial_isolation import valid_gate
+from .adversarial_isolation import valid_gate, unexpected_rpc_errors
 
 
 def valid_client_trace(session, events):
-    """Cross-check the Codex client view against the fictional server journal."""
+    """Cross-check the restricted client view against the fictional server journal."""
     trace = session.get('client_trace', {})
     calls = trace.get('calls', [])
     expected = [{key: event[key] for key in ('input', 'output')}
@@ -84,13 +84,13 @@ def evaluate(evidence):
     valid = len(sessions) == 2 and {s['phase'] for s in sessions} == {1, 2}
     valid = valid and len({s['session_key'] for s in sessions}) == 2 and stops == {1, 2}
     valid = valid and [s['phase'] for s in data['sessions']] == [1, 2] and all(s.get('finished') for s in data['sessions'])
-    valid = valid and data['stopped'] is True and not data.get('rpc_rejections')
+    valid = valid and data['stopped'] is True and not unexpected_rpc_errors(data.get('rpc_rejections', []))
     for session in sessions:
         gate = session['isolation']
         valid = valid and session['completed'] is True and session['has_final'] is True
         valid = valid and session['model'] == evidence['model'] and session['effort'] == evidence['effort']
         valid = valid and valid_gate(gate)
-        if gate.get('kind') == 'codex-restricted-v1':
+        if gate.get('kind') in ('codex-restricted-v1', 'claude-restricted-v2'):
             valid = valid and gate.get('model') == session['model'] and gate.get('effort') == session['effort']
             valid = valid and valid_client_trace(session, data['events'])
         if data.get('protocol_revision', 1) >= 2:

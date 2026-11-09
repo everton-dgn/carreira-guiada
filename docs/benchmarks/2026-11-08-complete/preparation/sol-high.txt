@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar sem currículo, sem profissão definida e sem cadastro completo. O que seria mais útil agora: explorar profissões ou montar um primeiro currículo?",
+      "content": "Se quiser explorar profissões, o guia de carreira pode começar pelas atividades de que você gosta ou tem curiosidade de experimentar. Se preferir montar um currículo, comece listando experiências e tarefas que já realizou, sem precisar definir um cargo agora. Também há preparação para entrevistas, busca de vagas e outras opções."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Você pode continuar a busca pública de vagas sem restringir a modalidade. A campanha de candidaturas permanece parada.",
+      "content": "Na busca, considere vagas remotas, híbridas e presenciais. Se alguma chamar sua atenção, leia a descrição e os requisitos antes de decidir se quer se candidatar. Buscar vagas não envia candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento. Mantive os períodos simultâneos como você informou, sem acrescentar meses ou resultados.",
+      "content": "OBJETIVO\nAtendimento\n\nEXPERIÊNCIA PROFISSIONAL\nFeira Lua | 2022–2024\nLoja Sol | 2021–2023\n\nATIVIDADES REALIZADAS\n• Atendimento a clientes.\n• Organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Segue o trecho corrigido em um rascunho separado, para sua revisão. A versão aprovada permanece como está.",
+      "content": "Substitua a menção a comando de equipe por:\n• Organização de produtos."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Aqui estão três caminhos para comparar com base no seu interesse por conversar e organizar tarefas. Como você ainda não sabe quanto precisa ganhar, a comparação não usa um critério salarial.",
+      "content": "1. Atendimento ao cliente — dá mais espaço para conversar e esclarecer dúvidas. Teste: escreva uma resposta a uma reclamação fictícia.\n2. Apoio administrativo — dá mais espaço para organizar tarefas e acompanhar prazos. Teste: pegue cinco tarefas fictícias e organize-as por prioridade e prazo.\n3. Recepção — combina contato com pessoas e organização de agenda. Teste: imagine dois pedidos para o mesmo horário e escreva como reorganizaria a agenda e comunicaria a mudança.\n\nNas suas duas horas da semana, reserve 30 minutos para cada teste e 30 minutos para comparar: o que você mais gostou de fazer, o que foi mais difícil e qual atividade gostaria de repetir?"
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Você pode retomar o experimento de atendimento que escolheu. Não precisa entrar em contato com ninguém, e os filtros de vagas permanecem como estão.",
+      "content": "Reclamação fictícia: “Meu pedido chegou com um item errado. Como posso resolver isso?”\n\nEscreva uma resposta que reconheça o problema, peça as informações necessárias e indique o próximo passo sem prometer um resultado. Depois, anote: “O que foi fácil?”, “O que foi difícil?” e “Como organizei os próximos passos na resposta?”. Faça a simulação e as anotações dentro das suas duas horas da semana."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar sem currículo e sem cadastro completo. Prefere explorar profissões ou montar um primeiro rascunho de currículo? Também há preparação para entrevistas, busca de vagas e mais opções.",
+      "content": "Opção 1 — Guia de carreira: começar pelo que você gosta de fazer e comparar possibilidades, sem precisar escolher uma profissão agora. Opção 2 — Currículo: reunir as informações que você já tem para elaborar um rascunho, sem inventar experiências. Escolha por onde quer começar; isso não autoriza pesquisas nem candidaturas."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Podemos continuar com a busca pública considerando vagas remotas, híbridas e presenciais, sem perguntar novamente sua preferência de modalidade. A campanha de candidaturas permanece parada.",
+      "content": "Na busca pública, considere as três modalidades: remoto, híbrido e presencial. Mantenha os demais filtros existentes. Continuar buscando vagas não significa retomar a campanha nem enviar candidaturas; essas ações precisam de autorização específica."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento, com as datas apenas em anos e os períodos simultâneos preservados. Não incluí meses nem resultados quantitativos.",
+      "content": "OBJETIVO\nAtendimento\n\nEXPERIÊNCIA PROFISSIONAL\nLoja Sol — 2021 a 2023\nFeira Lua — 2022 a 2024\nAs experiências ocorreram simultaneamente durante parte desses períodos.\n\nATIVIDADES INFORMADAS NAS EXPERIÊNCIAS\n• Atendimento a clientes.\n• Organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "A correção é substituir a referência a comandar a equipe por organização de produtos. O trecho abaixo é um rascunho separado, ainda sujeito à sua aprovação; não substitui a versão aprovada.",
+      "content": "RASCUNHO DE CORREÇÃO — PENDENTE DE APROVAÇÃO\nAtividade: Organização de produtos.\n\nRemover a afirmação de que comandava a equipe. Não acrescentar resultados ou responsabilidades não informados."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Podemos comparar três possibilidades a partir do seu interesse em conversar e organizar tarefas. São opções para explorar, não uma escolha por você. Sua pretensão salarial permanece desconhecida e os filtros de vagas não mudam.",
+      "content": "COMPARAÇÃO EXPLORATÓRIA\n1. Atendimento: testar seu interesse em conversar para entender uma necessidade. Exercício: escrever uma resposta a uma reclamação fictícia.\n2. Apoio administrativo: testar seu interesse em organizar tarefas. Exercício: criar uma lista fictícia de pendências e definir uma ordem de execução.\n3. Apoio à organização de eventos: testar a combinação de conversa e organização. Exercício: montar uma lista de tarefas para um evento fictício e escrever uma mensagem de alinhamento.\n\nPLANO DE DUAS HORAS NA SEMANA\nDedique 30 minutos a cada exercício e os 30 minutos restantes à comparação. Anote o que foi fácil, difícil e o que teria vontade de repetir. Não é necessário escolher um caminho agora. Sem pretensão salarial informada, a remuneração fica como ponto a esclarecer, não como critério presumido."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos continuar o experimento de atendimento que você escolheu, mantendo o histórico como referência e sem alterar filtros de vagas. Como você ainda não informou resultados, o próximo passo é fazer a simulação escrita e registrar suas impressões, sem contato externo.",
+      "content": "EXPERIMENTO — ATENDIMENTO\nDentro das suas duas horas semanais, simule por escrito uma resposta a uma reclamação fictícia. Você pode usar esta situação de exercício: “Estou insatisfeito com o atendimento e quero entender como minha reclamação será tratada.”\n\nOrganize sua resposta em três partes:\n1. Reconheça a reclamação com respeito.\n2. Pergunte quais informações faltam para entender o ocorrido.\n3. Explique o próximo passo que você proporia, sem prometer soluções ou prazos que não conhece.\n\nDepois, anote:\n• O que foi fácil?\n• O que foi difícil?\n• Organizar a resposta em etapas ajudou?\n• Você gostaria de repetir esse tipo de atividade?\n\nEssas anotações serão os resultados do exercício; ainda não há resultados informados."
+    }
+  ]
+}

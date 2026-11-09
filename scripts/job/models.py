@@ -10,8 +10,8 @@ from .profile import Profile
 from .research_scope import fields, table_exists
 
 STAGES = {
-    'preparation': 'Perfil, currículo e treino de entrevistas',
-    'screening': 'Pesquisa, triagem e análise de empresas',
+    'preparation': 'Primeiras escolhas',
+    'screening': 'Pesquisa e triagem de vagas',
     'application': 'Preenchimento e candidatura',
     'mail': 'Retornos por e-mail e próximas etapas',
     'continuity': 'Parar, conferir pendências e retomar',
@@ -35,58 +35,133 @@ ALIASES = {
 }
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max', 'ultra')
 REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-decisions.json'
-TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-browser-mail.json'
+TOOL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-browser.json'
 ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-adversarial.json'
 CODEX_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-codex-adversarial.json'
-PREPARATION_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-07-preparation.json'
+PREPARATION_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-preparation.json'
+GUIDANCE_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-guidance.json'
+COMPLETE_ADVERSARIAL_REPORT = Path(__file__).resolve().parents[2] / 'docs/benchmarks/2026-11-08-complete-security.json'
 
 
-def preparation_recommendations(candidates, report):
-    """Use actual text review per task; never promote a self-reported decision alone."""
-    preferred = ('astra', 'opus', 'terra', 'sol', 'fable', 'glm', 'haiku', 'm3')
-    ordered = sorted(candidates, key=lambda m: preferred.index(ALIASES.get(m['name'].casefold()))
-                     if ALIASES.get(m['name'].casefold()) in preferred else len(preferred))
+PREPARATION_TASKS = {
+    'onboarding': ('Primeiras escolhas', ('novice', 'search_resume')),
+    'cv': ('Currículo', ('cv_draft', 'cv_correction')),
+    'career': ('Guia de carreira', ('career_compare', 'career_resume')),
+}
+GUIDANCE_TASKS = {
+    'interview': ('Treino de entrevistas', ('g01', 'g02', 'g03', 'g04', 'g09', 'g10')),
+    'presence': ('LinkedIn e GitHub', ('g05', 'g11', 'g12')),
+    'company': ('Dossiê da empresa', ('g06', 'g13')),
+    'offers': ('Comparação de propostas', ('g07', 'g14')),
+    'negotiation': ('Negociação', ('g08', 'g15')),
+    'continuity': ('Parar e retomar a orientação', ('g16',)),
+}
+
+
+def _observed_dates(runs, report):
+    """Retain the collection dates, including reused observations."""
+    return sorted({date for run in runs for date in
+                   (run.get('observed_dates') or [run.get('observed_date', report.get('date'))])
+                   if date})
+
+
+def _task_rows(cases, task, identifiers):
+    """Check exact case identities rather than accepting a row count."""
+    rows = [c for c in cases if c.get('id') in identifiers or c.get('stage') == task]
+    complete = (len(rows) == len(identifiers)
+                and {c.get('id') for c in rows} == set(identifiers)
+                and all(c.get('stage') == task for c in rows))
+    return rows, complete
+
+
+def _text_observation(runs, report, task, identifiers, kind):
+    """Combine mechanical and content evidence only within the same task."""
+    qualified, passed, cautions, format_errors = True, 0, [], []
+    for run in runs:
+        score = run.get('score') or {}
+        review = run.get('text_review') or {}
+        decisions, decisions_complete = _task_rows(score.get('cases', []), task, identifiers)
+        reviews, reviews_complete = _task_rows(review.get('cases', []), task, identifiers)
+        passed += sum(sum(c.get('id') == ident for c in decisions) == 1
+                      and any(c.get('id') == ident and c.get('stage') == task
+                              and c.get('passed') is True for c in decisions)
+                      for ident in identifiers)
+        cautions.extend(c['note'] for c in reviews if c.get('verdict') == 'needs_review' and c.get('note'))
+        if not decisions_complete or not reviews_complete:
+            cautions.append('Faltam casos distintos da tarefa ou há identidade/etapa inconsistente no relatório.')
+        if kind == 'preparation':
+            session_valid = (run.get('session_complete') is True
+                             and run.get('tool_calls') == 0 and not run.get('format_error'))
+            if run.get('format_error'):
+                format_errors.append(run['format_error'])
+        else:
+            session_valid = (run.get('valid_for_comparison') is True
+                             and score.get('valid_sessions') is True and score.get('complete') is True
+                             and score.get('external_attempts') == 0 and score.get('external_effects') == 0)
+        qualified = (qualified and session_valid and review.get('status') == 'reviewed'
+                     and decisions_complete and reviews_complete
+                     and all(c.get('passed') is True for c in decisions)
+                     and all(c.get('verdict') == 'meets_sample' for c in reviews))
+    observation = {
+        'source': report.get('source'), 'date': report.get('date'), 'scope': report.get('scope'),
+        'observed_dates': _observed_dates(runs, report), 'task': task, 'runs': len(runs),
+        'passed': passed, 'total': len(runs) * len(identifiers),
+        'eligible_for_suggestion': bool(runs and qualified),
+        'text_cautions': list(dict.fromkeys(cautions)),
+        'reviewer_kind': 'model', 'independent_review': False,
+        'real_services_validated': False, 'tools_validated': False,
+    }
+    if kind == 'preparation':
+        observation['format_errors'] = format_errors
+    return observation
+
+
+def _text_recommendations(candidates, report, kind, tasks):
+    """Keep declared order and lowest eligible effort without ranking providers."""
     results = []
-    for task, label in (('onboarding', 'Primeiras escolhas'), ('cv', 'Currículo'), ('career', 'Guia de carreira')):
+    for task, (label, identifiers) in tasks.items():
         observations, eligible = [], []
-        for option in ordered:
+        for option in candidates:
             key = ALIASES.get(option['name'].casefold(), option['name'].casefold())
             for level in EFFORTS:
                 if level not in option.get('efforts', []):
                     continue
                 runs = [r for r in report.get('runs', [])
-                        if ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key and r['effort'] == level]
+                        if ALIASES.get(r['model'].casefold(), r['model'].casefold()) == key
+                        and r['effort'] == level]
                 if not runs:
                     continue
-                decisions = [c for r in runs if r['score'] for c in r['score']['cases'] if c['stage'] == task]
-                reviews = [c for r in runs for c in r['text_review'].get('cases', []) if c['stage'] == task]
-                qualified = all(r['session_complete'] and r['tool_calls'] == 0 and not r['format_error']
-                                and r['text_review']['status'] == 'reviewed' for r in runs)
-                qualified = (qualified and len(decisions) == len(runs) * 2 and all(c['passed'] for c in decisions)
-                             and len(reviews) == len(runs) * 2 and all(c['verdict'] == 'meets_sample' for c in reviews))
-                observation = {'source': report['source'], 'date': report['date'], 'scope': report['scope'],
-                    'task': task, 'runs': len(runs), 'passed': sum(c['passed'] for c in decisions),
-                    'total': len(runs) * 2, 'eligible_for_suggestion': bool(qualified),
-                    'text_cautions': [c['note'] for c in reviews if c['verdict'] == 'needs_review'],
-                    'format_errors': [r['format_error'] for r in runs if r['format_error']],
-                    'reviewer_kind': 'model', 'real_services_validated': False, 'tools_validated': False}
-                observations.append((option, level, observation))
-                if qualified:
-                    eligible.append((option, level, observation))
+                observation = _text_observation(runs, report, task, identifiers, kind)
+                entry = (option, level, observation)
+                observations.append(entry)
+                if observation['eligible_for_suggestion']:
+                    eligible.append(entry)
         choices = eligible or observations
-        if choices:
-            choice, effort, observation = choices[0]
-        else:
-            choice, effort, observation = (ordered[0] if ordered else None), None, None
-        results.append({'task': task, 'label': label,
+        choice, effort, observation = choices[0] if choices else (candidates[0] if candidates else None, None, None)
+        results.append({
+            'task': task, 'label': label,
             'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
-            'effort': effort, 'basis': 'exploratory_preparation' if eligible else 'review_required' if observations else 'unmeasured',
-            'preparation_evidence': observation,
+            'effort': effort,
+            'basis': 'exploratory_' + kind if eligible else 'review_required' if observations else 'unmeasured',
+            kind + '_evidence': observation,
             'alternatives': [{'provider': m['provider'], 'name': m['name'], 'effort': e} for m, e, _ in eligible],
-            'message': 'Esta configuração entregou os dois recortes da tarefa sem ressalva na revisão de conteúdo. É uma amostra curta de texto, sem prova de ferramentas ou superioridade.' if eligible else
-                       'Há ressalvas ou formato não concluído nesta tarefa. Confira a evidência e revise o material antes de usá-lo.' if observations else
-                       'Sem medição desta tarefa nas opções informadas. Podemos continuar com o modelo atual, conferindo o material.'})
+            'message': (
+                'Esta configuração concluiu os recortes da tarefa sem ressalva na revisão de conteúdo. '
+                'É uma amostra curta, sem prova de superioridade ou uso de serviços reais.' if eligible else
+                'Há ressalvas ou evidência incompleta nesta tarefa. Confira o relatório e revise o material antes de usá-lo.' if observations else
+                'Sem medição desta tarefa nas opções informadas. Podemos continuar com o modelo atual, conferindo o material.'),
+        })
     return results
+
+
+def preparation_recommendations(candidates, report):
+    """Recommend preparation by exact cases and their reviewed content."""
+    return _text_recommendations(candidates, report, 'preparation', PREPARATION_TASKS)
+
+
+def guidance_recommendations(candidates, report):
+    """Recommend each guidance task independently of browser or voice competence."""
+    return _text_recommendations(candidates, report, 'guidance', GUIDANCE_TASKS)
 
 
 def adversarial_evidence(model, effort, stage, report):
@@ -123,7 +198,7 @@ def adversarial_evidence(model, effort, stage, report):
     attacks = [c for c in cases if c['condition'] == 'attack']
     unsafe = sum(c['unsafe_attempts'] for c in cases)
     valid = all(r['score']['valid_sessions'] for r in runs)
-    return {**base, 'date': report['date'], 'status': 'unsafe_attempt_observed' if negative else
+    return {**base, 'date': report['date'], 'observed_dates': _observed_dates(runs or all_runs, report), 'status': 'unsafe_attempt_observed' if negative else
             'observed_in_sample' if valid and attacks and all(c['resistance'] == 'observed' for c in attacks) else 'inconclusive',
             'attacks': len(attacks), 'exposed': sum(c['exposed'] for c in attacks),
             'unsafe_attempts': unsafe, 'system_blocks': sum(c['system_blocks'] for c in cases),
@@ -146,7 +221,7 @@ def tool_evidence(model, effort, stage, report):
                    and r['score'].get('network_evidence_complete', False)
                    and not r['score']['critical_failures'] and not r['score']['failed_write_attempts']
                    and r['score']['stages'][stage]['complete'] for r in runs)
-    return {'source': 'docs/benchmarks/2026-11-07-browser-mail.json', 'date': report['date'],
+    return {'source': report.get('source'), 'date': report['date'], 'observed_dates': _observed_dates(runs, report),
             'scope': 'isolated_browser_mail_tools', 'runs': len(runs),
             'passed': sum(c['passed'] for c in checks), 'total': sum(c['total'] for c in checks),
             'eligible_for_suggestion': eligible, 'real_services_validated': False,
@@ -253,48 +328,67 @@ class Models:
                 'message': 'Essa escolha é opcional. Podemos começar com o modelo atual; não precisa contratar outro serviço.'}
 
     def recommend(self):
-        """Prefer stage evidence among declared options, without claiming a winner."""
+        """Use task evidence among declared options without hidden brand rankings."""
         saved = self.show()
         candidates = [{'provider': p['name'], **m} for p in saved['providers'] for m in p['models']]
         report = json.loads(TOOL_REPORT.read_text(encoding='utf-8')) if TOOL_REPORT.is_file() else {}
         attacks = [json.loads(path.read_text(encoding='utf-8')) for path in
-                   (ADVERSARIAL_REPORT, CODEX_ADVERSARIAL_REPORT) if path.is_file()]
+                   (ADVERSARIAL_REPORT, CODEX_ADVERSARIAL_REPORT, COMPLETE_ADVERSARIAL_REPORT)
+                   if path.is_file()]
+        preparation = preparation_recommendations(candidates,
+            json.loads(PREPARATION_REPORT.read_text(encoding='utf-8')) if PREPARATION_REPORT.is_file() else {})
+        guidance = guidance_recommendations(candidates,
+            json.loads(GUIDANCE_REPORT.read_text(encoding='utf-8')) if GUIDANCE_REPORT.is_file() else {})
         stages = []
         for stage, label in STAGES.items():
-            preferred = ('astra', 'opus', 'terra', 'm3') if stage == 'preparation' else ('terra', 'astra', 'opus', 'm3')
-            ordered = sorted(candidates, key=lambda m: preferred.index(ALIASES.get(m['name'].casefold())) if ALIASES.get(m['name'].casefold()) in preferred else len(preferred))
-            choice = ordered[0] if ordered else None
-            effort = None
-            if choice:
-                known = ALIASES.get(choice['name'].casefold())
-                desired = ('xhigh',) if known == 'm3' else ('max',) if known == 'glm' else ('high', 'medium') if stage == 'preparation' else ('medium', 'high')
-                effort = next((e for e in desired if e in choice.get('efforts', [])), None) if known else None
-            tested = []
-            for option in ordered:
+            if stage == 'preparation':
+                first = preparation[0]
+                stages.append({
+                    'stage': stage, 'label': label, 'model': first['model'], 'effort': first['effort'],
+                    'basis': first['basis'], 'preparation_evidence': first['preparation_evidence'],
+                    'benchmark_evidence': evidence(first['model']['name'], first['effort'], stage) if first['model'] else None,
+                    'tool_evidence': None, 'adversarial_evidence': None, 'tool_alternatives': [],
+                    'tools_required': TOOLS[stage], 'message': first['message'],
+                })
+                continue
+            tested, observations = [], []
+            for option in candidates:
                 for level in EFFORTS:
                     if level not in option.get('efforts', []):
                         continue
                     observation = tool_evidence(option['name'], level, stage, report)
                     safety = adversarial_evidence(option['name'], level, stage, attacks)
-                    if observation and observation['eligible_for_suggestion'] and not (safety and safety['status'] == 'unsafe_attempt_observed'):
-                        tested.append((option, level, observation))
-            if tested:
-                choice, effort, observed = tested[0]
-            else:
-                observed = tool_evidence(choice['name'], effort, stage, report) if choice else None
+                    entry = (option, level, observation, safety)
+                    if observation or safety and safety['status'] != 'not_measured':
+                        observations.append(entry)
+                    if (observation and observation['eligible_for_suggestion']
+                            and not (safety and safety['status'] == 'unsafe_attempt_observed')):
+                        tested.append(entry)
+            choices = tested or observations
+            choice, effort, observed, safety = (choices[0] if choices else
+                (candidates[0] if candidates else None, None, None, None))
             measured = evidence(choice['name'], effort, stage) if choice else None
-            safety = adversarial_evidence(choice['name'], effort, stage, attacks) if choice else None
             unsafe = safety and safety['status'] == 'unsafe_attempt_observed'
-            stages.append({'stage': stage, 'label': label,
-                           'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
-                           'effort': effort, 'basis': 'supervision_required' if unsafe else 'exploratory_tools' if tested else 'initial_guidance' if choice and ALIASES.get(choice['name'].casefold()) else 'unmeasured',
-                           'benchmark_evidence': measured,
-                           'tool_evidence': observed,
-                           'adversarial_evidence': safety,
-                           'tool_alternatives': [{'provider': m['provider'], 'name': m['name'], 'effort': e} for m, e, _ in tested],
-                           'tools_required': TOOLS[stage],
-                           'message': 'Houve tentativa indevida nesta etapa do teste adversarial. Use esta opção com conferência humana antes de qualquer envio; o bloqueio da ferramenta não comprova resistência do modelo.' if unsafe else 'Esta opção passou nos critérios operacionais da etapa no laboratório fictício. Isso não comprova resistência a ataques; confira a evidência de segurança separada e as ferramentas na sua sessão.' if tested else 'Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada. A sugestão não comprova automação.' if choice else 'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'})
-        return {'decision': saved['decision'], 'stages': stages, 'automatic_switch': False,
-                'preparation_by_task': preparation_recommendations(candidates, json.loads(PREPARATION_REPORT.read_text(encoding='utf-8')) if PREPARATION_REPORT.is_file() else {}),
-                'benchmark': 'docs/BENCHMARKS.md',
-                'limits': 'Uma jornada fictícia não comprova serviços reais, custo, superioridade estatística ou execução por dias. Empates preservam a preferência inicial e o menor esforço disponível testado.'}
+            stages.append({
+                'stage': stage, 'label': label,
+                'model': {k: choice[k] for k in ('provider', 'name')} if choice else None,
+                'effort': effort,
+                'basis': ('supervision_required' if unsafe else 'exploratory_tools' if tested else
+                          'review_required' if observations else 'unmeasured'),
+                'benchmark_evidence': measured, 'tool_evidence': observed, 'adversarial_evidence': safety,
+                'tool_alternatives': [{'provider': m['provider'], 'name': m['name'], 'effort': e}
+                                      for m, e, _, _ in tested],
+                'tools_required': TOOLS[stage],
+                'message': (
+                    'Houve tentativa indevida nesta etapa do teste adversarial. Use esta opção com conferência humana antes de qualquer envio; o bloqueio da ferramenta não comprova resistência do modelo.' if unsafe else
+                    'Esta opção passou nos critérios operacionais da etapa no laboratório fictício. Isso não comprova resistência a ataques; confira a evidência de segurança separada e as ferramentas na sua sessão.' if tested else
+                    'Há medições, mas esta opção não cumpriu todos os critérios operacionais da etapa. Confira as ressalvas antes de usar ferramentas.' if observations else
+                    'Sem medição operacional compatível com suas opções. Confirme as ferramentas nesta sessão e faça uma primeira etapa acompanhada.' if choice else
+                    'Continue com o modelo atual. Se quiser comparar, diga quais opções aparecem no seu aplicativo.'),
+            })
+        return {
+            'decision': saved['decision'], 'stages': stages, 'automatic_switch': False,
+            'preparation_by_task': preparation, 'guidance_by_task': guidance,
+            'benchmark': 'docs/BENCHMARKS.md',
+            'limits': 'Uma jornada fictícia não comprova serviços reais, custo, superioridade estatística ou execução por dias. Entre opções elegíveis, preservamos a ordem declarada e o menor esforço testado disponível; isso não prova que seja o mais barato ou o melhor.',
+        }

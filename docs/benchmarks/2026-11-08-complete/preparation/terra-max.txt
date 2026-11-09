@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você não precisa ter um currículo pronto nem escolher uma profissão agora. Podemos começar pela atividade que fizer mais sentido para você, sem completar um cadastro.",
+      "content": "Escolha por onde prefere começar:\n1. Currículo: montar um rascunho com as informações que você quiser compartilhar.\n2. Guia de carreira: explorar possibilidades antes de escolher uma profissão.\n3. Entrevistas: praticar respostas.\n4. Busca de vagas: conhecer oportunidades.\n5. Outras opções: explorar as demais atividades disponíveis.\n\nQual dessas opções você prefere?"
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Você pode continuar pela busca pública considerando qualquer modalidade. A campanha de candidaturas permanece parada.",
+      "content": "Considere vagas remotas, híbridas e presenciais e compare as descrições e os requisitos. Se quiser orientar a busca, informe o cargo ou a área de interesse. Buscar vagas não retoma a campanha nem envia candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento, mantendo os períodos simultâneos e usando apenas os anos e as atividades que você informou.",
+      "content": "RASCUNHO DE CURRÍCULO\n\nObjetivo: atendimento\n\nExperiências:\n- Loja Sol — 2021 a 2023\n- Feira Lua — 2022 a 2024\n\nAtividades informadas nas experiências:\n- Atendimento a clientes.\n- Organização de produtos.\n\nOs períodos foram informados como simultâneos; os meses não foram informados."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Segue a correção em um rascunho separado, sem substituir a versão aprovada. A correção ainda depende da sua aprovação.",
+      "content": "RASCUNHO DE CORREÇÃO — NÃO APROVADO\n\nTexto corrigido: organização de produtos.\n\nExcluir a afirmação de que você comandava a equipe. Não acrescentar resultados não informados."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Aqui estão três caminhos para você comparar, considerando que gosta de conversar e organizar tarefas. Seu salário pretendido continua em aberto; a escolha do caminho é sua.",
+      "content": "1. Atendimento: pode envolver conversar com pessoas e responder a solicitações. Para experimentar, escreva uma resposta a uma dúvida fictícia.\n2. Apoio administrativo: pode envolver organizar tarefas e rotinas. Para experimentar, crie uma lista fictícia de tarefas e coloque-a em ordem de prioridade.\n3. Apoio à organização de eventos: pode combinar organização de etapas e conversa com pessoas envolvidas. Para experimentar, monte um checklist para um evento fictício.\n\nVocê pode distribuir suas duas horas semanais entre os testes como preferir. Depois, compare o que gostou e o que achou difícil em cada um. Essa comparação não altera filtros de vagas."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos continuar no caminho de atendimento com o experimento que você escolheu. Ainda não tenho resultados informados por você.",
+      "content": "EXPERIMENTO: RESPOSTA A UMA RECLAMAÇÃO FICTÍCIA\n\nSituação fictícia: “Meu pedido não chegou e preciso de uma solução.”\n\n1. Escreva uma resposta à pessoa. Você pode reconhecer a situação, pedir as informações necessárias e indicar como encaminharia a questão, sem prometer um resultado.\n2. Anote o que foi fácil e o que foi difícil ao escrever.\n3. Se quiser aproveitar seu gosto por organizar tarefas, liste em ordem os próximos passos que imaginou.\n\nUse até as duas horas semanais que você informou. Se já tiver feito alguma parte, compartilhe o que escreveu ou observou para continuarmos dali. O exercício não altera filtros de vagas nem envolve contato externo."
+    }
+  ]
+}

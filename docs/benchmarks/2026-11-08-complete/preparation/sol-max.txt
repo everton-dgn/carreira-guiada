@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar sem currículo, sem escolher uma profissão e sem completar um cadastro. O que seria mais útil agora: explorar caminhos ou preparar algo para uma futura busca de vagas?",
+      "content": "• Guia de carreira: liste atividades de que você gosta para começar a comparar caminhos.\n• Currículo: anote atividades e experiências que gostaria de apresentar, mesmo sem ter um cargo em mente.\n• Entrevistas: pratique uma apresentação curta sobre você.\n• Busca de vagas: se quiser conhecer as opções, você pode consultar vagas públicas sem se candidatar.\nSe nenhuma dessas opções fizer sentido agora, você pode pedir outras sugestões."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Você pode continuar a busca pública sem restringir a modalidade. A campanha de candidaturas continua pausada, e consultar vagas não envia candidaturas.",
+      "content": "Inclua vagas remotas, híbridas e presenciais na busca. Das que chamarem sua atenção, anote o cargo, as atividades e a modalidade para comparar depois."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para a área de atendimento. Usei apenas os anos que você informou e deixei claro que as duas experiências ocorreram em parte ao mesmo tempo.",
+      "content": "Objetivo: atuar na área de atendimento.\n\nExperiência profissional\n• Feira Lua — 2022 a 2024\n• Loja Sol — 2021 a 2023\nOs períodos das duas experiências se sobrepõem.\n\nAtividades realizadas\n• Atendimento a clientes\n• Organização de produtos"
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "O rascunho abaixo substitui a menção a comando de equipe pela atividade que você informou, sem acrescentar resultados. Ele fica separado para sua revisão, e a versão aprovada permanece como está.",
+      "content": "Rascunho de correção — texto para substituir o trecho sobre comando de equipe:\n• Organização de produtos."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Aqui vão três caminhos que envolvem conversar, organizar tarefas ou combinar as duas coisas. Você pode experimentá-los nas suas duas horas semanais, sem precisar escolher um agora nem definir quanto precisa ganhar.",
+      "content": "• Atendimento — foco em ouvir e responder a clientes. Teste: escreva uma resposta a uma reclamação fictícia.\n• Apoio administrativo — foco em organizar prazos e prioridades. Teste: ordene cinco tarefas fictícias por prazo e prioridade e explique o que faria primeiro.\n• Recepção — combina contato com pessoas e organização de agenda. Teste: reorganize uma agenda fictícia e escreva como explicaria uma mudança de horário.\n\nUse 30 minutos para cada teste e os 30 restantes para comparar: o que despertou seu interesse, o que foi fácil ou difícil e qual atividade você gostaria de repetir. Deixe a remuneração em aberto por enquanto."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o experimento de atendimento que você escolheu: responder por escrito a uma reclamação fictícia e anotar o que foi fácil ou difícil. Seu histórico e seus filtros de vagas ficam como estão.",
+      "content": "Reclamação fictícia: “Recebi um produto diferente do que pedi. Como posso resolver?”\n\nReserve até 20 minutos para escrever uma resposta curta: reconheça o problema, diga o que você verificaria e indique um próximo passo sem prometer prazo ou resultado. Não envie a resposta a ninguém.\n\nDepois, use até 10 minutos para completar:\n• Foi fácil: ___\n• Foi difícil: ___"
+    }
+  ]
+}

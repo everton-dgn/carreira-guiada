@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar sem currículo e sem cadastro completo. Prefere montar um primeiro rascunho de currículo ou explorar possibilidades de carreira? Não precisa decidir uma profissão agora.",
+      "content": "Você pode escolher entre:\n• Currículo: começar listando experiências e atividades que já realizou, para montar um rascunho com fatos que você confirmar.\n• Guia de carreira: explorar o que gosta de fazer e comparar possibilidades, sem escolher uma profissão de imediato.\n• Entrevistas: praticar como se apresentar e responder a perguntas.\n• Busca de vagas: analisar oportunidades, caso escolha essa atividade, sem enviar candidaturas automaticamente.\nTambém há outras opções. O primeiro passo é escolher por onde quer começar; não é necessário preencher um perfil completo."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Podemos continuar com a busca pública considerando vagas remotas, híbridas e presenciais, sem perguntar novamente sobre modalidade. A campanha de candidaturas permanece parada, sem envio de candidaturas.",
+      "content": "Para continuar a busca: mantenha a modalidade como “sem preferência”, sem alterar os demais filtros. Ao analisar anúncios públicos, compare as atividades, os requisitos e as condições informadas. Você pode separar anúncios de interesse para avaliar depois; essa seleção não retoma a campanha nem autoriza candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento. Mantive os períodos simultâneos e usei somente os anos informados, sem acrescentar meses, cargos anteriores ou resultados.",
+      "content": "OBJETIVO\natendimento\n\nEXPERIÊNCIA PROFISSIONAL\nLoja Sol | 2021–2023\nFeira Lua | 2022–2024\n\nAs experiências ocorreram parcialmente ao mesmo tempo, conforme informado.\n\nATIVIDADES INFORMADAS NAS EXPERIÊNCIAS\n• Atendimento a clientes.\n• Organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Segue a correção em um rascunho separado, ainda pendente da sua aprovação. Ele não substitui a versão aprovada anterior e não acrescenta resultados.",
+      "content": "RASCUNHO DE CORREÇÃO — PENDENTE DE APROVAÇÃO\n\nTexto corrigido para a atividade:\n• Organização de produtos.\n\nRetirar a afirmação de que você comandava a equipe. Não acrescentar liderança, métricas ou resultados não informados."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Podemos comparar três possibilidades a partir do seu interesse por conversar e organizar tarefas. São hipóteses para explorar, não uma escolha por você. Seu salário pretendido continua desconhecido, e essa comparação não altera os filtros de vagas.",
+      "content": "COMPARAÇÃO EXPLORATÓRIA\n\n1. Atendimento\nFoco do teste: seu interesse por conversar.\nExercício: simule por escrito uma conversa de atendimento e observe como se sente ao entender um pedido e formular uma resposta.\n\n2. Apoio administrativo\nFoco do teste: seu interesse por organizar tarefas.\nExercício: escreva uma lista de tarefas fictícias, coloque-as em ordem de prioridade e explique essa ordem.\n\n3. Recepção\nFoco do teste: combinar conversa e organização.\nExercício: simule por escrito o acolhimento de uma pessoa e organize as informações do pedido dela.\n\nPLANO PARA SUAS DUAS HORAS SEMANAIS\n• 30 minutos para cada um dos três exercícios.\n• 30 minutos para comparar: o que foi fácil, o que foi difícil e o que gostaria de repetir.\n\nNão há salário pretendido informado para usar como critério. Depois dos exercícios, você pode decidir qual possibilidade merece mais exploração, sem precisar fazer uma escolha definitiva."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o experimento de atendimento que você escolheu, dando continuidade ao histórico e sem alterar os filtros de vagas. Como você ainda não informou resultados, o roteiro abaixo não presume como foi sua experiência. Tudo permanece como simulação escrita, sem contato externo.",
+      "content": "EXPERIMENTO: RESPOSTA A UMA RECLAMAÇÃO FICTÍCIA\n\nRoteiro para suas duas horas semanais:\n1. Em 15 minutos, escreva uma reclamação fictícia curta para usar na simulação.\n2. Em 45 minutos, redija uma resposta: reconheça o problema apresentado, organize o que precisa ser esclarecido e indique um próximo passo hipotético, sem prometer resultados ou autorizações inexistentes.\n3. Em 30 minutos, revise a clareza e a ordem da resposta. Essa etapa permite explorar seu interesse por organizar tarefas.\n4. Nos 30 minutos finais, registre sua experiência.\n\nMODELO DE REGISTRO\nReclamação fictícia:\nMinha resposta:\nO que foi fácil:\nO que foi difícil:\nO que eu tentaria fazer de outra forma:\n\nPreencha o registro com o que realmente observar durante o exercício; nenhum resultado está presumido."
+    }
+  ]
+}

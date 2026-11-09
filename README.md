@@ -203,13 +203,16 @@ e os esforços que você informou ter, sem exigir uma nova assinatura.
 
 ![Escolha a IA para cada tarefa. Compare evidências. Use os modelos que você já tem.](docs/assets/benchmark-modelos-banner.png)
 
-O benchmark também compara onboarding, currículo e guia de carreira: o modelo
-precisa entregar a orientação e o material, além de acertar decisões. Você vê
-as ressalvas do texto e a recomendação para cada tarefa. Para operar, há um
-laboratório com navegador, e-mail fictício e retomada em outra sessão.
-Os resultados ficam separados por etapa, com erros e limitações visíveis.
-Quando há empate, as alternativas aparecem; uma amostra pequena não define
-um vencedor universal.
+O benchmark compara primeiras escolhas, currículo, carreira, entrevistas,
+LinkedIn/GitHub, dossiê de empresa, propostas e negociação. O modelo precisa
+entregar material útil e incorporar correções, além de acertar decisões.
+Você consulta as opções por tarefa, provedor e esforço, com as ressalvas do
+texto. Para operar, há um laboratório com navegador, e-mail fictício e
+retomada em outra sessão.
+
+As alternativas que cumpriram os critérios aparecem juntas. A indicação
+considera seu acesso e a tarefa, sem transformar uma amostra pequena em um
+vencedor universal. Respostas incompletas e falhas continuam nos resultados.
 
 Há também testes com instruções maliciosas em vagas, e-mails e anotações de
 retomada. O relatório distingue tentativa indevida, bloqueio da ferramenta e

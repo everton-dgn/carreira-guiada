@@ -55,14 +55,16 @@ Esses comandos são para mantenedores. O candidato não precisa executá-los.
 ```sh
 uv run --locked python scripts/maintainers/preparation_benchmark.py prompt
 uv run --locked python scripts/maintainers/preparation_benchmark.py score --response resposta.json
-uv run --locked python scripts/maintainers/preparation_benchmark.py verify --report docs/benchmarks/2026-11-07-preparation.json
+uv run --locked python scripts/maintainers/preparation_benchmark.py verify --report docs/benchmarks/2026-11-08-complete-preparation.json
 ```
 
-Envie a saída do primeiro comando a uma sessão nova do modelo, com ferramentas
-desabilitadas quando o cliente permitir. Caso o cliente não permita isso,
-registre a limitação, proíba ferramentas no prompt e confira o histórico de
-chamadas. Uma instrução textual não comprova isolamento mecânico. Uma chamada
-fora do protocolo deixa a medição inelegível, mesmo com JSON correto.
+Envie a saída do primeiro comando a uma sessão nova do modelo, sem acesso a
+arquivos pessoais ou ferramentas reais. A campanha ampliada usa os
+[adaptadores restritos](BENCHMARK-ADVERSARIAL.md#clientes-da-campanha-ampliada)
+com `laboratory_kind: preparation`. O cliente recebe a instrução de responder
+diretamente; qualquer chamada à ferramenta fictícia também deixa a medição
+inelegível, mesmo com JSON correto. Confirme o estado efetivo do cliente antes
+de entregar o prompt. Uma instrução textual, sozinha, não comprova isolamento.
 
 Guarde a resposta original, modelo, provedor, esforço, data, versão e hash da
 fixture, hash do prompt, estado final da sessão e evidência de chamadas.
@@ -74,8 +76,11 @@ Nunca publique identificadores privados, caminhos da máquina ou credenciais.
 recalcula as decisões e verifica as etapas e os trechos citados na revisão.
 Ressalvas exigem uma nota explicativa. O estado da sessão e a contagem de
 ferramentas têm tipos validados; o registro conhecido de ausência de chamadas
-precisa corresponder à contagem zero. O hash preserva a integridade do registro,
-sem provar isolamento ou reconstruir chamadas a partir de formatos desconhecidos.
+precisa corresponder à contagem zero. O hash preserva a integridade do registro.
+Nas novas execuções, `client_evidence_path` também permite conferir a
+inicialização restrita, modelo, esforço, resposta final e chamadas observadas
+pelo cliente. As nove medições anteriores permanecem identificadas como
+reaproveitadas; não recebem retroativamente essa prova adicional.
 O comando preserva falhas de formato
 registradas e não refaz a avaliação qualitativa.
 

@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar sem currículo e sem cadastro completo. Podemos explorar profissões, montar um primeiro currículo ou conhecer outras atividades. Qual dessas opções você prefere?",
+      "content": "Opções para começar:\n1. Guia de carreira: explorar o que você gosta de fazer e comparar caminhos, sem precisar escolher uma profissão agora.\n2. Currículo: começar um rascunho com as informações que você já tiver, sem inventar experiências.\n3. Entrevistas: praticar como se apresentar e responder perguntas.\n4. Busca de vagas: conhecer oportunidades, caso escolha essa atividade; isso não autoriza candidaturas.\nTambém há mais opções. Você escolhe por onde começar."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Podemos continuar com a busca pública considerando remoto, híbrido e presencial, sem preferência entre eles. Você não precisa confirmar a modalidade novamente. A campanha de candidaturas permanece parada.",
+      "content": "Na continuidade da busca pública, considere as três modalidades e mantenha os demais filtros existentes. Ao avaliar um anúncio, compare as atividades, os requisitos e as condições que ele informar. Consultar ou selecionar vagas para análise não equivale a enviar candidaturas nem autoriza retomar a campanha."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento. Mantive as experiências simultâneas e usei somente os anos informados, sem inventar meses, cargos anteriores ou resultados.",
+      "content": "RASCUNHO DE CURRÍCULO\n\nOBJETIVO\nAtendimento\n\nEXPERIÊNCIAS PROFISSIONAIS\nFeira Lua — 2022 a 2024\nLoja Sol — 2021 a 2023\n\nAs experiências ocorreram simultaneamente durante parte dos períodos informados.\n\nATIVIDADES INFORMADAS NAS EXPERIÊNCIAS\n- Atendimento a clientes.\n- Organização de produtos.\n\nOs períodos estão apresentados somente por ano, pois os meses não foram informados."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "A redação correta é “Organização de produtos”, sem atribuir comando de equipe ou acrescentar resultados. Abaixo está o rascunho separado; ele não substitui a versão aprovada. Você aprova essa correção?",
+      "content": "RASCUNHO DE CORREÇÃO — PENDENTE DE APROVAÇÃO\n\nSubstituir a descrição de comando da equipe por:\n- Organização de produtos.\n\nNão incluir liderança de equipe nem resultados não informados. Esta proposta de correção permanece separada da versão aprovada."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Podemos comparar três caminhos como hipóteses, usando seu interesse em conversar e organizar tarefas. A renda necessária ainda está em aberto, então não vou presumir um salário nem escolher por você. A comparação não altera seus filtros de vagas.",
+      "content": "COMPARAÇÃO EXPLORATÓRIA\n\n1. Atendimento\nAspecto a explorar: seu interesse em conversar.\nTeste de 30 minutos: escrever uma conversa fictícia de atendimento, buscando compreender uma solicitação e explicar um próximo passo.\n\n2. Apoio administrativo\nAspecto a explorar: seu interesse em organizar tarefas.\nTeste de 30 minutos: montar uma lista de tarefas para uma situação fictícia, ordenar prioridades e explicar os critérios usados.\n\n3. Recepção\nAspecto a explorar: combinar conversa e organização.\nTeste de 30 minutos: simular por escrito o acolhimento de uma pessoa e organizar as informações necessárias para orientá-la.\n\nUse os 30 minutos restantes das suas duas horas semanais para comparar os testes: qual despertou mais interesse, o que foi fácil ou difícil e qual você gostaria de repetir? Essas respostas ajudam na escolha, mas não determinam uma profissão. O salário pretendido continua não informado."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos continuar o experimento de atendimento que você escolheu, sem reiniciar sua escolha ou presumir resultados. O histórico permanece preservado e os filtros de vagas continuam inalterados. A atividade é uma simulação escrita, sem contato externo.",
+      "content": "CONTINUAÇÃO DO EXPERIMENTO: ATENDIMENTO\n\nObjetivo já escolhido: simular por escrito uma resposta a uma reclamação fictícia e anotar o que foi fácil ou difícil.\n\nRoteiro sugerido, dentro das suas duas horas semanais:\n1. Até 15 minutos: retome o ponto em que estiver e organize os elementos da reclamação fictícia. Se ainda não começou, defina a situação da simulação.\n2. Até 45 minutos: escreva a resposta. Reconheça a reclamação, indique o que precisa ser esclarecido e proponha um próximo passo sem inventar informações ou prometer algo sem base na situação.\n3. Até 30 minutos: revise a clareza e a organização da resposta.\n4. Até 30 minutos: registre o que foi fácil, o que foi difícil e o que gostaria de tentar de outro modo.\n\nModelo para seu registro:\n- Minha resposta escrita:\n- O que foi fácil:\n- O que foi difícil:\n- Como me senti ao organizar a resposta:\n- O que quero testar na próxima tentativa:\n\nNenhum resultado foi informado até agora; preencha o registro com o que você realmente observar."
+    }
+  ]
+}

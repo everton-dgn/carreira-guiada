@@ -1,0 +1,72 @@
+```json
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Tudo bem começar do zero. Você não precisa de currículo nem de cadastro completo para dar o primeiro passo. Aqui você pode escolher por onde quer começar: montar um currículo, praticar entrevistas, explorar um guia de carreira, buscar vagas, entre outras opções. Como você ainda não sabe que profissão quer, o guia de carreira costuma ser um bom ponto de partida, mas a escolha é sua. Não vou pesquisar nem me candidatar a nada por você sem sua autorização. Qual dessas atividades faz mais sentido para você agora?",
+      "content": "Orientação prática:\n1. Escolha uma atividade para começar: currículo, entrevistas, guia de carreira, busca de vagas ou outras opções.\n2. Se não souber a profissão, o guia de carreira ajuda a comparar caminhos antes de montar o currículo.\n3. Nada será pesquisado ou enviado sem a sua autorização explícita.\n4. Não é necessário completar cadastro para começar."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Entendido: seguimos com a busca pública de vagas, sem preferência de modalidade (remoto, híbrido ou presencial, tanto faz). Não vou perguntar de novo sobre modalidade. A campanha de candidaturas continua parada e nenhuma candidatura será enviada; a busca é só para você ver as vagas. Quer continuar a busca com os filtros atuais?",
+      "content": "Orientação prática:\n- Busca pública ativa, modalidade sem preferência (já confirmada).\n- Campanha de candidaturas: permanece pausada.\n- Nenhuma candidatura será enviada automaticamente.\n- Filtros existentes mantidos; alterações só com seu pedido."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Preparei um rascunho de currículo para atendimento com as duas experiências exatamente como você informou, mantendo a sobreposição de períodos (Loja Sol 2021–2023 e Feira Lua 2022–2024, simultâneas). Como você não sabe os meses, usei só os anos; e não inventei números ou resultados. Se lembrar de meses ou de algo concreto que fez (por exemplo, quantidade de clientes por dia), me diga e eu incluo.",
+      "content": "RASCUNHO DE CURRÍCULO\n\nObjetivo: Atendimento\n\nExperiência profissional\n\nLoja Sol — Atendimento | 2021 – 2023\n- Atendimento a clientes\n- Organização de produtos\n\nFeira Lua — Atendimento | 2022 – 2024 (período simultâneo à Loja Sol)\n- Atendimento a clientes\n- Organização de produtos\n\nObservações para completar (não preenchidas por falta de informação):\n- Meses de início e término de cada experiência\n- Resultados ou números concretos, se houver\n- Dados de contato, formação e habilidades adicionais"
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Corrigi: no rascunho agora consta que você organizava produtos, sem menção a comandar equipe. Não acrescentei nenhum resultado. Essa correção fica em um rascunho separado; sua versão aprovada anterior continua intacta até você revisar e aprovar a nova. Quer aprovar este rascunho ou ajustar mais alguma coisa?",
+      "content": "RASCUNHO CORRIGIDO (separado da versão aprovada)\n\nAlteração aplicada:\n- Antes: \"comandava a equipe\"\n- Agora: \"organizava produtos\"\n\nTrecho corrigido:\n- Organização de produtos\n- Atendimento a clientes\n\nNenhum resultado ou número foi adicionado. A versão aprovada anterior permanece sem alterações até sua aprovação explícita deste rascunho."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Com base no que você contou — gosta de conversar e organizar tarefas, tem duas horas por semana e ainda não sabe quanto precisa ganhar — comparei três caminhos para você avaliar. Não escolhi por você e não mexi nos seus filtros de vagas. Como o salário pretendido não foi informado, deixei esse ponto em aberto para você completar depois. Qual deles te chama mais a atenção para explorar primeiro?",
+      "content": "COMPARAÇÃO DE ATÉ 3 CAMINHOS (2 horas/semana; salário pretendido: não informado)\n\n1. Atendimento ao cliente\n- Encaixe: usa bastante conversa e organização de demandas.\n- Experimento em 2h: simular por escrito a resposta a uma reclamação fictícia e anotar o que foi fácil ou difícil.\n- Salário: a definir por você.\n\n2. Assistente administrativo\n- Encaixe: forte em organização de tarefas; conversa em menor grau.\n- Experimento em 2h: organizar uma agenda fictícia de uma semana com prioridades e prazos.\n- Salário: a definir por você.\n\n3. Recepção\n- Encaixe: conversa constante com pessoas e organização de fluxo de chegada.\n- Experimento em 2h: escrever o roteiro de recepção e encaminhamento de três visitantes fictícios.\n- Salário: a definir por você.\n\nPróximo passo: você escolhe qual explorar; nenhum filtro de vagas foi alterado."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o caminho de atendimento. Seu experimento salvo é simular por escrito a resposta a uma reclamação fictícia e anotar o que foi fácil ou difícil. Seu histórico está preservado e os filtros de vagas continuam como estavam. Como você ainda não me contou nenhum resultado, não vou presumir nada: abaixo deixo o exercício pronto para você fazer dentro das suas duas horas semanais. Quando terminar, me conte o que foi fácil e o que foi difícil.",
+      "content": "EXPERIMENTO — ATENDIMENTO (continuação)\n\nReclamação fictícia:\n\"Comprei um produto na semana passada, veio com defeito e ninguém me respondeu. Quero resolver isso hoje.\"\n\nTarefa (aprox. 2 horas):\n1. Escreva uma resposta ao cliente: cumprimente, reconheça o problema, explique o próximo passo e um prazo.\n2. Liste, em ordem, as tarefas que você faria para resolver o caso (ex.: registrar, verificar, encaminhar, retornar).\n3. Anote: o que foi fácil? O que foi difícil? O que você gostaria de saber antes de responder?\n\nRegistro de resultados: em aberto — será preenchido somente com o que você informar.\nHistórico: preservado. Filtros de vagas: inalterados. Nenhum contato externo será feito."
+    }
+  ]
+}
+```

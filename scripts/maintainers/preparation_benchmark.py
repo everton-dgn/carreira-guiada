@@ -17,9 +17,13 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import sys
 
 CASES = Path(__file__).resolve().parents[2] / 'tests/fixtures/preparation-benchmark.json'
 ROOT = Path(__file__).resolve().parents[2]
+
+if __name__ == '__main__' and __package__ in (None, ''):
+    sys.path.insert(0, str(ROOT))
 
 
 def strict_json(raw):
@@ -155,9 +159,18 @@ def verify_report(path):
         raw = artifact.read_text(encoding='utf-8')
         if run['response_sha256'] != digest(artifact.read_bytes()):
             raise ValueError('Resposta difere do hash registrado.')
+        if 'client_evidence_path' in run:
+            proof_path = (ROOT / run['client_evidence_path']).resolve()
+            if not proof_path.is_relative_to((ROOT / 'docs/benchmarks').resolve()):
+                raise ValueError('Evidência do cliente fora dos benchmarks.')
+            if run.get('client_evidence_sha256') != digest(proof_path.read_bytes()):
+                raise ValueError('Evidência do cliente difere do hash registrado.')
+            verify_client(strict_json(proof_path.read_text(encoding='utf-8')), run, raw)
         try:
-            actual = score(strict_json(raw))
+            response = strict_json(raw)
+            actual = score(response)
         except ValueError:
+            response = None
             actual = None
         if actual != run['score'] or (actual is None) != bool(run['format_error']):
             raise ValueError('Pontuação difere da resposta original.')
@@ -173,7 +186,12 @@ def verify_report(path):
                     raise ValueError('Revisão sem veredito ou evidência.')
                 if case['verdict'] == 'needs_review' and (not isinstance(case.get('note'), str) or not case['note'].strip()):
                     raise ValueError('Ressalva sem nota explicativa.')
-                if any(not quote or quote not in raw for quote in case['evidence']):
+                answer = next((a for a in response['answers'] if a.get('id') == case['id']), {}) if response else {}
+                text = answer.get('message', '') + '\n' + answer.get('content', '')
+                # Historical format failures may still have a cited prose review.
+                # They remain ineligible because their structured score is None.
+                serialized = json.dumps(answer, ensure_ascii=False) if response else raw
+                if any(not quote or quote not in text and quote not in serialized for quote in case['evidence']):
                     raise ValueError('Trecho da revisão não encontrado na resposta.')
         elif review['status'] != 'not_reviewed':
             raise ValueError('Estado de revisão desconhecido.')
@@ -181,6 +199,23 @@ def verify_report(path):
     if len(set(checked)) != len(checked):
         raise ValueError('Configuração duplicada no relatório.')
     return {'verified': True, 'runs': len(checked), 'text_judgments_regraded': False}
+
+
+def verify_client(evidence, run, response):
+    """Bind fresh preparation reports to their observed client identity and tools."""
+    from scripts.maintainers.adversarial_isolation import valid_gate
+    if any(evidence.get(k) != run.get(k) for k in ('model', 'effort')):
+        raise ValueError('Identidade do cliente diverge da configuração.')
+    session = evidence['session']
+    gate = session['isolation']
+    valid = (session['completed'] and session['has_final'] and valid_gate(gate)
+             and session['model'] == gate.get('model') == run['model']
+             and session['effort'] == gate.get('effort') == run['effort'])
+    trace = session['client_trace']
+    calls = max(len(trace['started_tools']), len(trace['calls'])) + len(trace['other_tool_items'])
+    if (run['session_complete'] is not bool(valid) or run['tool_calls'] != calls
+            or session['final_text'] != response):
+        raise ValueError('Resposta, ferramentas ou conclusão divergem do cliente.')
 
 
 def main():

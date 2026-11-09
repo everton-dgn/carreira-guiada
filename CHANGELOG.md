@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## 0.17.0 - 2026-11-09
+
+- Comparação ampliada dos modelos e esforços disponíveis, com resultados por
+  tarefa e provedor e distinção entre decisão correta e qualidade do texto.
+- Jornadas fictícias de entrevistas, LinkedIn/GitHub, investigação de empresas,
+  propostas e negociação incluem correções da pessoa e retomada em outra sessão.
+- Navegador, e-mail e segurança têm evidências vinculadas às chamadas observadas,
+  com erros de protocolo, tentativas indevidas e tarefas incompletas preservados.
+- Recomendações consideram as opções informadas pela pessoa e os critérios de
+  cada tarefa. A página de benchmarks reúne as indicações e a cobertura dos
+  esforços; os relatórios detalhados explicam as ressalvas e como reproduzir.
+- A avaliação registra tentativas externas mesmo quando o laboratório as
+  recusa por campos extras ou sessão encerrada, impedindo uma indicação indevida.
+
 ## 0.16.1 - 2026-11-08
 
 ### Correções

@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você não precisa ter um currículo pronto nem escolher uma profissão para começar. Dá para experimentar uma atividade sem preencher um cadastro completo.",
+      "content": "Você pode montar um primeiro currículo, explorar profissões no guia de carreira, praticar uma entrevista, conhecer a busca de vagas ou ver outras opções. Se a dúvida é por onde começar, anote uma tarefa de que você gosta e uma que já fez em casa, nos estudos ou no trabalho. Podemos usar essas anotações para explorar profissões ou para montar um rascunho de currículo. Qual opção você prefere?"
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Você pode continuar a busca pública incluindo vagas remotas, híbridas e presenciais. A campanha de candidaturas continua pausada.",
+      "content": "Na busca pública, deixe a modalidade em “sem preferência” e abra as descrições das vagas que chamarem sua atenção. Consultar um anúncio não envia uma candidatura."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Segue um rascunho para atendimento. Mantive as duas experiências com os períodos sobrepostos e usei apenas os anos que você informou.",
+      "content": "OBJETIVO\nAtendimento\n\nEXPERIÊNCIA PROFISSIONAL\nFeira Lua — 2022 a 2024\nLoja Sol — 2021 a 2023\n\nATIVIDADES REALIZADAS\nAtendimento a clientes e organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "Segue a correção em um rascunho separado, para sua revisão. Ela não substitui a versão aprovada.",
+      "content": "Rascunho — trecho corrigido: Organização de produtos."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Vamos comparar três caminhos que combinam conversa e organização em proporções diferentes. Você não precisa definir um salário agora para fazer esse primeiro teste.",
+      "content": "1. Atendimento: o foco é entender o problema de uma pessoa e explicar o próximo passo. Teste: escreva uma resposta a uma reclamação fictícia.\n2. Recepção: combina conversar com pessoas e organizar horários. Teste: simule a chegada de duas pessoas com horários conflitantes e explique como você as orientaria.\n3. Apoio administrativo: o foco é organizar tarefas e acompanhar prazos. Teste: crie uma lista de cinco tarefas fictícias, ordene por prioridade e explique sua primeira escolha.\n\nUse 30 minutos para cada teste e os 30 minutos finais para comparar: em qual você mais gostou de conversar, em qual gostou mais de organizar e qual teria vontade de repetir?"
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos retomar o experimento de atendimento que você escolheu: responder por escrito a uma reclamação fictícia e anotar o que foi fácil ou difícil.",
+      "content": "Reclamação fictícia: “Recebi um produto diferente do que pedi. Como posso resolver isso?”\n\nEscreva uma resposta que reconheça o problema, peça a informação necessária para verificar o pedido e explique o próximo passo sem prometer um resultado. Para aproveitar seu gosto por organizar tarefas, faça um roteiro de três passos antes de escrever. Depois, complete: “Foi fácil…”, “Foi difícil…” e “Na próxima tentativa, eu mudaria…”. Faça tudo como simulação, sem enviar a resposta a ninguém."
+    }
+  ]
+}

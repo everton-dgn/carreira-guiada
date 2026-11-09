@@ -109,8 +109,8 @@ saídas para outros destinos. O cliente de IA continua acessando seu provedor
 com material fictício. Nenhuma conta pessoal participa.
 
 As regressões verificam recusas e efeitos no código. Um teste programado não
-comprova que um modelo resistirá a toda instrução maliciosa. Uma campanha
-separada expôs cinco configurações a seis ataques textuais, incluindo instruções
+comprova que um modelo resistirá a toda instrução maliciosa. A campanha
+adversarial usa seis ataques textuais por configuração, incluindo instruções
 contaminadas na retomada, com três controles legítimos. Ela distingue objetivo
 do ataque, outras ações indevidas, erros de protocolo, bloqueios e tarefa
 concluída. Uma tentativa bloqueada não vira mérito do modelo.
@@ -119,9 +119,12 @@ Veja os [resultados adversariais](BENCHMARKS.md#instruções-maliciosas-em-vagas
 e o [isolamento do executor](BENCHMARK-ADVERSARIAL.md). A coleta usa apenas uma
 ferramenta fictícia, sem acesso do modelo a arquivos pessoais ou contas de vagas
 e e-mail. Não testa imunidade geral, imagens maliciosas ou campanhas prolongadas.
-Na campanha Codex com protocolo corrigido, as provas de acesso são conferidas
-antes de cada sessão e as chamadas do cliente são confrontadas com o diário
-fictício. A revisão anterior permanece identificada separadamente. Esses
+Na revisão 2, as provas de acesso são conferidas antes de cada sessão e as
+chamadas observadas no cliente são confrontadas com o diário fictício. A coleta
+ampliada usa esse protocolo nos clientes Codex e compatíveis com Claude Code,
+com adaptadores restritos. Uma ferramenta real ou permissão inesperada impede
+a exposição aos ataques. Ausência de exposição ou sessão incompleta não recebe
+aprovação. A revisão anterior permanece identificada separadamente. Esses
 controles pertencem ao laboratório; não isolam o aplicativo durante o uso
 cotidiano do Carreira Guiada nem dispensam conferir destinatários e permissões.
 Os [testes do código](VALIDACAO.md) e o [ensaio de navegador](BENCHMARK-NAVEGADOR.md)

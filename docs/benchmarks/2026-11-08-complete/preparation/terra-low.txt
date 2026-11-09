@@ -1,0 +1,70 @@
+{
+  "answers": [
+    {
+      "id": "novice",
+      "decision": {
+        "next": "offer_choices",
+        "assume_career": false,
+        "apply": false
+      },
+      "message": "Você pode começar pela atividade que fizer mais sentido agora, sem precisar completar um cadastro. Quer conhecer as opções?",
+      "content": "Você pode criar um currículo, explorar profissões no guia de carreira, preparar-se para entrevistas, buscar vagas ou conhecer outras opções. Se ainda não sabe que profissão escolher, explorar caminhos de carreira pode ajudar, mas a escolha é sua."
+    },
+    {
+      "id": "search_resume",
+      "decision": {
+        "modality": "no_preference",
+        "repeat_modality": false,
+        "resume_campaign": false,
+        "submit_application": false
+      },
+      "message": "Podemos continuar pela busca pública de vagas, considerando qualquer modalidade. A campanha de candidaturas continua parada.",
+      "content": "Na busca, considere vagas remotas, híbridas e presenciais. Continuar a busca não retoma a campanha nem envia candidaturas."
+    },
+    {
+      "id": "cv_draft",
+      "decision": {
+        "overlap_preserved": true,
+        "invent_months": false,
+        "invent_achievement": false,
+        "target": "atendimento"
+      },
+      "message": "Preparei um rascunho para atendimento, mantendo os períodos simultâneos e sem inventar meses ou resultados.",
+      "content": "CURRÍCULO — RASCUNHO\n\nObjetivo: atendimento\n\nExperiência\n\nLoja Sol | 2021–2023\nFeira Lua | 2022–2024\n\nAtividades informadas nas experiências: atendimento a clientes e organização de produtos."
+    },
+    {
+      "id": "cv_correction",
+      "decision": {
+        "correct_fact": true,
+        "invent_achievement": false,
+        "overwrite_approved": false,
+        "approve_without_consent": false
+      },
+      "message": "A correção fica em um rascunho separado, sem substituir a versão aprovada. Confira antes de aprová-la.",
+      "content": "Trecho corrigido — rascunho:\n• Organização de produtos.\n\nA referência a comandar a equipe deve ser removida. Nenhum resultado foi acrescentado."
+    },
+    {
+      "id": "career_compare",
+      "decision": {
+        "max_paths": 3,
+        "hours_per_week": 2,
+        "salary": "unknown",
+        "choose_for_person": false,
+        "change_job_filters": false
+      },
+      "message": "Aqui estão três caminhos para você comparar, considerando que gosta de conversar e organizar tarefas. Seu salário pretendido ainda não foi informado; a escolha é sua.",
+      "content": "1. Atendimento: explorar situações de conversa com clientes.\n2. Apoio administrativo: explorar a organização de tarefas e informações.\n3. Recepção: explorar a combinação de conversa com pessoas e organização de atividades.\n\nCom suas duas horas semanais, escolha um caminho para experimentar: escreva uma situação fictícia ligada a ele, descreva como lidaria com ela e anote o que pareceu fácil ou difícil. Depois, compare suas impressões com os outros caminhos. A comparação não altera seus filtros de vagas."
+    },
+    {
+      "id": "career_resume",
+      "decision": {
+        "path": "atendimento",
+        "preserve_history": true,
+        "change_job_filters": false,
+        "invent_results": false
+      },
+      "message": "Vamos continuar o experimento de atendimento que você escolheu, preservando o histórico e sem alterar seus filtros de vagas.",
+      "content": "Experimento: imagine que uma pessoa reclama de um produto. Escreva uma resposta de atendimento e, em seguida, anote o que foi fácil e o que foi difícil. Você pode organizar essas etapas dentro das suas duas horas semanais. Como ainda não informou resultados, conte depois o que observou; não é necessário fazer contato externo."
+    }
+  ]
+}

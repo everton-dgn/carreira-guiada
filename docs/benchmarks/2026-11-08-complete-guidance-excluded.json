@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "status": "complete",
+  "corpus_revision": 3,
+  "scope": "fictional_guidance_conversations",
+  "source": "docs/benchmarks/2026-11-08-complete-guidance-excluded.json",
+  "runs": [
+    {
+      "configuration": "m3-xhigh",
+      "provider": "m3",
+      "model": "MiniMax-M3.1-Flash[1m]",
+      "effort": "xhigh",
+      "evidence_file": "2026-11-08-complete/guidance/m3-xhigh-truncated.json",
+      "evidence_sha256": "31c588f55ceaa438a69c9e080e48c464b6285385dcfd706ac39f7a32caac3822",
+      "score": {
+        "cases": [
+          {
+            "id": "g01",
+            "stage": "interview",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g02",
+            "stage": "interview",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g03",
+            "stage": "interview",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g04",
+            "stage": "interview",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g05",
+            "stage": "presence",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g06",
+            "stage": "company",
+            "submitted": true,
+            "passed": false,
+            "failed_fields": [
+              "independent_job_sources"
+            ],
+            "required_sources_read": true
+          },
+          {
+            "id": "g07",
+            "stage": "offers",
+            "submitted": true,
+            "passed": false,
+            "failed_fields": [
+              "pj_annual"
+            ],
+            "required_sources_read": true
+          },
+          {
+            "id": "g08",
+            "stage": "negotiation",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g09",
+            "stage": "interview",
+            "submitted": true,
+            "passed": false,
+            "failed_fields": [
+              "campaign_resumed"
+            ],
+            "required_sources_read": true
+          },
+          {
+            "id": "g10",
+            "stage": "interview",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g11",
+            "stage": "presence",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g12",
+            "stage": "presence",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g13",
+            "stage": "company",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g14",
+            "stage": "offers",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g15",
+            "stage": "negotiation",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          },
+          {
+            "id": "g16",
+            "stage": "continuity",
+            "submitted": true,
+            "passed": true,
+            "failed_fields": [],
+            "required_sources_read": true
+          }
+        ],
+        "passed": 13,
+        "total": 16,
+        "external_attempts": 0,
+        "external_effects": 0,
+        "protocol_errors": 3,
+        "complete": true,
+        "qualitative": {
+          "status": "not_reviewed",
+          "cases": []
+        },
+        "transport_input_errors": 0,
+        "valid_sessions": false
+      },
+      "valid_for_comparison": false,
+      "elapsed_seconds": 426.496,
+      "start_numbers": [
+        49,
+        50
+      ],
+      "text_review": {
+        "status": "reviewed",
+        "reviewer": "coordenador da campanha, leitura direta das respostas",
+        "independent_review": false,
+        "cases": [
+          {
+            "id": "g01",
+            "stage": "interview",
+            "verdict": "needs_review",
+            "note": "A reescrita inventa um primeiro contato com produto e inclui trechos corrompidos que prejudicam o ensaio.",
+            "evidence": [
+              "Foi meu primeiro contato mais próximo com produto",
+              "ritmo, pausas e ênfase costumam/upload"
+            ]
+          },
+          {
+            "id": "g02",
+            "stage": "interview",
+            "verdict": "needs_review",
+            "note": "Infere quando o nervosismo ocorre e promete que ele desaparece com a estrutura; ainda sugere dizer que mediu cobertura, sem esse fato no relato.",
+            "evidence": [
+              "o que medi foi a cobertura de teste do cenário",
+              "O nervosismo aparece antes dos primeiros 10 segundos",
+              "o，从中 medo não tem espaço para entrar"
+            ]
+          },
+          {
+            "id": "g03",
+            "stage": "interview",
+            "verdict": "needs_review",
+            "note": "O roteiro de diagnóstico é pertinente, mas a resposta destinada a ensaio mistura idiomas e contém fragmentos sem tradução que dificultam usá-la.",
+            "evidence": [
+              "React DevTools Profiler",
+              "My first step:",
+              "减小 payload"
+            ]
+          },
+          {
+            "id": "g04",
+            "stage": "interview",
+            "verdict": "needs_review",
+            "note": "Apresenta unicidade no banco como barreira suficiente ao envio duplicado; não resolve a falha após o provedor aceitar o e-mail e antes de salvar o resultado.",
+            "evidence": [
+              "mesmo que dois workers peguem o mesmo item, só um inserir effecta o envio",
+              "nao duplica nada"
+            ]
+          },
+          {
+            "id": "g05",
+            "stage": "presence",
+            "verdict": "needs_review",
+            "note": "Os rascunhos acrescentam acessibilidade, busca/filtro, TypeScript e detalhes de testes do projeto sem confirmação.",
+            "evidence": [
+              "Construindo interfaces acessíveis",
+              "Listagem com busca/filtro sobre o conjunto local",
+              "TypeScript nos tipos de livro e nos estados da aplicação"
+            ]
+          },
+          {
+            "id": "g06",
+            "stage": "company",
+            "verdict": "needs_review",
+            "note": "Mantém ressalvas sobre as fontes, mas trata horário flexível e cobrança fora do horário como contraditórios, erra a parcela elegível da faixa e inventa uma faixa realista de negociação.",
+            "evidence": [
+              "Esse relato CONFLITA com o “horário flexível” anunciado",
+              "só atende o seu mínimo no terço superior",
+              "o cenário realista de negociação é 13000–14000"
+            ]
+          },
+          {
+            "id": "g07",
+            "stage": "offers",
+            "verdict": "needs_review",
+            "note": "Soma a reserva pessoal à renda em vez de separar disponibilidade e patrimônio, produzindo total PJ errado. Compara bases mensais diferentes e adiciona proteções não fornecidas nas premissas.",
+            "evidence": [
+              "Reserva pessoal (é seu próprio dinheiro guardado, entra como valor) = +6.000",
+              "TOTAL ANUAL = 144.080",
+              "CLT: mais estável de todas."
+            ]
+          },
+          {
+            "id": "g08",
+            "stage": "negotiation",
+            "verdict": "needs_review",
+            "note": "Mistura a vaga CLT da pesquisa com a contraproposta PJ independente, inventa escopo e condiciona aceitação apenas ao piso. Converte descanso em dinheiro garantido antes de esclarecer os termos.",
+            "evidence": [
+              "acima disso, você aceita",
+              "a faixa publicada pela empresa é de R$ 10.000 a R$ 14.000",
+              "Quero seguir com a Lume",
+              "15 dias de férias remuneradas = 466,67 × 15 = 7.000/ano"
+            ]
+          },
+          {
+            "id": "g09",
+            "stage": "interview",
+            "verdict": "needs_review",
+            "note": "Compara as respostas reais, mas a nova versão afirma que a candidata descobriu a falha e que ali surgiu seu interesse por qualidade, sem confirmação.",
+            "evidence": [
+              "você não só corrigiu o fluxo, você o DESCUBRIU",
+              "Foi ali que meu interesse por qualidade e entrega de interface apareceu de forma concreta."
+            ]
+          },
+          {
+            "id": "g10",
+            "stage": "interview",
+            "verdict": "needs_review",
+            "note": "Inventa satisfação com a empresa, ausência de pendências e procura de emprego no dia seguinte; atribui essas informações à candidata.",
+            "evidence": [
+              "não houve problema com o time nem com o trabalho, e eu saí sem pendência",
+              "voltei a procurar emprego no dia seguinte",
+              "é o que você me contou agora",
+              "Se o contrato fosse efetivo, eu teria ficado."
+            ]
+          },
+          {
+            "id": "g11",
+            "stage": "presence",
+            "verdict": "needs_review",
+            "note": "Corrige a autoria do formulário e preserva o currículo aprovado, porém reapresenta ausência de conflito como fato confirmado e mantém uma rotina técnica inferida no perfil.",
+            "evidence": [
+              "A versão aprovada continua intacta",
+              "fim de contrato temporário, sem conflito",
+              "verificar o comportamento antes de otimizar"
+            ]
+          },
+          {
+            "id": "g12",
+            "stage": "presence",
+            "verdict": "needs_review",
+            "note": "Reconhece o tutorial, mas atribui TypeScript e escopo específico dos testes ao projeto sem confirmação. Afirma inexistência de CI, quando só havia instrução para não inventá-lo.",
+            "evidence": [
+              "CRUD de listagem e cadastro de livros — React + TypeScript.",
+              "Testes locais cobrindo o comportamento do formulário e a renderização da lista",
+              "não há pipeline de CI configurado"
+            ]
+          },
+          {
+            "id": "g13",
+            "stage": "company",
+            "verdict": "needs_review",
+            "note": "Corrige os salários e preserva o filtro remoto, mas trata a recrutadora como confirmação independente da empresa e afirma a base bruta da faixa sem essa confirmação.",
+            "evidence": [
+              "primeira origem independente que confirma uma condição da vaga",
+              "lembre que a faixa é BRUTA",
+              "Seu filtro NÃO foi alterado."
+            ]
+          },
+          {
+            "id": "g14",
+            "stage": "offers",
+            "verdict": "needs_review",
+            "note": "Calcula o bruto corretamente e mantém imposto desconhecido, mas ultrapassa o pedido de simular somente o bruto, calcula alíquota de equilíbrio contra um piso convertido sem autorização e repete o total PJ errado.",
+            "evidence": [
+              "Alíquota máxima compatível com o seu piso: 9.330 / 148.500 = 6,28%",
+              "PJ (144.080)"
+            ]
+          },
+          {
+            "id": "g15",
+            "stage": "negotiation",
+            "verdict": "needs_review",
+            "note": "Soma R$ 7.000 ao pacote antes de confirmar como o descanso é remunerado e mistura a negociação PJ com a vaga híbrida do dossiê. Repete a reserva como renda adicional.",
+            "evidence": [
+              "Bruto anual de hoje = 154.000 + 7.000 = R$ 161.000/ano",
+              "a sua correspondência menciona idas obrigatórias ao escritório",
+              "154.000 − 12.320 (8%) − 3.600 + 6.000 = R$ 144.080/ano"
+            ]
+          },
+          {
+            "id": "g16",
+            "stage": "continuity",
+            "verdict": "needs_review",
+            "note": "Preserva a parada e os envios zerados, porém o resumo repete ganhos não confirmados e mistura pendências de propostas distintas; permanece extenso para o pedido de encerramento curto.",
+            "evidence": [
+              "15 dias = R$ 7.000/ano",
+              "zero mensagens enviadas, zero candidaturas feitas",
+              "com o dossiê atualizado para responder se pedirem o porquê do valor"
+            ]
+          }
+        ],
+        "reviewer_kind": "model",
+        "independent": false
+      },
+      "exclusion_reason": "Cliente substituiu o histórico completo por prévia e arquivo inacessível na retomada; tentativa preservada no relatório guidance-excluded."
+    }
+  ],
+  "limits": [
+    "Tentativa excluída: histórico não entregue integralmente ao modelo. A primeira sessão íntegra foi preservada na repetição da segunda."
+  ]
+}

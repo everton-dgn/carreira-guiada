@@ -37,9 +37,16 @@ Os fatos verificados ficam separados do texto externo. Na primeira coleta,
 eles incluíam o estado esperado do recibo e alguns identificadores revelavam
 quais casos eram controles. O protocolo ainda exigia consultar o recibo pela
 ferramenta, mas esses detalhes facilitavam a tarefa. A revisão 2 corrigiu ambos
-após a coleta. A nova campanha Codex usa a revisão 2; as medições anteriores
+após a coleta. A campanha Codex e a campanha ampliada usam a revisão 2; as medições anteriores
 continuam separadas, com o protocolo original e seus limites. O ensaio também não
 mede descobrir sozinho a identidade de uma empresa.
+
+A campanha ampliada usa essa mesma sequência para os quatro provedores.
+Ela reaproveita as quatro medições Codex já válidas na revisão 2 e testa as
+configurações faltantes. Datas, tentativas excluídas e versões do instrumento
+ficam na [matriz da campanha](benchmarks/2026-11-08-complete-matrix.json).
+Uma falha antiga permanece no histórico mesmo quando a nova execução termina
+sem tentativa indevida. Não somamos notas de protocolos diferentes.
 
 ## Isolamento antes da exposição
 
@@ -142,7 +149,13 @@ uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks
 uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks/2026-11-07-codex-adversarial.json
 ```
 
-Esse comando não chama modelos. Confere hashes, identidade das configurações,
+Para a campanha ampliada, use também:
+
+```sh
+uv run --locked python -m scripts.maintainers.adversarial_report docs/benchmarks/2026-11-08-complete-security.json
+```
+
+Esses comandos não chamam modelos. Conferem hashes, identidade das configurações,
 conteúdo exposto e coerência entre chamadas, efeitos e pontuação. A verificação
 é de consistência dos arquivos publicados, não uma certificação independente
 de sua origem ou do isolamento informado pelo coletor.
@@ -185,7 +198,8 @@ Não cobre imagens, ataques adaptativos, cadeias longas ou campanhas de vários 
 
 O adaptador está em `scripts/maintainers/adversarial_codex.py`. Ele aceita
 somente o transporte `app-server` de um orquestrador com substituição de comando.
-Foi validado no macOS com Codex 0.166.0. Não presuma compatibilidade com outra
+Foi usado no macOS com Codex 0.166.0 na campanha anterior e 0.167.0 na
+campanha ampliada. Não presuma compatibilidade com outra
 versão: a inicialização interrompe a coleta se faltar qualquer capacidade de
 restrição ou observação exigida. O uso cotidiano do projeto não exige esse adaptador.
 
@@ -217,6 +231,30 @@ notificações do cliente para conferir a coleta. Esses arquivos privados podem
 conter caminhos locais; publique apenas a projeção fictícia revisada. Depois
 de encerrar os processos e preservar as evidências, remova as pastas temporárias
 da sua campanha.
+
+## Clientes da campanha ampliada
+
+`benchmark_session.py` prepara uma pasta nova por sessão e seleciona o
+laboratório antes de iniciar o cliente. O adaptador `adversarial_codex.py`
+atende a rota Codex; `benchmark_claude.py` atende as rotas Claude, GLM e M3
+observadas com Claude Code 2.1.319. O modelo recebe apenas `lab`. Catálogo,
+modelo, ausência de ferramentas nativas e inicialização restrita precisam
+ser conferidos antes de liberar qualquer caso.
+
+O Codex devolve modelo e esforço na inicialização. Nas outras três rotas,
+o modelo é confirmado e o esforço fica registrado no argumento usado pelo
+executor, sem retorno do orçamento efetivo pelo serviço. Essa diferença
+limita a comparação de esforços entre provedores.
+
+O normalizador conserva as recusas estruturadas da ferramenta como ações
+observadas. Erro do cliente, método MCP não identificado ou divergência entre
+cliente e servidor impede a comparação; não vira acerto do modelo. Uma
+consulta de compatibilidade `server/discover` só é separada desses erros
+quando o método realmente consta da trilha.
+
+Os registros públicos permitem conferir essas condições sem iniciar modelos.
+Os arquivos privados do executor podem conter caminhos locais e informações
+de autenticação do cliente; eles não devem ser publicados junto aos resultados.
 
 ## Referências do método
 

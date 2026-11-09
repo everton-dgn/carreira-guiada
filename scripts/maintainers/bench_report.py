@@ -8,8 +8,9 @@ from .bench_score import grade
 
 
 def verify(path):
+    """Replay historical effects or the newer client-bound evidence format."""
     path = path.resolve()
-    report = json.loads(path.read_text())
+    report = json.loads(path.read_text(encoding='utf-8'))
     checked = []
     for run in report['runs']:
         evidence_path = (path.parent / run['evidence_file']).resolve()
@@ -18,7 +19,17 @@ def verify(path):
         raw = evidence_path.read_bytes()
         if hashlib.sha256(raw).hexdigest() != run['evidence_sha256']:
             raise ValueError('Hash divergente: ' + run['configuration'])
-        actual = grade(json.loads(raw))
+        evidence = json.loads(raw)
+        if 'client_sessions' in evidence:
+            from .benchmark_browser_report import evaluate
+            if any(run[k] != evidence[k] for k in ('configuration', 'model', 'effort')):
+                raise ValueError('Identidade divergente da execução.')
+            actual = evaluate(evidence)
+            eligible = actual['restricted_client_valid'] and actual.get('session_timing_valid', False)
+            if run['valid_for_comparison'] is not eligible:
+                raise ValueError('Validade da comparação divergente.')
+        else:
+            actual = grade(evidence)
         if actual != run['score']:
             raise ValueError('Pontuação divergente: ' + run['configuration'])
         checked.append(run['configuration'])
