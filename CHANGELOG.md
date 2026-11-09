@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 0.21.1 - 2026-11-09
+
+### Correções
+
+- As seis demonstrações de menu, busca, currículo, candidatura, entrevista e
+  planejamento passam a usar terminal branco, texto escuro e destaques azuis,
+  seguindo o padrão de Minha evolução. Os banners azuis permanecem intactos.
+- O guia visual fixa a paleta dos terminais e a conferência dos quadros
+  exportados. Os geradores preservam o branco e o contraste do texto nos GIFs.
+
 ## 0.21.0 - 2026-11-09
 
 ### Novidades

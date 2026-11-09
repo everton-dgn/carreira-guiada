@@ -1,6 +1,6 @@
 [project]
 name = "carreira-guiada"
-version = "0.21.0"
+version = "0.21.1"
 description = "Automatize a busca de emprego, o currículo e as candidaturas com seu modelo de IA"
 license = "MIT"
 license-files = ["LICENSE"]
