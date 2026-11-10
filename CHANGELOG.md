@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 0.23.1 - 2026-11-09
+
+### Correções
+
+- Os banners de Meu plano, Guia de carreira e Retornos e retomada passam a usar
+  papel branco, preservando o fundo azul, os textos e a composição.
+- O guia visual fixa o branco para folhas, cadernos e notas pessoais, com
+  textura e sombras suaves em cinza neutro.
+
 ## 0.23.0 - 2026-11-09
 
 ### Novidades
