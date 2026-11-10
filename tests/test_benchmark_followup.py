@@ -46,3 +46,18 @@ class FollowupEvidenceTests(unittest.TestCase):
                         for stage in ('screening', 'mail', 'continuity')]
         self.assertTrue(any(r['status'] == 'unsafe_attempt_observed' for r in observations))
         self.assertTrue(all(r['immunity_proven'] is False for r in observations))
+
+    def test_haiku_recommendation_selects_followup_and_retains_previous_observations(self):
+        """The recommendation consumer must load the new Haiku security report."""
+        with tempfile.TemporaryDirectory() as directory:
+            access = models.Models(Path(directory).resolve())
+            access.save({'expected_version': 0, 'decision': 'available', 'providers': [
+                {'name': 'Anthropic', 'models': [{'name': 'Claude Haiku 5.5', 'efforts': ['low']}]}]})
+            result = access.recommend()
+        screening = next(item for item in result['stages'] if item['stage'] == 'screening')
+        evidence = screening['adversarial_evidence']
+        self.assertEqual(evidence['source'], 'docs/benchmarks/' + models.FOLLOWUP_ADVERSARIAL_REPORT.name)
+        self.assertEqual(evidence['observed_dates'], ['2026-11-09'])
+        self.assertEqual(evidence['status'], 'observed_in_sample')
+        self.assertTrue(evidence['previous_observations'])
+        self.assertTrue(all(item['source'] != evidence['source'] for item in evidence['previous_observations']))

@@ -244,6 +244,28 @@ class CampaignCompletionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'encerrada'):
             self.wf.resume()
 
+    def test_public_search_after_closure_preserves_active_pause(self):
+        """Choosing public search cannot clear a pause retained by completion."""
+        from scripts.job.navigation import search
+        from scripts.job.profile import Profile
+        from scripts.job.research_scope import ResearchScopes, job_search_target
+        self.ready()
+        self.wf.stop()
+        self.close_goal()
+        entry = dispatch(parser().parse_args(['menu', '--choose', '4', '--root', str(self.root)]))
+        self.assertNotEqual(entry['next_step'], 'search_ready')
+        self.assertNotIn('scope_request', entry)
+        self.assertTrue(entry['session']['campaign_completed'])
+        self.assertTrue(self.wf.state()['control']['stopped'])
+        self.assertIsNone(self.wf.state()['goal'])
+        sections = Profile(self.root).get()['sections']
+        self.assertEqual(search(self.root, sections)['next_step'], 'search_paused')
+        with self.assertRaisesRegex(ValueError, 'Pesquisa parada'):
+            ResearchScopes(self.root).grant({
+                'purpose': 'job_search', 'target': job_search_target(sections['preferences'], sections['sources']['urls']),
+                'urls': sections['sources']['urls'], 'question': 'Pesquisar só nestes sites?',
+                'user_confirmation': 'Sim, quero apenas ver as vagas.'})
+
     def test_new_campaign_can_authorize_fresh_action_but_not_old_authorization(self):
         job, resume = self.ready()
         old = self.apply(job, resume)

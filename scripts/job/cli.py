@@ -565,6 +565,7 @@ def dispatch(args):
 
 
 def dispatch_workflow(workflow, root, args):
+    """Route parsed commands through the caller-owned workflow and its guards."""
     if args.command == "cleanup-rules":
         return workflow.cleanup_rules(payload() if args.action == "save" else None)
     if args.command == "status":

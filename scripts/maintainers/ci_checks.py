@@ -25,6 +25,7 @@ DOCUMENTS = {
 
 
 def documentation_path(name):
+    """Allow reviewed documents and direct PNG/GIF assets on the short route."""
     path = PurePosixPath(name)
     return name in DOCUMENTS or (
         len(path.parts) == 3 and path.parts[:2] == ('docs', 'assets')
@@ -57,6 +58,7 @@ def diff_entries(raw):
 
 
 def diff_paths(raw):
+    """Return every affected path, including both sides of renames and copies."""
     return [name for _, names in diff_entries(raw) for name in names]
 
 
@@ -70,6 +72,7 @@ def toml_value(value):
 
 
 def project_version(manifest, lock):
+    """Validate the release and return its unique, matching local lock entry."""
     project = manifest['project']
     if project['name'] != 'carreira-guiada':
         raise ValueError('Unexpected project identity')
@@ -86,6 +89,7 @@ def project_version(manifest, lock):
 
 
 def version_only(base, head):
+    """Require regular manifests whose parsed content differs only by version."""
     snapshots = []
     versions = []
     for ref in (base, head):
@@ -105,10 +109,12 @@ def version_only(base, head):
 
 
 def git(*args):
+    """Run a bounded Git query and propagate errors to the conservative caller."""
     return subprocess.run(['git', *args], check=True, capture_output=True, timeout=60).stdout
 
 
 def commit(value):
+    """Reject absent, malformed and all-zero event commit identifiers."""
     if not isinstance(value, str) or not re.fullmatch('[0-9a-f]{40}', value) or value == '0' * 40:
         raise ValueError('Missing commit')
     return value
@@ -154,6 +160,7 @@ def quality(needs):
 
 
 def main():
+    """Select CI jobs, verify release metadata or aggregate required results."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['select', 'quality', 'versions'])
     args = parser.parse_args()
