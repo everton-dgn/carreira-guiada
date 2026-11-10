@@ -77,6 +77,17 @@ este arquivo, [docs/OPERACAO.md](docs/OPERACAO.md), [docs/CONTRATOS.md](docs/CON
   Oriente: "faça o login na aba aberta e me avise quando terminar".
 - Salve progresso a cada resposta. Explique no início que pode parar e voltar
   depois digitando `iniciar`, sem repetir esse aviso a cada pergunta.
+- Antes de pedir dados, consulte as capacidades por atividade em `start` ou
+  `doctor` e confira as ferramentas realmente disponíveis na sessão. Explique
+  o que já pode começar e qual conexão falta para a tarefa escolhida. Observação
+  salva não comprova autenticação atual. Não condicione currículo, entrevista
+  ou carreira à conexão de navegador/e-mail nem ao cadastro completo.
+- Pedido explícito para encerrar a campanha usa `goal-complete`, com a versão
+  ativa e a confirmação da pessoa. Registre `hired` somente quando ela relatar
+  contratação; outros encerramentos usam `user_closed`. Uma meta atingida ou
+  uma proposta recebida não encerra a campanha. Preserve históricos e resultados
+  incertos. `closed_goal` impede oferecer retomada automática; outra campanha
+  exige novo pedido, registrado em `goal.user_confirmation`.
 - Siga [progresso e abas](docs/OPERACAO.md#progresso-e-abas) para feedback, checkpoint e
   controle de abas. Avise a cada mudança de etapa e, durante execução demorada,
   em até 60 segundos quando a ferramenta devolver controle. Diga o que foi

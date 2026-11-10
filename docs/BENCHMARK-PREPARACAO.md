@@ -55,7 +55,7 @@ Esses comandos são para mantenedores. O candidato não precisa executá-los.
 ```sh
 uv run --locked python scripts/maintainers/preparation_benchmark.py prompt
 uv run --locked python scripts/maintainers/preparation_benchmark.py score --response resposta.json
-uv run --locked python scripts/maintainers/preparation_benchmark.py verify --report docs/benchmarks/2026-11-08-complete-preparation.json
+uv run --locked python scripts/maintainers/preparation_benchmark.py verify --report docs/benchmarks/2026-11-09-followup-preparation.json
 ```
 
 Envie a saída do primeiro comando a uma sessão nova do modelo, sem acesso a

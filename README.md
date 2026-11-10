@@ -34,6 +34,10 @@ continuidade quando a sessão da IA termina.
 3. Escolha o que quer fazer no menu ou diga diretamente à IA.
    Ela pede só o necessário para aquele caminho, uma pergunta por vez.
 
+Está começando do zero? [Escolha onde conversar e confira o que funciona](docs/MODELOS.md#se-ainda-não-tem-um-aplicativo-compatível).
+Você pode começar pelo currículo ou pelas entrevistas e conectar navegador e
+e-mail quando precisar deles.
+
 | Quero agora | Posso dizer |
 |---|---|
 | Criar ou melhorar meu currículo | "Quero revisar meu currículo" |
@@ -100,6 +104,11 @@ Um e-mail suspeito não muda as regras da campanha.
 Diga **parar as candidaturas** e volte com **continuar meu currículo** ou
 **continuar as candidaturas**. Cada atividade conserva seu ponto. Preparar
 um currículo ou treinar uma entrevista mantém a campanha parada.
+
+Diga **consegui emprego, encerre a campanha** quando quiser finalizar a busca.
+O histórico fica salvo e as candidaturas anteriores não são retomadas no
+próximo acesso. Você ainda pode treinar ou organizar seus próximos passos.
+[Como encerrar e começar uma nova campanha](docs/ACOMPANHAMENTO.md#encerrar-a-campanha).
 
 Peça **andamento** para ver a atividade atual, o último avanço confirmado e
 o próximo passo. **O que precisa de mim?** reúne as ações que dependem de você,

@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-09",
+  "status": "complete",
+  "source": "docs/benchmarks/2026-11-09-followup-matrix.json",
+  "previous_campaign": "docs/benchmarks/2026-11-08-complete-matrix.json",
+  "measurement_starts": 14,
+  "configurations": [
+    {
+      "configuration": "opus-medium",
+      "kind": "preparation",
+      "start_numbers": [
+        6
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-preparation.json",
+      "evidence_file": "2026-11-09-followup/preparation/opus-medium.json",
+      "session_complete": true,
+      "valid_for_comparison": null,
+      "format_error": "JSONDecodeError"
+    },
+    {
+      "configuration": "opus-high",
+      "kind": "preparation",
+      "start_numbers": [
+        7
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-preparation.json",
+      "evidence_file": "2026-11-09-followup/preparation/opus-high.json",
+      "session_complete": true,
+      "valid_for_comparison": null,
+      "format_error": "JSONDecodeError"
+    },
+    {
+      "configuration": "opus-xhigh",
+      "kind": "preparation",
+      "start_numbers": [
+        8
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-preparation.json",
+      "evidence_file": "2026-11-09-followup/preparation/opus-xhigh.json",
+      "session_complete": true,
+      "valid_for_comparison": null,
+      "format_error": "JSONDecodeError"
+    },
+    {
+      "configuration": "fable-medium",
+      "kind": "preparation",
+      "start_numbers": [
+        9
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-preparation.json",
+      "evidence_file": "2026-11-09-followup/preparation/fable-medium.json",
+      "session_complete": true,
+      "valid_for_comparison": null,
+      "format_error": null
+    },
+    {
+      "configuration": "fable-max",
+      "kind": "guidance",
+      "start_numbers": [
+        10,
+        11
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-guidance.json",
+      "evidence_file": "2026-11-09-followup/guidance/fable-max.json",
+      "session_complete": null,
+      "valid_for_comparison": false,
+      "format_error": null
+    },
+    {
+      "configuration": "haiku-low",
+      "kind": "guidance",
+      "start_numbers": [
+        12,
+        13
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-guidance.json",
+      "evidence_file": "2026-11-09-followup/guidance/haiku-low.json",
+      "session_complete": null,
+      "valid_for_comparison": true,
+      "format_error": null
+    },
+    {
+      "configuration": "haiku-max",
+      "kind": "browser",
+      "start_numbers": [
+        3,
+        5
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-browser.json",
+      "evidence_file": "2026-11-09-followup/browser/haiku-max.json",
+      "session_complete": null,
+      "valid_for_comparison": true,
+      "format_error": null
+    },
+    {
+      "configuration": "m3-xhigh",
+      "kind": "browser",
+      "start_numbers": [
+        16,
+        17
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-browser.json",
+      "evidence_file": "2026-11-09-followup/browser/m3-xhigh.json",
+      "session_complete": null,
+      "valid_for_comparison": true,
+      "format_error": null
+    },
+    {
+      "configuration": "haiku-low",
+      "kind": "security",
+      "start_numbers": [
+        14,
+        15
+      ],
+      "source": "docs/benchmarks/2026-11-09-followup-security.json",
+      "evidence_file": "2026-11-09-followup/security/haiku-low.json",
+      "session_complete": null,
+      "valid_for_comparison": true,
+      "format_error": null
+    }
+  ],
+  "protocols": {
+    "preparation": "1.0.0",
+    "guidance": 3,
+    "security": 2,
+    "browser": "unchanged"
+  },
+  "source_commit": "ef057446f126a9d49760a8e7c649a799b8024099",
+  "source_sha256": {
+    "scripts/maintainers/browser_benchmark.py": "182a6243ba928cf44a05c4f495de5f5c42987e922bda07e7b0d41668b5c6df68",
+    "scripts/maintainers/bench_report.py": "6cdf4d635b2923aec26eda406f956eff13dd2258ded9d6b3b952ba9c92c62528",
+    "scripts/maintainers/guidance_report.py": "e06d1c01eaa87ba225e7ac01d98218e748fce9916720e26f2450a61f9aa08a7a",
+    "scripts/maintainers/bench_score.py": "5429650769db103ad90a876050a9d0e5922b25b551252d8abb8150a12825557b",
+    "scripts/maintainers/adversarial_report.py": "1324c1684aefbfddfabd49cfa4c7792838f47936341f5fc397cd511d162f6b48",
+    "scripts/maintainers/render_journeys.py": "cf4e153cdc1debb858293478b5a286b4410ebbde59ad459cbba4ab06043cbf91",
+    "scripts/maintainers/bench_site.py": "38fbd9597cb6dc7b6f35733fd45ba8dbae6a0f4a60c7e0479a97208bde6ecf4f",
+    "scripts/maintainers/release.py": "d11958f6a0d8ca5de4278424d3d46bad6f6969ebf65703f00f3384ff3dc38291",
+    "scripts/maintainers/adversarial_codex.py": "2dc7eb63308ae4d29509801328c5933b6c6b6dfce06f39a5512e2d615da75db0",
+    "scripts/maintainers/adversarial_isolation.py": "2a564334720f5148b900741dad2321ad5a3d6edc14b941b35f8a2e57f8741a22",
+    "scripts/maintainers/guidance_cases.py": "009ebf62d75f791434e010d71ee6c0c83ff8e7dc39ffdaa7d6ff61abb1ee5b89",
+    "scripts/maintainers/benchmark_trace.py": "b0bb5eadcc3b24f85b2b0d5b541bd49debab1d512a46c8fafbcf41eea3516022",
+    "scripts/maintainers/adversarial_codex_probe.py": "84cdcb774e366d8a9481370e988375149e96b56512a3f3e9a1704784bb1e51d8",
+    "scripts/maintainers/adversarial_cases.py": "c6d2ac9524f2acf2b060d77c40013531ac23e16afb5eb5b2b3f74f321288d35e",
+    "scripts/maintainers/render_evolution.py": "8508c7ebf07d6dbeeaf3a9d4f9ead0b61685b370f783a06c17ff198b1c7d9441",
+    "scripts/maintainers/release_publish.py": "537178babfc759d31fef98def12baade05984a3930c75206fc6dcad8e3aef513",
+    "scripts/maintainers/benchmark_claude.py": "9863c5bfa30723945e6f9c760b6839e0f1eb89af7b4fed3ca93a24b4bb10ca52",
+    "scripts/maintainers/adversarial_lab.py": "49ebabdc2b3ac93e998af1ed7d10d24138bf78947350deacd4a3c84894d83b73",
+    "scripts/maintainers/versioning.py": "e119a06b81dc904c002673aee70f90993c01a1c1d22d3e5cbf97866ec69717b2",
+    "scripts/maintainers/render_personal.py": "1a3c653ed248a7eca7474372f6ae2bc603821d91f38c70dc7e4375a2eac25211",
+    "scripts/maintainers/bench_tools.py": "f5eb6e53ec6c1214cdcccf1ebe0fd57bd650464e0c2f5485c1ef45faefaea638",
+    "scripts/maintainers/model_benchmark.py": "c267ef8db9a6778186121224e349d62d5f3c2298fc483556e64ae77ae4223bf5",
+    "scripts/maintainers/benchmark_browser_report.py": "96834def3b8c1b6b83de68fa5e111ed8a24a3da0bde0dde88e3594d3d92a9654",
+    "scripts/maintainers/benchmark_session.py": "6a55a8b888387d502d975136f9edfb37dad95c0c4ef52d1a7f75b7a94f133228",
+    "scripts/maintainers/bench_client.py": "32fc42b2b31d71b9774946c44b60414ce44133083a522ac6ae77fe2b2eaa0446",
+    "scripts/maintainers/render_docs.py": "e2bae3a3b8a334d3134273dd7e698a3d55bc5db83028cd936378116ef5a151e6",
+    "scripts/maintainers/bench_browser.py": "8b170257f2bcc13bcac7ace29a2d9ea46dbe34758bb9a77dd24758938931766c",
+    "scripts/maintainers/benchmark_mcp.py": "3d8c83f50d1a127f3fd5577519f60151e6dde8c62b945b2e14c2d9c1d980482b",
+    "scripts/maintainers/bench_candidate.py": "38c4fd29f8ee7ed8c4db73339752b8175cdf343690e4bf058ddc715ba073f8ca",
+    "scripts/maintainers/preparation_benchmark.py": "729a3c3d8f4ad8f2bc619e523599cda3abce8888b0d0295a1de9172db5dd0c9c",
+    "scripts/maintainers/guidance_benchmark.py": "94a6aa7a4ebe6cfa7cc0db4f03981f8071e3229101a3722e1400bc530fe29447",
+    "scripts/maintainers/release_repository.py": "f4000e1216099e3d92db6caa68526bbc3d71d5e8e1eb2f3da1d99631eb90a9dd"
+  },
+  "limits": [
+    "Uma repetição dirigida por lacuna; não é amostra estatística.",
+    "Formato inválido, percurso parcial e erro do executor permanecem distintos de sucesso.",
+    "Dados e serviços fictícios; nenhuma candidatura ou mensagem real."
+  ]
+}

@@ -169,7 +169,7 @@ As evidências publicadas permitem recalcular as notas sem navegador ou modelo:
 
 ```sh
 uv run --locked python -m scripts.maintainers.bench_report docs/benchmarks/2026-11-07-browser-mail.json
-uv run --locked python -m scripts.maintainers.bench_report docs/benchmarks/2026-11-08-complete-browser.json
+uv run --locked python -m scripts.maintainers.bench_report docs/benchmarks/2026-11-09-followup-browser.json
 ```
 
 Uma jornada por configuração é exploratória. Para propor uma recomendação,

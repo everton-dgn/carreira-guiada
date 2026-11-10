@@ -4,6 +4,11 @@ A IA faz as perguntas uma por vez e salva cada resposta. Você pode parar quando
 quiser e voltar com `iniciar`. Este arquivo mostra o que esperar; não precisa
 preencher nada aqui.
 
+Ainda não abriu a pasta em um aplicativo de IA? Comece pelo
+[guia de primeiro uso](GUIA.md#primeira-vez). A IA confere o que consegue fazer
+na sessão e explica uma etapa por vez quando faltar acesso. Navegador e e-mail
+podem ficar para depois se você quiser começar por currículo ou entrevistas.
+
 O cadastro completo é feito quando você quer preparar as candidaturas.
 Para começar por uma tarefa, diga `menu` e escolha currículo, entrevistas,
 carreira ou vagas. Também pode pedir diretamente: "quero só melhorar meu
@@ -23,6 +28,9 @@ Se já houver progresso salvo, `iniciar` oferece continuar ou revisar a
 atividade escolhida. Você também pode pedir outra atividade no menu.
 Revisar preserva o histórico e reaproveita as respostas que você não quiser
 mudar. [Como parar e retomar em outro dia](ACOMPANHAMENTO.md).
+
+Se já encerrou a campanha, o início mostra essa conclusão. Uma nova campanha
+exige um novo pedido; abrir o projeto não reativa a busca anterior.
 
 O currículo passa por [revisão para ATS](ATS.md). Depois você pode escolher
 a [revisão opcional do LinkedIn e GitHub](PRESENCA-PROFISSIONAL.md), deixar

@@ -33,6 +33,11 @@ use `status --needs-user`; não esconda prazo ou envio incerto durante a parada.
 
 ## Objetivo
 
+Confira `closed_goal` antes de propor uma retomada. Uma campanha concluída
+permanece encerrada. "Quero iniciar uma nova campanha" permite criar outro
+objetivo com `user_confirmation`, revalidar as condições atuais e manter o
+histórico anterior. `resume-work` só retoma uma pausa; não reabre a conclusão.
+
 Reaproveite o pedido da pessoa e o objetivo salvo. Só quando faltar essa
 escolha, pergunte se quer "procurar e enviar o que for compatível" ou "só me
 mostrar as vagas". Persista com
@@ -46,6 +51,14 @@ Com permissões `allow`, siga os próximos itens autorizados sem perguntar
 Se a pessoa pedir apenas uma nova atividade, use `goal-extend` com
 `goal_version`, `add_actions` e `user_confirmation`. Preserve a campanha,
 suas contagens e o estado de parada; confira as permissões da nova atividade.
+
+Quando a pessoa pedir explicitamente para encerrar, use `goal-complete` com
+`goal_version`, `user_confirmation`, `reason` e `outcome`. Use `hired` para
+contratação relatada pela pessoa e `user_closed` para outra decisão de encerrar.
+Não infira contratação por meta atingida, proposta ou mensagem de recrutador.
+Confira o resultado salvo e explique que históricos e pendências permanecem.
+Envio incerto não é confirmado ou repetido pelo encerramento. Não contate
+empresas, cancele candidaturas no portal ou apague mensagens por esse pedido.
 
 ## Ciclo
 

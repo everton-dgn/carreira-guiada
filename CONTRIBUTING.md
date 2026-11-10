@@ -67,6 +67,17 @@ metadados da versão e não inicia outro incremento.
 A CI verifica privacidade, testes e links locais da documentação. Integrações
 usam merge commit, preservando o histórico. Não há merge automático de bots.
 
+Alterações limitadas aos guias e às imagens permitidos em
+`scripts/maintainers/ci_checks.py` usam uma rota curta: privacidade, links,
+espelhos das skills e contratos de publicação, release e seleção da CI.
+Uma mudança somente de versão em `pyproject.toml` e `uv.lock` também pode
+acompanhar essa rota, desde que todos os outros campos permaneçam iguais.
+Código, dependências, instruções operacionais e dados ou protocolos de
+benchmark continuam na bateria completa, com três ambientes e navegador
+fictício. Caminhos desconhecidos ou comparação indisponível exigem a bateria
+completa. O check obrigatório `quality` reprova qualquer teste exigido que
+falhe, seja cancelado ou deixe de executar.
+
 ## Documentação e imagens
 
 Antes de criar ou substituir uma peça, siga o

@@ -29,6 +29,9 @@ def doctor(root: Path, *, which=shutil.which, run=subprocess.run) -> dict:
 
     - installed: executável encontrado; observed: respondeu a ``--version``/``status``;
       ready: utilizável para o controle local.
+    - ready.effects: false neste diagnóstico local, que não verifica autenticação.
+    - recorded_effect_prerequisites: combinação histórica dos pré-requisitos locais.
+    - tasks: requisitos por atividade; ações externas sempre exigem checagem atual.
     - sessions: observações registradas (``usable`` = ready e dentro da validade).
     """
     workflow = Workflow(root)
@@ -60,8 +63,10 @@ def doctor(root: Path, *, which=shutil.which, run=subprocess.run) -> dict:
             resumes["error"] = str(exc)[:200]
     sessions = state["capabilities"]
     tools_ok = all(check["ready"] for check in checks if not check["optional"])
-    effects = tools_ok and bool(profile.get("approved")) and resumes["approved_verified"] > 0 and any(s["usable"] for s in sessions) and not state["control"]["stopped"]
-    ready = {"chat": tools_ok, "effects": effects}
+    effects = tools_ok and bool(profile.get("approved")) and resumes["approved_verified"] > 0 and any(s["usable"] for s in sessions) and not state["control"]["stopped"] and state.get("closed_goal") is None
+    ready = {"chat": tools_ok, "effects": False}
+    from .navigation import task_capabilities
+    tasks = task_capabilities(state, local_ready=tools_ok)
     lines = ["Diagnóstico do Carreira Guiada:"]
     for check in checks:
         level = "pronto" if check["ready"] else "observado" if check["observed"] else "instalado" if check["installed"] else "ausente"
@@ -69,4 +74,7 @@ def doctor(root: Path, *, which=shutil.which, run=subprocess.run) -> dict:
     lines.append(f"- Perfil: {'aprovado' if profile.get('approved') else 'pendente'}")
     lines.append(f"- Currículos aprovados e íntegros: {resumes['approved_verified']}")
     lines.append(f"- Sessões observadas e válidas: {sum(1 for s in sessions if s['usable'])} (observação não comprova autenticação atual)")
-    return {"checks": checks, "profile": profile, "resumes": resumes, "sessions": sessions, "control": state["control"], "ready": ready, "message": "\n".join(lines)}
+    lines.append("- Currículo, entrevistas e carreira: " + tasks['curriculum']['message'])
+    for name, label in (('search', 'Busca de vagas'), ('applications', 'Candidaturas'), ('email', 'E-mail')):
+        lines.append(f"- {label}: " + tasks[name]['message'])
+    return {"recorded_effect_prerequisites": effects, "tasks": tasks, "checks": checks, "profile": profile, "resumes": resumes, "sessions": sessions, "control": state["control"], "ready": ready, "message": "\n".join(lines)}
