@@ -16,12 +16,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SelectionTests(unittest.TestCase):
     def test_documentation_and_assets_are_short(self):
+        """Reviewed documentation and image changes select the short CI route."""
         for name in ('README.md', 'docs/GUIA.md', 'docs/assets/image with spaces.png',
                      'docs/assets/demo.gif', 'CHANGELOG.md'):
             with self.subTest(name=name), patch.object(ci, 'git', return_value=f'M\0{name}\0'.encode()):
                 self.assertEqual(ci.selection('push', {'before': 'a' * 40, 'after': 'b' * 40}), 'docs')
 
     def test_unknown_code_fixtures_reports_skills_config_and_gates_are_full(self):
+        """Unknown paths and operational inputs retain the full validation suite."""
         names = ('scripts/job/cli.py', 'tests/fixtures/model-benchmark.json', 'pyproject.toml',
                  'uv.lock', '.github/workflows/checks.yml', '.githooks/pre-push',
                  'docs/benchmarks/answer.md', 'docs/benchmarks/raw.txt', 'docs/benchmarks/report.json',
@@ -33,6 +35,7 @@ class SelectionTests(unittest.TestCase):
                 self.assertEqual(ci.selection('push', {'before': 'a' * 40, 'after': 'b' * 40}), 'full')
 
     def test_renames_and_copies_consider_both_names(self):
+        """Both source and destination paths participate in CI selection."""
         for status in ('R100', 'C075'):
             for old, new, expected in (
                 ('README.md', 'docs/GUIA.md', 'docs'),
@@ -46,6 +49,7 @@ class SelectionTests(unittest.TestCase):
                     self.assertEqual(ci.selection('push', {'before': 'a' * 40, 'after': 'b' * 40}), expected)
 
     def test_deletions_and_mixed_changes(self):
+        """Deleting code or combining unknown paths prevents the short route."""
         for raw, expected in ((b'D\0docs/GUIA.md\0', 'docs'),
                               (b'D\0scripts/job/cli.py\0', 'full'),
                               (b'M\0README.md\0A\0new-file\0', 'full')):
@@ -53,6 +57,7 @@ class SelectionTests(unittest.TestCase):
                 self.assertEqual(ci.selection('push', {'before': 'a' * 40, 'after': 'b' * 40}), expected)
 
     def test_missing_malformed_empty_or_unavailable_diff_is_full(self):
+        """Invalid event data or unavailable Git evidence selects full checks."""
         event = {'before': 'a' * 40, 'after': 'b' * 40}
         for raw in (b'', b'M\0README.md', b'R100\0README.md\0', b'T\0README.md\0',
                     b'U\0README.md\0', b'M\0\xff\0', b'M\0../README.md\0'):
@@ -69,18 +74,22 @@ class SelectionTests(unittest.TestCase):
                 git.assert_not_called()
 
     def test_real_git_merge_base_push_and_renames(self):
+        """Real histories distinguish pull-request ancestry from push differences."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
 
             def git(*args):
+                """Run Git inside the isolated temporary test repository."""
                 return subprocess.run(['git', '-C', directory, *args], check=True, capture_output=True).stdout
 
             def save(name, text):
+                """Write a UTF-8 fixture inside the temporary repository."""
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(text, encoding='utf-8')
 
             def commit():
+                """Commit synthetic fixtures with a test identity and return their SHA."""
                 git('add', '.')
                 git('-c', 'user.name=CI Test', '-c', 'user.email=ci@example.invalid',
                     '-c', 'commit.gpgsign=false', 'commit', '-m', 'test: fixture')
@@ -118,6 +127,7 @@ class ReleaseSelectionTests(unittest.TestCase):
     lock = 'version = 1\n[[package]]\nname = "carreira-guiada"\nversion = "1.0.0"\nsource = {virtual = "."}\ndependencies = [{name = "other"}]\n[[package]]\nname = "other"\nversion = "2.0.0"\nsource = {registry = "https://example.invalid"}\n'
 
     def setUp(self):
+        """Create an isolated Git repository with consistent release fixtures."""
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name)
@@ -128,33 +138,40 @@ class ReleaseSelectionTests(unittest.TestCase):
         self.base = self.commit()
 
     def git(self, *args):
+        """Run Git inside the isolated temporary test repository."""
         return subprocess.run(['git', '-C', str(self.root), *args], check=True,
                               capture_output=True, timeout=15).stdout
 
     def save(self, name, content):
+        """Write a UTF-8 fixture inside the temporary repository."""
         (self.root / name).write_text(content, encoding='utf-8')
 
     def commit(self):
+        """Commit synthetic fixtures with a test identity and return their SHA."""
         self.git('add', '.')
         self.git('-c', 'user.name=CI Test', '-c', 'user.email=ci@example.invalid',
                  '-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-m', 'test: release')
         return self.git('rev-parse', 'HEAD').decode().strip()
 
     def select(self):
+        """Commit the current fixtures and select checks against their baseline."""
         head = self.commit()
         with patch.object(ci, 'git', side_effect=self.git):
             return ci.selection('push', {'before': self.base, 'after': head})
 
     def bump(self):
+        """Update both local package versions while preserving dependencies."""
         self.save('pyproject.toml', self.manifest.replace('1.0.0', '1.1.0'))
         self.save('uv.lock', self.lock.replace('1.0.0', '1.1.0'))
         self.save('README.md', 'after')
 
     def test_real_release_version_only_uses_short_route(self):
+        """Matching version-only changes remain eligible for documentation checks."""
         self.bump()
         self.assertEqual(self.select(), 'docs')
 
     def test_pull_request_uses_blobs_at_merge_base(self):
+        """A pull request compares manifest contents from its common ancestor."""
         self.git('checkout', '-b', 'feat/docs')
         self.bump()
         head = self.commit()
@@ -167,6 +184,7 @@ class ReleaseSelectionTests(unittest.TestCase):
             self.assertEqual(ci.selection('push', {'before': advanced, 'after': head}), 'full')
 
     def test_missing_baseline_file_and_unchanged_versions_are_full(self):
+        """Missing baseline metadata or unchanged versions cannot qualify as a bump."""
         self.save('pyproject.toml', self.manifest + '# comment\n')
         self.save('uv.lock', self.lock + '# comment\n')
         self.assertEqual(self.select(), 'full')
@@ -176,6 +194,7 @@ class ReleaseSelectionTests(unittest.TestCase):
         self.assertEqual(self.select(), 'full')
 
     def test_other_toml_changes_remain_full(self):
+        """Dependency, source and configuration changes retain full checks."""
         changes = [
             ('pyproject.toml', 'package = false', 'package = true'),
             ('pyproject.toml', 'package = false', 'package = 0'),
@@ -194,6 +213,7 @@ class ReleaseSelectionTests(unittest.TestCase):
                 self.assertEqual(self.select(), 'full')
 
     def test_absent_inconsistent_malformed_or_duplicate_versions_are_full(self):
+        """Invalid or ambiguous package versions prevent the short route."""
         for name, old, new in [
             ('uv.lock', '1.1.0', '1.2.0'),
             ('pyproject.toml', 'version = "1.1.0"', ''),
@@ -209,6 +229,7 @@ class ReleaseSelectionTests(unittest.TestCase):
                 self.assertEqual(self.select(), 'full')
 
     def test_one_sided_bump_delete_and_rename_are_full(self):
+        """Both original version files must be modified together."""
         self.save('pyproject.toml', self.manifest.replace('1.0.0', '1.1.0'))
         self.assertEqual(self.select(), 'full')
         self.bump()
@@ -220,12 +241,14 @@ class ReleaseSelectionTests(unittest.TestCase):
         self.assertEqual(self.select(), 'full')
 
     def test_invalid_baseline_is_not_repaired_into_short_route(self):
+        """Repairing inconsistent baseline versions still requires full validation."""
         self.save('uv.lock', self.lock.replace('1.0.0', '0.9.0'))
         self.base = self.commit()
         self.bump()
         self.assertEqual(self.select(), 'full')
 
     def test_mode_change_and_symlink_are_full(self):
+        """Executable modes and symlinked metadata cannot bypass full checks."""
         self.bump()
         (self.root / 'uv.lock').chmod(0o755)
         self.assertEqual(self.select(), 'full')
@@ -234,11 +257,13 @@ class ReleaseSelectionTests(unittest.TestCase):
         self.assertEqual(self.select(), 'full')
 
     def test_version_only_does_not_hide_code_changes(self):
+        """A valid version bump never masks an accompanying code change."""
         self.bump()
         self.save('code.py', 'print(1)')
         self.assertEqual(self.select(), 'full')
 
     def test_comments_and_formatting_cannot_hide_semantic_changes(self):
+        """TOML comments are harmless while additional parsed fields remain material."""
         self.bump()
         self.save('pyproject.toml', (self.root / 'pyproject.toml').read_text() + '\n# comment\n')
         self.assertEqual(self.select(), 'docs')
@@ -246,6 +271,7 @@ class ReleaseSelectionTests(unittest.TestCase):
         self.assertEqual(self.select(), 'full')
 
     def test_versions_command_reads_actual_files_without_project_dependencies(self):
+        """The standalone version command validates actual manifest and lock files."""
         for expected in (0, 1):
             if expected:
                 self.save('uv.lock', self.lock.replace('1.0.0', '1.2.0'))
@@ -260,12 +286,14 @@ class ReleaseSelectionTests(unittest.TestCase):
 
 class QualityTests(unittest.TestCase):
     def needs(self, mode):
+        """Build the exact successful job results expected for one CI mode."""
         result = 'success' if mode == 'full' else 'skipped'
         return {'plan': {'result': 'success', 'outputs': {'mode': mode}},
                 'documentation': {'result': 'success'},
                 'tests': {'result': result}, 'browser': {'result': result}}
 
     def test_only_exact_success_and_intentional_skips_pass(self):
+        """Every required result must match its selected execution mode."""
         for mode in ('full', 'docs'):
             needs = self.needs(mode)
             self.assertTrue(ci.quality(needs))
@@ -282,6 +310,7 @@ class QualityTests(unittest.TestCase):
                 self.assertFalse(ci.quality(changed))
 
     def test_missing_or_unrecognized_plan_cannot_allow_skips(self):
+        """Absent or invalid planner outputs cannot authorize skipped checks."""
         for outputs in ({}, None, {'mode': ''}, {'mode': 'false'}, {'mode': 'other'}):
             needs = self.needs('docs')
             needs['plan']['outputs'] = outputs
@@ -290,12 +319,14 @@ class QualityTests(unittest.TestCase):
             self.assertFalse(ci.quality(needs))
 
     def test_quality_command_exit_status(self):
+        """The aggregation command returns failure for incomplete job results."""
         for needs, expected in ((self.needs('docs'), 0), (self.needs('full'), 0), ({}, 1)):
             result = subprocess.run([sys.executable, str(ROOT / 'scripts/maintainers/ci_checks.py'), 'quality'],
                                     env={**os.environ, 'CI_NEEDS': json.dumps(needs)}, capture_output=True)
             self.assertEqual(result.returncode, expected, result.stderr)
 
     def test_select_command_missing_event_falls_back_to_full(self):
+        """An absent event file emits a conservative full-suite selection."""
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'output'
             result = subprocess.run([sys.executable, str(ROOT / 'scripts/maintainers/ci_checks.py'), 'select'],

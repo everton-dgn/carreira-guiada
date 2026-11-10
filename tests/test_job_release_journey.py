@@ -34,6 +34,7 @@ class ReleaseJourneyTests(unittest.TestCase):
             'evidence_source': 'destination_page', 'checked_at': self.time, **extra})
 
     def test_novice_from_start_to_offer_without_external_effects(self):
+        """Exercise a fictional novice journey, next-day recovery and explicit closure."""
         self.say(self.call('start')['model_setup']['question'], 'Uso quatro serviços. Não sei os modelos de todos.')
         model_access = self.call('models', 'save', data={'expected_version': 0, 'decision': 'available', 'providers': [
             {'name': 'OpenAI', 'models': [{'name': 'GPT-6.1 Terra', 'efforts': ['medium', 'high']}]},

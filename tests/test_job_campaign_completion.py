@@ -9,6 +9,7 @@ from tests import test_job_workflow as fixtures
 
 class CampaignCompletionTests(unittest.TestCase):
     def setUp(self):
+        """Create fictional campaign fixtures and reject network connections."""
         import socket
         from unittest.mock import patch
         fixtures.WorkflowTests.setUp(self)
@@ -22,10 +23,12 @@ class CampaignCompletionTests(unittest.TestCase):
     done = fixtures.WorkflowTests.done
 
     def close_goal(self, **changes):
+        """Complete the fictional first campaign with optional validation overrides."""
         return self.wf.complete_goal({'goal_version': 1, 'user_confirmation': 'Consegui emprego, encerre.',
                                      'reason': 'Pedido da pessoa', 'outcome': 'hired', **changes})
 
     def test_closed_campaign_survives_next_day_and_cannot_resume(self):
+        """Closure survives reopening and invalidates old actions without erasing history."""
         job, resume = self.ready()
         action = self.apply(job, resume)
         closed = self.close_goal()
@@ -56,6 +59,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertEqual(self.wf.state()['counts']['actions'], {'uncertain': 1})
 
     def test_task_readiness_does_not_require_onboarding_or_claim_authentication(self):
+        """Local preparation routes require neither onboarding nor verified logins."""
         report = doctor(self.root, which=lambda _: None)
         self.assertIn('tasks', report)
         self.assertFalse(report['tasks']['applications']['authentication_verified'])
@@ -74,6 +78,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertIn('curriculum', curriculum['task_capabilities'])
 
     def test_pause_next_day_and_activity_switch_preserve_campaign(self):
+        """Switching activities across days preserves the paused campaign."""
         self.ready()
         self.wf.stop()
         self.clock.value += timedelta(days=1)
@@ -88,6 +93,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertFalse(self.wf.state()['control']['stopped'])
 
     def test_capability_guidance_separates_missing_data_from_live_checks(self):
+        """Saved setup and current external verification remain separate requirements."""
         unavailable = doctor(self.root, which=lambda _: None)
         for task in ('curriculum', 'practice', 'career'):
             self.assertFalse(unavailable['tasks'][task]['ready'])
@@ -100,6 +106,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertIn('sources_and_scope_confirmation', report['tasks']['search']['verify_now'])
 
     def test_closure_preserves_uncertain_evidence_steps_and_pause(self):
+        """Completion preserves uncertain receipts, pending steps and the stop flag."""
         job, resume = self.ready()
         action = self.apply(job, resume)
         self.done(action['action_id'], 'uncertain', evidence='Resposta fictícia sem confirmação')
@@ -125,6 +132,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertEqual(reopened.state()['counts']['actions'], {'uncertain': 1})
 
     def test_target_reached_is_not_hiring_or_closure(self):
+        """Meeting an application target does not imply employment or campaign closure."""
         job, resume = self.ready({'summary': 'Uma candidatura', 'actions': ['apply'], 'target_applications': 1})
         self.done(self.apply(job, resume)['action_id'], submitted_at=fixtures.iso(self.clock()))
         state = self.wf.state()
@@ -133,6 +141,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertIsNone(state['closed_goal'])
 
     def test_validation_and_idempotence_do_not_change_new_campaign(self):
+        """Invalid or repeated completion requests cannot alter a later campaign."""
         self.wf.configure_goal({'summary': 'Primeira', 'actions': ['research']})
         for changes in ({'goal_version': 2}, {'goal_version': True}, {'outcome': 'target_reached'},
                         {'user_confirmation': ''}, {'reason': ''}):
@@ -154,6 +163,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertEqual(saved['generation'], generation)
 
     def test_legacy_schema_read_and_positional_writer_remain_compatible(self):
+        """Legacy goal columns and reads remain compatible with additive closure records."""
         self.wf.configure_goal({'summary': 'Legado', 'actions': ['research']})
         conn = self.wf._store.conn
         conn.execute('DROP TABLE wf_goal_completions')
@@ -174,6 +184,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertEqual(self.wf.state()['closed_goal']['version'], 1)
 
     def test_saved_capability_never_proves_live_authentication(self):
+        """Recorded prerequisites never certify a currently authenticated session."""
         self.ready()
         report = doctor(self.root, which=lambda _: '/fixture/uv',
                         run=lambda *args, **kwargs: type('Result', (), {'returncode': 0, 'stdout': 'uv fixture'})())
@@ -183,6 +194,7 @@ class CampaignCompletionTests(unittest.TestCase):
         self.assertTrue(any(item['usable'] for item in report['sessions']))
 
     def test_cli_completion_and_direct_routes_after_closure(self):
+        """CLI closure keeps preparation shortcuts available without restarting search."""
         import io
         import json
         from unittest.mock import patch
@@ -203,6 +215,7 @@ class CampaignCompletionTests(unittest.TestCase):
 
 
     def test_generation_revokes_public_research_grants(self):
+        """Closure and a new campaign cannot reuse an earlier research permission."""
         from scripts.job.research_scope import ResearchScopes, job_search_target
         self.approve_profile()
         from scripts.job.profile import Profile
@@ -267,6 +280,7 @@ class CampaignCompletionTests(unittest.TestCase):
                 'user_confirmation': 'Sim, quero apenas ver as vagas.'})
 
     def test_new_campaign_can_authorize_fresh_action_but_not_old_authorization(self):
+        """A confirmed new campaign permits fresh actions while rejecting old grants."""
         job, resume = self.ready()
         old = self.apply(job, resume)
         self.close_goal()
