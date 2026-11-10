@@ -78,6 +78,12 @@ fictício. Caminhos desconhecidos ou comparação indisponível exigem a bateria
 completa. O check obrigatório `quality` reprova qualquer teste exigido que
 falhe, seja cancelado ou deixe de executar.
 
+Para conferir um PR só de documentação no GitHub, abra a aba `Checks`.
+`Select required checks`, `publication and documentation` e `quality` devem
+concluir com sucesso. Na rota curta, `tests` e `browser` aparecem como
+ignorados (`skipped`): essa dispensa é esperada. Já uma execução cancelada
+não vale como aprovação; repita a execução e aguarde os checks exigidos.
+
 ## Documentação e imagens
 
 Antes de criar ou substituir uma peça, siga o
