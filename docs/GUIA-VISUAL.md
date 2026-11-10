@@ -13,7 +13,7 @@ identidade. Reduzir o excesso de azul não exige trocar o fundo por branco,
 substituir objetos por ícones ou refazer a composição.
 
 A referência dos banners é `retornos-progresso-banner.png`: objetos relacionados
-ao recurso, papel claro, contraste e espaço entre título e ilustração.
+ao recurso, papel branco, contraste e espaço entre título e ilustração.
 Para os GIFs, use `minha-evolucao-demo.gif`: moldura marinha, terminal branco,
 texto escuro e destaques azuis. Essa referência vale também para conversas
 ao lado de um currículo, caderno ou portal. O diagrama da jornada mantém fundo
@@ -28,7 +28,7 @@ a proposta com o mantenedor antes de aplicá-la ao conjunto.
 
 | Fica fixo | Pode variar conforme a peça |
 |---|---|
-| Identidade marinha, papel claro e ciano como destaque | Diagrama claro e notas pessoais em papel creme |
+| Identidade marinha, papel branco e ciano como destaque | Diagrama claro e formatos das notas pessoais |
 | Hierarquia e letras legíveis, sem efeitos sobre títulos | Objetos, papéis sobrepostos e perspectiva discreta |
 | Texto separado da ilustração | Fitas e etiquetas nas peças de planejamento e evolução |
 | Cabeçalho e informação de contexto nos GIFs | Painel de conversa, documento, portal ou saída real |
@@ -49,14 +49,23 @@ Detalhes de produção ficam neste guia e no CONTRIBUTING, fora do README.
 | Ciano | `#60D9F4` | Rótulo, expressão destacada e pequenas marcações |
 | Azul claro | `#6DA7FF` | Texto secundário e detalhes sobre escuro |
 | Azul | `#2864ED` | Capas, objetos e marcações, com moderação |
-| Branco | `#FFFFFF` | Fundo dos terminais, documentos e fichas |
-| Papel creme | `#F5EAD4` | Cadernos e notas das peças pessoais |
+| Branco | `#FFFFFF` | Terminais, documentos, fichas, páginas de cadernos e notas |
 | Texto sobre claro | `#0F1B2D` | Títulos e conteúdo de documentos |
 
 A paleta orienta novas composições; não obriga a recolorir cada pixel de uma
 ilustração existente. Atenue primeiro feixes de luz, halos e grandes formas
 saturadas que disputem atenção com o recurso. Preserve o contraste do texto.
 Evite somar capa azul, brilho intenso e fundo saturado na mesma área.
+
+O papel tem base branca em todos os banners, inclusive nas peças pessoais.
+Folhas, páginas, notas e etiquetas de papel não usam creme, bege ou iluminação
+amarelada. Preserve a textura e use sombras suaves em cinza neutro para dar
+volume. Fitas, capas e marcações mantêm as cores da peça; madeira e metal podem
+conservar seus tons naturais.
+
+Ao corrigir o tom do papel, preserve o fundo azul, os textos, as dimensões e a
+composição. Compare com o original para conferir que o retoque ficou restrito
+às superfícies identificadas.
 
 Sombras de contato, papéis empilhados, textura discreta e perspectiva suave
 podem dar volume aos objetos. Letras dos títulos têm cor uniforme, sem sombra,
@@ -173,6 +182,8 @@ atrás das propostas, mantendo os documentos, o título e o fundo marinho".
 - [ ] O título continua dentro da arte, com acentos e sem efeitos nas letras.
 - [ ] Texto, objetos e bordas não colidem.
 - [ ] A cor de destaque orienta a leitura sem cobrir a ilustração inteira.
+- [ ] Folhas, páginas de cadernos e notas têm base branca, sem tom amarelado;
+  a textura e as sombras suaves preservam o volume.
 - [ ] Todos os painéis de conversa e saída usam fundo branco, texto escuro e
   a paleta de terminal deste guia, inclusive os painéis laterais.
 - [ ] O GIF exportado mantém o branco no início, nas cenas completas,
