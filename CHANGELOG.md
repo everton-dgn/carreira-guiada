@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 0.23.0 - 2026-11-09
+
+### Novidades
+
+- O guia de contribuição explica quais checks precisam passar em um PR só de
+  documentação e como reconhecer a dispensa da matriz completa e do navegador.
+  Uma execução cancelada exige uma nova execução aprovada.
+
+### Correções
+
+- O banner de Minha evolução usa papel branco no caderno, nas notas e na faixa
+  de instrução, preservando o fundo azul, os textos e a composição.
+
 ## 0.22.0 - 2026-11-09
 
 ### Novidades
