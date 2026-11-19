@@ -88,7 +88,7 @@ class GoalExtensionTests(unittest.TestCase):
         self.approve_profile({"research": "allow"})
         self.wf.configure_goal({"summary": "Pesquisa", "actions": ["research"]})
         proc = subprocess.run([sys.executable, "-m", "scripts.job.cli", "--root", str(self.root), "goal-extend", "--json"],
-                              input=json.dumps(self.extension(["apply"])), text=True, capture_output=True, timeout=15)
+                              input=json.dumps(self.extension(["apply"])), encoding="utf-8", capture_output=True, timeout=15)
         self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
         self.assertEqual(json.loads(proc.stdout)["added_actions"], ["apply"])
         with self.assertRaisesRegex(ValueError, "permissão"):

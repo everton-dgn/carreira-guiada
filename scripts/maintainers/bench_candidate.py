@@ -71,7 +71,7 @@ def call(directory, args, data=None):
         raise ValueError('As reservas são controladas por tab_open e tab_close.')
     state = json.loads((directory / 'state.json').read_text())
     env = {**os.environ, 'PYTHONPATH': str(directory / 'guard') + os.pathsep + str(PROJECT), 'PATH': str(directory / 'guard'), 'PYTHONDONTWRITEBYTECODE': '1', 'BENCHMARK_CLOCK': state['clock']}
-    process = subprocess.run([sys.executable, '-m', 'scripts.job.cli', '--root', str(directory / 'candidate'), *args, '--json'], input=json.dumps(data) if data is not None else '', text=True, capture_output=True, cwd=PROJECT, env=env, timeout=20)
+    process = subprocess.run([sys.executable, '-m', 'scripts.job.cli', '--root', str(directory / 'candidate'), *args, '--json'], input=json.dumps(data) if data is not None else '', encoding='utf-8', capture_output=True, cwd=PROJECT, env=env, timeout=20)
     try:
         result = json.loads(process.stdout)
     except ValueError:

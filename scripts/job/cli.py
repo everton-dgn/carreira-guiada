@@ -12,7 +12,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def payload():
-    raw = sys.stdin.read(262_145)
+    try:
+        raw = sys.stdin.read(262_145)
+    except UnicodeDecodeError as exc:
+        raise ValueError("A entrada precisa estar em UTF-8. Peça à IA para reenviar o comando; suas respostas anteriores foram preservadas.") from exc
     if len(raw) > 262_144:
         raise ValueError("A entrada excede 256 KB. Envie apenas os campos desta etapa.")
     try:
@@ -648,4 +651,7 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
+    # Sem isso o Windows usa a página de código local (cp1252) e grava "Júnior" como "JÃºnior".
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

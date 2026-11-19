@@ -22,7 +22,7 @@ class CliTests(unittest.TestCase):
         result = subprocess.run(
             [sys.executable, "-m", "scripts.job.cli", "--root", str(self.root), *args, "--json"],
             input=json.dumps(data) if data is not None else raw,
-            text=True, capture_output=True, cwd=PROJECT, timeout=15,
+            encoding="utf-8", capture_output=True, cwd=PROJECT, timeout=15,
         )
         self.assertEqual(result.returncode, 0 if success else 1, result.stdout + result.stderr)
         return json.loads(result.stdout)
@@ -64,6 +64,39 @@ class CliTests(unittest.TestCase):
         self.call("profile", "save", "identity", raw="{invalid", success=False)
         self.call("profile", "save", "identity", data={"email": "invalid"}, success=False)
         self.assertEqual(before, self.call("profile", "show"))
+
+    def test_accented_stdin_is_stored_and_compared_as_utf8(self):
+        """A cp1252 console, as on Windows, must not corrupt UTF-8 payloads or their filters."""
+        from scripts.job.profile import Profile
+        profile = Profile(self.root)
+        preferences = json.loads((PROJECT / "templates/profile.json").read_text(encoding="utf-8"))["sections"]["preferences"]
+        preferences.update(roles=["Atendimento"], modalities=["remoto"], currencies=["BRL"])
+        profile.save("preferences", preferences)
+        env = {key: value for key, value in os.environ.items() if key != "PYTHONUTF8"}
+        env["PYTHONIOENCODING"] = "cp1252"
+
+        def utf8_call(*args, data=None):
+            result = subprocess.run(
+                [sys.executable, "-m", "scripts.job.cli", "--root", str(self.root), *args, "--json"],
+                input=json.dumps(data, ensure_ascii=False).encode("utf-8") if data is not None else b"",
+                capture_output=True, cwd=PROJECT, env=env, timeout=15,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout.decode("utf-8", "replace") + result.stderr.decode("utf-8", "replace"))
+            return json.loads(result.stdout.decode("utf-8"))
+
+        utf8_call("profile", "answer", "preferences", data={"field": "levels", "value": ["Júnior"]})
+        utf8_call("profile", "answer", "preferences", data={"field": "languages", "value": [{"name": "Inglês", "level": 4, "required": False}]})
+        stored = profile.get()["sections"]["preferences"]
+        self.assertEqual(stored["levels"], ["Júnior"])
+        self.assertEqual(stored["languages"][0]["name"], "Inglês")
+        shown = utf8_call("profile", "show")["sections"]["preferences"]
+        self.assertEqual((shown["levels"], shown["languages"][0]["name"]), (["Júnior"], "Inglês"))
+        vacancy = {"level": "Júnior", "languages": [{"name": "Inglês", "level": 3, "required": True}]}
+        reasons = utf8_call("evaluate", data={"vacancy": vacancy})["reasons"]
+        self.assertNotIn("Fora da preferência: level", reasons)
+        self.assertFalse([reason for reason in reasons if reason.startswith("Proficiência insuficiente")], reasons)
+        reasons = utf8_call("evaluate", data={"vacancy": {**vacancy, "level": "Pleno"}})["reasons"]
+        self.assertIn("Fora da preferência: level", reasons)
 
     def test_end_to_end_profile_and_resume_preparation(self):
         sections = json.loads((PROJECT / "templates/profile.json").read_text())["sections"]
@@ -139,7 +172,7 @@ class CliTests(unittest.TestCase):
 
     def test_launcher_resolves_project_when_called_from_elsewhere(self):
         result = subprocess.run([str(PROJECT / "job"), "--root", str(self.root), "start", "--json"],
-                                cwd=self.root, capture_output=True, text=True, timeout=20)
+                                cwd=self.root, capture_output=True, encoding="utf-8", timeout=20)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout)["next_step"], "curriculum_input")
         self.assertFalse((self.root / ".job").exists())

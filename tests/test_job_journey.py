@@ -37,7 +37,7 @@ class JourneyTests(unittest.TestCase):
     def call(self, *args, data=None, success=True):
         result = subprocess.run([sys.executable, '-m', 'scripts.job.cli', '--root', str(self.root), *args, '--json'],
                                 input=json.dumps(data) if data is not None else None,
-                                capture_output=True, text=True, cwd=PROJECT, timeout=15)
+                                capture_output=True, encoding='utf-8', cwd=PROJECT, timeout=15)
         self.assertEqual(result.returncode, 0 if success else 1, result.stdout + result.stderr)
         return json.loads(result.stdout)
 
